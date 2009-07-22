@@ -1,0 +1,18 @@
+Mac
+
+./configure -cocoa -exceptions -shared -debug-and-release -no-rpath -arch x86 -no-framework
+
+
+Win32
+
+configure -platform win32-g++ -release -opensource -fast -no-dsp -no-vcproj -no-incredibuild-xge 
+
+Copy
+----
+src/corelib/global/qconfig.h (to lib/include)
+QtCore/qatomic_windows.h
+src/corelib/arch/qatomic_windows.h
+
+QtGui/qwindowdefs_win.h
+src/gui/kernel/qwindowdefs_win.h
+
