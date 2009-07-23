@@ -118,10 +118,236 @@ Type QLineEdit Extends QWidget
 		OnInit()
 		Return Self
 	End Method
+
+	Method alignment:Int()
+	' TODO
+	End Method
 	
+	Method backspace()
+	' TODO
+	End Method
+	
+	'Method completer:QCompleter()
+	' TODO
+	'End Method
+	
+	Method createStandardContextMenu:QMenu()
+	' TODO
+	End Method
+	
+	Method cursorBackward(mark:Int, steps:Int = 1)
+	' TODO
+	End Method
+	
+	Method cursorForward(mark:Int, steps:Int = 1)
+	' TODO
+	End Method
+	
+	Method cursorPosition:Int()
+	' TODO
+	End Method
+	
+	Method cursorPositionAt:Int(x:Int, y:Int)
+	' TODO
+	End Method
+	
+	Method cursorWordBackward(mark:Int)
+	' TODO
+	End Method
+	
+	Method cursorWordForward(mark:Int)
+	' TODO
+	End Method
+	
+	Method del()
+	' TODO
+	End Method
+	
+	Method deselect()
+	' TODO
+	End Method
+	
+	Method displayText:String()
+	' TODO
+	End Method
+	
+	Method dragEnabled:Int()
+	' TODO
+	End Method
+	
+	Method echoMode:Int()
+	' TODO
+	End Method
+	
+	Method toEnd(mark:Int)
+	' TODO
+	End Method
+	
+	Method getTextMargins(_left:Int Var, _top:Int Var, _right:Int Var, _bottom:Int Var)
+	' TODO
+	End Method
+	
+	Method hasAcceptableInput:Int()
+	' TODO
+	End Method
+	
+	Method hasFrame:Int()
+	' TODO
+	End Method
+	
+	Method hasSelectedText:Int()
+	' TODO
+	End Method
+	
+	Method home(mark:Int)
+	' TODO
+	End Method
+	
+	Method inputMask:String()
+	' TODO
+	End Method
+	
+	Method insert(newText:String)
+	' TODO
+	End Method
+	
+	Method isModified:Int()
+	' TODO
+	End Method
+	
+	Method isReadOnly:Int()
+	' TODO
+	End Method
+	
+	Method isRedoAvailable:Int()
+	' TODO
+	End Method
+	
+	Method isUndoAvailable:Int()
+	' TODO
+	End Method
+	
+	Method maxLength:Int()
+	' TODO
+	End Method
+	
+	Method minimumSizeHint(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	Method selectedText:String()
+	' TODO
+	End Method
+	
+	Method selectionStar:Int()
+	' TODO
+	End Method
+	
+	Method setAlignment(flag:Int)
+	' TODO
+	End Method
+	
+	'Method setCompleter(c:QCompleter)
+	' TODO
+	'End Method
+	
+	Method setCursorPosition(pos:Int)
+	' TODO
+	End Method
+	
+	Method setDragEnabled(b:Int)
+	' TODO
+	End Method
+	
+	Method setEchoMode(Mode:Int)
+	' TODO
+	End Method
+	
+	Method setFrame(frame:Int)
+	' TODO
+	End Method
+	
+	Method setInputMask(inputMask:String)
+	' TODO
+	End Method
+	
+	Method setMaxLength(length:Int)
+	' TODO
+	End Method
+	
+	Method setModified(value:Int)
+	' TODO
+	End Method
+
+	Rem
+	bbdoc: Sets whether the line edit is read only.
+	about: In read-only mode, the user can still copy the text to the clipboard, or drag and drop the text (if echoMode() is
+	Normal), but cannot edit it.
+	<p>
+	QLineEdit does not show a cursor in read-only mode.
+	</p>
+	<p>
+	By default, this property is false.
+	</p>
+	End Rem
 	Method setReadOnly(value:Int)
 		bmx_qt_qlineedit_setreadonly(qObjectPtr, value)
 	End Method
+
+	Method setSelection(start:Int, length:Int)
+	' TODO
+	End Method
+	
+	Method setTextMargins(_left:Int, _top:Int, _right:Int, _bottom:Int)
+	' TODO
+	End Method
+	
+	'Method setValidator(v:QValidator)
+	' TODO
+	'End Method
+	
+	Method sizeHint(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	Method text:String()
+	' TODO
+	End Method
+	
+	'Method validator:QValidator()
+	' TODO
+	'End Method
+
+
+	' SIGNAL : cursorPositionChanged
+	Function _OnCursorPositionChanged(obj:QLineEdit, oldPos:Int, newPos:Int)
+		obj._InvokeSignals("cursorPositionChanged", [String(oldPos), String(newPos)])
+	End Function
+
+	' SIGNAL : editingFinished
+	Function _OnEditingFinished(obj:QLineEdit)
+		obj._InvokeSignals("editingFinished", Null)
+	End Function
+
+	' SIGNAL : returnPressed
+	Function _OnReturnPressed(obj:QLineEdit)
+		obj._InvokeSignals("returnPressed", Null)
+	End Function
+
+	' SIGNAL : selectionChanged
+	Function _OnSelectionChanged(obj:QLineEdit)
+		obj._InvokeSignals("selectionChanged", Null)
+	End Function
+
+	' SIGNAL : textChanged
+	Function _OnTextChanged(obj:QLineEdit, text:String)
+		obj._InvokeSignals("textChanged", [text])
+	End Function
+
+	' SIGNAL : textEdited
+	Function _OnTextEdited(obj:QLineEdit, text:String)
+		obj._InvokeSignals("textEdited", [text])
+	End Function
 
 End Type
 

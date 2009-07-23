@@ -20,54 +20,20 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QLINEEDIT
-#define MAX_QT_QLINEEDIT
+#ifndef MAX_QT_ template
+#define MAX_QT_ template
 
 #include "../core.mod/glue.h"
-#include "../qwidget.mod/glue.h"
 #include <QtCore>
-#include <QLineEdit>
-
-class MaxQLineEdit;
 
 extern "C" {
 
 #include <blitz.h>
 
-	void _qt_qlineedit_QLineEdit__OnCursorPositionChanged(BBObject * handle, int oldPos, int newPos);
-	void _qt_qlineedit_QLineEdit__OnEditingFinished(BBObject * handle);
-	void _qt_qlineedit_QLineEdit__OnReturnPressed(BBObject * handle);
-	void _qt_qlineedit_QLineEdit__OnSelectionChanged(BBObject * handle);
-	void _qt_qlineedit_QLineEdit__OnTextChanged(BBObject * handle, BBString * text);
-	void _qt_qlineedit_QLineEdit__OnTextEdited(BBObject * handle, BBString * text);
-
-	QLineEdit * bmx_qt_qlineedit_create(BBObject * handle, QWidget * parent);
-	void bmx_qt_qlineedit_setreadonly(QLineEdit * edit, int value);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-class MaxQLineEdit : public QLineEdit
-{
-	Q_OBJECT
-
-public:
-	MaxQLineEdit(BBObject * handle, QWidget * parent);
-	~MaxQLineEdit();
-
-private:
-	BBObject * maxHandle;
-
-private slots:
-	void onCursorPositionChanged(int oldPos, int newPos);
-	void onEditingFinished();
-	void onReturnPressed();
-	void onSelectionChanged();
-	void onTextChanged(const QString & text);
-	void onTextEdited(const QString & text);
-	void onCustomContextMenuRequested(const QPoint & pos);
-};
 
 
 #endif

@@ -96,7 +96,14 @@ Type QWidget Extends QObject
 	Method setWindowTitle(title:String)
 		bmx_qt_qwidget_setwindowtitle(qObjectPtr, title)
 	End Method
-	
+
+
+	' SIGNAL : customContextMenuRequested
+	Function _OnCustomContextMenuRequested(obj:QWidget, x:Int, y:Int)
+		obj._InvokeSignals("customContextMenuRequested", [String(x), String(y)])
+	End Function
+
+
 End Type
 
 Type QLayout Extends QObject
