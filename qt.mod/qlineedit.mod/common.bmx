@@ -50,5 +50,17 @@ Extern
 
 	Function bmx_qt_qlineedit_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qlineedit_setreadonly(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qlineedit_text:String(handle:Byte Ptr)
+
+	Function bmx_qt_qlineedit_clear(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_copy(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_cut(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_paste(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_redo(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_selectall(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_settext(handle:Byte Ptr, text:String)
+
+	Function bmx_qt_qlineedit_undo(handle:Byte Ptr)
+
 
 End Extern

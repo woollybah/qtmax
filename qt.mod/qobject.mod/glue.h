@@ -32,6 +32,7 @@ extern "C" {
 #include <blitz.h>
 
 	BBString * bmx_qt_qobject_tr(BBString * sourceText, BBString * disambiguation, int n);
+	BBString * bmx_qt_qobject_trarg(BBString * sourceText, BBArray * args);
 
 }
 

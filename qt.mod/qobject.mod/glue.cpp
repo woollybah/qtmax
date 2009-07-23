@@ -44,6 +44,19 @@ BBString * bmx_qt_qobject_tr(BBString * sourceText, BBString * disambiguation, i
 	return ret;
 }
 
+BBString * bmx_qt_qobject_trarg(BBString * sourceText, BBArray * args) {
+	QString text = qStringFromBBString(sourceText);
+
+	int n= args->scales[0];
+	BBString **s=(BBString**)BBARRAYDATA( args, args->dims );
+	
+	for( int i=0;i<n;++i ){
+		text = text.arg(qStringFromBBString( s[i] ));
+	}
+
+	return bbStringFromQString(text);
+}
+
 
 
 

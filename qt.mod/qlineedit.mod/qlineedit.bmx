@@ -311,12 +311,44 @@ Type QLineEdit Extends QWidget
 	End Method
 	
 	Method text:String()
-	' TODO
+		Return bmx_qt_qlineedit_text(qObjectPtr)
 	End Method
 	
 	'Method validator:QValidator()
 	' TODO
 	'End Method
+	
+	Method clear()
+		bmx_qt_qlineedit_clear(qObjectPtr)
+	End Method
+	
+	Method copy()
+		bmx_qt_qlineedit_copy(qObjectPtr)
+	End Method
+	
+	Method cut()
+		bmx_qt_qlineedit_cut(qObjectPtr)
+	End Method
+	
+	Method paste()
+		bmx_qt_qlineedit_paste(qObjectPtr)
+	End Method
+	
+	Method redo()
+		bmx_qt_qlineedit_redo(qObjectPtr)
+	End Method
+	
+	Method selectAll()
+		bmx_qt_qlineedit_selectall(qObjectPtr)
+	End Method
+	
+	Method setText(text:String)
+		bmx_qt_qlineedit_settext(qObjectPtr, text)
+	End Method
+	
+	Method undo()
+		bmx_qt_qlineedit_undo(qObjectPtr)
+	End Method
 
 
 	' SIGNAL : cursorPositionChanged

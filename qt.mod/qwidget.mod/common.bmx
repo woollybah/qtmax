@@ -53,5 +53,24 @@ Extern
 	Function bmx_qt_qwidget_setlayout(handle:Byte Ptr, layout:Byte Ptr)
 	Function bmx_qt_qwidget_setwindowtitle(handle:Byte Ptr, title:String)
 
+	Function bmx_qt_qwidget_showfullscreen(handle:Byte Ptr)
+	Function bmx_qt_qwidget_showmaximized(handle:Byte Ptr)
+	Function bmx_qt_qwidget_showminimized(handle:Byte Ptr)
+	Function bmx_qt_qwidget_shownormal(handle:Byte Ptr)
+	Function bmx_qt_qwidget_stackunder(handle:Byte Ptr, w:Byte Ptr)
+	Function bmx_qt_qwidget_setfixedsize(handle:Byte Ptr, w:Int, h:Int)
+	Function bmx_qt_qwidget_setfixedwidth(handle:Byte Ptr, w:Int)
+	Function bmx_qt_qwidget_setfocus(handle:Byte Ptr, reason:Int)
+	Function bmx_qt_qwidget_close(handle:Byte Ptr)
+	Function bmx_qt_qwidget_update(handle:Byte Ptr)
+	Function bmx_qt_qwidget_raise(handle:Byte Ptr)
+	Function bmx_qt_qwidget_repaint(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setdisabled(handle:Byte Ptr, disable:Int)
+	Function bmx_qt_qwidget_setenabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qwidget_sethidden(handle:Byte Ptr, hidden:Int)
+	Function bmx_qt_qwidget_setstylesheet(handle:Byte Ptr, styleSheet:String)
+	Function bmx_qt_qwidget_setvisible(handle:Byte Ptr, visible:Int)
+	Function bmx_qt_qwidget_setwindowmodified(handle:Byte Ptr, value:Int)
+
 End Extern
 

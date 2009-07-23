@@ -257,16 +257,119 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method toHtml:String()
-	' TODO
+		Return bmx_qt_qtextedit_tohtml(qObjectPtr)
 	End Method
 	
 	Method toPlainText:String()
-	' TODO
+		Return bmx_qt_qtextedit_toplaintext(qObjectPtr)
 	End Method
 	
 	Method wordWrapMode:Int()
 	' TODO
 	End Method
+
+	' SLOTS
+	
+	Method append(text:String)
+		bmx_qt_qtextedit_append(qObjectPtr, text)
+	End Method
+	
+	Method clear()
+		bmx_qt_qtextedit_clear(qObjectPtr)
+	End Method
+	
+	Method copy()
+		bmx_qt_qtextedit_copy(qObjectPtr)
+	End Method
+	
+	Method cut()
+		bmx_qt_qtextedit_cut(qObjectPtr)
+	End Method
+	
+	Method insertHtml(text:String)
+		bmx_qt_qtextedit_inserthtml(qObjectPtr, text)
+	End Method
+	
+	Method insertPlainText(text:String)
+		bmx_qt_qtextedit_insertplaintext(qObjectPtr, text)
+	End Method
+	
+	Method paste()
+		bmx_qt_qtextedit_paste(qObjectPtr)
+	End Method
+	
+	Method redo()
+		bmx_qt_qtextedit_redo(qObjectPtr)
+	End Method
+	
+	Method scrollToAnchor(name:String)
+		bmx_qt_qtextedit_scrolltoanchor(qObjectPtr, name)
+	End Method
+	
+	Method selectAll()
+		bmx_qt_qtextedit_selectall(qObjectPtr)
+	End Method
+	
+	Method setAlignment(a:Int)
+		bmx_qt_qtextedit_setalignment(qObjectPtr, a)
+	End Method
+	
+	Method setCurrentFont(f:QFont)
+		bmx_qt_qtextedit_setcurrentfont(qObjectPtr, f.qObjectPtr)
+	End Method
+	
+	Method setFontFamily(fontFamily:String)
+		bmx_qt_qtextedit_setfontfamily(qObjectPtr, fontFamily)
+	End Method
+	
+	Method setFontItalic(italic:Int)
+		bmx_qt_qtextedit_setfontitalic(qObjectPtr, italic)
+	End Method
+	
+	Method setFontPointSize(s:Double)
+		bmx_qt_qtextedit_setfontpointsize(qObjectPtr, s)
+	End Method
+	
+	Method setFontUnderline(underline:Int)
+		bmx_qt_qtextedit_setfontunderline(qObjectPtr, underline)
+	End Method
+	
+	Method setFontWeight(weight:Int)
+		bmx_qt_qtextedit_setfontweight(qObjectPtr, weight)
+	End Method
+	
+	Method setHtml(text:String)
+		bmx_qt_qtextedit_sethtml(qObjectPtr, text)
+	End Method
+	
+	Method setPlainText(text:String)
+		bmx_qt_qtextedit_setplaintext(qObjectPtr, text)
+	End Method
+	
+	Method setText(text:String)
+		bmx_qt_qtextedit_settext(qObjectPtr, text)
+	End Method
+	
+	Method setTextBackgroundColor(c:QColor)
+		bmx_qt_qtextedit_settextbackgroundcolor(qObjectPtr, c.qObjectPtr)
+	End Method
+	
+	Method setTextColor(c:QColor)
+		bmx_qt_qtextedit_settextcolor(qObjectPtr, c.qObjectPtr)
+	End Method
+	
+	Method undo()
+		bmx_qt_qtextedit_undo(qObjectPtr)
+	End Method
+	
+	Method zoomIn(_range:Int = 1)
+		bmx_qt_qtextedit_zoomin(qObjectPtr, _range)
+	End Method
+	
+	Method zoomOut(_range:Int = 1)
+		bmx_qt_qtextedit_zoomout(qObjectPtr, _range)
+	End Method
+	
 
 End Type
 

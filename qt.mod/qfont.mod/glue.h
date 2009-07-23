@@ -20,11 +20,14 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QFONT
+#define MAX_QT_QFONT
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QFont>
+
+class MaxQFont;
 
 extern "C" {
 
@@ -35,5 +38,16 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQFont
+{
+public:
+	MaxQFont(const QFont & f);
+	~MaxQFont();
+	
+	QFont & Font();
+
+private:
+	QFont font;
+};
 
 #endif

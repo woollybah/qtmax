@@ -51,6 +51,7 @@ extern "C" {
 
 	Qt::WindowFlags bmx_qt_getwindowflags(int f);
 	Qt::Alignment bmx_qt_getalignment(int a);
+	Qt::FocusReason bmx_qt_getfocusreason(int r);
 	
 }
 

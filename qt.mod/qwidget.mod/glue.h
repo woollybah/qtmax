@@ -40,7 +40,26 @@ extern "C" {
 	void bmx_qt_qwidget_show(QWidget * widget);
 	void bmx_qt_qwidget_setlayout(QWidget * widget, QLayout * layout);
 	void bmx_qt_qwidget_setwindowtitle(QWidget * widget, BBString * title);
-	
+
+	void bmx_qt_qwidget_showfullscreen(QWidget * widget);
+	void bmx_qt_qwidget_showmaximized(QWidget * widget);
+	void bmx_qt_qwidget_showminimized(QWidget * widget);
+	void bmx_qt_qwidget_shownormal(QWidget * widget);
+	void bmx_qt_qwidget_stackunder(QWidget * widget, QWidget * w);
+	void bmx_qt_qwidget_setfixedsize(QWidget * widget, int w, int h);
+	void bmx_qt_qwidget_setfixedwidth(QWidget * widget, int w);
+	void bmx_qt_qwidget_setfocus(QWidget * widget, int reason);
+	void bmx_qt_qwidget_close(QWidget * widget);
+	void bmx_qt_qwidget_update(QWidget * widget);
+	void bmx_qt_qwidget_raise(QWidget * widget);
+	void bmx_qt_qwidget_repaint(QWidget * widget);
+	void bmx_qt_qwidget_setdisabled(QWidget * widget, int disable);
+	void bmx_qt_qwidget_setenabled(QWidget * widget, int value);
+	void bmx_qt_qwidget_sethidden(QWidget * widget, int hidden);
+	void bmx_qt_qwidget_setstylesheet(QWidget * widget, BBString * styleSheet);
+	void bmx_qt_qwidget_setvisible(QWidget * widget, int visible);
+	void bmx_qt_qwidget_setwindowmodified(QWidget * widget, int value);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

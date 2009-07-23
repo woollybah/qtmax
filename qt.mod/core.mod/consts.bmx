@@ -94,5 +94,38 @@ bbdoc: Indicates that this widget is a sub-window, such as a QMdiSubWindow widge
 end rem
 Const Qt_SubWindow:Int = $00000012
 
+Rem
+bbdoc: A mouse action occurred.
+end rem
+Const Qt_MouseFocusReason:Int = 0
+Rem
+bbdoc: The Tab key was pressed.
+end rem
+Const Qt_TabFocusReason:Int = 1
+Rem
+bbdoc: A Backtab occurred.
+about: The input for this may include the Shift or Control keys; e.g. Shift+Tab.
+End Rem
+Const Qt_BacktabFocusReason:Int = 2
+Rem
+bbdoc: The window system made this window either active or inactive.
+end rem
+Const Qt_ActiveWindowFocusReason:Int = 3
+Rem
+bbdoc: The application opened/closed a pop-up that grabbed/released the keyboard focus.
+end rem
+Const Qt_PopupFocusReason:Int = 4
+Rem
+bbdoc: The user typed a label's buddy shortcut
+End Rem
+Const Qt_ShortcutFocusReason:Int = 5
+Rem
+bbdoc: The menu bar took focus.
+end rem
+Const Qt_MenuBarFocusReason:Int = 6
+Rem
+bbdoc: Another reason, usually application-specific.
+end rem
+Const Qt_OtherFocusReason:Int = 7
 
 

@@ -20,20 +20,35 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QCOLOR
+#define MAX_QT_QCOLOR
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QColor>
+
+class MaxQColor;
 
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qcolor_free(MaxQColor * handle);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQColor
+{
+public:
+	MaxQColor(const QColor & c);
+	~MaxQColor();
+	
+	QColor & Color();
+
+private:
+	QColor color;
+};
 
 #endif

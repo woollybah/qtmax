@@ -20,8 +20,8 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QPRINTER
+#define MAX_QT_QPRINTER
 
 #include "../core.mod/glue.h"
 #include <QtCore>
