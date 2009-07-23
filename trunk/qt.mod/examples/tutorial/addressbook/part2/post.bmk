@@ -8,15 +8,15 @@
 	local pre
 
 	if bmk.Platform() == "win32" then
+		pre = ""
 		ext = "4.dll"
-	elseif bmk.Platform() == "linux" then
-		ext = "so"
 	else
+		pre = "lib"
 		ext = ".4.dylib"
 	end
 
 	local path = utils.ModulePath("qt.core") .. "/../lib/" .. bmk.Platform() .. "/"
-	local file = arg1 .. ext
+	local file = pre .. arg1 .. ext
 
 	sys.CopyFile(path .. file, %exepath% .. "/" .. file)
 @end
@@ -31,7 +31,7 @@
 @end
 
 # do the copy
-copydll libQtCore
-copydll libQtGui
+copydll QtCore
+copydll QtGui
 
 copynib
