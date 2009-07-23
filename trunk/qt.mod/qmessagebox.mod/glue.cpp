@@ -1,0 +1,184 @@
+/*
+  Copyright (c) 2009 Bruce A Henderson
+ 
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+*/ 
+
+#include "glue.h"
+
+// ---------------------------------------------------------------------------------------
+
+
+
+// *********************************************
+
+QMessageBox::StandardButtons bmx_qt_intToStandardButtons(int b) {
+	QMessageBox::StandardButtons button;
+	
+	if (b & 0x00000400) button |= QMessageBox::Ok;
+	if (b & 0x00002000) button |= QMessageBox::Open;
+	if (b & 0x00000800) button |= QMessageBox::Save;
+	if (b & 0x00400000) button |= QMessageBox::Cancel;
+	if (b & 0x00200000) button |= QMessageBox::Close;
+	if (b & 0x00800000) button |= QMessageBox::Discard;
+	if (b & 0x02000000) button |= QMessageBox::Apply;
+	if (b & 0x04000000) button |= QMessageBox::Reset;
+	if (b & 0x08000000) button |= QMessageBox::RestoreDefaults;
+	if (b & 0x01000000) button |= QMessageBox::Help;
+	if (b & 0x00001000) button |= QMessageBox::SaveAll;
+	if (b & 0x00004000) button |= QMessageBox::Yes;
+	if (b & 0x00008000) button |= QMessageBox::YesToAll;
+	if (b & 0x00010000) button |= QMessageBox::No;
+	if (b & 0x00020000) button |= QMessageBox::NoToAll;
+	if (b & 0x00040000) button |= QMessageBox::Abort;
+	if (b & 0x00080000) button |= QMessageBox::Retry;
+	if (b & 0x00100000) button |= QMessageBox::Ignore;
+
+	return button;
+}
+
+int bmx_qt_standardButtonsToInt(QMessageBox::StandardButtons b) {
+	int button = 0;
+	
+	if (b & QMessageBox::Ok) button |= 0x00000400;
+	if (b & QMessageBox::Open) button |= 0x00002000;
+	if (b & QMessageBox::Save) button |= 0x00000800;
+	if (b & QMessageBox::Cancel) button |= 0x00400000;
+	if (b & QMessageBox::Close) button |= 0x00200000;
+	if (b & QMessageBox::Discard) button |= 0x00800000;
+	if (b & QMessageBox::Apply) button |= 0x02000000;
+	if (b & QMessageBox::Reset) button |= 0x04000000;
+	if (b & QMessageBox::RestoreDefaults) button |= 0x08000000;
+	if (b & QMessageBox::Help) button |= 0x01000000;
+	if (b & QMessageBox::SaveAll) button |= 0x00001000;
+	if (b & QMessageBox::Yes) button |= 0x00004000;
+	if (b & QMessageBox::YesToAll) button |= 0x00008000;
+	if (b & QMessageBox::No) button |= 0x00010000;
+	if (b & QMessageBox::NoToAll) button |= 0x00020000;
+	if (b & QMessageBox::Abort) button |= 0x00040000;
+	if (b & QMessageBox::Retry) button |= 0x00080000;
+	if (b & QMessageBox::Ignore) button |= 0x00100000;
+	
+	
+	return button;
+}
+
+QMessageBox::StandardButton bmx_qt_intToStandardButton(int b) {
+	switch (b) {
+		case 0x00000400:
+			return QMessageBox::Ok;
+		case 0x00002000:
+			return QMessageBox::Open;
+		case 0x00000800:
+			return QMessageBox::Save;
+		case 0x00400000:
+			return QMessageBox::Cancel;
+		case 0x00200000:
+			return QMessageBox::Close;
+		case 0x00800000:
+			return QMessageBox::Discard;
+		case 0x02000000:
+			return QMessageBox::Apply;
+		case 0x04000000:
+			return QMessageBox::Reset;
+		case 0x08000000:
+			return QMessageBox::RestoreDefaults;
+		case 0x01000000:
+			return QMessageBox::Help;
+		case 0x00001000:
+			return QMessageBox::SaveAll;
+		case 0x00004000:
+			return QMessageBox::Yes;
+		case 0x00008000:
+			return QMessageBox::YesToAll;
+		case 0x00010000:
+			return QMessageBox::No;
+		case 0x00020000:
+			return QMessageBox::NoToAll;
+		case 0x00040000:
+			return QMessageBox::Abort;
+		case 0x00080000:
+			return QMessageBox::Retry;
+		case 0x00100000:
+			return QMessageBox::Ignore;
+	}
+	
+	return QMessageBox::NoButton;
+}
+
+int bmx_qt_standardButtonToInt(QMessageBox::StandardButton b) {
+	switch (b) {
+		case QMessageBox::Ok:
+			return 0x00000400;
+		case QMessageBox::Open:
+			return 0x00002000;
+		case QMessageBox::Save:
+			return 0x00000800;
+		case QMessageBox::Cancel:
+			return 0x00400000;
+		case QMessageBox::Close:
+			return 0x00200000;
+		case QMessageBox::Discard:
+			return 0x00800000;
+		case QMessageBox::Apply:
+			return 0x02000000;
+		case QMessageBox::Reset:
+			return 0x04000000;
+		case QMessageBox::RestoreDefaults:
+			return 0x08000000;
+		case QMessageBox::Help:
+			return 0x01000000;
+		case QMessageBox::SaveAll:
+			return 0x00001000;
+		case QMessageBox::Yes:
+			return 0x00004000;
+		case QMessageBox::YesToAll:
+			return 0x00008000;
+		case QMessageBox::No:
+			return 0x00010000;
+		case QMessageBox::NoToAll:
+			return 0x00020000;
+		case QMessageBox::Abort:
+			return 0x00040000;
+		case QMessageBox::Retry:
+			return 0x00080000;
+		case QMessageBox::Ignore:
+			return 0x00100000;
+	}
+		
+	return 0;
+}
+
+
+// *********************************************
+
+int bmx_qt_qmessagebox_information(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton) {
+	return bmx_qt_standardButtonToInt(QMessageBox::information(parent, qStringFromBBString(title), qStringFromBBString(text),
+		bmx_qt_intToStandardButtons(buttons), bmx_qt_intToStandardButton(defaultButton)));
+}
+
+
+// NOTES :
+// The moc4glue.cpp file is generated by running :  moc.sh
+// It generates the custom Signal/Slot handler code that Qt uses.
+// The file only needs to be re-generated whenever a new slot is added/changed to a class,
+// or a new class includes the Q_OBJECT macro.
+// Oh.. and it NEEDS to be at the bottom of this file, because of declarations and whatnot.
+
+#include "moc4glue.cpp"

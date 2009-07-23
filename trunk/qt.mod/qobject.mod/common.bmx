@@ -47,5 +47,6 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qobject_tr:String(sourceText:String, disambiguation:String, n:Int)
+	Function bmx_qt_qobject_trarg:String(sourceText:String, args:String[])
 
 End Extern

@@ -24,6 +24,8 @@
 #define MAX_QT_QTEXTEDIT
 
 #include "../core.mod/glue.h"
+#include "../qcolor.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
 #include <QTextEdit>
 
@@ -35,6 +37,35 @@ extern "C" {
 
 	QTextEdit * bmx_qt_qtextedit_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qtextedit_setreadonly(QTextEdit * edit, int value);
+
+	void bmx_qt_qtextedit_append(QTextEdit * edit, BBString * text);
+	void bmx_qt_qtextedit_clear(QTextEdit * edit);
+	void bmx_qt_qtextedit_copy(QTextEdit * edit);
+	void bmx_qt_qtextedit_cut(QTextEdit * edit);
+	void bmx_qt_qtextedit_inserthtml(QTextEdit * edit, BBString * text);
+	void bmx_qt_qtextedit_insertplaintext(QTextEdit * edit, BBString * text);
+	void bmx_qt_qtextedit_paste(QTextEdit * edit);
+	void bmx_qt_qtextedit_redo(QTextEdit * edit);
+	void bmx_qt_qtextedit_scrolltoanchor(QTextEdit * edit, BBString * name);
+	void bmx_qt_qtextedit_selectall(QTextEdit * edit);
+	void bmx_qt_qtextedit_setalignment(QTextEdit * edit, int a);
+	void bmx_qt_qtextedit_setcurrentfont(QTextEdit * edit, MaxQFont * f);
+	void bmx_qt_qtextedit_setfontfamily(QTextEdit * edit, BBString * fontFamily);
+	void bmx_qt_qtextedit_setfontitalic(QTextEdit * edit, int italic);
+	void bmx_qt_qtextedit_setfontpointsize(QTextEdit * edit, double s);
+	void bmx_qt_qtextedit_setfontunderline(QTextEdit * edit, int underline);
+	void bmx_qt_qtextedit_setfontweight(QTextEdit * edit, int weight);
+	void bmx_qt_qtextedit_sethtml(QTextEdit * edit, BBString * text);
+	void bmx_qt_qtextedit_setplaintext(QTextEdit * edit, BBString * text);
+	void bmx_qt_qtextedit_settext(QTextEdit * edit, BBString * text);
+	void bmx_qt_qtextedit_settextbackgroundcolor(QTextEdit * edit, MaxQColor * c);
+	void bmx_qt_qtextedit_settextcolor(QTextEdit * edit, MaxQColor * c);
+	void bmx_qt_qtextedit_undo(QTextEdit * edit);
+	void bmx_qt_qtextedit_zoomin(QTextEdit * edit, int _range);
+	void bmx_qt_qtextedit_zoomout(QTextEdit * edit, int _range);
+
+	BBString * bmx_qt_qtextedit_tohtml(QTextEdit * edit);
+	BBString * bmx_qt_qtextedit_toplaintext(QTextEdit * edit);
 
 }
 

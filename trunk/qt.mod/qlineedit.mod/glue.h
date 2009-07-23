@@ -44,6 +44,17 @@ extern "C" {
 	QLineEdit * bmx_qt_qlineedit_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qlineedit_setreadonly(QLineEdit * edit, int value);
 
+	void bmx_qt_qlineedit_clear(QLineEdit * edit);
+	void bmx_qt_qlineedit_copy(QLineEdit * edit);
+	void bmx_qt_qlineedit_cut(QLineEdit * edit);
+	void bmx_qt_qlineedit_paste(QLineEdit * edit);
+	void bmx_qt_qlineedit_redo(QLineEdit * edit);
+	void bmx_qt_qlineedit_selectall(QLineEdit * edit);
+	void bmx_qt_qlineedit_settext(QLineEdit * edit, BBString * text);
+	void bmx_qt_qlineedit_undo(QLineEdit * edit);
+
+	BBString * bmx_qt_qlineedit_text(QLineEdit * edit);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

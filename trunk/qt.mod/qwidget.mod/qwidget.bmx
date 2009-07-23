@@ -66,37 +66,96 @@ Type QWidget Extends QObject
 	Method OnInit()
 	End Method
 	
-	Method hide()
-		bmx_qt_qwidget_hide(qObjectPtr)
-	End Method
-	
-	Method show()
-		bmx_qt_qwidget_show(qObjectPtr)
-	End Method
-	
-	Method showFullScreen()
-	End Method
-	
-	Method showMaximized()
-	End Method
-	
-	Method showMinimized()
-	End Method
-	
-	Method showNormal()
-	End Method
-	
 	Method stackUnder(w:QWidget)
+		bmx_qt_qwidget_stackunder(qObjectPtr, w.qObjectPtr)
+	End Method
+
+	Method setFixedSize(w:Int, h:Int)
+		bmx_qt_qwidget_setfixedsize(qObjectPtr, w, h)
+	End Method
+	
+	Method setFixedWidth(w:Int)
+		bmx_qt_qwidget_setfixedwidth(qObjectPtr, w)
 	End Method
 	
 	Method setLayout(layout:QLayout)
 		bmx_qt_qwidget_setlayout(qObjectPtr, layout.qObjectPtr)
 	End Method
 	
+	' SLOTS
+	
+	Method close()
+		bmx_qt_qwidget_close(qObjectPtr)
+	End Method
+
+	Method hide()
+		bmx_qt_qwidget_hide(qObjectPtr)
+	End Method
+
+	Method raise()
+		bmx_qt_qwidget_raise(qObjectPtr)
+	End Method
+	
+	Method repaint()
+		bmx_qt_qwidget_repaint(qObjectPtr)
+	End Method
+	
+	Method setDisabled(disable:Int)
+		bmx_qt_qwidget_setdisabled(qObjectPtr, disable)
+	End Method
+	
+	Method setEnabled(value:Int)
+		bmx_qt_qwidget_setenabled(qObjectPtr, value)
+	End Method
+	
+	Method SetFocus(reason:Int)
+		bmx_qt_qwidget_setfocus(qObjectPtr, reason)
+	End Method
+	
+	Method setHidden(hidden:Int)
+		bmx_qt_qwidget_sethidden(qObjectPtr, hidden)
+	End Method
+	
+	Method setStyleSheet(styleSheet:String)
+		bmx_qt_qwidget_setstylesheet(qObjectPtr, styleSheet)
+	End Method
+	
+	Method setVisible(visible:Int)
+		bmx_qt_qwidget_setvisible(qObjectPtr, visible)
+	End Method
+	
+	Method setWindowModified(value:Int)
+		bmx_qt_qwidget_setwindowmodified(qObjectPtr, value)
+	End Method
+	
+
 	Method setWindowTitle(title:String)
 		bmx_qt_qwidget_setwindowtitle(qObjectPtr, title)
 	End Method
 
+	Method show()
+		bmx_qt_qwidget_show(qObjectPtr)
+	End Method
+	
+	Method showFullScreen()
+		bmx_qt_qwidget_showfullscreen(qObjectPtr)
+	End Method
+	
+	Method showMaximized()
+		bmx_qt_qwidget_showmaximized(qObjectPtr)
+	End Method
+	
+	Method showMinimized()
+		bmx_qt_qwidget_showminimized(qObjectPtr)
+	End Method
+	
+	Method showNormal()
+		bmx_qt_qwidget_shownormal(qObjectPtr)
+	End Method
+	
+	Method update()
+		bmx_qt_qwidget_update(qObjectPtr)
+	End Method
 
 	' SIGNAL : customContextMenuRequested
 	Function _OnCustomContextMenuRequested(obj:QWidget, x:Int, y:Int)

@@ -44,6 +44,10 @@ Type QObject
 		Return bmx_qt_qobject_tr(sourceText, disambiguation, n)
 	End Function
 	
+	Function tr_arg:String(sourceText:String, args:String[])
+		Return bmx_qt_qobject_trarg(sourceText, args)
+	End Function
+	
 	Function connect:Int(sender:QObject, signal:String, receiver:QObject, slot:String)
 		Return sender.doConnect(signal, receiver, slot)
 	End Function

@@ -36,4 +36,24 @@ Type QColor
 	Field qObjectPtr:Byte Ptr
 	
 
+	Function _Create:QColor(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QColor = New QColor
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qcolor_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+
 End Type
+

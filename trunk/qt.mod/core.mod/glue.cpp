@@ -126,6 +126,29 @@ Qt::Alignment bmx_qt_getalignment(int a) {
 	return align;
 }
 
+Qt::FocusReason bmx_qt_getfocusreason(int r) {
+	switch(r) {
+		case 0:
+			return Qt::MouseFocusReason;
+		case 1:
+			return Qt::TabFocusReason;
+		case 2:
+			return Qt::BacktabFocusReason;
+		case 3:
+			return Qt::ActiveWindowFocusReason;
+		case 4:
+			return Qt::PopupFocusReason;
+		case 5:
+			return Qt::ShortcutFocusReason;
+		case 6:
+			return Qt::MenuBarFocusReason;
+		case 7:
+			return Qt::OtherFocusReason;
+	}
+	
+	return Qt::OtherFocusReason;
+}
+
 // *********************************************
 
 

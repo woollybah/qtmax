@@ -24,10 +24,24 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQColor::MaxQColor(const QColor & c)
+	: color(c)
+{
+}
 
+MaxQColor::~MaxQColor()
+{
+}
+
+QColor & MaxQColor::Color() {
+	return color;
+}
 
 // *********************************************
 
+void bmx_qt_qcolor_free(MaxQColor * handle) {
+	delete handle;
+}
 
 
 // NOTES :

@@ -8,6 +8,7 @@ Import Qt.QTextEdit
 Import Qt.QGridLayout
 Import Qt.QPushButton
 Import Qt.QVBoxLayout
+Import Qt.QMessageBox
 
 Import BRL.Map
 
@@ -94,12 +95,12 @@ Type TAddressbook Extends QWidget
 	Method submitContact()
 		Local name:String = nameLine.text()
 		Local address:String = addressText.toPlainText()
-		
+
 		If Not name Or Not address Then
 			QMessageBox.information(Self, tr("Empty Field"), tr("Please enter a name and address."))
 			Return
 		End If
-		
+
 		If Not contacts.Contains(name) Then
 			contacts.insert(name, address)
 			QMessageBox.information(Self, tr("Add Successful"), tr_arg(tr("~q%1~q has been added to your address book."), [name]))
