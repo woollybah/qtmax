@@ -22,6 +22,11 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QAbstractScrollArea
+Import Qt.QMenu
+Import Qt.QFont
+Import Qt.QTextDocument
+Import Qt.QPrinter
+Import Qt.QColor
 Import BRL.Blitz
 
 

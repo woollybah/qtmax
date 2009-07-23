@@ -20,29 +20,19 @@
 ' 
 SuperStrict
 
-Module Qt.Core
+Module Qt.QFont
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
 ModuleInfo "Author: Bruce A Henderson"
 ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
-?macos
-ModuleInfo "LD_OPTS: -L%PWD%/../lib/macos/"
-?win32
-ModuleInfo "LD_OPTS: -L%PWD%/../lib/win32/"
-?
 
-?macos
-Import "-lQtCore.4"
-?win32
-Import "-lQtCore4"
-?linux
-Import "-lQtCore"
-?
-
-
-Import "qvariant.bmx"
 Import "common.bmx"
 
+Type QFont
 
+	Field qObjectPtr:Byte Ptr
+	
+
+End Type

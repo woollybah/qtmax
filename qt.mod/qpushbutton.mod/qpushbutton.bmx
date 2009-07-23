@@ -46,22 +46,22 @@ Type QPushButton Extends QAbstractButton
 		Return Self
 	End Method
 	
-	' SLOT : clicked
+	' SIGNAL : clicked
 	Function _OnClicked(obj:QPushButton, checked:Int)
 		obj._InvokeSignals("clicked", [String(checked)])
 	End Function
 
-	' SLOT : pressed
+	' SIGNAL : pressed
 	Function _OnPressed(obj:QPushButton, checked:Int)
 		obj._InvokeSignals("pressed", Null)
 	End Function
 
-	' SLOT : released
+	' SIGNAL : released
 	Function _OnReleased(obj:QPushButton)
 		obj._InvokeSignals("released", Null)
 	End Function
 
-	' SLOT : toggled
+	' SIGNAL : toggled
 	Function _OnToggled(obj:QPushButton, checked:Int)
 		obj._InvokeSignals("toggled", [String(checked)])
 	End Function

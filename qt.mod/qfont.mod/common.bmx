@@ -20,29 +20,27 @@
 ' 
 SuperStrict
 
-Module Qt.Core
+Import Qt.Core
+Import BRL.Blitz
 
-ModuleInfo "Version: 1.00"
-ModuleInfo "License: MIT"
-ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
-?macos
-ModuleInfo "LD_OPTS: -L%PWD%/../lib/macos/"
+' headers :-)
 ?win32
-ModuleInfo "LD_OPTS: -L%PWD%/../lib/win32/"
-?
-
+Import "../lib/win32/include/*.h"
 ?macos
-Import "-lQtCore.4"
-?win32
-Import "-lQtCore4"
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
 ?linux
-Import "-lQtCore"
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
 ?
 
+Import "glue.cpp"
 
-Import "qvariant.bmx"
-Import "common.bmx"
+Extern
 
-
+End Extern

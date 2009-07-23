@@ -28,6 +28,14 @@ MaxQLineEdit::MaxQLineEdit(BBObject * handle, QWidget * parent)
 	: maxHandle(handle), QLineEdit(parent)
 {
 	qbind(this, handle);
+
+	connect(this, SIGNAL(cursorPositionChanged(int, int)), SLOT(onCursorPositionChanged(int, int)));
+	connect(this, SIGNAL(editingFinished()), SLOT(onEditingFinished()));
+	connect(this, SIGNAL(returnPressed()), SLOT(onReturnPressed()));
+	connect(this, SIGNAL(selectionChanged()), SLOT(onSelectionChanged()));
+	connect(this, SIGNAL(textChanged(const QString & )), SLOT(onTextChanged(const QString & )));
+	connect(this, SIGNAL(textEdited(const QString & )), SLOT(onTextEdited(const QString & )));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint & )), SLOT(onCustomContextMenuRequested(const QPoint & )));
 }
 
 MaxQLineEdit::~MaxQLineEdit()
@@ -35,6 +43,33 @@ MaxQLineEdit::~MaxQLineEdit()
 	qunbind(this);
 }
 
+void MaxQLineEdit::onCursorPositionChanged(int oldPos, int newPos) {
+	_qt_qlineedit_QLineEdit__OnCursorPositionChanged(maxHandle, oldPos, newPos);
+}
+
+void MaxQLineEdit::onEditingFinished() {
+	_qt_qlineedit_QLineEdit__OnEditingFinished(maxHandle);
+}
+
+void MaxQLineEdit::onReturnPressed() {
+	_qt_qlineedit_QLineEdit__OnReturnPressed(maxHandle);
+}
+
+void MaxQLineEdit::onSelectionChanged() {
+	_qt_qlineedit_QLineEdit__OnSelectionChanged(maxHandle);
+}
+
+void MaxQLineEdit::onTextChanged(const QString & text) {
+	_qt_qlineedit_QLineEdit__OnTextChanged(maxHandle, bbStringFromQString(text));
+}
+
+void MaxQLineEdit::onTextEdited(const QString & text) {
+	_qt_qlineedit_QLineEdit__OnTextEdited(maxHandle, bbStringFromQString(text));
+}
+
+void MaxQLineEdit::onCustomContextMenuRequested(const QPoint & pos) {
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
+}
 
 // *********************************************
 
