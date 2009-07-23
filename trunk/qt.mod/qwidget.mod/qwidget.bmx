@@ -40,6 +40,8 @@ ModuleInfo "LD_OPTS: -L%PWD%/../lib/win32/"
 Import "-lQtGui.4"
 ?win32
 Import "-lQtGui4"
+?linux
+Import "-lQtGui"
 ?
 
 Import "common.bmx"
