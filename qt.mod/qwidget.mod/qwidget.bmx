@@ -65,6 +65,153 @@ Type QWidget Extends QObject
 
 	Method OnInit()
 	End Method
+
+
+	Method isActiveWindow:Int()
+	' TODO
+	End Method
+	
+	Method isAncestorOf:Int(child:QWidget)
+	' TODO
+	End Method
+	
+	Method isEnabled:Int()
+	' TODO
+	End Method
+	
+	Method isEnabledTo:Int(ancestor:QWidget)
+	' TODO
+	End Method
+	
+	Method isFullScreen:Int()
+	' TODO
+	End Method
+	
+	Method isHidden:Int()
+	' TODO
+	End Method
+	
+	Method isMaximized:Int()
+	' TODO
+	End Method
+	
+	Method isMinimized:Int()
+	' TODO
+	End Method
+	
+	Method isModal:Int()
+	' TODO
+	End Method
+	
+	Method isVisible:Int()
+	' TODO
+	End Method
+	
+	Method isVisibleTo:Int(ancestor:QWidget)
+	' TODO
+	End Method
+	
+	Method isWindow:Int()
+	' TODO
+	End Method
+	
+	Method isWindowModified:Int()
+	' TODO
+	End Method
+
+
+	Method layout:QLayout()
+	' TODO
+	End Method
+	
+	Method layoutDirection:Int()
+	' TODO
+	End Method
+	
+	Method locale:QLocale()
+	' TODO
+	End Method
+	
+	Method macCGHandle:Byte Ptr()
+	' TODO
+	End Method
+	
+	Method macQDHandle:Byte Ptr()
+	' TODO
+	End Method
+	
+	Method mapFrom(parent:QWidget, x:Int, y:Int, toX:Int Var, toY:Int Var)
+	' TODO
+	End Method
+	
+	Method mapFromGlobal(x:Int, y:Int, toX:Int Var, toY:Int Var)
+	' TODO
+	End Method
+	
+	Method mapFromParent(x:Int, y:Int, toX:Int Var, toY:Int Var)
+	' TODO
+	End Method
+	
+	Method mapTo(parent:QWidget, x:Int, y:Int, toX:Int Var, toY:Int Var)
+	' TODO
+	End Method
+	
+	Method mapToGlobal(x:Int, y:Int, toX:Int Var, toY:Int Var)
+	' TODO
+	End Method
+	
+	Method mapToParent(x:Int, y:Int, toX:Int Var, toY:Int Var)
+	' TODO
+	End Method
+	
+	Method mask:QRegion()
+	' TODO
+	End Method
+	
+	Method maximumHeight:Int()
+	' TODO
+	End Method
+	
+	Method maximumSize(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	Method maximumWidth:Int()
+	' TODO
+	End Method
+	
+	Method minimumHeight:Int()
+	' TODO
+	End Method
+	
+	Method minimumSize(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	' overridable
+	Method minimumSizeHint(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	Method minimumWidth:Int()
+	' TODO
+	End Method
+	
+	Method move(x:Int, y:Int)
+	' TODO
+	End Method
+	
+	Method nativeParentWidget:QWidget()
+	' TODO
+	End Method
+	
+	Method nextInFocusChain:QWidget()
+	' TODO
+	End Method
+	
+	
+	
+	
 	
 	Method stackUnder(w:QWidget)
 		bmx_qt_qwidget_stackunder(qObjectPtr, w.qObjectPtr)

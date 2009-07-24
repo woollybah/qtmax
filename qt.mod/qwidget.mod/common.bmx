@@ -22,6 +22,8 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QObject
+Import Qt.QLocale
+Import Qt.QRegion
 Import BRL.Blitz
 
 
