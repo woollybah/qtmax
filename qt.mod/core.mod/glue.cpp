@@ -38,6 +38,21 @@ void MaxQUrl::SetUrl(const QUrl & u) {
 	url = u;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQRect::MaxQRect(const QRect & r)
+	: rect(r)
+{
+}
+
+QRect & MaxQRect::Rect() {
+	return rect;
+}
+
+void MaxQRect::SetRect(const QRect & r) {
+	rect = r;
+}
+
 // *********************************************
 
 typedef std::map<QObject*, BBObject*> PeerMap;
@@ -87,6 +102,18 @@ MaxQUrl * bmx_qt_qurl_create(BBString * url) {
 
 void bmx_qt_qurl_free(MaxQUrl * url) {
 	delete url;
+}
+
+// *********************************************
+
+
+MaxQRect * bmx_qt_qrect_create(int x, int y, int w, int h) {
+	QRect r(x, y, w, h);
+	return new MaxQRect(r);
+}
+
+void bmx_qt_qrect_free(MaxQUrl * rect) {
+	delete rect;
 }
 
 // *********************************************

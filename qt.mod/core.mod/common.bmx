@@ -48,4 +48,7 @@ Extern
 	Function bmx_qt_qurl_create:Byte Ptr(url:String)
 	Function bmx_qt_qurl_free(handle:Byte Ptr)
 
+	Function bmx_qt_qrect_create:Byte Ptr(x:Int, y:Int, w:Int, h:Int)
+	Function bmx_qt_qrect_free(handle:Byte Ptr)
+
 End Extern
