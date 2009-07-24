@@ -22,6 +22,7 @@
 
 #include <QtCore>
 #include <QUrl>
+#include <QRect>
 
 #include <map>
 
@@ -29,7 +30,7 @@
 #define BMX_QT_CORE
 
 class MaxQUrl;
-
+class MaxQRect;
 
 extern "C" {
 
@@ -48,6 +49,8 @@ extern "C" {
 	MaxQUrl * bmx_qt_qurl_create(BBString * url);
 	void bmx_qt_qurl_free(MaxQUrl * url);
 
+	MaxQRect * bmx_qt_qrect_create(int x, int y, int w, int h);
+	void bmx_qt_qrect_free(MaxQRect * rect);
 
 	Qt::WindowFlags bmx_qt_getwindowflags(int f);
 	Qt::Alignment bmx_qt_getalignment(int a);
@@ -60,8 +63,6 @@ extern "C" {
 class MaxQUrl
 {
 public:
-
-public:
 	MaxQUrl(const QUrl & u);
 	QUrl & Url();
 	void SetUrl(const QUrl & u);
@@ -70,5 +71,15 @@ private:
 	QUrl url;
 };
 
+class MaxQRect
+{
+public:
+	MaxQRect(const QRect & r);
+	QRect & Rect();
+	void SetRect(const QRect & r);
+
+private:
+	QRect rect;
+};
 
 #endif

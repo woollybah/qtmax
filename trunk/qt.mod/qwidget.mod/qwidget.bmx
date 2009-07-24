@@ -316,3 +316,67 @@ Type QLayout Extends QObject
 
 End Type
 
+Type QLayoutItem
+
+	Field qObjectPtr:Byte Ptr
+
+	Method alignment:Int()
+	End Method
+	
+	Method controlTypes:Int()
+	End Method
+	
+	Method expandingDirections:Int()
+	End Method
+	
+	Method geometry:QRect()
+	End Method
+	
+	Method hasHeightForWidth:Int()
+	End Method
+	
+	Method heightForWidth:Int(w:Int)
+	End Method
+	
+	Method invalidate()
+	End Method
+	
+	Method isEmpty:Int()
+	End Method
+	
+	Method layout:QLayout()
+	End Method
+	
+	Method maximumSize(w:Int Var, h:Int Var)
+	End Method
+	
+	Method minimumHeightForWidth:Int(w:Int)
+	End Method
+	
+	Method minimumSize(w:Int Var, h:Int Var)
+	End Method
+	
+	Method setAlignment(alignment:Int)
+	End Method
+	
+	Method setGeometry(r:QRect)
+	End Method
+	
+	Method sizeHint(w:Int Var, h:Int Var)
+	End Method
+	
+	Method spacerItem:QSpacerItem()
+	End Method
+	
+	Method widget:QWidget()
+	End Method
+	
+End Type
+
+Type QSpacerItem Extends QLayoutItem
+
+End Type
+
+Type QWidgetItem Extends QLayoutItem
+
+End Type
