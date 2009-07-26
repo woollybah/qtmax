@@ -22,6 +22,8 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QCoreApplication
+Import Qt.QWidget
+Import Qt.QSessionManager
 Import BRL.Blitz
 
 

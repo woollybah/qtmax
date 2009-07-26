@@ -25,15 +25,29 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QWebView>
+
+class MaxQWebView;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QWebView * bmx_qt_qwebview_create(BBObject * handle, QWidget * parent, int flags);
+	void bmx_qt_qwebview_load(QWebView * view, MaxQUrl * url);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQWebView: public QWebView
+{
+public:
+	MaxQWebView(BBObject * handle, QWidget * parent);
+	~MaxQWebView();
+
+private:
+	BBObject * maxHandle;
+};
 
 #endif

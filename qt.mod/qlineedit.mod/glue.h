@@ -55,6 +55,49 @@ extern "C" {
 
 	BBString * bmx_qt_qlineedit_text(QLineEdit * edit);
 
+	int bmx_qt_qlineedit_alignment(QLineEdit * edit);
+	void bmx_qt_qlineedit_backspace(QLineEdit * edit);
+	void bmx_qt_qlineedit_cursorbackward(QLineEdit * edit, int mark, int steps);
+	void bmx_qt_qlineedit_cursorforward(QLineEdit * edit, int mark, int steps);
+	int bmx_qt_qlineedit_cursorposition(QLineEdit * edit);
+	int bmx_qt_qlineedit_cursorpositionat(QLineEdit * edit, int x, int y);
+	void bmx_qt_qlineedit_cursorwordbackward(QLineEdit * edit, int mark);
+	void bmx_qt_qlineedit_cursorwordforward(QLineEdit * edit, int mark);
+	void bmx_qt_qlineedit_del(QLineEdit * edit);
+	void bmx_qt_qlineedit_deselect(QLineEdit * edit);
+	BBString *  bmx_qt_qlineedit_displaytext(QLineEdit * edit);
+	int bmx_qt_qlineedit_dragenabled(QLineEdit * edit);
+	int bmx_qt_qlineedit_echomode(QLineEdit * edit);
+	void bmx_qt_qlineedit_toend(QLineEdit * edit, int mark);
+	void bmx_qt_qlineedit_gettextmargins(QLineEdit * edit, int * _left, int * _top, int * _right, int * _bottom);
+	int bmx_qt_qlineedit_hasacceptableinput(QLineEdit * edit);
+	int bmx_qt_qlineedit_hasframe(QLineEdit * edit);
+	int bmx_qt_qlineedit_hasselectedtext(QLineEdit * edit);
+	void bmx_qt_qlineedit_home(QLineEdit * edit, int mark);
+	BBString * bmx_qt_qlineedit_inputmask(QLineEdit * edit);
+	void bmx_qt_qlineedit_insert(QLineEdit * edit, BBString * newText);
+	int bmx_qt_qlineedit_ismodified(QLineEdit * edit);
+	int bmx_qt_qlineedit_isreadonly(QLineEdit * edit);
+	int bmx_qt_qlineedit_isredoavailable(QLineEdit * edit);
+	int bmx_qt_qlineedit_isundoavailable(QLineEdit * edit);
+	int bmx_qt_qlineedit_maxlength(QLineEdit * edit);
+	void bmx_qt_qlineedit_minimumsizehint(QLineEdit * edit, int * w, int * h);
+	BBString * bmx_qt_qlineedit_selectedtext(QLineEdit * edit);
+	int bmx_qt_qlineedit_selectionstar(QLineEdit * edit);
+	void bmx_qt_qlineedit_setalignment(QLineEdit * edit, int flag);
+	void bmx_qt_qlineedit_setcursorposition(QLineEdit * edit, int pos);
+	void bmx_qt_qlineedit_setdragenabled(QLineEdit * edit, int b);
+	void bmx_qt_qlineedit_setechomode(QLineEdit * edit, int mode);
+	void bmx_qt_qlineedit_setframe(QLineEdit * edit, int frame);
+	void bmx_qt_qlineedit_setinputmask(QLineEdit * edit, BBString * inputMask);
+	void bmx_qt_qlineedit_setmaxlength(QLineEdit * edit, int length);
+	void bmx_qt_qlineedit_setmodified(QLineEdit * edit, int value);
+	void bmx_qt_qlineedit_setselection(QLineEdit * edit, int start, int length);
+	void bmx_qt_qlineedit_settextmargins(QLineEdit * edit, int _left, int _top, int _right, int _bottom);
+	void bmx_qt_qlineedit_sizehint(QLineEdit * edit, int * w, int * h);
+	
+	void bmx_qt_qlineedit_setvalidator(QLineEdit * edit, QValidator * v);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

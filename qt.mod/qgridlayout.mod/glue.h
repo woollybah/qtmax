@@ -36,6 +36,7 @@ extern "C" {
 	QGridLayout * bmx_qt_qgridlayout_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qgridlayout_addlayout(QGridLayout * grid, QLayout * layout, int row, int column, int alignment);
 	void bmx_qt_qgridlayout_addwidget(QGridLayout * grid, QWidget * widget, int row, int column, int alignment);
+	void bmx_qt_qgridlayout_addwidgetspan(QGridLayout * grid, QWidget * widget, int fromRow, int fromColumn,  int rowSpan, int columnSpan, int alignment);
 
 }
 

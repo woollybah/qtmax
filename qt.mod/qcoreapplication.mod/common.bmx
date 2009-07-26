@@ -46,4 +46,11 @@ Extern
 
 	Function bmx_qt_qcoreapplication_create:Byte Ptr(handle:Object)
 
+	Function bmx_qt_qcoreapplication_addlibrarypath(path:String)
+	Function bmx_qt_qcoreapplication_applicationdirpath:String()
+	Function bmx_qt_qcoreapplication_applicationfilepath:String()
+	Function bmx_qt_qcoreapplication_applicationname:String()
+	Function bmx_qt_qcoreapplication_applicationpid(pid:Long Ptr)
+	Function bmx_qt_qcoreapplication_flush()
+
 End Extern

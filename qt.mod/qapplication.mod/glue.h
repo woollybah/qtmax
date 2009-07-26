@@ -24,14 +24,21 @@
 #define MAX_QT_QAPPLICATION
 
 #include "../core.mod/glue.h"
+#include "../qcoreapplication.mod/glue.h"
+#include "../qsessionmanager.mod/glue.h"
 #include <QtGui>
-
 
 class MaxQApplication;
 
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qapplication_QApplication__OnCommitDataRequest(BBObject * handle, MaxQSessionManager * manager);
+	void _qt_qapplication_QApplication__OnFocusChanged(BBObject * handle, QWidget* old, QWidget * now);
+	void _qt_qapplication_QApplication__OnFontDatabaseChanged(BBObject * handle);
+	void _qt_qapplication_QApplication__OnLastWindowClosed(BBObject * handle);
+	void _qt_qapplication_QApplication__OnSaveStateRequest(BBObject * handle, MaxQSessionManager * manager);
 
 	QApplication * bmx_qt_qapplication_create(BBObject * handle);
 	int bmx_qt_qapplication_exec();
@@ -43,12 +50,22 @@ extern "C" {
 class MaxQApplication : public QApplication
 {
 
+	Q_OBJECT
+
 public:
 	MaxQApplication(BBObject * handle, int & argc, char ** argv);
 	~MaxQApplication();
 
 private:
 	BBObject * maxHandle;
+
+private slots:
+	void onCommitDataRequest(QSessionManager & manager);
+	void onFocusChanged(QWidget * old, QWidget * now);
+	void onFontDatabaseChanged();
+	void onLastWindowClosed();
+	void onSaveStateRequest(QSessionManager & manager);
+	void onAboutToQuit(); // from QCoreApplication
 };
 
 

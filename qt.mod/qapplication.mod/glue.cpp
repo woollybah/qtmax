@@ -35,6 +35,29 @@ MaxQApplication::~MaxQApplication()
 	qunbind(this);
 }
 
+void MaxQApplication::onCommitDataRequest(QSessionManager & manager) {
+	_qt_qapplication_QApplication__OnCommitDataRequest(maxHandle, new MaxQSessionManager(manager));
+}
+
+void MaxQApplication::onFocusChanged(QWidget * old, QWidget * now) {
+	_qt_qapplication_QApplication__OnFocusChanged(maxHandle, old, now);
+}
+
+void MaxQApplication::onFontDatabaseChanged() {
+	_qt_qapplication_QApplication__OnFontDatabaseChanged(maxHandle);
+}
+
+void MaxQApplication::onLastWindowClosed() {
+	_qt_qapplication_QApplication__OnLastWindowClosed(maxHandle);
+}
+
+void MaxQApplication::onSaveStateRequest(QSessionManager & manager) {
+	_qt_qapplication_QApplication__OnSaveStateRequest(maxHandle, new MaxQSessionManager(manager));
+}
+
+void MaxQApplication::onAboutToQuit() {
+	_qt_qcoreapplication_QCoreApplication__OnAboutToQuit(maxHandle);
+}
 
 
 // *********************************************

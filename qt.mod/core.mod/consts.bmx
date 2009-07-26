@@ -29,7 +29,24 @@ Rem
 bbdoc: Centers vertically in the available space.
 end rem
 Const Qt_AlignVCenter:Int = $0080
-
+Rem
+bbdoc: Centers in both dimensions.
+End Rem
+Const Qt_AlignCenter:Int = Qt_AlignVCenter | Qt_AlignHCenter
+Rem
+bbdoc: If the widget's layout direction is Qt_RightToLeft (instead of Qt_LeftToRight, the default), Qt_AlignLeft refers to the right edge and Qt_AlignRight to the left edge.
+about: This is normally the desired behavior. If you want Qt_AlignLeft to always mean "left" and Qt_AlignRight to always mean "right", combine
+the flag with Qt_AlignAbsolute.
+End Rem
+Const Qt_AlignAbsolute:Int = $0010
+Rem
+bbdoc: Synonym for Qt_AlignLeft.
+End Rem
+Const Qt_AlignLeading:Int = Qt_AlignLeft
+Rem
+bbdoc: Synonym for Qt_AlignRight.
+End Rem
+Const Qt_AlignTrailing:Int = Qt_AlignRight
 
 Rem
 bbdoc: This is the default type for QWidget.

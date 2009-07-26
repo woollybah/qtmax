@@ -62,6 +62,24 @@ Type QWidget Extends QObject
 		OnInit()
 		Return Self
 	End Method
+	
+	Function __create:QWidget(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QWidget = New QWidget
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Function _find:QWidget(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QWidget = QWidget(qfind(qObjectPtr))
+			If Not widget Then
+				Return QWidget.__create(qObjectPtr)
+			End If
+			Return widget
+		End If
+	End Function
 
 	Method OnInit()
 	End Method
@@ -255,7 +273,7 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_setenabled(qObjectPtr, value)
 	End Method
 	
-	Method SetFocus(reason:Int)
+	Method SetFocus(reason:Int = Qt_OtherFocusReason)
 		bmx_qt_qwidget_setfocus(qObjectPtr, reason)
 	End Method
 	
@@ -380,3 +398,10 @@ End Type
 Type QWidgetItem Extends QLayoutItem
 
 End Type
+
+
+Type QAction Extends QObject
+
+End Type
+
+

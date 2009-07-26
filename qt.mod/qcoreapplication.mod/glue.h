@@ -31,8 +31,18 @@ class MaxQCoreApplication;
 extern "C" {
 
 #include <blitz.h>
+	
+	void _qt_qcoreapplication_QCoreApplication__OnAboutToQuit(BBObject * handle);
+
 
 	QCoreApplication * bmx_qt_qcoreapplication_create(BBObject * handle);
+
+	void bmx_qt_qcoreapplication_addlibrarypath(BBString * path);
+	BBString * bmx_qt_qcoreapplication_applicationdirpath();
+	BBString * bmx_qt_qcoreapplication_applicationfilepath();
+	BBString * bmx_qt_qcoreapplication_applicationname();
+	void bmx_qt_qcoreapplication_applicationpid(BBInt64 * pid);
+	void bmx_qt_qcoreapplication_flush();
 
 }
 
@@ -41,12 +51,18 @@ extern "C" {
 class MaxQCoreApplication : public QCoreApplication
 {
 
+	Q_OBJECT
+	
 public:
 	MaxQCoreApplication(BBObject * handle, int & argc, char ** argv);
 	~MaxQCoreApplication();
 
 private:
 	BBObject * maxHandle;
+	
+private slots:
+	void onAboutToQuit();
+	
 };
 
 

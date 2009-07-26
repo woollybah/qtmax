@@ -48,20 +48,24 @@ Type QCoreApplication Extends QObject
 	End Method
 
 	Function addLibraryPath(path:String)
+		bmx_qt_qcoreapplication_addlibrarypath(path)
 	End Function
 	
 	Function applicationDirPath:String()
+		Return bmx_qt_qcoreapplication_applicationdirpath()
 	End Function
 	
 	Function applicationFilePath:String()
+		Return bmx_qt_qcoreapplication_applicationfilepath()
 	End Function
 	
 	Function applicationName:String()
+		Return bmx_qt_qcoreapplication_applicationname()
 	End Function
 	
 	Function applicationPid:Long()
 		Local pid:Long
-		
+		bmx_qt_qcoreapplication_applicationpid(Varptr pid)
 		Return pid
 	End Function
 	
@@ -78,8 +82,13 @@ Type QCoreApplication Extends QObject
 	End Function
 	
 	Function flush()
+		bmx_qt_qcoreapplication_flush()
 	End Function
-	
+
+	' SIGNAL : aboutToQuit
+	Function _OnAboutToQuit(obj:QCoreApplication)
+		obj._InvokeSignals("aboutToQuit", Null)
+	End Function
 
 End Type
 
