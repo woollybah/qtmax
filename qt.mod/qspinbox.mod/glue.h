@@ -20,48 +20,58 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QFRAME
-#define MAX_QT_QFRAME
+#ifndef MAX_QT_QSPINBOX
+#define MAX_QT_QSPINBOX
 
 #include "../core.mod/glue.h"
+#include "../qabstractspinbox.mod/glue.h"
 #include <QtCore>
-#include <QFrame>
+#include <QSpinBox>
 
-class MaxQFrame;
+class MaxQSpinBox;
 
 extern "C" {
 
 #include <blitz.h>
 
-	QFrame * bmx_qt_qframe_create(BBObject * handle, QWidget * parent, int flags);
-	void bmx_qt_qframe_framerect(QFrame * frame, int * x, int * y, int * w, int * h);
-	int bmx_qt_qframe_frameshadow(QFrame * frame);
-	int bmx_qt_qframe_frameshape(QFrame * frame);
-	int bmx_qt_qframe_framestyle(QFrame * frame);
-	int bmx_qt_qframe_framewidth(QFrame * frame);
-	int bmx_qt_qframe_linewidth(QFrame * frame);
-	int bmx_qt_qframe_midlinewidth(QFrame * frame);
-	void bmx_qt_qframe_setframerect(QFrame * frame, int x, int y, int w, int h);
-	void bmx_qt_qframe_setframeshadow(QFrame * frame, int shadow);
-	void bmx_qt_qframe_setframeshape(QFrame * frame, int shape);
-	void bmx_qt_qframe_setframestyle(QFrame * frame, int style);
-	void bmx_qt_qframe_setlinewidth(QFrame * frame, int width);
-	void bmx_qt_qframe_setmidlinewidth(QFrame * frame, int width);
-	
+	void _qt_qspinbox_QSpinBox__OnValueChanged(BBObject * handle, int value);
+
+	QSpinBox * bmx_qt_qspinbox_create(BBObject * handle, QWidget * parent);
+	BBString * bmx_qt_qspinbox_cleantext(QSpinBox * box);
+	int bmx_qt_qspinbox_maximum(QSpinBox * box);
+	int bmx_qt_qspinbox_minimum(QSpinBox * box);
+	BBString * bmx_qt_qspinbox_prefix(QSpinBox * box);
+	void bmx_qt_qspinbox_setmaximum(QSpinBox * box, int value);
+	void bmx_qt_qspinbox_setminimum(QSpinBox * box, int value);
+	void bmx_qt_qspinbox_setprefix(QSpinBox * box, BBString * prefix);
+	void bmx_qt_qspinbox_setrange(QSpinBox * box, int minimum, int maximum);
+	void bmx_qt_qspinbox_setsinglestep(QSpinBox * box, int val);
+	void bmx_qt_qspinbox_setsuffix(QSpinBox * box, BBString * suffix);
+	int bmx_qt_qspinbox_singlestep(QSpinBox * box);
+	BBString * bmx_qt_qspinbox_suffix(QSpinBox * box);
+	int bmx_qt_qspinbox_value(QSpinBox * box);
+
+	void bmx_qt_qspinbox_setvalue(QSpinBox * box, int value);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQFrame : public QFrame
+class MaxQSpinBox : public QSpinBox
 {
+	Q_OBJECT
 
 public:
-	MaxQFrame(BBObject * handle, QWidget * parent, Qt::WindowFlags flags);
-	~MaxQFrame();
+	MaxQSpinBox(BBObject * handle, QWidget * parent);
+	~MaxQSpinBox();
 
 private:
 	BBObject * maxHandle;
+
+private slots:
+	void onValueChanged(int i);
+	void onEditingFinished();
+	void customContextMenuRequested(const QPoint & pos);
 };
 
 #endif
-

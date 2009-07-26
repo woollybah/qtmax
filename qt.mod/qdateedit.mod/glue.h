@@ -20,48 +20,21 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QFRAME
-#define MAX_QT_QFRAME
+#ifndef MAX_QT_QDATEEDIT
+#define MAX_QT_QDATEEDIT
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QFrame>
-
-class MaxQFrame;
+#include <QDateEdit>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QFrame * bmx_qt_qframe_create(BBObject * handle, QWidget * parent, int flags);
-	void bmx_qt_qframe_framerect(QFrame * frame, int * x, int * y, int * w, int * h);
-	int bmx_qt_qframe_frameshadow(QFrame * frame);
-	int bmx_qt_qframe_frameshape(QFrame * frame);
-	int bmx_qt_qframe_framestyle(QFrame * frame);
-	int bmx_qt_qframe_framewidth(QFrame * frame);
-	int bmx_qt_qframe_linewidth(QFrame * frame);
-	int bmx_qt_qframe_midlinewidth(QFrame * frame);
-	void bmx_qt_qframe_setframerect(QFrame * frame, int x, int y, int w, int h);
-	void bmx_qt_qframe_setframeshadow(QFrame * frame, int shadow);
-	void bmx_qt_qframe_setframeshape(QFrame * frame, int shape);
-	void bmx_qt_qframe_setframestyle(QFrame * frame, int style);
-	void bmx_qt_qframe_setlinewidth(QFrame * frame, int width);
-	void bmx_qt_qframe_setmidlinewidth(QFrame * frame, int width);
-	
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQFrame : public QFrame
-{
-
-public:
-	MaxQFrame(BBObject * handle, QWidget * parent, Qt::WindowFlags flags);
-	~MaxQFrame();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif
-

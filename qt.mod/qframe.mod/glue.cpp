@@ -24,9 +24,123 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQFrame::MaxQFrame(BBObject * handle, QWidget * parent, Qt::WindowFlags flags)
+	: maxHandle(handle), QFrame(parent, flags)
+{
+	qbind(this, handle);
+}
+
+MaxQFrame::~MaxQFrame()
+{
+	qunbind(this);
+}
 
 
 // *********************************************
+
+QFrame * bmx_qt_qframe_create(BBObject * handle, QWidget * parent, int flags) {
+	return new MaxQFrame(handle, parent, bmx_qt_getwindowflags(flags));
+}
+
+void bmx_qt_qframe_framerect(QFrame * frame, int * x, int * y, int * w, int * h) {
+	QRect r(frame->frameRect());
+	*x = r.x();
+	*y = r.y();
+	*w = r.width();
+	*h = r.height();
+}
+
+int bmx_qt_qframe_frameshadow(QFrame * frame) {
+	return frame->frameShadow();
+}
+
+int bmx_qt_qframe_frameshape(QFrame * frame) {
+	return frame->frameShape();
+}
+
+int bmx_qt_qframe_framestyle(QFrame * frame) {
+	return frame->frameStyle();
+}
+
+int bmx_qt_qframe_framewidth(QFrame * frame) {
+	return frame->frameWidth();
+}
+
+int bmx_qt_qframe_linewidth(QFrame * frame) {
+	return frame->lineWidth();
+}
+
+int bmx_qt_qframe_midlinewidth(QFrame * frame) {
+	return frame->midLineWidth();
+}
+
+void bmx_qt_qframe_setframerect(QFrame * frame, int x, int y, int w, int h) {
+	frame->setFrameRect(QRect(x, y, w, h));
+}
+
+void bmx_qt_qframe_setframeshadow(QFrame * frame, int shadow) {
+	QFrame::Shadow s;
+	
+	switch(shadow) {
+		case 0x0010:
+			s = QFrame::Plain;
+			break;
+		case 0x0020:
+			s = QFrame::Raised;
+			break;
+		case 0x0030:
+			s = QFrame::Sunken;
+			break;
+		default:
+			s = QFrame::Plain;
+	}
+	
+	frame->setFrameShadow(s);
+}
+
+void bmx_qt_qframe_setframeshape(QFrame * frame, int shape) {
+	QFrame::Shape s;
+	
+	switch(shape) {
+		case 0:
+			s = QFrame::NoFrame;
+			break;
+		case 0x0001:
+			s = QFrame::Box;
+			break;
+		case 0x0002:
+			s = QFrame::Panel;
+			break;
+		case 0x0006:
+			s = QFrame::StyledPanel;
+			break;
+		case 0x0004:
+			s = QFrame::HLine;
+			break;
+		case 0x0005:
+			s = QFrame::VLine;
+			break;
+		case 0x0003:
+			s = QFrame::WinPanel;
+			break;
+		default:
+			s = QFrame::NoFrame;
+	}
+			
+	frame->setFrameShape(s);
+}
+
+void bmx_qt_qframe_setframestyle(QFrame * frame, int style) {
+	frame->setFrameStyle(style);
+}
+
+void bmx_qt_qframe_setlinewidth(QFrame * frame, int width) {
+	frame->setLineWidth(width);
+}
+
+void bmx_qt_qframe_setmidlinewidth(QFrame * frame, int width) {
+	frame->setMidLineWidth(width);
+}
 
 
 // NOTES :

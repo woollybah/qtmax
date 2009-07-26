@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQGroupBox[] = {
+static const uint qt_meta_data_MaxQSpinBox[] = {
 
  // content:
        2,       // revision
@@ -29,47 +29,47 @@ static const uint qt_meta_data_MaxQGroupBox[] = {
        0,    0, // constructors
 
  // slots: signature, parameters, type, tag, flags
-      22,   14,   13,   13, 0x08,
-      41,   38,   13,   13, 0x08,
-      61,   57,   13,   13, 0x08,
+      15,   13,   12,   12, 0x08,
+      35,   12,   12,   12, 0x08,
+      59,   55,   12,   12, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQGroupBox[] = {
-    "MaxQGroupBox\0\0checked\0onClicked(bool)\0"
-    "on\0onToggled(bool)\0pos\0"
-    "onCustomContextMenuRequested(QPoint)\0"
+static const char qt_meta_stringdata_MaxQSpinBox[] = {
+    "MaxQSpinBox\0\0i\0onValueChanged(int)\0"
+    "onEditingFinished()\0pos\0"
+    "customContextMenuRequested(QPoint)\0"
 };
 
-const QMetaObject MaxQGroupBox::staticMetaObject = {
-    { &QGroupBox::staticMetaObject, qt_meta_stringdata_MaxQGroupBox,
-      qt_meta_data_MaxQGroupBox, 0 }
+const QMetaObject MaxQSpinBox::staticMetaObject = {
+    { &QSpinBox::staticMetaObject, qt_meta_stringdata_MaxQSpinBox,
+      qt_meta_data_MaxQSpinBox, 0 }
 };
 
-const QMetaObject *MaxQGroupBox::metaObject() const
+const QMetaObject *MaxQSpinBox::metaObject() const
 {
     return &staticMetaObject;
 }
 
-void *MaxQGroupBox::qt_metacast(const char *_clname)
+void *MaxQSpinBox::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQGroupBox))
-        return static_cast<void*>(const_cast< MaxQGroupBox*>(this));
-    return QGroupBox::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQSpinBox))
+        return static_cast<void*>(const_cast< MaxQSpinBox*>(this));
+    return QSpinBox::qt_metacast(_clname);
 }
 
-int MaxQGroupBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQSpinBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QGroupBox::qt_metacall(_c, _id, _a);
+    _id = QSpinBox::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onClicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 1: onToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 2: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 0: onValueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: onEditingFinished(); break;
+        case 2: customContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 3;
