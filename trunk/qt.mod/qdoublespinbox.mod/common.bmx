@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QWidget
+Import Qt.QAbstractSpinBox
 Import BRL.Blitz
 
 
@@ -42,24 +42,28 @@ Import "/usr/include/qt4/QtCore/*.h"
 Import "/usr/include/qt4/QtGui/*.h"
 ?
 
-
 Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qframe_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
-	Function bmx_qt_qframe_framerect(handle:Byte Ptr, x:Int Ptr, y:Int Ptr, w:Int Ptr, h:Int Ptr)
-	Function bmx_qt_qframe_frameshadow:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_frameshape:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_framestyle:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_framewidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_linewidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_midlinewidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_setframerect(handle:Byte Ptr, x:Int, y:Int, w:Int, h:Int)
-	Function bmx_qt_qframe_setframeshadow(handle:Byte Ptr, shadow:Int)
-	Function bmx_qt_qframe_setframeshape(handle:Byte Ptr, shape:Int)
-	Function bmx_qt_qframe_setframestyle(handle:Byte Ptr, style:Int)
-	Function bmx_qt_qframe_setlinewidth(handle:Byte Ptr, width:Int)
-	Function bmx_qt_qframe_setmidlinewidth(handle:Byte Ptr, width:Int)
+	Function bmx_qt_qdoublespinbox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_cleantext:String(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_decimals:Int(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_maximum:Double(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_minimum:Double(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_prefix:String(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_setdecimals(handle:Byte Ptr, prec:int)
+	Function bmx_qt_qdoublespinbox_setmaximum(handle:Byte Ptr, value:Double)
+	Function bmx_qt_qdoublespinbox_setminimum(handle:Byte Ptr, value:Double)
+	Function bmx_qt_qdoublespinbox_setprefix(handle:Byte Ptr, prefix:String)
+	Function bmx_qt_qdoublespinbox_setrange(handle:Byte Ptr, minimum:Double, maximum:Double)
+	Function bmx_qt_qdoublespinbox_setsinglestep(handle:Byte Ptr, val:Double)
+	Function bmx_qt_qdoublespinbox_setsuffix(handle:Byte Ptr, suffix:String)
+	Function bmx_qt_qdoublespinbox_singlestep:Double(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_suffix:String(handle:Byte Ptr)
+	Function bmx_qt_qdoublespinbox_value:Double(handle:Byte Ptr)
 
+	Function bmx_qt_qdoublespinbox_setvalue(handle:Byte Ptr, value:Double)
+
+	
 End Extern

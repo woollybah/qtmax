@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QWidget
+Import Qt.QAbstractSpinBox
 Import BRL.Blitz
 
 
@@ -42,24 +42,8 @@ Import "/usr/include/qt4/QtCore/*.h"
 Import "/usr/include/qt4/QtGui/*.h"
 ?
 
-
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qframe_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
-	Function bmx_qt_qframe_framerect(handle:Byte Ptr, x:Int Ptr, y:Int Ptr, w:Int Ptr, h:Int Ptr)
-	Function bmx_qt_qframe_frameshadow:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_frameshape:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_framestyle:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_framewidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_linewidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_midlinewidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qframe_setframerect(handle:Byte Ptr, x:Int, y:Int, w:Int, h:Int)
-	Function bmx_qt_qframe_setframeshadow(handle:Byte Ptr, shadow:Int)
-	Function bmx_qt_qframe_setframeshape(handle:Byte Ptr, shape:Int)
-	Function bmx_qt_qframe_setframestyle(handle:Byte Ptr, style:Int)
-	Function bmx_qt_qframe_setlinewidth(handle:Byte Ptr, width:Int)
-	Function bmx_qt_qframe_setmidlinewidth(handle:Byte Ptr, width:Int)
 
 End Extern
