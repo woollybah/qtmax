@@ -105,6 +105,25 @@ click) that presents some of these editing options.
 End Rem
 Type QLineEdit Extends QWidget
 
+	Rem
+	bbdoc: Display characters as they are entered.
+	about: This is the default.
+	End Rem
+	Const Normal:Int = 0
+	Rem
+	bbdoc: Do not display anything.
+	about: This may be appropriate for passwords where even the length of the password should be kept secret.
+	End Rem
+	Const NoEcho:Int = 1
+	Rem
+	bbdoc: Display asterisks instead of the characters actually entered.
+	End Rem
+	Const Password:Int = 2
+	Rem
+	bbdoc: Display characters as they are entered while editing otherwise display asterisks.
+	End Rem
+	Const PasswordEchoOnEdit:Int = 3
+
 	Function CreateLineEdit:QLineEdit(parent:QWidget = Null)
 		Return New QLineEdit.Create(parent)
 	End Function
@@ -120,11 +139,11 @@ Type QLineEdit Extends QWidget
 	End Method
 
 	Method alignment:Int()
-	' TODO
+		Return bmx_qt_qlineedit_alignment(qObjectPtr)
 	End Method
 	
 	Method backspace()
-	' TODO
+		bmx_qt_qlineedit_backspace(qObjectPtr)
 	End Method
 	
 	'Method completer:QCompleter()
@@ -136,115 +155,115 @@ Type QLineEdit Extends QWidget
 	End Method
 	
 	Method cursorBackward(mark:Int, steps:Int = 1)
-	' TODO
+		bmx_qt_qlineedit_cursorbackward(qObjectPtr, mark, steps)
 	End Method
 	
 	Method cursorForward(mark:Int, steps:Int = 1)
-	' TODO
+		bmx_qt_qlineedit_cursorforward(qObjectPtr, mark, steps)
 	End Method
 	
 	Method cursorPosition:Int()
-	' TODO
+		Return bmx_qt_qlineedit_cursorposition(qObjectPtr)
 	End Method
 	
 	Method cursorPositionAt:Int(x:Int, y:Int)
-	' TODO
+		Return bmx_qt_qlineedit_cursorpositionat(qObjectPtr, x, y)
 	End Method
 	
 	Method cursorWordBackward(mark:Int)
-	' TODO
+		bmx_qt_qlineedit_cursorwordbackward(qObjectPtr, mark)
 	End Method
 	
 	Method cursorWordForward(mark:Int)
-	' TODO
+		bmx_qt_qlineedit_cursorwordforward(qObjectPtr, mark)
 	End Method
 	
 	Method del()
-	' TODO
+		bmx_qt_qlineedit_del(qObjectPtr)
 	End Method
 	
 	Method deselect()
-	' TODO
+		bmx_qt_qlineedit_deselect(qObjectPtr)
 	End Method
 	
 	Method displayText:String()
-	' TODO
+		Return bmx_qt_qlineedit_displaytext(qObjectPtr)
 	End Method
 	
 	Method dragEnabled:Int()
-	' TODO
+		Return bmx_qt_qlineedit_dragenabled(qObjectPtr)
 	End Method
 	
 	Method echoMode:Int()
-	' TODO
+		Return bmx_qt_qlineedit_echomode(qObjectPtr)
 	End Method
 	
 	Method toEnd(mark:Int)
-	' TODO
+		bmx_qt_qlineedit_toend(qObjectPtr, mark)
 	End Method
 	
 	Method getTextMargins(_left:Int Var, _top:Int Var, _right:Int Var, _bottom:Int Var)
-	' TODO
+		bmx_qt_qlineedit_gettextmargins(qObjectPtr, Varptr _left, Varptr _top, Varptr _right, Varptr _bottom)
 	End Method
 	
 	Method hasAcceptableInput:Int()
-	' TODO
+		Return bmx_qt_qlineedit_hasacceptableinput(qObjectPtr)
 	End Method
 	
 	Method hasFrame:Int()
-	' TODO
+		Return bmx_qt_qlineedit_hasframe(qObjectPtr)
 	End Method
 	
 	Method hasSelectedText:Int()
-	' TODO
+		Return bmx_qt_qlineedit_hasselectedtext(qObjectPtr)
 	End Method
 	
 	Method home(mark:Int)
-	' TODO
+		bmx_qt_qlineedit_home(qObjectPtr, mark)
 	End Method
 	
 	Method inputMask:String()
-	' TODO
+		Return bmx_qt_qlineedit_inputmask(qObjectPtr)
 	End Method
 	
 	Method insert(newText:String)
-	' TODO
+		bmx_qt_qlineedit_insert(qObjectPtr, newText)
 	End Method
 	
 	Method isModified:Int()
-	' TODO
+		Return bmx_qt_qlineedit_ismodified(qObjectPtr)
 	End Method
 	
 	Method isReadOnly:Int()
-	' TODO
+		Return bmx_qt_qlineedit_isreadonly(qObjectPtr)
 	End Method
 	
 	Method isRedoAvailable:Int()
-	' TODO
+		Return bmx_qt_qlineedit_isredoavailable(qObjectPtr)
 	End Method
 	
 	Method isUndoAvailable:Int()
-	' TODO
+		Return bmx_qt_qlineedit_isundoavailable(qObjectPtr)
 	End Method
 	
 	Method maxLength:Int()
-	' TODO
+		Return bmx_qt_qlineedit_maxlength(qObjectPtr)
 	End Method
 	
 	Method minimumSizeHint(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qlineedit_minimumsizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method selectedText:String()
-	' TODO
+		Return bmx_qt_qlineedit_selectedtext(qObjectPtr)
 	End Method
 	
 	Method selectionStar:Int()
-	' TODO
+		Return bmx_qt_qlineedit_selectionstar(qObjectPtr)
 	End Method
 	
 	Method setAlignment(flag:Int)
-	' TODO
+		bmx_qt_qlineedit_setalignment(qObjectPtr, flag)
 	End Method
 	
 	'Method setCompleter(c:QCompleter)
@@ -252,31 +271,31 @@ Type QLineEdit Extends QWidget
 	'End Method
 	
 	Method setCursorPosition(pos:Int)
-	' TODO
+		bmx_qt_qlineedit_setcursorposition(qObjectPtr, pos)
 	End Method
 	
 	Method setDragEnabled(b:Int)
-	' TODO
+		bmx_qt_qlineedit_setdragenabled(qObjectPtr, b)
 	End Method
 	
 	Method setEchoMode(Mode:Int)
-	' TODO
+		bmx_qt_qlineedit_setechomode(qObjectPtr, Mode)
 	End Method
 	
 	Method setFrame(frame:Int)
-	' TODO
+		bmx_qt_qlineedit_setframe(qObjectPtr, frame)
 	End Method
 	
 	Method setInputMask(inputMask:String)
-	' TODO
+		bmx_qt_qlineedit_setinputmask(qObjectPtr, inputMask)
 	End Method
 	
 	Method setMaxLength(length:Int)
-	' TODO
+		bmx_qt_qlineedit_setmaxlength(qObjectPtr, length)
 	End Method
 	
 	Method setModified(value:Int)
-	' TODO
+		bmx_qt_qlineedit_setmodified(qObjectPtr, value)
 	End Method
 
 	Rem
@@ -295,19 +314,23 @@ Type QLineEdit Extends QWidget
 	End Method
 
 	Method setSelection(start:Int, length:Int)
-	' TODO
+		bmx_qt_qlineedit_setselection(qObjectPtr, start, length)
 	End Method
 	
 	Method setTextMargins(_left:Int, _top:Int, _right:Int, _bottom:Int)
-	' TODO
+		bmx_qt_qlineedit_settextmargins(qObjectPtr, _left, _top, _right, _bottom)
 	End Method
 	
-	'Method setValidator(v:QValidator)
-	' TODO
-	'End Method
+	Method setValidator(v:QValidator)
+		If v Then
+			bmx_qt_qlineedit_setvalidator(qObjectPtr, v.qObjectPtr)
+		Else
+			bmx_qt_qlineedit_setvalidator(qObjectPtr, Null)
+		End If
+	End Method
 	
 	Method sizeHint(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qlineedit_sizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method text:String()

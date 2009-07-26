@@ -46,5 +46,32 @@ Type QApplication Extends QCoreApplication
 		Return bmx_qt_qapplication_exec()
 	End Method
 
+
+
+	' SIGNAL : commitDataRequest
+	Function _OnCommitDataRequest(obj:QApplication, m:Byte Ptr)
+		obj._InvokeSignals("commitDataRequest", [QSessionManager._create(m)])
+	End Function
+
+	' SIGNAL : focusChanged
+	Function _OnFocusChanged(obj:QApplication, old:Byte Ptr, now:Byte Ptr)
+		obj._InvokeSignals("focusChanged", [QWidget._find(old), QWidget._find(now)])
+	End Function
+
+	' SIGNAL : fontDatabaseChanged
+	Function _OnFontDatabaseChanged(obj:QApplication)
+		obj._InvokeSignals("fontDatabaseChanged", Null)
+	End Function
+
+	' SIGNAL : lastWindowClosed
+	Function _OnLastWindowClosed(obj:QApplication)
+		obj._InvokeSignals("lastWindowClosed", Null)
+	End Function
+
+	' SIGNAL : saveStateRequest
+	Function _OnSaveStateRequest(obj:QApplication, m:Byte Ptr)
+		obj._InvokeSignals("saveStateRequest", [QSessionManager._create(m)])
+	End Function
+
 End Type
 

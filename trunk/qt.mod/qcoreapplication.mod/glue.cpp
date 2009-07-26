@@ -28,6 +28,8 @@ MaxQCoreApplication::MaxQCoreApplication(BBObject * handle, int & argc, char ** 
 	: maxHandle(handle), QCoreApplication(argc, argv)
 {
 	qbind(this, handle);
+	
+	connect(this, SIGNAL(aboutToQuit()), SLOT(onAboutToQuit()));
 }
 
 MaxQCoreApplication::~MaxQCoreApplication()
@@ -35,6 +37,9 @@ MaxQCoreApplication::~MaxQCoreApplication()
 	qunbind(this);
 }
 
+void MaxQCoreApplication::onAboutToQuit() {
+	_qt_qcoreapplication_QCoreApplication__OnAboutToQuit(maxHandle);
+}
 
 // *********************************************
 
@@ -51,6 +56,31 @@ QCoreApplication * bmx_qt_qcoreapplication_create(BBObject * handle) {
 	
 	return app;
 }
+
+void bmx_qt_qcoreapplication_addlibrarypath(BBString * path) {
+	QCoreApplication::addLibraryPath(qStringFromBBString(path));
+}
+
+BBString * bmx_qt_qcoreapplication_applicationdirpath() {
+	return bbStringFromQString(QCoreApplication::applicationDirPath());
+}
+
+BBString * bmx_qt_qcoreapplication_applicationfilepath() {
+	return bbStringFromQString(QCoreApplication::applicationFilePath());
+}
+
+BBString * bmx_qt_qcoreapplication_applicationname() {
+	return bbStringFromQString(QCoreApplication::applicationName());
+}
+
+void bmx_qt_qcoreapplication_applicationpid(BBInt64 * pid) {
+	*pid = QCoreApplication::applicationPid();
+}
+
+void bmx_qt_qcoreapplication_flush() {
+	QCoreApplication::flush();
+}
+
 
 
 // NOTES :

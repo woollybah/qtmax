@@ -24,12 +24,27 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQWebView::MaxQWebView(BBObject * handle, QWidget * parent)
+	: maxHandle(handle), QWebView(parent)
+{
+	qbind(this, handle);
+}
+
+MaxQWebView::~MaxQWebView()
+{
+	qunbind(this);
+}
 
 
 // *********************************************
 
+QWebView * bmx_qt_qwebview_create(BBObject * handle, QWidget * parent, int flags) {
+	return new MaxQWebView(handle, parent);
+}
 
-
+void bmx_qt_qwebview_load(QWebView * view, MaxQUrl * url) {
+	view->load(url->Url());
+}
 
 
 // NOTES :

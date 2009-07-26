@@ -60,6 +60,9 @@ void bmx_qt_qgridlayout_addwidget(QGridLayout * grid, QWidget * widget, int row,
 	grid->addWidget(widget, row, column, bmx_qt_getalignment(alignment));
 }
 
+void bmx_qt_qgridlayout_addwidgetspan(QGridLayout * grid, QWidget * widget, int fromRow, int fromColumn,  int rowSpan, int columnSpan, int alignment) {
+	grid->addWidget(widget, fromRow, fromColumn, rowSpan, columnSpan, bmx_qt_getalignment(alignment));
+}
 
 
 // NOTES :

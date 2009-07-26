@@ -22,6 +22,12 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
+Import Qt.QMenu
+Import Qt.QNetwork
+Import Qt.QIcon
+Import Qt.QPalette
+Import Qt.QContextMenuEvent
+Import Qt.QUndoStack
 Import BRL.Blitz
 
 
@@ -34,16 +40,22 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+Import "../src/include/QtWebKit/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
 Import "/usr/include/qt4/QtGui/*.h"
+Import "/usr/include/qt4/QtWebKit/*.h"
 ?
 
 
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qwebview_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
+	Function bmx_qt_qwebview_load(handle:Byte Ptr, url:Byte Ptr)
 
 End Extern

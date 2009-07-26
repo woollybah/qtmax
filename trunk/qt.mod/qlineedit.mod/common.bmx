@@ -23,6 +23,7 @@ SuperStrict
 Import Qt.Core
 Import Qt.QWidget
 Import Qt.QMenu
+Import Qt.QValidator
 Import BRL.Blitz
 
 
@@ -61,6 +62,48 @@ Extern
 	Function bmx_qt_qlineedit_settext(handle:Byte Ptr, text:String)
 
 	Function bmx_qt_qlineedit_undo(handle:Byte Ptr)
+	
+	Function bmx_qt_qlineedit_alignment:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_backspace(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_cursorbackward(handle:Byte Ptr, mark:Int, steps:Int)
+	Function bmx_qt_qlineedit_cursorforward(handle:Byte Ptr, mark:Int, steps:Int)
+	Function bmx_qt_qlineedit_cursorposition:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_cursorpositionat:Int(handle:Byte Ptr, x:Int, y:Int)
+	Function bmx_qt_qlineedit_cursorwordbackward(handle:Byte Ptr, mark:Int)
+	Function bmx_qt_qlineedit_cursorwordforward(handle:Byte Ptr, mark:Int)
+	Function bmx_qt_qlineedit_del(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_deselect(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_displaytext:String(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_dragenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_echomode:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_toend(handle:Byte Ptr, mark:Int)
+	Function bmx_qt_qlineedit_gettextmargins(handle:Byte Ptr, _left:Int Ptr, _top:Int Ptr, _right:Int Ptr, _bottom:Int Ptr)
+	Function bmx_qt_qlineedit_hasacceptableinput:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_hasframe:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_hasselectedtext:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_home(handle:Byte Ptr, mark:Int)
+	Function bmx_qt_qlineedit_inputmask:String(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_insert(handle:Byte Ptr, newText:String)
+	Function bmx_qt_qlineedit_ismodified:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_isreadonly:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_isredoavailable:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_isundoavailable:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_maxlength:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_minimumsizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qlineedit_selectedtext:String(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_selectionstar:Int(handle:Byte Ptr)
+	Function bmx_qt_qlineedit_setalignment(handle:Byte Ptr, flag:Int)
+	Function bmx_qt_qlineedit_setcursorposition(handle:Byte Ptr, pos:Int)
+	Function bmx_qt_qlineedit_setdragenabled(handle:Byte Ptr, b:Int)
+	Function bmx_qt_qlineedit_setechomode(handle:Byte Ptr, Mode:Int)
+	Function bmx_qt_qlineedit_setframe(handle:Byte Ptr, frame:Int)
+	Function bmx_qt_qlineedit_setinputmask(handle:Byte Ptr, inputMask:String)
+	Function bmx_qt_qlineedit_setmaxlength(handle:Byte Ptr, length:Int)
+	Function bmx_qt_qlineedit_setmodified(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qlineedit_setselection(handle:Byte Ptr, start:Int, length:Int)
+	Function bmx_qt_qlineedit_settextmargins(handle:Byte Ptr, _left:Int, _top:Int, _right:Int, _bottom:Int)
+	Function bmx_qt_qlineedit_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 
+	Function bmx_qt_qlineedit_setvalidator(handle:Byte Ptr, v:Byte Ptr)
 
 End Extern

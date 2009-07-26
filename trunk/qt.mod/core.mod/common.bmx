@@ -44,6 +44,7 @@ Import "glue.cpp"
 
 Extern
 
+	Function qfind:Object(handle:Byte Ptr)
 
 	Function bmx_qt_qurl_create:Byte Ptr(url:String)
 	Function bmx_qt_qurl_free(handle:Byte Ptr)
