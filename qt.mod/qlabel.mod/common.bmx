@@ -68,5 +68,8 @@ Extern
 	Function bmx_qt_qlabel_textinteractionflags:Int(handle:Byte Ptr)
 	Function bmx_qt_qlabel_wordwrap:Int(handle:Byte Ptr)
 	Function bmx_qt_qlabel_clear(handle:Byte Ptr)
+	Function bmx_qt_qlabel_setnum(handle:Byte Ptr, num:Int)
+	Function bmx_qt_qlabel_setnumdouble(handle:Byte Ptr, num:Double)
+	Function bmx_qt_qlabel_settext(handle:Byte Ptr, text:String)
 
 End Extern

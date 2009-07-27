@@ -28,6 +28,21 @@
 
 // *********************************************
 
+QPainter * bmx_qt_qpainter_create() {
+	return new QPainter();
+}
+
+void bmx_qt_qpainter_free(QPainter * painter) {
+	delete painter;
+}
+
+int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device) {
+	return painter->begin(device);
+}
+
+void bmx_qt_qpainter_end(QPainter * painter) {
+	painter->end();
+}
 
 
 // NOTES :

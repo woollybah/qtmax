@@ -20,34 +20,32 @@
 ' 
 SuperStrict
 
+Module Qt.QPaintEvent
+
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
+
+
 Import "common.bmx"
 
+Type QPaintEvent Extends QEvent
 
-Type QUrl
-
-	Field qObjectPtr:Byte Ptr
-
-	Function CreateUrl:QUrl(url:String = "")
-		Return New QUrl.Create(url)
-	End Function
-
-	Method Create:Qurl(url:String = "")
-		qObjectPtr = bmx_qt_qurl_create(url)
-		Return Self
-	End Method
-
-
-	Method Free()
+	Function _create:QPaintEvent(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
-			bmx_qt_qurl_free(qObjectPtr)
-			qObjectPtr = Null
+			Local this:QPaintEvent = New QPaintEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
 		End If
-	End Method
-
-	Method Delete()
-		Free()
+	End Function
+	
+	Method rect:QRect()
 	End Method
 	
+	Method region:QRegion()
+	End Method
+
 End Type
 
 

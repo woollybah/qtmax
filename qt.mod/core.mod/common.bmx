@@ -106,4 +106,26 @@ Extern
 	Function bmx_qt_qrect_x:Int(handle:Byte Ptr)
 	Function bmx_qt_qrect_y:Int(handle:Byte Ptr)
 
+	Function bmx_qt_qevent_accept(handle:Byte Ptr)
+	Function bmx_qt_qevent_ignore(handle:Byte Ptr)
+	Function bmx_qt_qevent_isaccepted:Int(handle:Byte Ptr)
+	Function bmx_qt_qevent_setaccepted(handle:Byte Ptr, accepted:Int)
+	Function bmx_qt_qevent_spontaneous:Int(handle:Byte Ptr)
+	Function bmx_qt_qevent_gettype:Int(handle:Byte Ptr)
+
+	Function bmx_qt_qtime_elapsed:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_hour:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_isnull:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_isvalid:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_minute:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_msec:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_msecsto:Int(handle:Byte Ptr, t:Byte Ptr)
+	Function bmx_qt_qtime_restart(handle:Byte Ptr)
+	Function bmx_qt_qtime_second:Int(handle:Byte Ptr)
+	Function bmx_qt_qtime_secsto:Int(handle:Byte Ptr, t:Byte Ptr)
+	Function bmx_qt_qtime_sethms:Int(handle:Byte Ptr, h:Int, m:Int, s:Int, ms:Int)
+	Function bmx_qt_qtime_start(handle:Byte Ptr)
+	Function bmx_qt_qtime_currenttime:Byte Ptr()
+	Function bmx_qt_qtime_free(handle:Byte Ptr)
+
 End Extern

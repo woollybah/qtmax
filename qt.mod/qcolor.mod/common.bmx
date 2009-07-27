@@ -47,4 +47,6 @@ Extern
 
 	Function bmx_qt_qcolor_free(handle:Byte Ptr)
 
+	Function bmx_qt_qcolor_create:Byte Ptr(r:Int, g:Int, b:Int, a:Int)
+
 End Extern

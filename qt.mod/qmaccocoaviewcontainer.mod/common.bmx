@@ -20,34 +20,34 @@
 ' 
 SuperStrict
 
-Import "common.bmx"
+Import Qt.Core
+Import Qt.QWidget
+Import BRL.Blitz
 
 
-Type QUrl
+' headers :-)
+?win32
+Import "../lib/win32/include/*.h"
+?macos
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+?linux
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+?
 
-	Field qObjectPtr:Byte Ptr
+Import "glue.cpp"
 
-	Function CreateUrl:QUrl(url:String = "")
-		Return New QUrl.Create(url)
-	End Function
+Extern
 
-	Method Create:Qurl(url:String = "")
-		qObjectPtr = bmx_qt_qurl_create(url)
-		Return Self
-	End Method
+	Function bmx_qt_qmaccocoaviewcontainer_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qmaccocoaviewcontainer_cocoaview:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmaccocoaviewcontainer_setcocoaview(handle:Byte Ptr, view:Byte Ptr)
 
-
-	Method Free()
-		If qObjectPtr Then
-			bmx_qt_qurl_free(qObjectPtr)
-			qObjectPtr = Null
-		End If
-	End Method
-
-	Method Delete()
-		Free()
-	End Method
-	
-End Type
-
-
+End Extern

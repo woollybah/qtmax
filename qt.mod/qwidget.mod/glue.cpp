@@ -36,6 +36,10 @@ MaxQWidget::~MaxQWidget()
 }
 
 
+void MaxQWidget::paintEvent(QPaintEvent * event) {
+	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event);
+}
+
 // *********************************************
 
 
@@ -138,6 +142,10 @@ void bmx_qt_qwidget_setvisible(QWidget * widget, int visible) {
 
 void bmx_qt_qwidget_setwindowmodified(QWidget * widget, int value) {
 	widget->setWindowModified(static_cast<bool>(value));
+}
+
+void bmx_qt_qwidget_resize(QWidget * widget, int w, int h) {
+	widget->resize(w, h);
 }
 
 

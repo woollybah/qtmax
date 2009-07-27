@@ -25,11 +25,16 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QPainter>
 
 extern "C" {
 
 #include <blitz.h>
 
+	QPainter * bmx_qt_qpainter_create();
+	void bmx_qt_qpainter_free(QPainter * painter);
+	int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device);
+	void bmx_qt_qpainter_end(QPainter * painter);
 
 }
 

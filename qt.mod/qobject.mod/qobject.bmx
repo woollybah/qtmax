@@ -33,10 +33,8 @@ Import "common.bmx"
 Rem
 bbdoc: 
 End Rem
-Type QObject
+Type QObject Extends QCoreObjectPtr
 
-	Field qObjectPtr:Byte Ptr
-	
 	Field _connections:TMap = New TMap
 	
 	

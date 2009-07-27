@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Mon Jul 27 22:12:13 2009
+** Created: Mon Jul 27 22:12:14 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQCoreApplication[] = {
+static const uint qt_meta_data_MaxQTimer[] = {
 
  // content:
        2,       // revision
@@ -29,41 +29,41 @@ static const uint qt_meta_data_MaxQCoreApplication[] = {
        0,    0, // constructors
 
  // slots: signature, parameters, type, tag, flags
-      21,   20,   20,   20, 0x08,
+      11,   10,   10,   10, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQCoreApplication[] = {
-    "MaxQCoreApplication\0\0onAboutToQuit()\0"
+static const char qt_meta_stringdata_MaxQTimer[] = {
+    "MaxQTimer\0\0onTimeout()\0"
 };
 
-const QMetaObject MaxQCoreApplication::staticMetaObject = {
-    { &QCoreApplication::staticMetaObject, qt_meta_stringdata_MaxQCoreApplication,
-      qt_meta_data_MaxQCoreApplication, 0 }
+const QMetaObject MaxQTimer::staticMetaObject = {
+    { &QTimer::staticMetaObject, qt_meta_stringdata_MaxQTimer,
+      qt_meta_data_MaxQTimer, 0 }
 };
 
-const QMetaObject *MaxQCoreApplication::metaObject() const
+const QMetaObject *MaxQTimer::metaObject() const
 {
     return &staticMetaObject;
 }
 
-void *MaxQCoreApplication::qt_metacast(const char *_clname)
+void *MaxQTimer::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQCoreApplication))
-        return static_cast<void*>(const_cast< MaxQCoreApplication*>(this));
-    return QCoreApplication::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQTimer))
+        return static_cast<void*>(const_cast< MaxQTimer*>(this));
+    return QTimer::qt_metacast(_clname);
 }
 
-int MaxQCoreApplication::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQTimer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QCoreApplication::qt_metacall(_c, _id, _a);
+    _id = QTimer::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onAboutToQuit(); break;
+        case 0: onTimeout(); break;
         default: ;
         }
         _id -= 1;

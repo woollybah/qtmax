@@ -33,14 +33,42 @@ Import "common.bmx"
 
 Type QPainter
 
-	Function CreatePainter:QPainter(device:Object)
-		Return New QPainter.Create(device)
+	Field qObjectPtr:Byte Ptr
+
+	Function CreatePainter:QPainter()
+		Return New QPainter.Create()
 	End Function
 	
-	Method Create:QPainter(device:Object)
-		
+	Method Create:QPainter()
+		qObjectPtr = bmx_qt_qpainter_create()
 		Return Self
 	End Method
 
+	Method doBegin:Int(device:Object)
+		Local obj:QCoreObjectPtr = QCoreObjectPtr(device)
+		If obj Then
+			Return bmx_qt_qpainter_begin(qObjectPtr, obj.qObjectPtr)
+		End If
+	End Method
+	
+	Method doEnd:Int()
+		bmx_qt_qpainter_end(qObjectPtr)
+	End Method
+
+	
+
+
+
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qpainter_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
 End Type
 

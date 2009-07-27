@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QColor
+Module Qt.QTimer
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,36 +31,56 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QColor
+Type QTimer Extends QObject
 
-	Field qObjectPtr:Byte Ptr
-	
-
-	Function _Create:QColor(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QColor = New QColor
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
+	Function CreateTimer:QTimer(parent:QObject = Null)
+		Return New Qtimer.Create(parent)
 	End Function
 	
-	Method Create:QColor(r:Int, g:Int, b:Int, a:Int = 255)
-		qObjectPtr = bmx_qt_qcolor_create(r, g, b, a)
+	Method Create:QTimer(parent:QObject = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qtimer_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qtimer_create(Self, Null)
+		End If
 		Return Self
 	End Method
-	
-	
 
-	Method Free()
-		If qObjectPtr Then
-			bmx_qt_qcolor_free(qObjectPtr)
-			qObjectPtr = Null
-		End If
+	Method interval:Int()
+		Return bmx_qt_qtimer_interval(qObjectPtr)
 	End Method
 	
-	Method Delete()
-		Free()
+	Method isActive:Int()
+		Return bmx_qt_qtimer_isactive(qObjectPtr)
 	End Method
+	
+	Method isSingleShot:Int()
+		Return bmx_qt_qtimer_issingleshot(qObjectPtr)
+	End Method
+	
+	Method setInterval(msec:Int)
+		bmx_qt_qtimer_setinterval(qObjectPtr, msec)
+	End Method
+	
+	Method setSingleShot(value:Int)
+		bmx_qt_qtimer_setsingleshot(qObjectPtr, value)
+	End Method
+	
+	Method timerId:Int()
+		Return bmx_qt_qtimer_timerid(qObjectPtr)
+	End Method
+	
+	Method start(msec:Int = 0)
+		bmx_qt_qtimer_start(qObjectPtr, msec)
+	End Method
+	
+	Method stop()
+		bmx_qt_qtimer_stop(qObjectPtr)
+	End Method
+
+	' SIGNAL : timeout
+	Function _OnTimeout(obj:QTimer)
+		obj._InvokeSignals("timeout", Null)
+	End Function
 
 End Type
-

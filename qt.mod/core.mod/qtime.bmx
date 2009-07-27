@@ -22,32 +22,80 @@ SuperStrict
 
 Import "common.bmx"
 
-
-Type QUrl
+Type QTime
 
 	Field qObjectPtr:Byte Ptr
-
-	Function CreateUrl:QUrl(url:String = "")
-		Return New QUrl.Create(url)
+	
+	Function _create:QTime(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTime = New QTime
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
 	End Function
-
-	Method Create:Qurl(url:String = "")
-		qObjectPtr = bmx_qt_qurl_create(url)
-		Return Self
+	
+	Method elapsed:Int()
+		Return bmx_qt_qtime_elapsed(qObjectPtr)
 	End Method
-
-
+	
+	Method hour:Int()
+		Return bmx_qt_qtime_hour(qObjectPtr)
+	End Method
+	
+	Method isNull:Int()
+		Return bmx_qt_qtime_isnull(qObjectPtr)
+	End Method
+	
+	Method isValid:Int()
+		Return bmx_qt_qtime_isvalid(qObjectPtr)
+	End Method
+	
+	Method minute:Int()
+		Return bmx_qt_qtime_minute(qObjectPtr)
+	End Method
+	
+	Method msec:Int()
+		Return bmx_qt_qtime_msec(qObjectPtr)
+	End Method
+	
+	Method msecsTo:Int(t:QTime)
+		Return bmx_qt_qtime_msecsto(qObjectPtr, t.qObjectPtr)
+	End Method
+	
+	Method restart()
+		bmx_qt_qtime_restart(qObjectPtr)
+	End Method
+	
+	Method Second:Int()
+		Return bmx_qt_qtime_second(qObjectPtr)
+	End Method
+	
+	Method secsTo:Int(t:QTime)
+		Return bmx_qt_qtime_secsto(qObjectPtr, t.qObjectPtr)
+	End Method
+	
+	Method setHMS:Int(h:Int, m:Int, s:Int, ms:Int = 0)
+		Return bmx_qt_qtime_sethms(qObjectPtr, h, m, s, ms)
+	End Method
+	
+	Method start()
+		bmx_qt_qtime_start(qObjectPtr)
+	End Method
+	
+	Function CurrentTime:QTime()
+		Return QTime._create(bmx_qt_qtime_currenttime())
+	End Function
+	
 	Method Free()
 		If qObjectPtr Then
-			bmx_qt_qurl_free(qObjectPtr)
+			bmx_qt_qtime_free(qObjectPtr)
 			qObjectPtr = Null
 		End If
 	End Method
-
+	
 	Method Delete()
 		Free()
 	End Method
-	
-End Type
 
+End Type
 
