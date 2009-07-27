@@ -27,7 +27,7 @@ Type TWindow Extends QWidget
 	Field accessLineEdit:QLineEdit
 	
 	Method Create:TWindow()
-		Return Super._Create()
+		Return TWindow(Super._Create())
 	End Method
 	
 	Method OnInit()
