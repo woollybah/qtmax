@@ -23,6 +23,7 @@
 #include <QtCore>
 #include <QUrl>
 #include <QRect>
+#include <QTime>
 
 #include <map>
 
@@ -31,6 +32,7 @@
 
 class MaxQUrl;
 class MaxQRect;
+class MaxQTime;
 
 extern "C" {
 
@@ -105,10 +107,35 @@ extern "C" {
 	int bmx_qt_qrect_width(MaxQRect * rect);
 	int bmx_qt_qrect_x(MaxQRect * rect);
 	int bmx_qt_qrect_y(MaxQRect * rect);
+	
+	void bmx_qt_qevent_accept(QEvent * event);
+	void bmx_qt_qevent_ignore(QEvent * event);
+	int bmx_qt_qevent_isaccepted(QEvent * event);
+	void bmx_qt_qevent_setaccepted(QEvent * event, int accepted);
+	int bmx_qt_qevent_spontaneous(QEvent * event);
+	int bmx_qt_qevent_gettype(QEvent * event);
 
 	Qt::WindowFlags bmx_qt_getwindowflags(int f);
 	Qt::Alignment bmx_qt_getalignment(int a);
 	Qt::FocusReason bmx_qt_getfocusreason(int r);
+	Qt::TextInteractionFlags bmx_qt_inttotextinteractionflags(int f);
+	Qt::TextFormat bmx_qt_inttotextformat(int f);
+
+	int bmx_qt_qtime_elapsed(MaxQTime * time);
+	int bmx_qt_qtime_hour(MaxQTime * time);
+	int bmx_qt_qtime_isnull(MaxQTime * time);
+	int bmx_qt_qtime_isvalid(MaxQTime * time);
+	int bmx_qt_qtime_minute(MaxQTime * time);
+	int bmx_qt_qtime_msec(MaxQTime * time);
+	int bmx_qt_qtime_msecsto(MaxQTime * time, MaxQTime * t);
+	void bmx_qt_qtime_restart(MaxQTime * time);
+	int bmx_qt_qtime_second(MaxQTime * time);
+	int bmx_qt_qtime_secsto(MaxQTime * time, MaxQTime * t);
+	int bmx_qt_qtime_sethms(MaxQTime * time, int h, int m, int s, int ms);
+	void bmx_qt_qtime_start(MaxQTime * time);
+	MaxQTime * bmx_qt_qtime_currenttime();
+	void bmx_qt_qtime_free(MaxQTime * time);
+
 	
 }
 
@@ -137,5 +164,18 @@ public:
 private:
 	QRect rect;
 };
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQTime
+{
+public:
+	MaxQTime(const QTime & t);
+	QTime & Time();
+
+private:
+	QTime time;
+};
+
 
 #endif

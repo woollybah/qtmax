@@ -33,7 +33,7 @@ extern "C" {
 #include <blitz.h>
 
 	void _qt_qwidget_QWidget__OnCustomContextMenuRequested(BBObject * handle, int x, int y);
-
+	void _qt_qwidget_QWidget__OnPaintEvent(BBObject * handle, QPaintEvent * event);
 
 	QWidget * bmx_qt_qwidget_create(BBObject * handle, QWidget * parent, int f);
 	void bmx_qt_qwidget_hide(QWidget * widget);
@@ -59,6 +59,7 @@ extern "C" {
 	void bmx_qt_qwidget_setstylesheet(QWidget * widget, BBString * styleSheet);
 	void bmx_qt_qwidget_setvisible(QWidget * widget, int visible);
 	void bmx_qt_qwidget_setwindowmodified(QWidget * widget, int value);
+	void bmx_qt_qwidget_resize(QWidget * widget, int w, int h);
 
 }
 
@@ -72,6 +73,9 @@ public:
 	MaxQWidget(BBObject * handle, QWidget * parent, Qt::WindowFlags flags);
 	~MaxQWidget();
 
+protected:
+	void paintEvent(QPaintEvent * event);
+	
 private:
 	BBObject * maxHandle;
 };

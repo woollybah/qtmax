@@ -35,6 +35,8 @@ extern "C" {
 
 	void bmx_qt_qcolor_free(MaxQColor * handle);
 
+	MaxQColor * bmx_qt_qcolor_create(int r, int g, int b, int a);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -20,34 +20,40 @@
 ' 
 SuperStrict
 
+Module Qt.QMacCocoaViewContainer
+
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
+
+?macos
 Import "common.bmx"
 
 
-Type QUrl
+Type QMacCocoaViewContainer Extends QWidget
 
-	Field qObjectPtr:Byte Ptr
-
-	Function CreateUrl:QUrl(url:String = "")
-		Return New QUrl.Create(url)
+	Function CreateMacCocoaViewContainer:QMacCocoaViewContainer(parent:QWidget = Null)
 	End Function
-
-	Method Create:Qurl(url:String = "")
-		qObjectPtr = bmx_qt_qurl_create(url)
+	
+	Method Create:QMacCocoaViewContainer(parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qmaccocoaviewcontainer_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qmaccocoaviewcontainer_create(Self, Null)
+		End If
+		OnInit()
 		Return Self
 	End Method
 
-
-	Method Free()
-		If qObjectPtr Then
-			bmx_qt_qurl_free(qObjectPtr)
-			qObjectPtr = Null
-		End If
-	End Method
-
-	Method Delete()
-		Free()
+	Method cocoaView:Byte Ptr()
+		Return bmx_qt_qmaccocoaviewcontainer_cocoaview(qObjectPtr)
 	End Method
 	
+	Method setCocoaView(view:Byte Ptr)
+		bmx_qt_qmaccocoaviewcontainer_setcocoaview(qObjectPtr, view)
+	End Method
+
 End Type
 
-
+?

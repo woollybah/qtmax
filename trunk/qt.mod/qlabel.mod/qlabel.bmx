@@ -148,11 +148,11 @@ Type QLabel Extends QFrame
 	'End Method
 
 	Method setNum(num:Int)
-	' TODO
+		bmx_qt_qlabel_setnum(qObjectPtr, num)
 	End Method
 
 	Method setNumDouble(num:Double)
-	' TODO
+		bmx_qt_qlabel_setnumdouble(qObjectPtr, num)
 	End Method
 
 	'Method setPicture(picture:QPicture)
@@ -164,8 +164,18 @@ Type QLabel Extends QFrame
 	'End Method
 
 	Method setText(text:String)
-	' TODO
+		bmx_qt_qlabel_settext(qObjectPtr, text)
 	End Method
+
+	' SIGNAL : linkActivated
+	Function _OnLinkActivated(obj:QLabel, text:String)
+		obj._InvokeSignals("linkActivated", [text])
+	End Function
+
+	' SIGNAL : linkHovered
+	Function _OnLinkHovered(obj:QLabel, text:String)
+		obj._InvokeSignals("linkHovered", [text])
+	End Function
 
 End Type
 

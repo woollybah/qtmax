@@ -229,7 +229,9 @@ Type QWidget Extends QObject
 	
 	
 	
-	
+	Method resize(w:Int, h:Int)
+		bmx_qt_qwidget_resize(qObjectPtr, w, h)
+	End Method
 	
 	Method stackUnder(w:QWidget)
 		bmx_qt_qwidget_stackunder(qObjectPtr, w.qObjectPtr)
@@ -322,6 +324,17 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_update(qObjectPtr)
 	End Method
 
+
+
+
+	Method paintEvent(event:QPaintEvent)
+	End Method
+	
+	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
+		obj.paintEvent(QPaintEvent._create(event))
+	End Function
+	
+
 	' SIGNAL : customContextMenuRequested
 	Function _OnCustomContextMenuRequested(obj:QWidget, x:Int, y:Int)
 		obj._InvokeSignals("customContextMenuRequested", [String(x), String(y)])
@@ -388,6 +401,7 @@ Type QLayoutItem
 	
 	Method widget:QWidget()
 	End Method
+	
 	
 End Type
 

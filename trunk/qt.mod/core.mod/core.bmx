@@ -45,7 +45,14 @@ Import "-lQtCore"
 Import "qvariant.bmx"
 Import "qrect.bmx"
 Import "qevent.bmx"
+Import "qtime.bmx"
 Import "common.bmx"
+
+Type QCoreObjectPtr
+
+	Field qObjectPtr:Byte Ptr
+
+End Type
 
 
 

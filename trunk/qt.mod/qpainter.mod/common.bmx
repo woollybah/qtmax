@@ -33,14 +33,21 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
 
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qpainter_create:Byte Ptr()
+	Function bmx_qt_qpainter_free(handle:Byte Ptr)
+	Function bmx_qt_qpainter_begin:Int(handle:Byte Ptr, device:Byte Ptr)
+	Function bmx_qt_qpainter_end(handle:Byte Ptr)
 
 End Extern

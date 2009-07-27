@@ -31,9 +31,7 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QPaintDevice
+Type QPaintDevice Extends QCoreObjectPtr
 
-	Field qObjectPtr:Byte Ptr
-	
 
 End Type

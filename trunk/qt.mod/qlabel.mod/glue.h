@@ -35,7 +35,33 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qlabel_QLabel__OnLinkActivated(BBObject * handle, BBString * link);
+	void _qt_qlabel_QLabel__OnLinkHovered(BBObject * handle, BBString * link);
+
 	QLabel * bmx_qt_qlabel_create(BBObject * handle, BBString * text, QWidget * parent, int f);
+	int bmx_qt_qlabel_alignment(QLabel * label);
+	QWidget * bmx_qt_qlabel_buddy(QLabel * label);
+	int bmx_qt_qlabel_hasscaledcontents(QLabel * label);
+	int bmx_qt_qlabel_indent(QLabel * label);
+	int bmx_qt_qlabel_margin(QLabel * label);
+	int bmx_qt_qlabel_openexternallinks(QLabel * label);
+	void bmx_qt_qlabel_setalignment(QLabel * label, int alignment);
+	void bmx_qt_qlabel_setbuddy(QLabel * label, QWidget * buddy);
+	void bmx_qt_qlabel_setindent(QLabel * label, int indent);
+	void bmx_qt_qlabel_setmargin(QLabel * label, int margin);
+	void bmx_qt_qlabel_setopenexternallinks(QLabel * label, int open);
+	void bmx_qt_qlabel_setscaledcontents(QLabel * label, int scaled);
+	void bmx_qt_qlabel_settextformat(QLabel * label, int format);
+	void bmx_qt_qlabel_settextinteractionflags(QLabel * label, int flags);
+	void bmx_qt_qlabel_setwordwrap(QLabel * label, int value);
+	BBString * bmx_qt_qlabel_text(QLabel * label);
+	int bmx_qt_qlabel_textformat(QLabel * label);
+	int bmx_qt_qlabel_textinteractionflags(QLabel * label);
+	int bmx_qt_qlabel_wordwrap(QLabel * label);
+	void bmx_qt_qlabel_clear(QLabel * label);
+	void bmx_qt_qlabel_setnum(QLabel * label, int num);
+	void bmx_qt_qlabel_setnumdouble(QLabel * label, double num);
+	void bmx_qt_qlabel_settext(QLabel * label, BBString * text);
 
 }
 
@@ -51,8 +77,12 @@ public:
 
 private:
 	BBObject * maxHandle;
+	
+private slots:
+	void onLinkActivated(const QString & link);
+	void onLinkHovered(const QString & link);
+	void onCustomContextMenuRequested(const QPoint & pos);
 };
-
 
 
 #endif
