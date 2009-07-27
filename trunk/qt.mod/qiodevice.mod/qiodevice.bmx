@@ -33,6 +33,133 @@ Import "common.bmx"
 
 Type QIODevice Extends QObject
 
+	Method atEnd:Int()
+	' TODO
+	End Method
+	
+	Method bytesAvailable:Long()
+	' TODO
+	End Method
+	
+	Method bytesToWrite:Long()
+	' TODO
+	End Method
+	
+	Method canReadLine:Int()
+	' TODO
+	End Method
+	
+	Method close()
+	' TODO
+	End Method
+	
+	Method errorString:String()
+	' TODO
+	End Method
+	
+	Method GetChar:Int(c:Int Var)
+	' TODO
+	End Method
+	
+	Method isOpen:Int()
+	' TODO
+	End Method
+	
+	Method isReadable:Int()
+	' TODO
+	End Method
+	
+	Method isSequential:Int()
+	' TODO
+	End Method
+	
+	Method isTextModeEnabled:Int()
+	' TODO
+	End Method
+	
+	Method isWritable:Int()
+	' TODO
+	End Method
+	
+	Method open:Int(Mode:Int)
+	' TODO
+	End Method
+	
+	Method openMode:Int()
+	' TODO
+	End Method
+	
+	Method peek:Long(data:Byte Ptr,  maxSize:Long)
+	' TODO
+	End Method
+	
+	'QByteArray peek(maxSize:long)
+	' TODO
+	'end method
+	
+	Method pos:Long()
+	' TODO
+	End Method
+	
+	Method putChar:Int(c:Int)
+	' TODO
+	End Method
+	
+	Method read:Long(data:Byte Ptr, maxSize:Long)
+	' TODO
+	End Method
+	
+	'QByteArray read(maxSize:long)
+	' TODO
+	'end method
+	
+	'QByteArray readAll()
+	' TODO
+	'end method
+	
+	Method ReadLine:Long(data:Byte Ptr, maxSize:Long)
+	' TODO
+	End Method
+	
+	'QByteArray readLine(maxSize:long = 0)
+	' TODO
+	'End Method
+	
+	Method reset:Int()
+	' TODO
+	End Method
+	
+	Method seek:Int(pos:Long)
+	' TODO
+	End Method
+	
+	Method setTextModeEnabled(enabled:Int)
+	' TODO
+	End Method
+	
+	Method size:Long()
+	' TODO
+	End Method
+	
+	Method ungetChar(c:int)
+	' TODO
+	End Method
+	
+	Method waitForBytesWritten:Int(msecs:Int)
+	' TODO
+	End Method
+	
+	Method waitForReadyRead:Int(msecs:Int)
+	' TODO
+	End Method
+	
+	Method write:Long(data:Byte Ptr, maxSize:Long)
+	' TODO
+	End Method
+	
+	'Method write:Long(data:Byte Ptr)
+	' TODO
+	'End Method
 
 End Type
 

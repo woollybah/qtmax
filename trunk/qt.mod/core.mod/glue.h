@@ -51,6 +51,60 @@ extern "C" {
 
 	MaxQRect * bmx_qt_qrect_create(int x, int y, int w, int h);
 	void bmx_qt_qrect_free(MaxQRect * rect);
+	void bmx_qt_qrect_adjust(MaxQRect * rect, int dx1, int dy1, int dx2, int dy2);
+	MaxQRect * bmx_qt_qrect_adjusted(MaxQRect * rect, int dx1, int dy1, int dx2, int dy2);
+	int bmx_qt_qrect_bottom(MaxQRect * rect);
+	void bmx_qt_qrect_bottomleft(MaxQRect * rect, int * x, int * y);
+	void bmx_qt_qrect_bottomright(MaxQRect * rect, int * x, int * y);
+	void bmx_qt_qrect_center(MaxQRect * rect, int * x, int * y);
+	int bmx_qt_qrect_contains(MaxQRect * rect, int x, int y, int proper);
+	int bmx_qt_qrect_containsrect(MaxQRect * rect, MaxQRect * rectangle, int proper);
+	void bmx_qt_qrect_getcoords(MaxQRect * rect, int * x1, int * y1, int * x2, int * y2);
+	void bmx_qt_qrect_getrect(MaxQRect * rect, int * x, int * y, int * width, int * height);
+	int bmx_qt_qrect_height(MaxQRect * rect);
+	MaxQRect * bmx_qt_qrect_intersected(MaxQRect * rect, MaxQRect * rectangle);
+	int bmx_qt_qrect_intersects(MaxQRect * rect, MaxQRect * rectangle);
+	int bmx_qt_qrect_isempty(MaxQRect * rect);
+	int bmx_qt_qrect_isnull(MaxQRect * rect);
+	int bmx_qt_qrect_isvalid(MaxQRect * rect);
+	int bmx_qt_qrect_left(MaxQRect * rect);
+	void bmx_qt_qrect_movebottom(MaxQRect * rect, int y);
+	void bmx_qt_qrect_movebottomleft(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_movebottomright(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_movecenter(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_moveleft(MaxQRect * rect, int x);
+	void bmx_qt_qrect_moveright(MaxQRect * rect, int x);
+	void bmx_qt_qrect_moveto(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_movetop(MaxQRect * rect, int y);
+	void bmx_qt_qrect_movetopleft(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_movetopright(MaxQRect * rect, int x, int y);
+	MaxQRect * bmx_qt_qrect_normalized(MaxQRect * rect);
+	int bmx_qt_qrect_right(MaxQRect * rect);
+	void bmx_qt_qrect_setbottom(MaxQRect * rect, int y);
+	void bmx_qt_qrect_setbottomleft(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_setbottomright(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_setcoords(MaxQRect * rect, int x1, int y1, int x2, int y2);
+	void bmx_qt_qrect_setheight(MaxQRect * rect, int height);
+	void bmx_qt_qrect_setleft(MaxQRect * rect, int x);
+	void bmx_qt_qrect_setrect(MaxQRect * rect, int x, int y, int width, int height);
+	void bmx_qt_qrect_setright(MaxQRect * rect, int x);
+	void bmx_qt_qrect_setsize(MaxQRect * rect, int w, int h);
+	void bmx_qt_qrect_settop(MaxQRect * rect, int y);
+	void bmx_qt_qrect_settopleft(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_settopright(MaxQRect * rect, int x, int y);
+	void bmx_qt_qrect_setwidth(MaxQRect * rect, int width);
+	void bmx_qt_qrect_setx(MaxQRect * rect, int x);
+	void bmx_qt_qrect_sety(MaxQRect * rect, int y);
+	void bmx_qt_qrect_size(MaxQRect * rect, int * w, int * h);
+	int bmx_qt_qrect_top(MaxQRect * rect);
+	void bmx_qt_qrect_topleft(MaxQRect * rect, int * x, int * y);
+	void bmx_qt_qrect_topright(MaxQRect * rect, int * x, int * y);
+	void bmx_qt_qrect_translate(MaxQRect * rect, int dx, int dy);
+	MaxQRect * bmx_qt_qrect_translated(MaxQRect * rect, int dx, int dy);
+	MaxQRect * bmx_qt_qrect_united(MaxQRect * rect, MaxQRect * rectangle);
+	int bmx_qt_qrect_width(MaxQRect * rect);
+	int bmx_qt_qrect_x(MaxQRect * rect);
+	int bmx_qt_qrect_y(MaxQRect * rect);
 
 	Qt::WindowFlags bmx_qt_getwindowflags(int f);
 	Qt::Alignment bmx_qt_getalignment(int a);
@@ -70,6 +124,8 @@ public:
 private:
 	QUrl url;
 };
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class MaxQRect
 {

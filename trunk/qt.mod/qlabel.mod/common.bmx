@@ -48,5 +48,25 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qlabel_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr, flags:Int)
+	Function bmx_qt_qlabel_alignment:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_buddy:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qlabel_hasscaledcontents:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_indent:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_margin:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_openexternallinks:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_setalignment(handle:Byte Ptr, alignment:Int)
+	Function bmx_qt_qlabel_setbuddy(handle:Byte Ptr, buddy:Byte Ptr)
+	Function bmx_qt_qlabel_setindent(handle:Byte Ptr, indent:Int)
+	Function bmx_qt_qlabel_setmargin(handle:Byte Ptr, margin:Int)
+	Function bmx_qt_qlabel_setopenexternallinks(handle:Byte Ptr, open:Int)
+	Function bmx_qt_qlabel_setscaledcontents(handle:Byte Ptr, scaled:Int)
+	Function bmx_qt_qlabel_settextformat(handle:Byte Ptr, format:Int)
+	Function bmx_qt_qlabel_settextinteractionflags(handle:Byte Ptr, flags:Int)
+	Function bmx_qt_qlabel_setwordwrap(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qlabel_text:String(handle:Byte Ptr)
+	Function bmx_qt_qlabel_textformat:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_textinteractionflags:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_wordwrap:Int(handle:Byte Ptr)
+	Function bmx_qt_qlabel_clear(handle:Byte Ptr)
 
 End Extern

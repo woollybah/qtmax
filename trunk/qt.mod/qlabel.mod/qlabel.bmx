@@ -48,62 +48,124 @@ Type QLabel Extends QFrame
 	End Method
 
 	Method alignment:Int()
+		Return bmx_qt_qlabel_alignment(qObjectPtr)
 	End Method
 	
 	Method buddy:QWidget()
+		Return QWidget._find(bmx_qt_qlabel_buddy(qObjectPtr))
 	End Method
 	
 	Method hasScaledContents:Int()
+		Return bmx_qt_qlabel_hasscaledcontents(qObjectPtr)
 	End Method
 	
 	Method indent:Int()
+		Return bmx_qt_qlabel_indent(qObjectPtr)
 	End Method
 	
 	Method margin:Int()
+		Return bmx_qt_qlabel_margin(qObjectPtr)
 	End Method
 	
 	'Method movie:QMovie()
+	' TODO
 	'End Method
 	
 	Method openExternalLinks:Int()
+		Return bmx_qt_qlabel_openexternallinks(qObjectPtr)
 	End Method
 	
 	'Method picture:QPicture()
+	' TODO
 	'End Method
 	
 	'Method pixmap:QPixmap()
+	' TODO
 	'End Method
 	
 	Method setAlignment(alignment:Int)
+		bmx_qt_qlabel_setalignment(qObjectPtr, alignment)
 	End Method
 	
 	Method setBuddy(buddy:QWidget)
+		If buddy Then
+			bmx_qt_qlabel_setbuddy(qObjectPtr, buddy.qObjectPtr)
+		Else
+			bmx_qt_qlabel_setbuddy(qObjectPtr, Null)
+		End If
 	End Method
 	
 	Method setIndent(indent:Int)
+		bmx_qt_qlabel_setindent(qObjectPtr, indent)
 	End Method
 	
 	Method setMargin(margin:Int)
+		bmx_qt_qlabel_setmargin(qObjectPtr, margin)
 	End Method
 	
 	Method setOpenExternalLinks(open:Int)
+		bmx_qt_qlabel_setopenexternallinks(qObjectPtr, open)
 	End Method
 	
 	Method setScaledContents(scaled:Int)
+		bmx_qt_qlabel_setscaledcontents(qObjectPtr, scaled)
 	End Method
 	
 	Method setTextFormat(format:Int)
+		bmx_qt_qlabel_settextformat(qObjectPtr, format)
 	End Method
 	
 	Method setTextInteractionFlags(flags:Int)
+		bmx_qt_qlabel_settextinteractionflags(qObjectPtr, flags)
 	End Method
 	
-	Method setWordWrap(on:Int)
+	Method setWordWrap(value:Int)
+		bmx_qt_qlabel_setwordwrap(qObjectPtr, value)
 	End Method
 	
 	Method text:String()
+		Return bmx_qt_qlabel_text(qObjectPtr)
+	End Method
+
+	Method textFormat:Int()
+		Return bmx_qt_qlabel_textformat(qObjectPtr)
+	End Method
+
+	Method textInteractionFlags:Int()
+		Return bmx_qt_qlabel_textinteractionflags(qObjectPtr)
+	End Method
+
+	Method wordWrap:Int()
+		Return bmx_qt_qlabel_wordwrap(qObjectPtr)
+	End Method
+
+	Method clear()
+		bmx_qt_qlabel_clear(qObjectPtr)
 	End Method
 	
+	'Method setMovie(movie:QMovie)
+	' TODO
+	'End Method
+
+	Method setNum(num:Int)
+	' TODO
+	End Method
+
+	Method setNumDouble(num:Double)
+	' TODO
+	End Method
+
+	'Method setPicture(picture:QPicture)
+	' TODO
+	'End Method
+
+	'Method setPixmap(pixmap:QPixmap)
+	' TODO
+	'End Method
+
+	Method setText(text:String)
+	' TODO
+	End Method
 
 End Type
 
