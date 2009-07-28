@@ -20,8 +20,8 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QNETWORK
-#define MAX_QT_QNETWORK
+#ifndef MAX_QT_ template
+#define MAX_QT_ template
 
 #include "../core.mod/glue.h"
 #include <QtCore>

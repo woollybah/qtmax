@@ -20,11 +20,12 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QNETWORK
-#define MAX_QT_QNETWORK
+#ifndef MAX_QT_QIMAGE
+#define MAX_QT_QIMAGE
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QImage>
 
 extern "C" {
 

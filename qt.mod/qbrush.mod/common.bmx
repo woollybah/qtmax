@@ -21,6 +21,10 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QGradient
+Import Qt.QPixmap
+Import Qt.QMatrix
+Import Qt.QImage
 Import BRL.Blitz
 
 
@@ -45,90 +49,82 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qcolor_free(handle:Byte Ptr)
-
-	Function bmx_qt_qcolor_create:Byte Ptr(r:Int, g:Int, b:Int, a:Int)
-
 End Extern
 
+Rem
+bbdoc: No brush pattern.
+end rem
+Const Qt_NoBrush:Int = 0
+Rem
+bbdoc: Uniform color.
+end rem
+Const Qt_SolidPattern:Int = 1
+Rem
+bbdoc: Extremely dense brush pattern.
+end rem
+Const Qt_Dense1Pattern:Int = 2
+Rem
+bbdoc: Very dense brush pattern.
+end rem
+Const Qt_Dense2Pattern:Int = 3
+Rem
+bbdoc: Somewhat dense brush pattern.
+end rem
+Const Qt_Dense3Pattern:Int = 4
+Rem
+bbdoc: Half dense brush pattern.
+end rem
+Const Qt_Dense4Pattern:Int = 5
+Rem
+bbdoc: Somewhat sparse brush pattern.
+end rem
+Const Qt_Dense5Pattern:Int = 6
+Rem
+bbdoc: Very sparse brush pattern.
+end rem
+Const Qt_Dense6Pattern:Int = 7
+Rem
+bbdoc: Extremely sparse brush pattern.
+end rem
+Const Qt_Dense7Pattern:Int = 8
+Rem
+bbdoc: Horizontal lines.
+end rem
+Const Qt_HorPattern:Int = 9
+Rem
+bbdoc: Vertical lines.
+end rem
+Const Qt_VerPattern:Int = 10
+Rem
+bbdoc: Crossing horizontal and vertical lines.
+end rem
+Const Qt_CrossPattern:Int = 11
+Rem
+bbdoc: Backward diagonal lines.
+end rem
+Const Qt_BDiagPattern:Int = 12
+Rem
+bbdoc: Forward diagonal lines.
+end rem
+Const Qt_FDiagPattern:Int = 13
+Rem
+bbdoc: Crossing diagonal lines.
+end rem
+Const Qt_DiagCrossPattern:Int = 14
+Rem
+bbdoc: Linear gradient (set using a dedicated QBrush constructor).
+end rem
+Const Qt_LinearGradientPattern:Int = 15
+Rem
+bbdoc: Conical gradient (set using a dedicated QBrush constructor).
+end rem
+Const Qt_ConicalGradientPattern:Int = 17
+Rem
+bbdoc: Radial gradient (set using a dedicated QBrush constructor).
+end rem
+Const Qt_RadialGradientPattern:Int = 16
+Rem
+bbdoc: Custom pattern (see QBrush_setTexture()).
+end rem
+Const Qt_TexturePattern:Int = 24
 
-Rem
-bbdoc:  White (#ffffff)
-end rem
-Const Qt_white:Int = 3
-Rem
-bbdoc: Black (#000000)
-end rem
-Const Qt_black:Int = 2
-Rem
-bbdoc: Red (#ff0000)
-end rem
-Const Qt_red:Int = 7
-Rem
-bbdoc: Dark red (#800000)
-end rem
-Const Qt_darkRed:Int = 13
-Rem
-bbdoc: Green (#00ff00)
-end rem
-Const Qt_green:Int = 8
-Rem
-bbdoc: Dark green (#008000)
-end rem
-Const Qt_darkGreen:Int = 14
-Rem
-bbdoc: Blue (#0000ff)
-end rem
-Const Qt_blue:Int = 9
-Rem
-bbdoc: Dark blue (#000080)
-end rem
-Const Qt_darkBlue:Int = 15
-Rem
-bbdoc: Cyan (#00ffff)
-end rem
-Const Qt_cyan:Int = 10
-Rem
-bbdoc: Dark cyan (#008080)
-end rem
-Const Qt_darkCyan:Int = 16
-Rem
-bbdoc: Magenta (#ff00ff)
-end rem
-Const Qt_magenta:Int = 11
-Rem
-bbdoc: Dark magenta (#800080)
-end rem
-Const Qt_darkMagenta:Int = 17
-Rem
-bbdoc: Yellow (#ffff00)
-end rem
-Const Qt_yellow:Int = 12
-Rem
-bbdoc: Dark yellow (#808000)
-end rem
-Const Qt_darkYellow:Int = 18
-Rem
-bbdoc: Gray (#a0a0a4)
-end rem
-Const Qt_gray:Int = 5
-Rem
-bbdoc: Dark gray (#808080)
-end rem
-Const Qt_darkGray:Int = 4
-Rem
-bbdoc: Light gray (#c0c0c0)
-end rem
-Const Qt_lightGray:Int = 6
-Rem
-bbdoc: a transparent black value (i.e., QColor(0, 0, 0, 0))
-end rem
-Const Qt_transparent:Int = 19
-Rem
-bbdoc: 0 pixel value (for bitmaps)
-end rem
-Const Qt_color0:Int = 0
-Rem
-bbdoc: 1 pixel value (for bitmaps)
-end rem
-Const Qt_color1:Int = 1

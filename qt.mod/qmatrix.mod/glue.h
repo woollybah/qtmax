@@ -20,11 +20,14 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QNETWORK
-#define MAX_QT_QNETWORK
+#ifndef MAX_QT_QMATRIX
+#define MAX_QT_QMATRIX
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QMatrix>
+#include <QTransform>
+#include <QPainterPath>
 
 extern "C" {
 
