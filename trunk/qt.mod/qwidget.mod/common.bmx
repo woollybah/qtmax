@@ -25,6 +25,7 @@ Import Qt.QObject
 Import Qt.QLocale
 Import Qt.QRegion
 Import Qt.QPaintEvent
+Import Qt.QIcon
 Import BRL.Blitz
 
 
@@ -75,6 +76,9 @@ Extern
 	Function bmx_qt_qwidget_setvisible(handle:Byte Ptr, visible:Int)
 	Function bmx_qt_qwidget_setwindowmodified(handle:Byte Ptr, value:Int)
 	Function bmx_qt_qwidget_resize(handle:Byte Ptr, w:Int, h:Int)
+
+	Function bmx_qt_qwidget_height:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_width:Int(handle:Byte Ptr)
 
 End Extern
 

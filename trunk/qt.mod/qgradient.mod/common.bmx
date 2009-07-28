@@ -21,9 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QBrush
-Import Qt.QPen
-Import Qt.QFont
+Import Qt.QColor
 Import BRL.Blitz
 
 
@@ -47,16 +45,5 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qpainter_create:Byte Ptr()
-	Function bmx_qt_qpainter_free(handle:Byte Ptr)
-	Function bmx_qt_qpainter_begin:Int(handle:Byte Ptr, device:Byte Ptr)
-	Function bmx_qt_qpainter_end(handle:Byte Ptr)
-	Function bmx_qt_qpainter_resetmatrix(handle:Byte Ptr)
-	Function bmx_qt_qpainter_resettransform(handle:Byte Ptr)
-	Function bmx_qt_qpainter_restore(handle:Byte Ptr)
-	Function bmx_qt_qpainter_rotate(handle:Byte Ptr, angle:Double)
-	Function bmx_qt_qpainter_save(handle:Byte Ptr)
-	Function bmx_qt_qpainter_scale(handle:Byte Ptr, sx:Double, sy:Double)
 
 End Extern

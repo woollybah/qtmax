@@ -42,9 +42,9 @@ Type AnalogClock Extends QWidget
 		
 		painter.setRenderHint(QPainter.Antialiasing)
 		painter.translate(width() / 2, height() / 2)
-		painter.scale(side / 200.0, side / 200.0)
+		painter.scale(size / 200.0, size / 200.0)
 		
-		painter.setPen(Qt_NoPen)
+		painter.setPenStyle(Qt_NoPen)
 		painter.setBrush(hourColor)
 		
 		painter.save()
@@ -52,7 +52,7 @@ Type AnalogClock Extends QWidget
 		painter.drawConvexPolygon(hourHand)
 		painter.restore()
 		
-		painter.setPen(hourColor)
+		painter.setPenColor(hourColor)
 		
 		For Local i:Int = 0 Until 12
 			painter.DrawLine(88, 0, 96, 0)
@@ -67,7 +67,7 @@ Type AnalogClock Extends QWidget
 		painter.drawConvexPolygon(minuteHand)
 		painter.restore()
 		
-		painter.setPen(minuteColor)
+		painter.setPenColor(minuteColor)
 		
 		For Local j:Int = 0 Until 60
 			If j Mod 5 <> 0 Then

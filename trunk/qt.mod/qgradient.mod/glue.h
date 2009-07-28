@@ -20,11 +20,15 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QNETWORK
-#define MAX_QT_QNETWORK
+#ifndef MAX_QT_QGRADIENT
+#define MAX_QT_QGRADIENT
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QGradient>
+#include <QConicalGradient>
+#include <QLinearGradient>
+#include <QRadialGradient>
 
 extern "C" {
 

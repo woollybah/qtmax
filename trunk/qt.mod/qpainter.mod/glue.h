@@ -35,6 +35,12 @@ extern "C" {
 	void bmx_qt_qpainter_free(QPainter * painter);
 	int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device);
 	void bmx_qt_qpainter_end(QPainter * painter);
+	void bmx_qt_qpainter_resetmatrix(QPainter * painter);
+	void bmx_qt_qpainter_resettransform(QPainter * painter);
+	void bmx_qt_qpainter_restore(QPainter * painter);
+	void bmx_qt_qpainter_rotate(QPainter * painter, double angle);
+	void bmx_qt_qpainter_save(QPainter * painter);
+	void bmx_qt_qpainter_scale(QPainter * painter, double sx, double sy);
 
 }
 

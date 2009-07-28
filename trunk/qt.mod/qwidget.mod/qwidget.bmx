@@ -84,6 +84,41 @@ Type QWidget Extends QObject
 	Method OnInit()
 	End Method
 
+	Method hasEditFocus:Int()
+	' TODO
+	End Method
+	
+	Method hasFocus:Int()
+	' TODO
+	End Method
+	
+	Method hasMouseTracking:Int()
+	' TODO
+	End Method
+	
+	Method height:Int()
+		Return bmx_qt_qwidget_height(qObjectPtr)
+	End Method
+	
+	Method heightForWidth:Int(w:Int)
+	' TODO
+	End Method
+
+	'Method inputContext:QInputContext()
+	' TODO
+	'End Method
+	
+	'Method inputMethodQuery:QVariant(query:Int)
+	' TODO
+	'End Method
+
+	'Method insertAction(before:QAction, action:QAction)
+	' TODO
+	'End Method
+
+	'Method insertActions(before:QAction, actions:QAction([])
+	' TODO
+	'End Method
 
 	Method isActiveWindow:Int()
 	' TODO
@@ -249,6 +284,76 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_setlayout(qObjectPtr, layout.qObjectPtr)
 	End Method
 	
+	
+	Method whatsThis:String()
+	' TODO
+	End Method
+	
+	Method width:Int()
+		Return bmx_qt_qwidget_width(qObjectPtr)
+	End Method
+	
+	Method winId:Int()
+	' TODO
+	End Method
+	
+	Method window:QWidget()
+	' TODO
+	End Method
+	
+	Method windowFilePath:String()
+	' TODO
+	End Method
+	
+	Method windowFlags:Int()
+	' TODO
+	End Method
+	
+	Method windowIcon:QIcon()
+	' TODO
+	End Method
+	
+	Method windowIconText:String()
+	' TODO
+	End Method
+	
+	Method windowModality:Int()
+	' TODO
+	End Method
+	
+	Method windowOpacity:Double()
+	' TODO
+	End Method
+	
+	Method windowRole:String()
+	' TODO
+	End Method
+	
+	Method windowState:Int()
+	' TODO
+	End Method
+	
+	'Method windowSurface:QWindowSurface()
+	' TODO
+	'End Method
+	
+	Method windowTitle:String()
+	' TODO
+	End Method
+	
+	Method windowType:Int()
+	' TODO
+	End Method
+	
+	Method x:Int()
+	' TODO
+	End Method
+	
+	Method y:Int()
+	' TODO
+	End Method
+	
+
 	' SLOTS
 	
 	Method close()

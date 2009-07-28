@@ -61,6 +61,9 @@ extern "C" {
 	void bmx_qt_qwidget_setwindowmodified(QWidget * widget, int value);
 	void bmx_qt_qwidget_resize(QWidget * widget, int w, int h);
 
+	int bmx_qt_qwidget_height(QWidget * widget);
+	int bmx_qt_qwidget_width(QWidget * widget);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
