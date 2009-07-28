@@ -20,11 +20,12 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QBRUSH
+#define MAX_QT_QBRUSH
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QBrush>
 
 extern "C" {
 
@@ -35,5 +36,16 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQBrush
+{
+public:
+	MaxQBrush(const QBrush & b);
+	~MaxQBrush();
+	
+	QBrush & Brush();
+
+private:
+	QBrush brush;
+};
 
 #endif

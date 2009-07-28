@@ -226,7 +226,40 @@ Type QPainter
 	End Method
 	
 	Method doEnd:Int()
-		bmx_qt_qpainter_end(qObjectPtr)
+		Local res:Int = bmx_qt_qpainter_end(qObjectPtr)
+		Free()
+		Return res
+	End Method
+	
+	Method drawConvexPolygon(points:Int[])
+		bmx_qt_qpainter_drawConvexPolygon(qObjectPtr, points)
+	End Method
+
+	Method drawConvexPolygonD(points:Double[])
+		bmx_qt_qpainter_drawConvexPolygond(qObjectPtr, points)
+	End Method
+	
+	Method drawEllipse(x:Int, y:Int, width:Int, height:Int)
+		bmx_qt_qpainter_drawEllipse(qObjectPtr, x, y, width, height)
+	End Method
+
+	Method drawEllipseRect(rect:QRect)
+	End Method
+	
+	Method drawEllipseCenter(cx:Int, cy:Int, rx:Int, ry:Int)
+		bmx_qt_qpainter_drawEllipsecenter(qObjectPtr, cx, cy, rx, ry)
+	End Method
+
+	Method drawEllipseCenterD(cx:Double, cy:Double, rx:Double, ry:Double)
+		bmx_qt_qpainter_drawEllipsecenterd(qObjectPtr, cx, cy, rx, ry)
+	End Method
+	
+	Method DrawLine(x1:Int, y1:Int, x2:Int, y2:Int)
+		bmx_qt_qpainter_drawline(qObjectPtr, x1, y1, x2, y2)
+	End Method
+
+	Method drawLineD(x1:Double, y1:Double, x2:Double, y2:Double)
+		bmx_qt_qpainter_drawlined(qObjectPtr, x1, y1, x2, y2)
 	End Method
 	
 	Method resetMatrix()
@@ -262,7 +295,11 @@ Type QPainter
 	End Method
 	
 	Method setBrush(brush:QBrush)
-	' TODO
+		bmx_qt_qpainter_setbrush(qObjectPtr, brush.qObjectPtr)
+	End Method
+
+	Method setBrushColor(color:QColor)
+		bmx_qt_qpainter_setbrushcolor(qObjectPtr, color.qObjectPtr)
 	End Method
 	
 	Method setBrushStyle(style:Int)
@@ -294,11 +331,11 @@ Type QPainter
 	End Method
 	
 	Method setPenColor(color:QColor)
-	' TODO
+		bmx_qt_qpainter_setpencolor(qObjectPtr, color.qObjectPtr)
 	End Method
 	
 	Method setPenStyle(style:Int)
-	' TODO
+		bmx_qt_qpainter_setpenstyle(qObjectPtr, style)
 	End Method
 
 	Method setRenderHint(hint:Int, on:Int = True)
