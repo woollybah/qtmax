@@ -37,11 +37,11 @@ void bmx_qt_qpainter_free(QPainter * painter) {
 }
 
 int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device) {
-	return painter->begin(device);
+	return static_cast<int>(painter->begin(device));
 }
 
-void bmx_qt_qpainter_end(QPainter * painter) {
-	painter->end();
+int bmx_qt_qpainter_end(QPainter * painter) {
+	return static_cast<int>(painter->end());
 }
 
 void bmx_qt_qpainter_resetmatrix(QPainter * painter) {
@@ -67,6 +67,59 @@ void bmx_qt_qpainter_save(QPainter * painter) {
 void bmx_qt_qpainter_scale(QPainter * painter, double sx, double sy) {
 	painter->scale(sx, sy);
 }
+
+void bmx_qt_qpainter_setbrush(QPainter * painter, MaxQBrush * brush) {
+	painter->setBrush(brush->Brush());
+}
+
+void bmx_qt_qpainter_setbrushcolor(QPainter * painter, MaxQColor * color) {
+	painter->setBrush(color->Color());
+}
+
+void bmx_qt_qpainter_drawconvexpolygon(QPainter * painter, BBArray * points) {
+	QPolygon p;
+	p.setPoints(points->scales[0] / 2, (int*)BBARRAYDATA(points, points->dims));
+	painter->drawConvexPolygon(p);
+}
+
+void bmx_qt_qpainter_drawconvexpolygond(QPainter * painter, BBArray * points) {
+	QPolygonF p;
+	int n = points->scales[0] / 2;
+	double *s=(double*)BBARRAYDATA( points, points->dims );
+	for (int i = 0; i < n; i++) {
+		p << QPointF(s[i * 2], s[i * 2 + 1]);
+	}
+	painter->drawConvexPolygon(p);
+}
+
+void bmx_qt_qpainter_drawellipse(QPainter * painter, int x, int y, int width, int height) {
+	painter->drawEllipse(x, y, width, height);
+}
+
+void bmx_qt_qpainter_drawellipsecenter(QPainter * painter, int cx, int cy, int rx, int ry) {
+	painter->drawEllipse(QPoint(cx, cy), rx, ry);
+}
+
+void bmx_qt_qpainter_drawellipsecenterd(QPainter * painter, double cx, double cy, double rx, double ry) {
+	painter->drawEllipse(QPointF(cx, cy), rx, ry);
+}
+
+void bmx_qt_qpainter_drawline(QPainter * painter, int x1, int y1, int x2, int y2) {
+	painter->drawLine(x1, y1, x2, y2);
+}
+
+void bmx_qt_qpainter_drawlined(QPainter * painter, double x1, double y1, double x2, double y2) {
+	painter->drawLine(QPointF(x1, y1), QPointF(x2, y2));
+}
+	
+void bmx_qt_qpainter_setpencolor(QPainter * painter, MaxQColor * color) {
+	painter->setPen(color->Color());
+}
+
+void bmx_qt_qpainter_setpenstyle(QPainter * painter, int style) {
+	painter->setPen(style);
+}
+
 
 
 // NOTES :

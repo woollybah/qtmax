@@ -165,4 +165,34 @@ bbdoc: Another reason, usually application-specific.
 end rem
 Const Qt_OtherFocusReason:Int = 7
 
+Rem
+bbdoc: No line at all.
+about: For example, QPainter::drawRect() fills but does not draw any boundary line.
+End Rem
+Const Qt_NoPen:Int = 0
+Rem
+bbdoc: A plain line.
+end rem
+Const Qt_SolidLine:Int = 1
+Rem
+bbdoc: Dashes separated by a few pixels.
+end rem
+Const Qt_DashLine:Int = 2
+Rem
+bbdoc: Dots separated by a few pixels.
+end rem
+Const Qt_DotLine:Int = 3
+Rem
+bbdoc: Alternate dots and dashes.
+end rem
+Const Qt_DashDotLine:Int = 4
+Rem
+bbdoc: One dash, two dots, one dash, two dots.
+end rem
+Const Qt_DashDotDotLine:Int = 5
+Rem
+bbdoc: A custom pattern defined using QPainterPathStroker::setDashPattern().
+end rem
+Const Qt_CustomDashLine:Int = 6
+
 

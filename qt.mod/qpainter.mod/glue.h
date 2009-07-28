@@ -24,6 +24,8 @@
 #define MAX_QT_QPAINTER
 
 #include "../core.mod/glue.h"
+#include "../qbrush.mod/glue.h"
+#include "../qcolor.mod/glue.h"
 #include <QtCore>
 #include <QPainter>
 
@@ -34,14 +36,25 @@ extern "C" {
 	QPainter * bmx_qt_qpainter_create();
 	void bmx_qt_qpainter_free(QPainter * painter);
 	int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device);
-	void bmx_qt_qpainter_end(QPainter * painter);
+	int bmx_qt_qpainter_end(QPainter * painter);
 	void bmx_qt_qpainter_resetmatrix(QPainter * painter);
 	void bmx_qt_qpainter_resettransform(QPainter * painter);
 	void bmx_qt_qpainter_restore(QPainter * painter);
 	void bmx_qt_qpainter_rotate(QPainter * painter, double angle);
 	void bmx_qt_qpainter_save(QPainter * painter);
 	void bmx_qt_qpainter_scale(QPainter * painter, double sx, double sy);
+	void bmx_qt_qpainter_setbrush(QPainter * painter, MaxQBrush * brush);
+	void bmx_qt_qpainter_setbrushcolor(QPainter * painter, MaxQColor * color);
+	void bmx_qt_qpainter_drawconvexpolygon(QPainter * painter, BBArray * points);
+	void bmx_qt_qpainter_drawconvexpolygond(QPainter * painter, BBArray * points);
+	void bmx_qt_qpainter_drawellipse(QPainter * painter, int x, int y, int width, int height);
+	void bmx_qt_qpainter_drawellipsecenter(QPainter * painter, int cx, int cy, int rx, int ry);
+	void bmx_qt_qpainter_drawellipsecenterd(QPainter * painter, double cx, double cy, double rx, double ry);
+	void bmx_qt_qpainter_drawline(QPainter * painter, int x1, int y1, int x2, int y2);
+	void bmx_qt_qpainter_drawlined(QPainter * painter, double x1, double y1, double x2, double y2);
 
+	void bmx_qt_qpainter_setpencolor(QPainter * painter, MaxQColor * color);
+	void bmx_qt_qpainter_setpenstyle(QPainter * painter, int style);
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -24,6 +24,18 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQBrush::MaxQBrush(const QBrush & b)
+	: brush(b)
+{
+}
+
+MaxQBrush::~MaxQBrush()
+{
+}
+
+QBrush & MaxQBrush::Brush() {
+	return brush;
+}
 
 
 // *********************************************
