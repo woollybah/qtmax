@@ -371,8 +371,27 @@ Qt::WindowFlags bmx_qt_getwindowflags(int f) {
 	if (f & (0x0000000e | 0x00000001)) flags |= Qt::SplashScreen;
 	if (f & (0x00000010 | 0x00000001)) flags |= Qt::Desktop;
 	if (f & 0x00000012) flags |= Qt::SubWindow;
-
-
+	if (f & 0x00000100) flags |= Qt::MSWindowsFixedSizeDialogHint;
+	if (f & 0x00000200) flags |= Qt::MSWindowsOwnDC;
+	if (f & 0x00000400) flags |= Qt::X11BypassWindowManagerHint;
+	if (f & 0x00000800) flags |= Qt::FramelessWindowHint;
+	if (f & 0x02000000) flags |= Qt::CustomizeWindowHint;
+	if (f & 0x00001000) flags |= Qt::WindowTitleHint;
+	if (f & 0x00002000) flags |= Qt::WindowSystemMenuHint;
+	if (f & 0x00004000) flags |= Qt::WindowMinimizeButtonHint;
+	if (f & 0x00008000) flags |= Qt::WindowMaximizeButtonHint;
+	if (f & (0x00004000 | 0x00008000)) flags |= Qt::WindowMinMaxButtonsHint;
+	if (f & 0x08000000) flags |= Qt::WindowCloseButtonHint;
+	if (f & 0x00010000) flags |= Qt::WindowContextHelpButtonHint;
+	if (f & 0x10000000) flags |= Qt::MacWindowToolBarButtonHint;
+	if (f & 0x20000000) flags |= Qt::BypassGraphicsProxyWidget;
+	if (f & 0x00020000) flags |= Qt::WindowShadeButtonHint;
+	if (f & 0x00040000) flags |= Qt::WindowStaysOnTopHint;
+	if (f & 0x04000000) flags |= Qt::WindowStaysOnBottomHint;
+	if (f & 0x00080000) flags |= Qt::WindowOkButtonHint;
+	if (f & 0x00100000) flags |= Qt::WindowCancelButtonHint;
+	if (f & 0x000000ff) flags |= Qt::WindowType_Mask;
+	
 	return flags;
 }
 

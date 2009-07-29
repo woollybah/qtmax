@@ -208,27 +208,44 @@ Type QPainter
 
 
 	Field qObjectPtr:Byte Ptr
+	Field _owner:Int = False
+	
+	Function _create:QPainter(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QPainter = New QPainter
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
-	Function CreatePainter:QPainter()
-		Return New QPainter.Create()
+	Function CreatePainter:QPainter(device:Object)
+		Return New QPainter.Create(device)
 	End Function
 	
-	Method Create:QPainter()
-		qObjectPtr = bmx_qt_qpainter_create()
-		Return Self
-	End Method
-
-	Method doBegin:Int(device:Object)
+	Method Create:QPainter(device:Object)
 		Local obj:QCoreObjectPtr = QCoreObjectPtr(device)
 		If obj Then
-			Return bmx_qt_qpainter_begin(qObjectPtr, obj.qObjectPtr)
+			qObjectPtr = bmx_qt_qpainter_create(obj.qObjectPtr)
+			_owner = True
+			Return Self
+		End If
+	End Method
+	
+	Method doBegin:Int(device:Object)
+		If _owner Then
+			Local obj:QCoreObjectPtr = QCoreObjectPtr(device)
+			If obj Then
+				Return bmx_qt_qpainter_begin(qObjectPtr, obj.qObjectPtr)
+			End If
 		End If
 	End Method
 	
 	Method doEnd:Int()
-		Local res:Int = bmx_qt_qpainter_end(qObjectPtr)
-		Free()
-		Return res
+		If _owner Then
+			Local res:Int = bmx_qt_qpainter_end(qObjectPtr)
+			Free()
+			Return res
+		End If
 	End Method
 	
 	Method drawConvexPolygon(points:Int[])
@@ -301,6 +318,10 @@ Type QPainter
 	Method setBrushColor(color:QColor)
 		bmx_qt_qpainter_setbrushcolor(qObjectPtr, color.qObjectPtr)
 	End Method
+
+	Method setBrushGradient(gradient:QGradient)
+		bmx_qt_qpainter_setbrushgradient(qObjectPtr, gradient.qObjectPtr)
+	End Method
 	
 	Method setBrushStyle(style:Int)
 	' TODO
@@ -339,15 +360,15 @@ Type QPainter
 	End Method
 
 	Method setRenderHint(hint:Int, on:Int = True)
-	' TODO
+		bmx_qt_qpainter_setrenderhint(qObjectPtr, hint, on)
 	End Method
 	
 	Method translate(dx:Double, dy:Double)
-	' TODO
+		bmx_qt_qpainter_translate(qObjectPtr, dx, dy)
 	End Method
 	
 	Method Free()
-		If qObjectPtr Then
+		If qObjectPtr And _owner Then
 			bmx_qt_qpainter_free(qObjectPtr)
 			qObjectPtr = Null
 		End If

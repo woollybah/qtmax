@@ -83,7 +83,23 @@ Type QWidget Extends QObject
 
 	Method OnInit()
 	End Method
+	
+	Method addAction(action:QAction)
+		bmx_qt_qwidget_addaction(qObjectPtr, action.qObjectPtr)
+	End Method
 
+	Method frameGeometry:QRect()
+		Return QRect._create(bmx_qt_qwidget_framegeometry(qObjectPtr))
+	End Method
+	
+	Method frameSize(w:Int Var, h:Int Var)
+		bmx_qt_qwidget_framesize(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method geometry:QRect()
+		Return QRect._create(bmx_qt_qwidget_geometry(qObjectPtr))
+	End Method
+	
 	Method hasEditFocus:Int()
 	' TODO
 	End Method
@@ -251,7 +267,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method move(x:Int, y:Int)
-	' TODO
+		bmx_qt_qwidget_move(qObjectPtr, x, y)
 	End Method
 	
 	Method nativeParentWidget:QWidget()
@@ -266,6 +282,14 @@ Type QWidget Extends QObject
 	
 	Method resize(w:Int, h:Int)
 		bmx_qt_qwidget_resize(qObjectPtr, w, h)
+	End Method
+	
+	Method setAttribute(attribute:Int)
+		bmx_qt_qwidget_setattribute(qObjectPtr, attribute)
+	End Method
+	
+	Method setContextMenuPolicy(policy:Int)
+		bmx_qt_qwidget_setcontextmenupolicy(qObjectPtr, policy)
 	End Method
 	
 	Method stackUnder(w:QWidget)
@@ -284,6 +308,9 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_setlayout(qObjectPtr, layout.qObjectPtr)
 	End Method
 	
+	Method setToolTip(text:String)
+		bmx_qt_qwidget_settooltip(qObjectPtr, text)
+	End Method
 	
 	Method whatsThis:String()
 	' TODO
@@ -431,21 +458,68 @@ Type QWidget Extends QObject
 
 
 
-
+	Rem
+	bbdoc: 
+	End Rem
 	Method paintEvent(event:QPaintEvent)
 	End Method
 	
-	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
+	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr, painter:Object)
+		obj._painter = painter
 		obj.paintEvent(QPaintEvent._create(event))
 	End Function
 	
+	Rem
+	bbdoc: 
+	End Rem
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+	End Method
 
+	Function _OnMouseDoubleClickEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseMoveEvent(QMouseEvent._create(event))
+	End Function
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mouseMoveEvent(event:QMouseEvent)
+	End Method
+
+	Function _OnMouseMoveEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseMoveEvent(QMouseEvent._create(event))
+	End Function
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mousePressEvent(event:QMouseEvent)
+	End Method
+
+	Function _OnMousePressEvent(obj:QWidget, event:Byte Ptr)
+		obj.mousePressEvent(QMouseEvent._create(event))
+	End Function
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mouseReleseEvent(event:QMouseEvent)
+	End Method
+
+	Function _OnMouseReleseEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseReleseEvent(QMouseEvent._create(event))
+	End Function
+	
 	' SIGNAL : customContextMenuRequested
 	Function _OnCustomContextMenuRequested(obj:QWidget, x:Int, y:Int)
 		obj._InvokeSignals("customContextMenuRequested", [String(x), String(y)])
 	End Function
 
-
+	Field _painter:Object
+	
+	Method getPainter:Object()
+		Return _painter
+	End Method
+	
 End Type
 
 Type QLayout Extends QObject
@@ -520,6 +594,39 @@ End Type
 
 
 Type QAction Extends QObject
+
+	Function CreateAction:QAction(text:String, parent:QObject)
+		Return New QAction.Create(text, parent)
+	End Function
+	
+	Method Create:QAction(text:String, parent:QObject)
+		qObjectPtr = bmx_qt_qaction_create(Self, text, parent.qObjectPtr)
+		Return Self
+	End Method
+	
+	Method setShortcut(sequence:String)
+		bmx_qt_qaction_setshortcut(qObjectPtr, sequence)
+	End Method
+	
+	' SIGNAL : changed
+	Function _OnChanged(obj:QAction)
+		obj._InvokeSignals("changed", Null)
+	End Function
+
+	' SIGNAL : hovered
+	Function _OnHovered(obj:QAction)
+		obj._InvokeSignals("hovered", Null)
+	End Function
+
+	' SIGNAL : toggled
+	Function _OnToggled(obj:QAction, checked:Int)
+		obj._InvokeSignals("toggled", [String(checked)])
+	End Function
+
+	' SIGNAL : triggered
+	Function _OnTriggered(obj:QAction, checked:Int)
+		obj._InvokeSignals("triggered", [String(checked)])
+	End Function
 
 End Type
 

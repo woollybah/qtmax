@@ -37,8 +37,60 @@ MaxQWidget::~MaxQWidget()
 
 
 void MaxQWidget::paintEvent(QPaintEvent * event) {
-	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event);
+	QPainter p(this);
+	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event, _qt_qpainter_QPainter__create(&p));
 }
+
+void MaxQWidget::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQWidget::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMouseMoveEvent(maxHandle, event);
+}
+
+void MaxQWidget::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMousePressEvent(maxHandle, event);
+}
+
+void MaxQWidget::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMouseReleseEvent(maxHandle, event);
+}
+
+// ---------------------------------------------------------------------------------------
+
+MaxQAction::MaxQAction(BBObject * handle, const QString & text, QObject * parent)
+	: maxHandle(handle), QAction(text, parent)
+{
+	qbind(this, handle);
+
+	connect(this, SIGNAL(changed()), SLOT(onChanged()));
+	connect(this, SIGNAL(hovered()), SLOT(onHovered()));
+	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
+	connect(this, SIGNAL(triggered(bool)), SLOT(onTriggered(bool)));
+}
+
+MaxQAction::~MaxQAction()
+{
+	qunbind(this);
+}
+
+void MaxQAction::onChanged() {
+	_qt_qwidget_QAction__OnChanged(maxHandle);
+}
+
+void MaxQAction::onHovered() {
+	_qt_qwidget_QAction__OnHovered(maxHandle);
+}
+
+void MaxQAction::onToggled(bool checked) {
+	_qt_qwidget_QAction__OnToggled(maxHandle, static_cast<int>(checked));
+}
+
+void MaxQAction::onTriggered(bool checked) {
+	_qt_qwidget_QAction__OnTriggered(maxHandle, static_cast<int>(checked));
+}
+
 
 // *********************************************
 
@@ -154,6 +206,275 @@ int bmx_qt_qwidget_height(QWidget * widget) {
 
 int bmx_qt_qwidget_width(QWidget * widget) {
 	return widget->width();
+}
+
+void bmx_qt_qwidget_addaction(QWidget * widget, QAction * action) {
+	widget->addAction(action);
+}
+
+void bmx_qt_qwidget_setcontextmenupolicy(QWidget * widget, int p) {
+	Qt::ContextMenuPolicy policy;
+	
+	switch(p) {
+		case 0:
+			policy = Qt::NoContextMenu;
+			break;
+		case 1:
+			policy = Qt::DefaultContextMenu;
+			break;
+		case 2:
+			policy = Qt::ActionsContextMenu;
+			break;
+		case 3:
+			policy = Qt::CustomContextMenu;
+			break;
+		case 4:
+			policy = Qt::PreventContextMenu;
+			break;
+	}
+	
+	widget->setContextMenuPolicy(policy);
+}
+
+MaxQRect * bmx_qt_qwidget_framegeometry(QWidget * widget) {
+	return new MaxQRect(widget->frameGeometry());
+}
+
+void bmx_qt_qwidget_framesize(QWidget * widget, int * w, int * h) {
+	QSize s(widget->frameSize());
+	*w = s.width();
+	*h = s.height();
+}
+
+MaxQRect * bmx_qt_qwidget_geometry(QWidget * widget) {
+	return new MaxQRect(widget->geometry());
+}
+
+void bmx_qt_qwidget_setattribute(QWidget * widget, int attribute) {
+	widget->setAttribute(bmx_qt_inttowidgetattribute(attribute));
+}
+
+void bmx_qt_qwidget_move(QWidget * widget, int x, int y) {
+	widget->move(x, y);
+}
+
+void bmx_qt_qwidget_settooltip(QWidget * widget, BBString * text) {
+	widget->setToolTip(qStringFromBBString(text));
+}
+
+// *********************************************
+
+QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
+	return new MaxQAction(handle, qStringFromBBString(text), parent);
+}
+
+void bmx_qt_qaction_setshortcut(QAction * handle, BBString * sequence) {
+	handle->setShortcut(qStringFromBBString(sequence));
+}
+
+// *********************************************
+
+Qt::WidgetAttribute bmx_qt_inttowidgetattribute(int a) {
+	switch(a) {
+		case 0:
+			return Qt::WA_Disabled;
+		case 1:
+			return Qt::WA_UnderMouse;
+		case 2:
+			return Qt::WA_MouseTracking;
+		case 4:
+			return Qt::WA_OpaquePaintEvent;
+		case 5:
+			return Qt::WA_StaticContents;
+		case 7:
+			return Qt::WA_LaidOut;
+		case 8:
+			return Qt::WA_PaintOnScreen;
+		case 9:
+			return Qt::WA_NoSystemBackground;
+		case 10:
+			return Qt::WA_UpdatesDisabled;
+		case 11:
+			return Qt::WA_Mapped;
+		case 12:
+			return Qt::WA_MacNoClickThrough;
+		case 13:
+			return Qt::WA_PaintOutsidePaintEvent;
+		case 14:
+			return Qt::WA_InputMethodEnabled;
+		case 15:
+			return Qt::WA_WState_Visible;
+		case 16:
+			return Qt::WA_WState_Hidden;
+		case 32:
+			return Qt::WA_ForceDisabled;
+		case 33:
+			return Qt::WA_KeyCompression;
+		case 34:
+			return Qt::WA_PendingMoveEvent;
+		case 35:
+			return Qt::WA_PendingResizeEvent;
+		case 36:
+			return Qt::WA_SetPalette;
+		case 37:
+			return Qt::WA_SetFont;
+		case 38:
+			return Qt::WA_SetCursor;
+		case 39:
+			return Qt::WA_NoChildEventsFromChildren;
+		case 41:
+			return Qt::WA_WindowModified;
+		case 42:
+			return Qt::WA_Resized;
+		case 43:
+			return Qt::WA_Moved;
+		case 44:
+			return Qt::WA_PendingUpdate;
+		case 45:
+			return Qt::WA_InvalidSize;
+		case 46:
+			return Qt::WA_MacBrushedMetal;
+		case 47:
+			return Qt::WA_CustomWhatsThis;
+		case 48:
+			return Qt::WA_LayoutOnEntireRect;
+		case 49:
+			return Qt::WA_OutsideWSRange;
+		case 50:
+			return Qt::WA_GrabbedShortcut;
+		case 51:
+			return Qt::WA_TransparentForMouseEvents;
+		case 52:
+			return Qt::WA_PaintUnclipped;
+		case 53:
+			return Qt::WA_SetWindowIcon;
+		case 54:
+			return Qt::WA_NoMouseReplay;
+		case 55:
+			return Qt::WA_DeleteOnClose;
+		case 56:
+			return Qt::WA_RightToLeft;
+		case 57:
+			return Qt::WA_SetLayoutDirection;
+		case 58:
+			return Qt::WA_NoChildEventsForParent;
+		case 59:
+			return Qt::WA_ForceUpdatesDisabled;
+		case 60:
+			return Qt::WA_WState_Created;
+		case 61:
+			return Qt::WA_WState_CompressKeys;
+		case 62:
+			return Qt::WA_WState_InPaintEvent;
+		case 63:
+			return Qt::WA_WState_Reparented;
+		case 64:
+			return Qt::WA_WState_ConfigPending;
+		case 66:
+			return Qt::WA_WState_Polished;
+		case 68:
+			return Qt::WA_WState_OwnSizePolicy;
+		case 69:
+			return Qt::WA_WState_ExplicitShowHide;
+		case 71:
+			return Qt::WA_MouseNoMask;
+		case 73:
+			return Qt::WA_NoMousePropagation;
+		case 74:
+			return Qt::WA_Hover;
+		case 75:
+			return Qt::WA_InputMethodTransparent;
+		case 76:
+			return Qt::WA_QuitOnClose;
+		case 77:
+			return Qt::WA_KeyboardFocusChange;
+		case 78:
+			return Qt::WA_AcceptDrops;
+		case 80:
+			return Qt::WA_WindowPropagation;
+		case 81:
+			return Qt::WA_NoX11EventCompression;
+		case 82:
+			return Qt::WA_TintedBackground;
+		case 83:
+			return Qt::WA_X11OpenGLOverlay;
+		case 84:
+			return Qt::WA_AlwaysShowToolTips;
+		case 85:
+			return Qt::WA_MacOpaqueSizeGrip;
+		case 86:
+			return Qt::WA_SetStyle;
+		case 87:
+			return Qt::WA_SetLocale;
+		case 88:
+			return Qt::WA_MacShowFocusRect;
+		case 89:
+			return Qt::WA_MacNormalSize;
+		case 90:
+			return Qt::WA_MacSmallSize;
+		case 91:
+			return Qt::WA_MacMiniSize;
+		case 92:
+			return Qt::WA_LayoutUsesWidgetRect;
+		case 93:
+			return Qt::WA_StyledBackground;
+		case 94:
+			return Qt::WA_MSWindowsUseDirect3D;
+		case 95:
+			return Qt::WA_CanHostQMdiSubWindowTitleBar;
+		case 96:
+			return Qt::WA_MacAlwaysShowToolWindow;
+		case 97:
+			return Qt::WA_StyleSheet;
+		case 98:
+			return Qt::WA_ShowWithoutActivating;
+		case 99:
+			return Qt::WA_X11BypassTransientForHint;
+		case 100:
+			return Qt::WA_NativeWindow;
+		case 101:
+			return Qt::WA_DontCreateNativeAncestors;
+		case 102:
+			return Qt::WA_MacVariableSize;
+		case 103:
+			return Qt::WA_DontShowOnScreen;
+		case 104:
+			return Qt::WA_X11NetWmWindowTypeDesktop;
+		case 105:
+			return Qt::WA_X11NetWmWindowTypeDock;
+		case 106:
+			return Qt::WA_X11NetWmWindowTypeToolBar;
+		case 107:
+			return Qt::WA_X11NetWmWindowTypeMenu;
+		case 108:
+			return Qt::WA_X11NetWmWindowTypeUtility;
+		case 109:
+			return Qt::WA_X11NetWmWindowTypeSplash;
+		case 110:
+			return Qt::WA_X11NetWmWindowTypeDialog;
+		case 111:
+			return Qt::WA_X11NetWmWindowTypeDropDownMenu;
+		case 112:
+			return Qt::WA_X11NetWmWindowTypePopupMenu;
+		case 113:
+			return Qt::WA_X11NetWmWindowTypeToolTip;
+		case 114:
+			return Qt::WA_X11NetWmWindowTypeNotification;
+		case 115:
+			return Qt::WA_X11NetWmWindowTypeCombo;
+		case 116:
+			return Qt::WA_X11NetWmWindowTypeDND;
+		case 117:
+			return Qt::WA_MacFrameworkScaled;
+		case 118:
+			return Qt::WA_SetWindowModality;
+		case 119:
+			return Qt::WA_WState_WindowOpacitySet;
+		case 120:
+			return Qt::WA_TranslucentBackground;
+	}
+	
+	return Qt::WA_Disabled;
 }
 
 // NOTES :

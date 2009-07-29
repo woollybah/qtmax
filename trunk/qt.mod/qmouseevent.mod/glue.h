@@ -20,52 +20,30 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCOREAPPLICATION
-#define MAX_QT_QCOREAPPLICATION
+#ifndef MAX_QT_QMOUSEEVENT
+#define MAX_QT_QMOUSEEVENT
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-
-class MaxQCoreApplication;
+#include <QMouseEvent>
 
 extern "C" {
 
 #include <blitz.h>
-	
-	void _qt_qcoreapplication_QCoreApplication__OnAboutToQuit(BBObject * handle);
 
-
-	QCoreApplication * bmx_qt_qcoreapplication_create(BBObject * handle);
-
-	void bmx_qt_qcoreapplication_addlibrarypath(BBString * path);
-	BBString * bmx_qt_qcoreapplication_applicationdirpath();
-	BBString * bmx_qt_qcoreapplication_applicationfilepath();
-	BBString * bmx_qt_qcoreapplication_applicationname();
-	void bmx_qt_qcoreapplication_applicationpid(BBInt64 * pid);
-	void bmx_qt_qcoreapplication_flush();
-
-	void bmx_qt_qcoreapplication_quit(QCoreApplication * app);
+	int bmx_qt_qmouseevent_button(QMouseEvent * event);
+	int bmx_qt_qmouseevent_buttons(QMouseEvent * event);
+	void bmx_qt_qmouseevent_globalpos(QMouseEvent * event, int * x, int * y);
+	int bmx_qt_qmouseevent_globalx(QMouseEvent * event);
+	int bmx_qt_qmouseevent_globaly(QMouseEvent * event);
+	void bmx_qt_qmouseevent_pos(QMouseEvent * event, int * x, int * y);
+	void bmx_qt_qmouseevent_posf(QMouseEvent * event, double * x, double * y);
+	int bmx_qt_qmouseevent_x(QMouseEvent * event);
+	int bmx_qt_qmouseevent_y(QMouseEvent * event);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-class MaxQCoreApplication : public QCoreApplication
-{
-
-	Q_OBJECT
-	
-public:
-	MaxQCoreApplication(BBObject * handle, int & argc, char ** argv);
-	~MaxQCoreApplication();
-
-private:
-	BBObject * maxHandle;
-	
-private slots:
-	void onAboutToQuit();
-	
-};
 
 
 #endif
