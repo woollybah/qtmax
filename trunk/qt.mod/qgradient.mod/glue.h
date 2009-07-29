@@ -56,8 +56,9 @@ extern "C" {
 class MaxQGradient
 {
 public:
-	virtual QGradient & Gradient();
+	MaxQGradient() {};
 	
+	virtual QGradient & Gradient() {};
 };
 
 class MaxQRadialGradient : public MaxQGradient
