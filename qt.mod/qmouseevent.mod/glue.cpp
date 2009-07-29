@@ -25,65 +25,49 @@
 // ---------------------------------------------------------------------------------------
 
 
-MaxQRadialGradient::MaxQRadialGradient(double cx, double cy, double radius, double fx, double fy)
-	: gradient(QPointF(cx, cy), radius, QPointF(fx, fy))
-{
-}
-
-MaxQRadialGradient::~MaxQRadialGradient()
-{
-}
-
-QGradient & MaxQRadialGradient::Gradient() {
-	return gradient;
-}
-
-QRadialGradient & MaxQRadialGradient::RadialGradient() {
-	return gradient;
-}
 
 // *********************************************
 
-void bmx_qt_qgradient_setcolorat(MaxQGradient * gradient, double position, MaxQColor * color) {
-	gradient->Gradient().setColorAt(position, color->Color());
+int bmx_qt_qmouseevent_button(QMouseEvent * event) {
+	return event->button();
 }
 
-// *********************************************
-
-MaxQRadialGradient * bmx_qt_qradialgradient_create(double cx, double cy, double radius, double fx, double fy) {
-	return new MaxQRadialGradient(cx, cy, radius, fx, fy);
+int bmx_qt_qmouseevent_buttons(QMouseEvent * event) {
+	return event->buttons();
 }
 
-void bmx_qt_qradialgradient_center(MaxQRadialGradient * gradient, double * x, double * y) {
-	QPointF p(gradient->RadialGradient().center());
+void bmx_qt_qmouseevent_globalpos(QMouseEvent * event, int * x, int * y) {
+	QPoint p(event->globalPos());
 	*x = p.x();
 	*y = p.y();
 }
 
-void bmx_qt_qradialgradient_focalpoint(MaxQRadialGradient * gradient, double * x, double * y) {
-	QPointF p(gradient->RadialGradient().focalPoint());
+int bmx_qt_qmouseevent_globalx(QMouseEvent * event) {
+	return event->globalX();
+}
+
+int bmx_qt_qmouseevent_globaly(QMouseEvent * event) {
+	return event->globalY();
+}
+
+void bmx_qt_qmouseevent_pos(QMouseEvent * event, int * x, int * y) {
+	QPoint p(event->pos());
 	*x = p.x();
 	*y = p.y();
 }
 
-double bmx_qt_qradialgradient_radius(MaxQRadialGradient * gradient) {
-	return gradient->RadialGradient().radius();
+void bmx_qt_qmouseevent_posf(QMouseEvent * event, double * x, double * y) {
+	QPointF p(event->posF());
+	*x = p.x();
+	*y = p.y();
 }
 
-void bmx_qt_qradialgradient_setcenter(MaxQRadialGradient * gradient, double x, double y) {
-	gradient->RadialGradient().setCenter(QPointF(x, y));
+int bmx_qt_qmouseevent_x(QMouseEvent * event) {
+	return event->x();
 }
 
-void bmx_qt_qradialgradient_setfocalpoint(MaxQRadialGradient * gradient, double x, double y) {
-	gradient->RadialGradient().setFocalPoint(QPointF(x, y));
-}
-
-void bmx_qt_qradialgradient_setradius(MaxQRadialGradient * gradient, double radius) {
-	gradient->RadialGradient().setRadius(radius);
-}
-
-void bmx_qt_qradialgradient_free(MaxQRadialGradient * gradient) {
-	delete gradient;
+int bmx_qt_qmouseevent_y(QMouseEvent * event) {
+	return event->y();
 }
 
 

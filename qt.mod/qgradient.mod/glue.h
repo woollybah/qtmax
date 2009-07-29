@@ -24,20 +24,53 @@
 #define MAX_QT_QGRADIENT
 
 #include "../core.mod/glue.h"
+#include "../qcolor.mod/glue.h"
 #include <QtCore>
 #include <QGradient>
 #include <QConicalGradient>
 #include <QLinearGradient>
 #include <QRadialGradient>
 
+class MaxQGradient;
+class MaxQRadialGradient;
+
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qgradient_setcolorat(MaxQGradient * gradient, double position, MaxQColor * color);
+
+	MaxQRadialGradient * bmx_qt_qradialgradient_create(double cx, double cy, double radius, double fx, double fy);
+	void bmx_qt_qradialgradient_center(MaxQRadialGradient * gradient, double * x, double * y);
+	void bmx_qt_qradialgradient_focalpoint(MaxQRadialGradient * gradient, double * x, double * y);
+	double bmx_qt_qradialgradient_radius(MaxQRadialGradient * gradient);
+	void bmx_qt_qradialgradient_setcenter(MaxQRadialGradient * gradient, double x, double y);
+	void bmx_qt_qradialgradient_setfocalpoint(MaxQRadialGradient * gradient, double x, double y);
+	void bmx_qt_qradialgradient_setradius(MaxQRadialGradient * gradient, double radius);
+	void bmx_qt_qradialgradient_free(MaxQRadialGradient * gradient);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQGradient
+{
+public:
+	virtual QGradient & Gradient();
+	
+};
+
+class MaxQRadialGradient : public MaxQGradient
+{
+public:
+	MaxQRadialGradient(double cx, double cy, double radius, double fx, double fy);
+	~MaxQRadialGradient();
+
+	QGradient & Gradient();
+	QRadialGradient & RadialGradient();
+	
+private:
+	QRadialGradient gradient;
+};
 
 #endif

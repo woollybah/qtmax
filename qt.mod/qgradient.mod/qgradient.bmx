@@ -82,7 +82,7 @@ Type QGradient
 	End Method
 	
 	Method setColorAt(position:Double, color:QColor)
-	' TODO
+		bmx_qt_qgradient_setcolorat(qObjectPtr, position, color.qObjectPtr)
 	End Method
 	
 	Method setCoordinateMode(Mode:Int)
@@ -166,33 +166,47 @@ End Type
 Type QRadialGradient Extends QGradient
 
 	Function CreateRadialGradient:QRadialGradient(cx:Double, cy:Double, radius:Double, fx:Double, fy:Double)
+		Return New QRadialGradient.Create(cx, cy, radius, fx, fy)
 	End Function
 	
 	Method Create:QRadialGradient(cx:Double, cy:Double, radius:Double, fx:Double, fy:Double)
+		qObjectPtr = bmx_qt_qradialgradient_create(cx, cy, radius, fx, fy)
+		Return Self
 	End Method
 	
 	Method center(x:Double Var, y:Double Var)
-	' TODO
+		bmx_qt_qradialgradient_center(qObjectPtr, Varptr x, Varptr y)
 	End Method
 	
 	Method focalPoint(x:Double Var, y:Double Var)
-	' TODO
+		bmx_qt_qradialgradient_focalpoint(qObjectPtr, Varptr x, Varptr y)
 	End Method
 	
 	Method radius:Double()
-	' TODO
+		Return bmx_qt_qradialgradient_radius(qObjectPtr)
 	End Method
 	
 	Method setCenter(x:Double, y:Double)
-	' TODO
+		bmx_qt_qradialgradient_setcenter(qObjectPtr, x, y)
 	End Method
 	
 	Method setFocalPoint(x:Double, y:Double)
-	' TODO
+		bmx_qt_qradialgradient_setfocalpoint(qObjectPtr, x, y)
 	End Method
 	
 	Method setRadius(radius:Double)
-	' TODO
+		bmx_qt_qradialgradient_setradius(qObjectPtr, radius)
+	End Method
+	
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qradialgradient_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
 	End Method
 
 End Type

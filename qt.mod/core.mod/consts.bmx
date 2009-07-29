@@ -130,6 +130,92 @@ Rem
 bbdoc: Indicates that this widget is a sub-window, such as a QMdiSubWindow widget.
 end rem
 Const Qt_SubWindow:Int = $00000012
+Rem
+bbdoc: Gives the window a thin dialog border on Windows.
+about: This style is traditionally used for fixed-size dialogs.
+end rem
+Const Qt_MSWindowsFixedSizeDialogHint:Int = $00000100
+Rem
+bbdoc: Gives the window its own display context on Windows.
+end rem
+Const Qt_MSWindowsOwnDC:Int = $00000200
+Rem
+bbdoc: Bypass the window manager completely.
+about: This results in a borderless window that is not managed at all (i.e., no keyboard input unless you call QWidget::activateWindow() manually).
+end rem
+Const Qt_X11BypassWindowManagerHint:Int = $00000400
+Rem
+bbdoc: Produces a borderless window.
+about: The user cannot move or resize a borderless window via the window system. On X11, the result of the flag is dependent
+on the window manager and its ability to understand Motif and/or NETWM hints. Most existing modern window managers can handle this.
+end rem
+Const Qt_FramelessWindowHint:Int = $00000800
+Rem
+bbdoc: Turns off the default window title hints.
+end rem
+Const Qt_CustomizeWindowHint:Int = $02000000
+Rem
+bbdoc: Gives the window a title bar.
+end rem
+Const Qt_WindowTitleHint:Int = $00001000
+Rem
+bbdoc: Adds a window system menu, and possibly a close button (for example on Mac).
+about: If you need to hide or show a close button, it is more portable to use WindowCloseButtonHint.
+end rem
+Const Qt_WindowSystemMenuHint:Int = $00002000
+Rem
+bbdoc: Adds a minimize button.
+about: On some platforms this implies Qt_WindowSystemMenuHint for it to work.
+end rem
+Const Qt_WindowMinimizeButtonHint:Int = $00004000
+Rem
+bbdoc: Adds a maximize button.
+about: On some platforms this implies Qt_WindowSystemMenuHint for it to work.
+end rem
+Const Qt_WindowMaximizeButtonHint:Int = $00008000
+Rem
+bbdoc: Adds a minimize and a maximize button.
+about: On some platforms this implies Qt_WindowSystemMenuHint for it to work.
+end rem
+Const Qt_WindowMinMaxButtonsHint:Int = Qt_WindowMinimizeButtonHint | Qt_WindowMaximizeButtonHint
+Rem
+bbdoc: Adds a close button.
+about: On some platforms this implies Qt_WindowSystemMenuHint for it to work.
+end rem
+Const Qt_WindowCloseButtonHint:Int = $08000000
+Rem
+bbdoc: Adds a context help button to dialogs.
+about: On some platforms this implies Qt_WindowSystemMenuHint for it to work.
+end rem
+Const Qt_WindowContextHelpButtonHint:Int = $00010000
+Rem
+bbdoc: On Mac OS X adds a tool bar button (i.e., the oblong button that is on the top right of windows that have toolbars.
+end rem
+Const Qt_MacWindowToolBarButtonHint:Int = $10000000
+Rem
+bbdoc: Prevents the window and its children from automatically embedding themselves into a QGraphicsProxyWidget if the parent widget is already embedded.
+about: You can set this flag if you want your widget to always be a toplevel widget on the desktop, regardless of whether the parent widget is embedded in a scene or not.
+end rem
+Const Qt_BypassGraphicsProxyWidget:Int = $20000000
+Rem
+bbdoc:  
+end rem
+Const Qt_WindowShadeButtonHint:Int = $00020000
+Rem
+bbdoc: Informs the window system that the window should stay on top of all other windows.
+about: Note that on some window managers on X11 you also have to pass Qt::X11BypassWindowManagerHint for this flag to work correctly.
+end rem
+Const Qt_WindowStaysOnTopHint:Int = $00040000
+Rem
+bbdoc: Informs the window system that the window should stay on bottom of all other windows.
+about: Note that on X11 this hint will work only in window managers that support _NET_WM_STATE_BELOW atom. If a window always on the bottom has a
+parent, the parent will also be left on the bottom. This window hint is currently not implemented for Mac OS X.
+end rem
+Const Qt_WindowStaysOnBottomHint:Int = $04000000
+Rem
+bbdoc: A mask for extracting the window type part of the window flags.
+end rem
+Const Qt_WindowType_Mask:Int = $000000ff
 
 Rem
 bbdoc: A mouse action occurred.

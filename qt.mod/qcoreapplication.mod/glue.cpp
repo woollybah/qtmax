@@ -81,6 +81,9 @@ void bmx_qt_qcoreapplication_flush() {
 	QCoreApplication::flush();
 }
 
+void bmx_qt_qcoreapplication_quit(QCoreApplication * app) {
+	app->quit();
+}
 
 
 // NOTES :

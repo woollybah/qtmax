@@ -17,6 +17,12 @@ End
 
 Type AnalogClock Extends QWidget
 
+	Field hourHand:Int[] = [7, 8, -7, 8, 0, -40]
+	Field minuteHand:Int[] = [7, 8, -7, 8, 0, -70]
+	
+	Field hourColor:QColor = New QColor.Create(127, 0, 127)
+	Field minuteColor:QColor = New QColor.Create(0, 127, 127, 191)
+	
 	Method Create:AnalogClock()
 		Return AnalogClock(Self._Create())
 	End Method
@@ -31,17 +37,11 @@ Type AnalogClock Extends QWidget
 	End Method
 
 	Method paintEvent(event:QPaintEvent)
-		Global hourHand:Int[] = [7, 8, -7, 8, 0, -40]
-		Global minuteHand:Int[] = [7, 8, -7, 8, 0, -70]
-	
-		Local hourColor:QColor = New QColor.Create(127, 0, 127)
-		Local minuteColor:QColor = New QColor.Create(0, 127, 127, 191)
-		
+
 		Local size:Int = Min(width(), height())
 		Local time:QTime = QTime.CurrentTime()
 
-		Local painter:QPainter = New QPainter.Create()
-		painter.doBegin(Self)
+		Local painter:QPainter = QPainter(getPainter())
 
 		painter.setRenderHint(QPainter.Antialiasing)
 		painter.translate(width() / 2, height() / 2)
@@ -78,8 +78,6 @@ Type AnalogClock Extends QWidget
 			End If
 			painter.rotate(6.0)
 		Next
-
-		painter.doEnd()
 
 	End Method
 

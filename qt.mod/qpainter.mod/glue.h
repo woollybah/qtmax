@@ -26,8 +26,11 @@
 #include "../core.mod/glue.h"
 #include "../qbrush.mod/glue.h"
 #include "../qcolor.mod/glue.h"
+#include "../qgradient.mod/glue.h"
 #include <QtCore>
 #include <QPainter>
+
+class MaxQPainter;
 
 extern "C" {
 
@@ -55,9 +58,24 @@ extern "C" {
 
 	void bmx_qt_qpainter_setpencolor(QPainter * painter, MaxQColor * color);
 	void bmx_qt_qpainter_setpenstyle(QPainter * painter, int style);
+	void bmx_qt_qpainter_translate(QPainter * painter, double dx, double dy);
+	void bmx_qt_qpainter_setrenderhint(QPainter * painter, int hint, int on);
+	void bmx_qt_qpainter_setbrushgradient(QPainter * painter, MaxQGradient * gradient);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQPainter
+{
+public:
+	MaxQPainter(QPaintDevice * device);
+	~MaxQPainter();
+
+	QPainter & Painter();
+	
+private:
+	QPainter painter;
+};
 
 #endif

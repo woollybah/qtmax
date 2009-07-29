@@ -48,7 +48,7 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qpainter_create:Byte Ptr()
+	Function bmx_qt_qpainter_create:Byte Ptr(device:Byte Ptr)
 	Function bmx_qt_qpainter_free(handle:Byte Ptr)
 	Function bmx_qt_qpainter_begin:Int(handle:Byte Ptr, device:Byte Ptr)
 	Function bmx_qt_qpainter_end:Int(handle:Byte Ptr)
@@ -69,5 +69,8 @@ Extern
 	Function bmx_qt_qpainter_drawlined(handle:Byte Ptr, x1:Double, y1:Double, x2:Double, y2:Double)
 	Function bmx_qt_qpainter_setpencolor(handle:Byte Ptr, color:Byte Ptr)
 	Function bmx_qt_qpainter_setpenstyle(handle:Byte Ptr, style:Int)
+	Function bmx_qt_qpainter_translate(handle:Byte Ptr, dx:Double, dy:Double)
+	Function bmx_qt_qpainter_setrenderhint(handle:Byte Ptr, hint:Int, on:Int)
+	Function bmx_qt_qpainter_setbrushgradient(handle:Byte Ptr, gradient:Byte Ptr)
 
 End Extern

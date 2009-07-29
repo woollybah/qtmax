@@ -47,6 +47,18 @@ Type QCoreApplication Extends QObject
 		Return Self
 	End Method
 
+	Rem
+	bbdoc: Tells the application to exit with return code 0 (success).
+	about: Equivalent to calling QCoreApplication::exit(0).
+	<p>
+	It's common to connect the QApplication::lastWindowClosed() signal to quit(), and you also often
+	connect e.g. QAbstractButton::clicked() or signals in QAction, QMenu, or QMenuBar to it.
+	</p>
+	End Rem	
+	Method quit()
+		bmx_qt_qcoreapplication_quit(qObjectPtr)
+	End Method
+
 	Function addLibraryPath(path:String)
 		bmx_qt_qcoreapplication_addlibrarypath(path)
 	End Function

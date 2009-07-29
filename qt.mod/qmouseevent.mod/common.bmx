@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QColor
+Import Qt.QInputEvent
 Import BRL.Blitz
 
 
@@ -46,15 +46,14 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qgradient_setcolorat(handle:Byte Ptr, position:Double, color:Byte Ptr)
-
-	Function bmx_qt_qradialgradient_create:Byte Ptr(cx:Double, cy:Double, radius:Double, fx:Double, fy:Double)
-	Function bmx_qt_qradialgradient_center(handle:Byte Ptr, x:Double Ptr, y:Double Ptr)
-	Function bmx_qt_qradialgradient_focalpoint(handle:Byte Ptr, x:Double Ptr, y:Double Ptr)
-	Function bmx_qt_qradialgradient_radius:Double(handle:Byte Ptr)
-	Function bmx_qt_qradialgradient_setcenter(handle:Byte Ptr, x:Double, y:Double)
-	Function bmx_qt_qradialgradient_setfocalpoint(handle:Byte Ptr, x:Double, y:Double)
-	Function bmx_qt_qradialgradient_setradius(handle:Byte Ptr, radius:Double)
-	Function bmx_qt_qradialgradient_free(handle:Byte Ptr)
+	Function bmx_qt_qmouseevent_button:Int(handle:Byte Ptr)
+	Function bmx_qt_qmouseevent_buttons:Int(handle:Byte Ptr)
+	Function bmx_qt_qmouseevent_globalpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qmouseevent_globalx:Int(handle:Byte Ptr)
+	Function bmx_qt_qmouseevent_globaly:Int(handle:Byte Ptr)
+	Function bmx_qt_qmouseevent_pos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qmouseevent_posf(handle:Byte Ptr, x:Double Ptr, y:Double Ptr)
+	Function bmx_qt_qmouseevent_x:Int(handle:Byte Ptr)
+	Function bmx_qt_qmouseevent_y:Int(handle:Byte Ptr)
 
 End Extern

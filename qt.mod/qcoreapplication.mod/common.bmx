@@ -53,4 +53,6 @@ Extern
 	Function bmx_qt_qcoreapplication_applicationpid(pid:Long Ptr)
 	Function bmx_qt_qcoreapplication_flush()
 
+	Function bmx_qt_qcoreapplication_quit(handle:Byte Ptr)
+
 End Extern
