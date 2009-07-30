@@ -81,9 +81,85 @@ Type QAbstractButton Extends QWidget
 	Method setDown(value:Int)
 	End Method
 
+	Method setIcon(icon:QIcon)
+	' TODO
+	End Method
+	
+	'Method setShortcut(key:QKeySequence)
+	' TODO
+	'End Method
+	
+	Method setText(text:String)
+	' TODO
+	End Method
+	
+	'Method shortcut:QKeySequence()
+	' TODO
+	'End Method
+	
+	Method text:String()
+	' TODO
+	End Method
+	
+	Method animateClick(msec:Int = 100)
+	' TODO
+	End Method
+	
+	Method click()
+	' TODO
+	End Method
+	
+	Method setChecked(value:Int)
+	' TODO
+	End Method
+	
+	Method setIconSize(w:Int, h:Int)
+	' TODO
+	End Method
+	
+	Method toggle()
+	' TODO
+	End Method
+	
 End Type
 
 
 Type QButtonGroup Extends QObject
+
+	Function CreateButtonGroup:QButtonGroup(parent:QObject = Null)
+		Return New QButtonGroup.Create(parent)
+	End Function
+	
+	Method Create:QButtonGroup(parent:QObject = Null)
+		
+		Return Self
+	End Method
+	
+	Method addButton(button:QAbstractButton, id:Int)
+	End Method
+	
+	Method button:QAbstractButton(id:Int)
+	End Method
+	
+	Method checkedButton:QAbstractButton()
+	End Method
+	
+	Method checkedId:Int()
+	End Method
+	
+	Method exclusive:Int()
+	End Method
+	
+	Method id:Int(button:QAbstractButton)
+	End Method
+	
+	Method removeButton(button:QAbstractButton)
+	End Method
+	
+	Method setExclusive(value:Int)
+	End Method
+	
+	Method setId(button:QAbstractButton, id:Int)
+	End Method
 
 End Type

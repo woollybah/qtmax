@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGroupBox
+Module Qt.QRadioButton
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,73 +30,40 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-Rem
-bbdoc: Provides a group box frame with a title.
-End Rem
-Type QGroupBox Extends QWidget
 
-	Function CreateGroupBox:QGroupBox(title:String, parent:QWidget = Null)
-		Return New QGroupBox.Create(title, parent)
+Type QRadioButton Extends QAbstractButton
+
+	Function CreateRadioButton:QRadioButton(text:String, parent:QWidget = Null)
+		Return New QRadioButton.Create(text, parent)
 	End Function
 	
-	Method Create:QGroupBox(title:String, parent:QWidget = Null)
+	Method Create:QRadioButton(text:String, parent:QWidget = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qgroupbox_create(Self, title, parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qradiobutton_create(Self, text, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qgroupbox_create(Self, title, Null)
+			qObjectPtr = bmx_qt_qradiobutton_create(Self, text, Null)
 		End If
-		
 		OnInit()
 		Return Self
 	End Method
 
-	Method alignment:Int()
-		Return bmx_qt_qgroupbox_alignment(qObjectPtr)
-	End Method
-	
-	Method isCheckable:Int()
-		Return bmx_qt_qgroupbox_ischeckable(qObjectPtr)
-	End Method
-	
-	Method isChecked:Int()
-		Return bmx_qt_qgroupbox_ischecked(qObjectPtr)
-	End Method
-	
-	Method isFlat:Int()
-		Return bmx_qt_qgroupbox_isflat(qObjectPtr)
-	End Method
-	
-	Method setAlignment(alignment:Int)
-		bmx_qt_qgroupbox_setalignment(qObjectPtr, alignment)
-	End Method
-	
-	Method setCheckable(checkable:Int)
-		bmx_qt_qgroupbox_setcheckable(qObjectPtr, checkable)
-	End Method
-	
-	Method setFlat(flat:Int)
-		bmx_qt_qgroupbox_setflat(qObjectPtr, flat)
-	End Method
-	
-	Method setTitle(title:String)
-		bmx_qt_qgroupbox_settitle(qObjectPtr, title)
-	End Method
-	
-	Method title:String()
-		Return bmx_qt_qgroupbox_title(qObjectPtr)
-	End Method
-	
-	Method setChecked(checked:Int)
-		bmx_qt_qgroupbox_setchecked(qObjectPtr, checked)
-	End Method
-
 	' SIGNAL : clicked
-	Function _OnClicked(obj:QGroupBox, checked:Int)
+	Function _OnClicked(obj:QRadioButton, checked:Int)
 		obj._InvokeSignals("clicked", [String(checked)])
 	End Function
 
+	' SIGNAL : pressed
+	Function _OnPressed(obj:QRadioButton, checked:Int)
+		obj._InvokeSignals("pressed", Null)
+	End Function
+
+	' SIGNAL : released
+	Function _OnReleased(obj:QRadioButton)
+		obj._InvokeSignals("released", Null)
+	End Function
+
 	' SIGNAL : toggled
-	Function _OnToggled(obj:QGroupBox, checked:Int)
+	Function _OnToggled(obj:QRadioButton, checked:Int)
 		obj._InvokeSignals("toggled", [String(checked)])
 	End Function
 

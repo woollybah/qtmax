@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QWidget
+Import Qt.QAbstractButton
 Import BRL.Blitz
 
 
@@ -46,16 +46,10 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qgroupbox_create:Byte Ptr(handle:Object, title:String, parent:Byte Ptr)
-	Function bmx_qt_qgroupbox_alignment:Int(handle:Byte Ptr)
-	Function bmx_qt_qgroupbox_ischeckable:Int(handle:Byte Ptr)
-	Function bmx_qt_qgroupbox_ischecked:Int(handle:Byte Ptr)
-	Function bmx_qt_qgroupbox_isflat:Int(handle:Byte Ptr)
-	Function bmx_qt_qgroupbox_setalignment(handle:Byte Ptr, alignment:Int)
-	Function bmx_qt_qgroupbox_setcheckable(handle:Byte Ptr, checkable:Int)
-	Function bmx_qt_qgroupbox_setflat(handle:Byte Ptr, flat:Int)
-	Function bmx_qt_qgroupbox_settitle(handle:Byte Ptr, title:String)
-	Function bmx_qt_qgroupbox_title:String(handle:Byte Ptr)
-	Function bmx_qt_qgroupbox_setchecked(handle:Byte Ptr, checked:Int)
+	Function bmx_qt_qcheckbox_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
+	Function bmx_qt_qcheckbox_checkstate:Int(handle:Byte Ptr)
+	Function bmx_qt_qcheckbox_istristate:Int(handle:Byte Ptr)
+	Function bmx_qt_qcheckbox_setcheckstate(handle:Byte Ptr, state:Int)
+	Function bmx_qt_qcheckbox_settristate(handle:Byte Ptr, value:Int)
 
 End Extern

@@ -20,48 +20,38 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QPUSHBUTTON
-#define MAX_QT_QPUSHBUTTON
+#ifndef MAX_QT_QRADIOBUTTON
+#define MAX_QT_QRADIOBUTTON
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QPushButton>
+#include <QRadioButton>
 
-class MaxQPushButton;
+class MaxQRadioButton;
 
 extern "C" {
 
 #include <blitz.h>
 
-	void _qt_qpushbutton_QPushButton__OnClicked(BBObject * handle, int checked);
-	void _qt_qpushbutton_QPushButton__OnPressed(BBObject * handle);
-	void _qt_qpushbutton_QPushButton__OnReleased(BBObject * handle);
-	void _qt_qpushbutton_QPushButton__OnToggled(BBObject * handle, int checked);
+	void _qt_qradiobutton_QRadioButton__OnClicked(BBObject * handle, int checked);
+	void _qt_qradiobutton_QRadioButton__OnPressed(BBObject * handle);
+	void _qt_qradiobutton_QRadioButton__OnReleased(BBObject * handle);
+	void _qt_qradiobutton_QRadioButton__OnToggled(BBObject * handle, int checked);
 
-
-	QPushButton * bmx_qt_qpushbutton_create(BBObject * handle, BBString * text, QWidget * parent);
-	int bmx_qt_qpushbutton_autodefault(QPushButton * button);
-	int bmx_qt_qpushbutton_isdefault(QPushButton * button);
-	int bmx_qt_qpushbutton_isflat(QPushButton * button);
-	QMenu * bmx_qt_qpushbutton_menu(QPushButton * button);
-	void bmx_qt_qpushbutton_setautodefault(QPushButton * button, int value);
-	void bmx_qt_qpushbutton_setdefault(QPushButton * button, int value);
-	void bmx_qt_qpushbutton_setflat(QPushButton * button, int value);
-	void bmx_qt_qpushbutton_setmenu(QPushButton * button, QMenu * menu);
-	void bmx_qt_qpushbutton_showmenu(QPushButton * button);
+	QRadioButton * bmx_qt_qradiobutton_create(BBObject * handle, BBString * text, QWidget * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQPushButton : public QPushButton
+class MaxQRadioButton : public QRadioButton
 {
 
 	Q_OBJECT
 
 public:
-	MaxQPushButton(BBObject * handle, const QString & text, QWidget * parent);
-	~MaxQPushButton();
+	MaxQRadioButton(BBObject * handle, const QString & text, QWidget * parent);
+	~MaxQRadioButton();
 
 private:
 	BBObject * maxHandle;

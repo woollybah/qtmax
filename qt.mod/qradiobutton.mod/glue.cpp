@@ -24,8 +24,8 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQPushButton::MaxQPushButton(BBObject * handle, const QString & text, QWidget * parent)
-	: maxHandle(handle), QPushButton(text, parent)
+MaxQRadioButton::MaxQRadioButton(BBObject * handle, const QString & text, QWidget * parent)
+	: maxHandle(handle), QRadioButton(text, parent)
 {
 	qbind(this, handle);
 	
@@ -35,68 +35,32 @@ MaxQPushButton::MaxQPushButton(BBObject * handle, const QString & text, QWidget 
 	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
 }
 
-MaxQPushButton::~MaxQPushButton()
+MaxQRadioButton::~MaxQRadioButton()
 {
 	qunbind(this);
 }
 
-void MaxQPushButton::onClicked(bool checked) {
-	_qt_qpushbutton_QPushButton__OnClicked(maxHandle, static_cast<int>(checked));
+void MaxQRadioButton::onClicked(bool checked) {
+	_qt_qradiobutton_QRadioButton__OnClicked(maxHandle, static_cast<int>(checked));
 }
 
-void MaxQPushButton::onPressed() {
-	_qt_qpushbutton_QPushButton__OnPressed(maxHandle);
+void MaxQRadioButton::onPressed() {
+	_qt_qradiobutton_QRadioButton__OnPressed(maxHandle);
 }
 
-void MaxQPushButton::onReleased() {
-	_qt_qpushbutton_QPushButton__OnReleased(maxHandle);
+void MaxQRadioButton::onReleased() {
+	_qt_qradiobutton_QRadioButton__OnReleased(maxHandle);
 }
 
-void MaxQPushButton::onToggled(bool checked) {
-	_qt_qpushbutton_QPushButton__OnToggled(maxHandle, static_cast<int>(checked));
+void MaxQRadioButton::onToggled(bool checked) {
+	_qt_qradiobutton_QRadioButton__OnToggled(maxHandle, static_cast<int>(checked));
 }
 
 
 // *********************************************
 
-QPushButton * bmx_qt_qpushbutton_create(BBObject * handle, BBString * text, QWidget * parent) {
-	return new MaxQPushButton(handle, qStringFromBBString(text), parent);
-}
-
-int bmx_qt_qpushbutton_autodefault(QPushButton * button) {
-	return static_cast<int>(button->autoDefault());
-}
-
-int bmx_qt_qpushbutton_isdefault(QPushButton * button) {
-	return static_cast<int>(button->isDefault());
-}
-
-int bmx_qt_qpushbutton_isflat(QPushButton * button) {
-	return static_cast<int>(button->isFlat());
-}
-
-QMenu * bmx_qt_qpushbutton_menu(QPushButton * button) {
-	return button->menu();
-}
-
-void bmx_qt_qpushbutton_setautodefault(QPushButton * button, int value) {
-	button->setAutoDefault(static_cast<bool>(value));
-}
-
-void bmx_qt_qpushbutton_setdefault(QPushButton * button, int value) {
-	button->setDefault(static_cast<bool>(value));
-}
-
-void bmx_qt_qpushbutton_setflat(QPushButton * button, int value) {
-	button->setFlat(static_cast<bool>(value));
-}
-
-void bmx_qt_qpushbutton_setmenu(QPushButton * button, QMenu * menu) {
-	button->setMenu(menu);
-}
-
-void bmx_qt_qpushbutton_showmenu(QPushButton * button) {
-	button->showMenu();
+QRadioButton * bmx_qt_qradiobutton_create(BBObject * handle, BBString * text, QWidget * parent) {
+	return new MaxQRadioButton(handle, qStringFromBBString(text), parent);
 }
 
 

@@ -17,62 +17,63 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQSpinBox[] = {
+static const uint qt_meta_data_MaxQRadioButton[] = {
 
  // content:
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       4,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // slots: signature, parameters, type, tag, flags
-      15,   13,   12,   12, 0x08,
-      35,   12,   12,   12, 0x08,
-      59,   55,   12,   12, 0x08,
+      25,   17,   16,   16, 0x08,
+      41,   16,   16,   16, 0x08,
+      53,   16,   16,   16, 0x08,
+      66,   17,   16,   16, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQSpinBox[] = {
-    "MaxQSpinBox\0\0i\0onValueChanged(int)\0"
-    "onEditingFinished()\0pos\0"
-    "customContextMenuRequested(QPoint)\0"
+static const char qt_meta_stringdata_MaxQRadioButton[] = {
+    "MaxQRadioButton\0\0checked\0onClicked(bool)\0"
+    "onPressed()\0onReleased()\0onToggled(bool)\0"
 };
 
-const QMetaObject MaxQSpinBox::staticMetaObject = {
-    { &QSpinBox::staticMetaObject, qt_meta_stringdata_MaxQSpinBox,
-      qt_meta_data_MaxQSpinBox, 0 }
+const QMetaObject MaxQRadioButton::staticMetaObject = {
+    { &QRadioButton::staticMetaObject, qt_meta_stringdata_MaxQRadioButton,
+      qt_meta_data_MaxQRadioButton, 0 }
 };
 
-const QMetaObject *MaxQSpinBox::metaObject() const
+const QMetaObject *MaxQRadioButton::metaObject() const
 {
     return &staticMetaObject;
 }
 
-void *MaxQSpinBox::qt_metacast(const char *_clname)
+void *MaxQRadioButton::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQSpinBox))
-        return static_cast<void*>(const_cast< MaxQSpinBox*>(this));
-    return QSpinBox::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQRadioButton))
+        return static_cast<void*>(const_cast< MaxQRadioButton*>(this));
+    return QRadioButton::qt_metacast(_clname);
 }
 
-int MaxQSpinBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQRadioButton::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QSpinBox::qt_metacall(_c, _id, _a);
+    _id = QRadioButton::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onValueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 1: onEditingFinished(); break;
-        case 2: customContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 0: onClicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: onPressed(); break;
+        case 2: onReleased(); break;
+        case 3: onToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

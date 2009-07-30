@@ -46,6 +46,43 @@ Type QPushButton Extends QAbstractButton
 		Return Self
 	End Method
 	
+	Method autoDefault:Int()
+		Return bmx_qt_qpushbutton_autodefault(qObjectPtr)
+	End Method
+	
+	Method isDefault:Int()
+		Return bmx_qt_qpushbutton_isdefault(qObjectPtr)
+	End Method
+	
+	Method isFlat:Int()
+		Return bmx_qt_qpushbutton_isflat(qObjectPtr)
+	End Method
+	
+	Method menu:QMenu()
+		Return QMenu._find(bmx_qt_qpushbutton_menu(qObjectPtr))
+	End Method
+	
+	Method setAutoDefault(value:Int)
+		bmx_qt_qpushbutton_setautodefault(qObjectPtr, value)
+	End Method
+	
+	Method setDefault(value:Int)
+		bmx_qt_qpushbutton_setdefault(qObjectPtr, value)
+	End Method
+	
+	Method setFlat(value:Int)
+		bmx_qt_qpushbutton_setflat(qObjectPtr, value)
+	End Method
+	
+	Method setMenu(menu:QMenu)
+		bmx_qt_qpushbutton_setmenu(qObjectPtr, menu.qObjectPtr)
+	End Method
+	
+	' SLOT
+	Method showMenu()
+		bmx_qt_qpushbutton_showmenu(qObjectPtr)
+	End Method
+
 	' SIGNAL : clicked
 	Function _OnClicked(obj:QPushButton, checked:Int)
 		obj._InvokeSignals("clicked", [String(checked)])

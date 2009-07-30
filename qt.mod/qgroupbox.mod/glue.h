@@ -24,6 +24,7 @@
 #define MAX_QT_QGROUPBOX
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QGroupBox>
 
@@ -32,6 +33,9 @@ class MaxQGroupBox;
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qgroupbox_QGroupBox__OnClicked(BBObject * handle, int checked);
+	void _qt_qgroupbox_QGroupBox__OnToggled(BBObject * handle, int on);
 
 	QGroupBox * bmx_qt_qgroupbox_create(BBObject * handle, BBString * title, QWidget * parent);
 	int bmx_qt_qgroupbox_alignment(QGroupBox * gb);
@@ -43,6 +47,7 @@ extern "C" {
 	void bmx_qt_qgroupbox_setflat(QGroupBox * gb, int flat);
 	void bmx_qt_qgroupbox_settitle(QGroupBox * gb, BBString * title);
 	BBString * bmx_qt_qgroupbox_title(QGroupBox * gb);
+	void bmx_qt_qgroupbox_setchecked(QGroupBox * gb, int checked);
 
 }
 

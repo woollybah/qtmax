@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGroupBox
+Module Qt.QCheckBox
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,74 +30,61 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-Rem
-bbdoc: Provides a group box frame with a title.
-End Rem
-Type QGroupBox Extends QWidget
+Type QCheckBox Extends QAbstractButton
 
-	Function CreateGroupBox:QGroupBox(title:String, parent:QWidget = Null)
-		Return New QGroupBox.Create(title, parent)
+	Function CreateCheckBox:QCheckBox(text:String, parent:QWidget = Null)
+		Return New QCheckBox.Create(text, parent)
 	End Function
 	
-	Method Create:QGroupBox(title:String, parent:QWidget = Null)
+	Method Create:QCheckBox(text:String, parent:QWidget = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qgroupbox_create(Self, title, parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qcheckbox_create(Self, text, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qgroupbox_create(Self, title, Null)
+			qObjectPtr = bmx_qt_qcheckbox_create(Self, text, Null)
 		End If
-		
 		OnInit()
 		Return Self
 	End Method
-
-	Method alignment:Int()
-		Return bmx_qt_qgroupbox_alignment(qObjectPtr)
+	
+	Method checkState:Int()
+		Return bmx_qt_qcheckbox_checkstate(qObjectPtr)
 	End Method
 	
-	Method isCheckable:Int()
-		Return bmx_qt_qgroupbox_ischeckable(qObjectPtr)
+	Method isTristate:Int()
+		Return bmx_qt_qcheckbox_istristate(qObjectPtr)
 	End Method
 	
-	Method isChecked:Int()
-		Return bmx_qt_qgroupbox_ischecked(qObjectPtr)
+	Method setCheckState(state:Int)
+		bmx_qt_qcheckbox_setcheckstate(qObjectPtr, state)
 	End Method
 	
-	Method isFlat:Int()
-		Return bmx_qt_qgroupbox_isflat(qObjectPtr)
+	Method setTristate(value:Int = True)
+		bmx_qt_qcheckbox_settristate(qObjectPtr, value)
 	End Method
 	
-	Method setAlignment(alignment:Int)
-		bmx_qt_qgroupbox_setalignment(qObjectPtr, alignment)
-	End Method
-	
-	Method setCheckable(checkable:Int)
-		bmx_qt_qgroupbox_setcheckable(qObjectPtr, checkable)
-	End Method
-	
-	Method setFlat(flat:Int)
-		bmx_qt_qgroupbox_setflat(qObjectPtr, flat)
-	End Method
-	
-	Method setTitle(title:String)
-		bmx_qt_qgroupbox_settitle(qObjectPtr, title)
-	End Method
-	
-	Method title:String()
-		Return bmx_qt_qgroupbox_title(qObjectPtr)
-	End Method
-	
-	Method setChecked(checked:Int)
-		bmx_qt_qgroupbox_setchecked(qObjectPtr, checked)
-	End Method
-
 	' SIGNAL : clicked
-	Function _OnClicked(obj:QGroupBox, checked:Int)
+	Function _OnClicked(obj:QCheckBox, checked:Int)
 		obj._InvokeSignals("clicked", [String(checked)])
 	End Function
 
+	' SIGNAL : pressed
+	Function _OnPressed(obj:QCheckBox, checked:Int)
+		obj._InvokeSignals("pressed", Null)
+	End Function
+
+	' SIGNAL : released
+	Function _OnReleased(obj:QCheckBox)
+		obj._InvokeSignals("released", Null)
+	End Function
+
 	' SIGNAL : toggled
-	Function _OnToggled(obj:QGroupBox, checked:Int)
+	Function _OnToggled(obj:QCheckBox, checked:Int)
 		obj._InvokeSignals("toggled", [String(checked)])
+	End Function
+
+	' SIGNAL : stateChanged
+	Function _OnStateChanged(obj:QCheckBox, state:Int)
+		obj._InvokeSignals("stateChanged", [String(state)])
 	End Function
 
 End Type
