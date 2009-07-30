@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
+Import Qt.QPainter
 Import BRL.Blitz
 
 
@@ -34,14 +35,39 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
 
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qabstractbutton_autoexclusive:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_autorepeat:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_autorepeatdelay:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_autorepeatinterval:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_group:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_iconsize(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qabstractbutton_ischeckable:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_ischecked:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_isdown:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_setautoexclusive(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_setautorepeat(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_setautorepeatdelay(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_setautorepeatinterval(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_setcheckable(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_setdown(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_settext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qabstractbutton_text:String(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_animateclick(handle:Byte Ptr, msec:Int)
+	Function bmx_qt_qabstractbutton_click(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_setchecked(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qabstractbutton_seticonsize(handle:Byte Ptr, w:Int, h:Int)
+	Function bmx_qt_qabstractbutton_toggle(handle:Byte Ptr)
 
 End Extern

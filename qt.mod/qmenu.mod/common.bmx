@@ -46,4 +46,35 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qmenu_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+
+	Function bmx_qt_qmenu_actionat:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)
+	Function bmx_qt_qmenu_actiongeometry:Byte Ptr(handle:Byte Ptr, act:Byte Ptr)
+	Function bmx_qt_qmenu_activeaction:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenu_addaction(handle:Byte Ptr, action:Byte Ptr)
+	Function bmx_qt_qmenu_addactiontxt:Byte Ptr(handle:Byte Ptr, action:String)
+	Function bmx_qt_qmenu_addmenuaction:Byte Ptr(handle:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qmenu_addmenu:Byte Ptr(handle:Byte Ptr, title:String)
+	Function bmx_qt_qmenu_addseparator:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenu_clear(handle:Byte Ptr)
+	Function bmx_qt_qmenu_defaultaction:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenu_exec:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenu_execaction:Byte Ptr(handle:Byte Ptr, x:Int, y:Int, action:Byte Ptr)
+	Function bmx_qt_qmenu_hidetearoffmenu(handle:Byte Ptr)
+	Function bmx_qt_qmenu_insertmenu:Byte Ptr(handle:Byte Ptr, before:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qmenu_insertseparator:Byte Ptr(handle:Byte Ptr, before:Byte Ptr)
+	Function bmx_qt_qmenu_isempty:Int(handle:Byte Ptr)
+	Function bmx_qt_qmenu_istearoffenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qmenu_istearoffmenuvisible:Int(handle:Byte Ptr)
+	Function bmx_qt_qmenu_menuaction:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenu_popup(handle:Byte Ptr, x:Int, y:Int, atAction:Byte Ptr)
+	Function bmx_qt_qmenu_separatorscollapsible:Int(handle:Byte Ptr)
+	Function bmx_qt_qmenu_setactiveaction(handle:Byte Ptr, act:Byte Ptr)
+	Function bmx_qt_qmenu_setdefaultaction(handle:Byte Ptr, act:Byte Ptr)
+	'Function bmx_qt_qmenu_seticon(handle:Byte Ptr, icon:Byte Ptr)
+	Function bmx_qt_qmenu_setseparatorscollapsible(handle:Byte Ptr, collapse:Int)
+	Function bmx_qt_qmenu_settearoffenabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qmenu_settitle(handle:Byte Ptr, title:String)
+	Function bmx_qt_qmenu_title:String(handle:Byte Ptr)
+
 End Extern

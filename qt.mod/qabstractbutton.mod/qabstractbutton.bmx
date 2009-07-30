@@ -34,51 +34,66 @@ Import "common.bmx"
 Type QAbstractButton Extends QWidget
 
 	Method autoExclusive:Int()
+		Return bmx_qt_qabstractbutton_autoexclusive(qObjectPtr)
 	End Method
 	
 	Method autoRepeat:Int()
+		Return bmx_qt_qabstractbutton_autorepeat(qObjectPtr)
 	End Method
 	
 	Method autoRepeatDelay:Int()
+		Return bmx_qt_qabstractbutton_autorepeatdelay(qObjectPtr)
 	End Method
 	
 	Method autoRepeatInterval:Int()
+		Return bmx_qt_qabstractbutton_autorepeatinterval(qObjectPtr)
 	End Method
 	
 	Method group:QButtonGroup()
+		Return QButtonGroup._create(bmx_qt_qabstractbutton_group(qObjectPtr))
 	End Method
 	
 	'Method icon:QIcon()
 	'End Method
 	
-	Method iconSize(w:Int Ptr, h:Int Ptr)
+	Method iconSize(w:Int Var, h:Int Var)
+		bmx_qt_qabstractbutton_iconsize(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method isCheckable:Int()
+		Return bmx_qt_qabstractbutton_ischeckable(qObjectPtr)
 	End Method
 	
 	Method isChecked:Int()
+		Return bmx_qt_qabstractbutton_ischecked(qObjectPtr)
 	End Method
 	
 	Method isDown:Int()
+		Return bmx_qt_qabstractbutton_isdown(qObjectPtr)
 	End Method
 	
 	Method setAutoExclusive(value:Int)
+		bmx_qt_qabstractbutton_setautoexclusive(qObjectPtr, value)
 	End Method
 	
 	Method setAutoRepeat(value:Int)
+		bmx_qt_qabstractbutton_setautorepeat(qObjectPtr, value)
 	End Method
 	
 	Method setAutoRepeatDelay(value:Int)
+		bmx_qt_qabstractbutton_setautorepeatdelay(qObjectPtr, value)
 	End Method
 	
 	Method setAutoRepeatInterval(value:Int)
+		bmx_qt_qabstractbutton_setautorepeatinterval(qObjectPtr, value)
 	End Method
 	
 	Method setCheckable(value:Int)
+		bmx_qt_qabstractbutton_setcheckable(qObjectPtr, value)
 	End Method
 	
 	Method setDown(value:Int)
+		bmx_qt_qabstractbutton_setdown(qObjectPtr, value)
 	End Method
 
 	Method setIcon(icon:QIcon)
@@ -90,7 +105,7 @@ Type QAbstractButton Extends QWidget
 	'End Method
 	
 	Method setText(text:String)
-	' TODO
+		bmx_qt_qabstractbutton_settext(qObjectPtr, text)
 	End Method
 	
 	'Method shortcut:QKeySequence()
@@ -98,27 +113,27 @@ Type QAbstractButton Extends QWidget
 	'End Method
 	
 	Method text:String()
-	' TODO
+		Return bmx_qt_qabstractbutton_text(qObjectPtr)
 	End Method
 	
 	Method animateClick(msec:Int = 100)
-	' TODO
+		bmx_qt_qabstractbutton_animateclick(qObjectPtr, msec)
 	End Method
 	
 	Method click()
-	' TODO
+		bmx_qt_qabstractbutton_click(qObjectPtr)
 	End Method
 	
 	Method setChecked(value:Int)
-	' TODO
+		bmx_qt_qabstractbutton_setchecked(qObjectPtr, value)
 	End Method
 	
 	Method setIconSize(w:Int, h:Int)
-	' TODO
+		bmx_qt_qabstractbutton_seticonsize(qObjectPtr, w, h)
 	End Method
 	
 	Method toggle()
-	' TODO
+		bmx_qt_qabstractbutton_toggle(qObjectPtr)
 	End Method
 	
 End Type
@@ -126,40 +141,53 @@ End Type
 
 Type QButtonGroup Extends QObject
 
+	Function _create:QButtonGroup(qObjectPtr:Byte Ptr)
+	' TODO
+	End Function
+
 	Function CreateButtonGroup:QButtonGroup(parent:QObject = Null)
 		Return New QButtonGroup.Create(parent)
 	End Function
 	
 	Method Create:QButtonGroup(parent:QObject = Null)
-		
+	' TODO
 		Return Self
 	End Method
 	
 	Method addButton(button:QAbstractButton, id:Int)
+	' TODO
 	End Method
 	
 	Method button:QAbstractButton(id:Int)
+	' TODO
 	End Method
 	
 	Method checkedButton:QAbstractButton()
+	' TODO
 	End Method
 	
 	Method checkedId:Int()
+	' TODO
 	End Method
 	
 	Method exclusive:Int()
+	' TODO
 	End Method
 	
 	Method id:Int(button:QAbstractButton)
+	' TODO
 	End Method
 	
 	Method removeButton(button:QAbstractButton)
+	' TODO
 	End Method
 	
 	Method setExclusive(value:Int)
+	' TODO
 	End Method
 	
 	Method setId(button:QAbstractButton, id:Int)
+	' TODO
 	End Method
 
 End Type

@@ -50,7 +50,152 @@ Type QMenu Extends QWidget
 			Return widget
 		End If
 	End Function
+	
+	Function CreateMenu:QMenu(parent:QWidget = Null)
+		Return New QMenu.Create(parent)
+	End Function
+	
+	Method Create:QMenu(parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qmenu_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qmenu_create(Self, Null)
+		End If
+		Return Self
+	End Method
 
+	Method actionAt:QAction(x:Int, y:Int)
+		Return QAction._find(bmx_qt_qmenu_actionat(qObjectPtr, x, y))
+	End Method
+	
+	Method actionGeometry:QRect(act:QAction)
+		Return QRect._create(bmx_qt_qmenu_actiongeometry(qObjectPtr, act.qObjectPtr))
+	End Method
+	
+	Method activeAction:QAction()
+		Return QAction._find(bmx_qt_qmenu_activeaction(qObjectPtr))
+	End Method
+	
+	Method addAction:QAction(action:Object)
+		If QAction(action) Then
+			bmx_qt_qmenu_addaction(qObjectPtr, QAction(action).qObjectPtr)
+			Return QAction(action)
+		ElseIf String(action) Then
+			Return QAction._find(bmx_qt_qmenu_addactiontxt(qObjectPtr, String(action)))
+		End If
+	End Method
+	
+	Method addActionConnect:QAction(text:String, receiver:QObject, slot:String)
+		Local action:QAction = addAction(text)
+		connect(action, "triggered", receiver, slot)
+		Return action
+	End Method
+	
+	Method addMenuAction:QAction(menu:QMenu)
+		Return QAction._find(bmx_qt_qmenu_addmenuaction(qObjectPtr, menu.qObjectPtr))
+	End Method
+	
+	Method addMenu:QMenu(title:String)
+		Return QMenu._find(bmx_qt_qmenu_addmenu(qObjectPtr, title))
+	End Method
+	
+	Method addSeparator:QAction()
+		Return QAction._find(bmx_qt_qmenu_addseparator(qObjectPtr))
+	End Method
+	
+	Method clear()
+		bmx_qt_qmenu_clear(qObjectPtr)
+	End Method
+	
+	Method defaultAction:QAction()
+		Return QAction._find(bmx_qt_qmenu_defaultaction(qObjectPtr))
+	End Method
+	
+	Method exec:QAction()
+		Return QAction._find(bmx_qt_qmenu_exec(qObjectPtr))
+	End Method
+	
+	Method execAction:QAction(x:Int, y:Int, action:QAction = Null)
+		If action Then
+			Return QAction._find(bmx_qt_qmenu_execaction(qObjectPtr, x, y, action.qObjectPtr))
+		Else
+			Return QAction._find(bmx_qt_qmenu_execaction(qObjectPtr, x, y, Null))
+		End If
+	End Method
+	
+	Method hideTearOffMenu()
+		bmx_qt_qmenu_hidetearoffmenu(qObjectPtr)
+	End Method
+	
+	Method icon:QIcon()
+		' TODO
+		'Return QIcon._create(bmx_qt_qmenu_icon(qObjectPtr))
+	End Method
+	
+	Method insertMenu:QAction(before:QAction, menu:QMenu)
+		Return QAction._find(bmx_qt_qmenu_insertmenu(qObjectPtr, before.qObjectPtr, menu.qObjectPtr))
+	End Method
+	
+	Method insertSeparator:QAction(before:QAction)
+		Return QAction._find(bmx_qt_qmenu_insertseparator(qObjectPtr, before.qObjectPtr))
+	End Method
+	
+	Method isEmpty:Int()
+		Return bmx_qt_qmenu_isempty(qObjectPtr)
+	End Method
+	
+	Method isTearOffEnabled:Int()
+		Return bmx_qt_qmenu_istearoffenabled(qObjectPtr)
+	End Method
+	
+	Method isTearOffMenuVisible:Int()
+		Return bmx_qt_qmenu_istearoffmenuvisible(qObjectPtr)
+	End Method
+	
+	Method menuAction:QAction()
+		Return QAction._find(bmx_qt_qmenu_menuaction(qObjectPtr))
+	End Method
+	
+	Method popup(x:Int, y:Int, atAction:QAction = Null)
+		If atAction Then
+			bmx_qt_qmenu_popup(qObjectPtr, x, y, atAction.qObjectPtr)
+		Else
+			bmx_qt_qmenu_popup(qObjectPtr, x, y, Null)
+		End If
+	End Method
+	
+	Method separatorsCollapsible:Int()
+		Return bmx_qt_qmenu_separatorscollapsible(qObjectPtr)
+	End Method
+	
+	Method setActiveAction(act:QAction)
+		bmx_qt_qmenu_setactiveaction(qObjectPtr, act.qObjectPtr)
+	End Method
+	
+	Method setDefaultAction(act:QAction)
+		bmx_qt_qmenu_setdefaultaction(qObjectPtr, act.qObjectPtr)
+	End Method
+	
+	Method setIcon(icon:QIcon)
+		' TODO
+		'bmx_qt_qmenu_seticon(qObjectPtr, icon.qObjectPtr)
+	End Method
+	
+	Method setSeparatorsCollapsible(collapse:Int)
+		bmx_qt_qmenu_setseparatorscollapsible(qObjectPtr, collapse)
+	End Method
+	
+	Method setTearOffEnabled(value:Int)
+		bmx_qt_qmenu_settearoffenabled(qObjectPtr, value)
+	End Method
+	
+	Method setTitle(title:String)
+		bmx_qt_qmenu_settitle(qObjectPtr, title)
+	End Method
+	
+	Method title:String()
+		Return bmx_qt_qmenu_title(qObjectPtr)
+	End Method
 
 End Type
 

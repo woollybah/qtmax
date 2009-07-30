@@ -25,11 +25,34 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QAbstractButton>
 
 extern "C" {
 
 #include <blitz.h>
 
+	int bmx_qt_qabstractbutton_autoexclusive(QAbstractButton * button);
+	int bmx_qt_qabstractbutton_autorepeat(QAbstractButton * button);
+	int bmx_qt_qabstractbutton_autorepeatdelay(QAbstractButton * button);
+	int bmx_qt_qabstractbutton_autorepeatinterval(QAbstractButton * button);
+	QButtonGroup * bmx_qt_qabstractbutton_group(QAbstractButton * button);
+	void bmx_qt_qabstractbutton_iconsize(QAbstractButton * button, int * w, int * h);
+	int bmx_qt_qabstractbutton_ischeckable(QAbstractButton * button);
+	int bmx_qt_qabstractbutton_ischecked(QAbstractButton * button);
+	int bmx_qt_qabstractbutton_isdown(QAbstractButton * button);
+	void bmx_qt_qabstractbutton_setautoexclusive(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_setautorepeat(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_setautorepeatdelay(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_setautorepeatinterval(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_setcheckable(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_setdown(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_settext(QAbstractButton * button, BBString * text);
+	BBString * bmx_qt_qabstractbutton_text(QAbstractButton * button);
+	void bmx_qt_qabstractbutton_animateclick(QAbstractButton * button, int msec);
+	void bmx_qt_qabstractbutton_click(QAbstractButton * button);
+	void bmx_qt_qabstractbutton_setchecked(QAbstractButton * button, int value);
+	void bmx_qt_qabstractbutton_seticonsize(QAbstractButton * button, int w, int h);
+	void bmx_qt_qabstractbutton_toggle(QAbstractButton * button);
 
 }
 

@@ -64,15 +64,37 @@ MaxQAction::MaxQAction(BBObject * handle, const QString & text, QObject * parent
 {
 	qbind(this, handle);
 
-	connect(this, SIGNAL(changed()), SLOT(onChanged()));
-	connect(this, SIGNAL(hovered()), SLOT(onHovered()));
-	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
-	connect(this, SIGNAL(triggered(bool)), SLOT(onTriggered(bool)));
+	doConnections();
 }
 
 MaxQAction::~MaxQAction()
 {
 	qunbind(this);
+}
+
+MaxQAction::MaxQAction(QObject * obj)
+	: QAction(obj)
+{
+	maxHandle = _qt_qwidget_QAction__create(this);
+	qbind(this, maxHandle);
+
+	doConnections();
+}
+
+MaxQAction::MaxQAction(const QString & text, QObject * obj)
+	: QAction(text, obj)
+{
+	maxHandle = _qt_qwidget_QAction__create(this);
+	qbind(this, maxHandle);
+
+	doConnections();
+}
+
+void MaxQAction::doConnections() {
+	connect(this, SIGNAL(changed()), SLOT(onChanged()));
+	connect(this, SIGNAL(hovered()), SLOT(onHovered()));
+	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
+	connect(this, SIGNAL(triggered(bool)), SLOT(onTriggered(bool)));
 }
 
 void MaxQAction::onChanged() {
