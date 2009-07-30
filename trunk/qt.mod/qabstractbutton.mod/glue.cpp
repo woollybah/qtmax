@@ -28,6 +28,95 @@
 
 // *********************************************
 
+int bmx_qt_qabstractbutton_autoexclusive(QAbstractButton * button) {
+	return static_cast<int>(button->autoExclusive());
+}
+
+int bmx_qt_qabstractbutton_autorepeat(QAbstractButton * button) {
+	return static_cast<int>(button->autoRepeat());
+}
+
+int bmx_qt_qabstractbutton_autorepeatdelay(QAbstractButton * button) {
+	return button->autoRepeatDelay();
+}
+
+int bmx_qt_qabstractbutton_autorepeatinterval(QAbstractButton * button) {
+	return button->autoRepeatInterval();
+}
+
+QButtonGroup * bmx_qt_qabstractbutton_group(QAbstractButton * button) {
+	return button->group();
+}
+
+void bmx_qt_qabstractbutton_iconsize(QAbstractButton * button, int * w, int * h) {
+	QSize s(button->iconSize());
+	*w = s.width();
+	*h = s.height();
+}
+
+int bmx_qt_qabstractbutton_ischeckable(QAbstractButton * button) {
+	return static_cast<int>(button->isCheckable());
+}
+
+int bmx_qt_qabstractbutton_ischecked(QAbstractButton * button) {
+	return static_cast<int>(button->isChecked());
+}
+
+int bmx_qt_qabstractbutton_isdown(QAbstractButton * button) {
+	return static_cast<int>(button->isDown());
+}
+
+void bmx_qt_qabstractbutton_setautoexclusive(QAbstractButton * button, int value) {
+	button->setAutoExclusive(static_cast<bool>(value));
+}
+
+void bmx_qt_qabstractbutton_setautorepeat(QAbstractButton * button, int value) {
+	button->setAutoRepeat(static_cast<bool>(value));
+}
+
+void bmx_qt_qabstractbutton_setautorepeatdelay(QAbstractButton * button, int value) {
+	button->setAutoRepeatDelay(value);
+}
+
+void bmx_qt_qabstractbutton_setautorepeatinterval(QAbstractButton * button, int value) {
+	button->setAutoRepeatInterval(value);
+}
+
+void bmx_qt_qabstractbutton_setcheckable(QAbstractButton * button, int value) {
+	button->setCheckable(static_cast<bool>(value));
+}
+
+void bmx_qt_qabstractbutton_setdown(QAbstractButton * button, int value) {
+	button->setDown(static_cast<bool>(value));
+}
+
+void bmx_qt_qabstractbutton_settext(QAbstractButton * button, BBString * text) {
+	button->setText(qStringFromBBString(text));
+}
+
+BBString * bmx_qt_qabstractbutton_text(QAbstractButton * button) {
+	return bbStringFromQString(button->text());
+}
+
+void bmx_qt_qabstractbutton_animateclick(QAbstractButton * button, int msec) {
+	button->animateClick(msec);
+}
+
+void bmx_qt_qabstractbutton_click(QAbstractButton * button) {
+	button->click();
+}
+
+void bmx_qt_qabstractbutton_setchecked(QAbstractButton * button, int value) {
+	return button->setChecked(static_cast<bool>(value));
+}
+
+void bmx_qt_qabstractbutton_seticonsize(QAbstractButton * button, int w, int h) {
+	button->setIconSize(QSize(w, h));
+}
+
+void bmx_qt_qabstractbutton_toggle(QAbstractButton * button) {
+	button->toggle();
+}
 
 
 // NOTES :

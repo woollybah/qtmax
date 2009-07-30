@@ -84,8 +84,11 @@ Type QWidget Extends QObject
 	Method OnInit()
 	End Method
 	
-	Method addAction(action:QAction)
-		bmx_qt_qwidget_addaction(qObjectPtr, action.qObjectPtr)
+	Method addAction:QAction(action:Object)
+		If QAction(action) Then
+			bmx_qt_qwidget_addaction(qObjectPtr, QAction(action).qObjectPtr)
+			Return QAction(action)
+		End If
 	End Method
 
 	Method frameGeometry:QRect()
@@ -595,6 +598,24 @@ End Type
 
 Type QAction Extends QObject
 
+	Function _create:QAction(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QAction = New QAction
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Function _find:QAction(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QAction = QAction(qfind(qObjectPtr))
+			If Not widget Then
+				Return QAction._create(qObjectPtr)
+			End If
+			Return widget
+		End If
+	End Function
+	
 	Function CreateAction:QAction(text:String, parent:QObject)
 		Return New QAction.Create(text, parent)
 	End Function

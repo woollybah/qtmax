@@ -124,7 +124,7 @@ Type TWindow Extends QWidget
 		menu.addAction(tr("F&ourth Item"))
 		popupButton.setMenu(menu)
 		
-		Local vbox:QVBoxLayout = New QVBoxLayout.Create
+		Local vbox:QVBoxLayout = New QVBoxLayout.Create()
 		vbox.addWidget(pushButton)
 		vbox.addWidget(toggleButton)
 		vbox.addWidget(flatButton)

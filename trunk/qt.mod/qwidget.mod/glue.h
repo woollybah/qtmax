@@ -46,6 +46,9 @@ extern "C" {
 	void _qt_qwidget_QAction__OnHovered(BBObject * handle);
 	void _qt_qwidget_QAction__OnToggled(BBObject * handle, int checked);
 	void _qt_qwidget_QAction__OnTriggered(BBObject * handle, int checked);
+	
+	// used for on-the-fly QAction creation - linking to a BlitzMax object.
+	BBObject * _qt_qwidget_QAction__create(QAction * action);
 
 	BBObject * _qt_qpainter_QPainter__create(QPainter * painter);
 
@@ -121,9 +124,12 @@ class MaxQAction : public QAction
 
 public:
 	MaxQAction(BBObject * handle, const QString & text, QObject * parent);
+	MaxQAction(QObject * obj);
+	MaxQAction(const QString & text, QObject * obj);
 	~MaxQAction();
 
 private:
+	void doConnections();
 	BBObject * maxHandle;
 	
 private slots:
