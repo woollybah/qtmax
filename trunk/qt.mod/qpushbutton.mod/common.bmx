@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QAbstractButton
+Import Qt.QMenu
 Import BRL.Blitz
 
 
@@ -47,5 +48,14 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qpushbutton_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
+	Function bmx_qt_qpushbutton_autodefault:Int(handle:Byte Ptr)
+	Function bmx_qt_qpushbutton_isdefault:Int(handle:Byte Ptr)
+	Function bmx_qt_qpushbutton_isflat:Int(handle:Byte Ptr)
+	Function bmx_qt_qpushbutton_menu:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qpushbutton_setautodefault(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qpushbutton_setdefault(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qpushbutton_setflat(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qpushbutton_setmenu(handle:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qpushbutton_showmenu(handle:Byte Ptr)
 
 End Extern

@@ -24,8 +24,8 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQPushButton::MaxQPushButton(BBObject * handle, const QString & text, QWidget * parent)
-	: maxHandle(handle), QPushButton(text, parent)
+MaxQCheckBox::MaxQCheckBox(BBObject * handle, const QString & text, QWidget * parent)
+	: maxHandle(handle), QCheckBox(text, parent)
 {
 	qbind(this, handle);
 	
@@ -33,70 +33,68 @@ MaxQPushButton::MaxQPushButton(BBObject * handle, const QString & text, QWidget 
 	connect(this, SIGNAL(pressed()), SLOT(onPressed()));
 	connect(this, SIGNAL(released()), SLOT(onReleased()));
 	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
+	connect(this, SIGNAL(stateChanged(int)), SLOT(onStateChanged(int)));
 }
 
-MaxQPushButton::~MaxQPushButton()
+MaxQCheckBox::~MaxQCheckBox()
 {
 	qunbind(this);
 }
 
-void MaxQPushButton::onClicked(bool checked) {
-	_qt_qpushbutton_QPushButton__OnClicked(maxHandle, static_cast<int>(checked));
+void MaxQCheckBox::onClicked(bool checked) {
+	_qt_qcheckbox_QCheckBox__OnClicked(maxHandle, static_cast<int>(checked));
 }
 
-void MaxQPushButton::onPressed() {
-	_qt_qpushbutton_QPushButton__OnPressed(maxHandle);
+void MaxQCheckBox::onPressed() {
+	_qt_qcheckbox_QCheckBox__OnPressed(maxHandle);
 }
 
-void MaxQPushButton::onReleased() {
-	_qt_qpushbutton_QPushButton__OnReleased(maxHandle);
+void MaxQCheckBox::onReleased() {
+	_qt_qcheckbox_QCheckBox__OnReleased(maxHandle);
 }
 
-void MaxQPushButton::onToggled(bool checked) {
-	_qt_qpushbutton_QPushButton__OnToggled(maxHandle, static_cast<int>(checked));
+void MaxQCheckBox::onToggled(bool checked) {
+	_qt_qcheckbox_QCheckBox__OnToggled(maxHandle, static_cast<int>(checked));
+}
+
+void MaxQCheckBox::onStateChanged(int state) {
+	_qt_qcheckbox_QCheckBox__OnStateChanged(maxHandle, state);
 }
 
 
 // *********************************************
 
-QPushButton * bmx_qt_qpushbutton_create(BBObject * handle, BBString * text, QWidget * parent) {
-	return new MaxQPushButton(handle, qStringFromBBString(text), parent);
+QCheckBox * bmx_qt_qcheckbox_create(BBObject * handle, BBString * text, QWidget * parent) {
+	return new MaxQCheckBox(handle, qStringFromBBString(text), parent);
 }
 
-int bmx_qt_qpushbutton_autodefault(QPushButton * button) {
-	return static_cast<int>(button->autoDefault());
+int bmx_qt_qcheckbox_checkstate(QCheckBox * cb) {
+	return cb->checkState();
 }
 
-int bmx_qt_qpushbutton_isdefault(QPushButton * button) {
-	return static_cast<int>(button->isDefault());
+int bmx_qt_qcheckbox_istristate(QCheckBox * cb) {
+	return static_cast<int>(cb->isTristate());
 }
 
-int bmx_qt_qpushbutton_isflat(QPushButton * button) {
-	return static_cast<int>(button->isFlat());
+void bmx_qt_qcheckbox_setcheckstate(QCheckBox * cb, int s) {
+	Qt::CheckState state;
+	switch(s) {
+		case 0:
+			state = Qt::Unchecked;
+			break;
+		case 1:
+			state = Qt::PartiallyChecked;
+			break;
+		case 2:
+			state = Qt::Checked;
+			break;
+	}
+	
+	cb->setCheckState(state);
 }
 
-QMenu * bmx_qt_qpushbutton_menu(QPushButton * button) {
-	return button->menu();
-}
-
-void bmx_qt_qpushbutton_setautodefault(QPushButton * button, int value) {
-	button->setAutoDefault(static_cast<bool>(value));
-}
-
-void bmx_qt_qpushbutton_setdefault(QPushButton * button, int value) {
-	button->setDefault(static_cast<bool>(value));
-}
-
-void bmx_qt_qpushbutton_setflat(QPushButton * button, int value) {
-	button->setFlat(static_cast<bool>(value));
-}
-
-void bmx_qt_qpushbutton_setmenu(QPushButton * button, QMenu * menu) {
-	button->setMenu(menu);
-}
-
-void bmx_qt_qpushbutton_showmenu(QPushButton * button) {
-	button->showMenu();
+void bmx_qt_qcheckbox_settristate(QCheckBox * cb, int value) {
+	cb->setTristate(static_cast<bool>(value));
 }
 
 

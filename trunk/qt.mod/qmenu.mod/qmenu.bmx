@@ -33,6 +33,24 @@ Import "common.bmx"
 
 Type QMenu Extends QWidget
 
+	Function __create:QMenu(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QMenu = New QMenu
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Function _find:QMenu(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QMenu = QMenu(qfind(qObjectPtr))
+			If Not widget Then
+				Return QMenu.__create(qObjectPtr)
+			End If
+			Return widget
+		End If
+	End Function
+
 
 End Type
 

@@ -36,15 +36,15 @@ MaxQGroupBox::~MaxQGroupBox()
 }
 
 void MaxQGroupBox::onClicked(bool checked) {
-
+	_qt_qgroupbox_QGroupBox__OnClicked(maxHandle, static_cast<int>(checked));
 }
 
 void MaxQGroupBox::onToggled(bool on) {
-
+	_qt_qgroupbox_QGroupBox__OnToggled(maxHandle, static_cast<int>(on));
 }
 
 void MaxQGroupBox::onCustomContextMenuRequested(const QPoint & pos) {
-
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
 // *********************************************
@@ -95,6 +95,10 @@ void bmx_qt_qgroupbox_settitle(QGroupBox * gb, BBString * title) {
 
 BBString * bmx_qt_qgroupbox_title(QGroupBox * gb) {
 	return bbStringFromQString(gb->title());
+}
+
+void bmx_qt_qgroupbox_setchecked(QGroupBox * gb, int checked) {
+	gb->setChecked(static_cast<bool>(checked));
 }
 
 
