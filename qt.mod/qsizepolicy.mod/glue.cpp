@@ -24,10 +24,152 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQSizePolicy::MaxQSizePolicy(const QSizePolicy & p)
+	: policy(p)
+{
+}
+
+MaxQSizePolicy::~MaxQSizePolicy()
+{
+}
+
+QSizePolicy & MaxQSizePolicy::Policy() {
+	return policy;
+}
 
 
 // *********************************************
 
+QSizePolicy::Policy bmx_qt_inttopolicy(int p) {
+	switch(p) {
+		case 0:
+			return QSizePolicy::Fixed;
+		case 1:
+			return QSizePolicy::Minimum;
+		case 4:
+			return QSizePolicy::Maximum;
+		case 5:
+			return QSizePolicy::Preferred;
+		case 7:
+			return QSizePolicy::Expanding;
+		case 3:
+			return QSizePolicy::MinimumExpanding;
+		case 13:
+			return QSizePolicy::Ignored;
+	}
+	
+	return QSizePolicy::Fixed;
+}
+
+int bmx_qt_qsizepolicy_controltype(MaxQSizePolicy * sp) {
+	return sp->Policy().controlType();
+}
+
+int bmx_qt_qsizepolicy_expandingdirections(MaxQSizePolicy * sp) {
+	return sp->Policy().expandingDirections();
+}
+
+int bmx_qt_qsizepolicy_hasheightforwidth(MaxQSizePolicy * sp) {
+	return static_cast<int>(sp->Policy().hasHeightForWidth());
+}
+
+int bmx_qt_qsizepolicy_horizontalpolicy(MaxQSizePolicy * sp) {
+	return sp->Policy().horizontalPolicy();
+}
+
+int bmx_qt_qsizepolicy_horizontalstretch(MaxQSizePolicy * sp) {
+	return sp->Policy().horizontalStretch();
+}
+
+void bmx_qt_qsizepolicy_setcontroltype(MaxQSizePolicy * sp, int c) {
+	QSizePolicy::ControlType controlType;
+	
+	switch(c) {
+		case 0x00000001:
+			controlType = QSizePolicy::DefaultType;
+			break;
+		case 0x00000002:
+			controlType = QSizePolicy::ButtonBox;
+			break;
+		case 0x00000004:
+			controlType = QSizePolicy::CheckBox;
+			break;
+		case 0x00000008:
+			controlType = QSizePolicy::ComboBox;
+			break;
+		case 0x00000010:
+			controlType = QSizePolicy::Frame;
+			break;
+		case 0x00000020:
+			controlType = QSizePolicy::GroupBox;
+			break;
+		case 0x00000040:
+			controlType = QSizePolicy::Label;
+			break;
+		case 0x00000080:
+			controlType = QSizePolicy::Line;
+			break;
+		case 0x00000100:
+			controlType = QSizePolicy::LineEdit;
+			break;
+		case 0x00000200:
+			controlType = QSizePolicy::PushButton;
+			break;
+		case 0x00000400:
+			controlType = QSizePolicy::RadioButton;
+			break;
+		case 0x00000800:
+			controlType = QSizePolicy::Slider;
+			break;
+		case 0x00001000:
+			controlType = QSizePolicy::SpinBox;
+			break;
+		case 0x00002000:
+			controlType = QSizePolicy::TabWidget;
+			break;
+		case 0x00004000:
+			controlType = QSizePolicy::ToolButton;
+			break;
+	}
+	
+	sp->Policy().setControlType(controlType);
+}
+
+void bmx_qt_qsizepolicy_setheightforwidth(MaxQSizePolicy * sp, int dependent) {
+	sp->Policy().setHeightForWidth(static_cast<bool>(dependent));
+}
+
+void bmx_qt_qsizepolicy_sethorizontalpolicy(MaxQSizePolicy * sp, int policy) {
+	sp->Policy().setHorizontalPolicy(bmx_qt_inttopolicy(policy));
+}
+
+void bmx_qt_qsizepolicy_sethorizontalstretch(MaxQSizePolicy * sp, int stretchFactor) {
+	sp->Policy().setHorizontalStretch(stretchFactor);
+}
+
+void bmx_qt_qsizepolicy_setverticalpolicy(MaxQSizePolicy * sp, int policy) {
+	sp->Policy().setVerticalPolicy(bmx_qt_inttopolicy(policy));
+}
+
+void bmx_qt_qsizepolicy_setverticalstretch(MaxQSizePolicy * sp, int stretchFactor) {
+	sp->Policy().setVerticalStretch(stretchFactor);
+}
+
+void bmx_qt_qsizepolicy_transpose(MaxQSizePolicy * sp) {
+	sp->Policy().transpose();
+}
+
+int bmx_qt_qsizepolicy_verticalpolicy(MaxQSizePolicy * sp) {
+	return sp->Policy().verticalPolicy();
+}
+
+int bmx_qt_qsizepolicy_verticalstretch(MaxQSizePolicy * sp) {
+	return sp->Policy().verticalStretch();
+}
+
+void bmx_qt_qsizepolicy_free(MaxQSizePolicy * sp) {
+	delete sp;
+}
 
 
 // NOTES :

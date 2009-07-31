@@ -24,6 +24,7 @@
 #define BMX_QT_QWIDGET
 
 #include "../core.mod/glue.h"
+#include "../qsizepolicy.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -85,6 +86,7 @@ extern "C" {
 	void bmx_qt_qwidget_setattribute(QWidget * widget, int attribute);
 	void bmx_qt_qwidget_move(QWidget * widget, int x, int y);
 	void bmx_qt_qwidget_settooltip(QWidget * widget, BBString * text);
+	MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget);
 
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);

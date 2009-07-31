@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QWidget
 Import BRL.Blitz
 
 
@@ -44,21 +45,5 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qsizepolicy_controltype:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_expandingdirections:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_hasheightforwidth:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_horizontalpolicy:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_horizontalstretch:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_setcontroltype(handle:Byte Ptr, controlType:Int)
-	Function bmx_qt_qsizepolicy_setheightforwidth(handle:Byte Ptr, dependent:Int)
-	Function bmx_qt_qsizepolicy_sethorizontalpolicy(handle:Byte Ptr, policy:Int)
-	Function bmx_qt_qsizepolicy_sethorizontalstretch(handle:Byte Ptr, stretchFactor:Int)
-	Function bmx_qt_qsizepolicy_setverticalpolicy(handle:Byte Ptr, policy:Int)
-	Function bmx_qt_qsizepolicy_setverticalstretch(handle:Byte Ptr, stretchFactor:Int)
-	Function bmx_qt_qsizepolicy_transpose(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_verticalpolicy:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_verticalstretch:Int(handle:Byte Ptr)
-	Function bmx_qt_qsizepolicy_free(handle:Byte Ptr)
 
 End Extern
