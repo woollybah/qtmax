@@ -320,7 +320,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method sizePolicy:QSizePolicy()
-	' TODO
+		Return QSizePolicy._create(bmx_qt_qwidget_sizepolicy(qObjectPtr))
 	End Method
 	
 	Method whatsThis:String()

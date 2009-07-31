@@ -7,6 +7,7 @@ Import Qt.QLineEdit
 Import Qt.QToolBar
 Import BRL.FileSystem
 Import BRL.RamStream
+Import BRL.TextStream
 
 Incbin "jquery.min.js"
 
@@ -36,6 +37,9 @@ Type TMainWindow Extends QMainWindow
 	End Method
 
 	Method OnInit()
+	
+		jQuery = LoadText("incbin::jquery.min.js")
+	
 		view = New QWebView.Create(Self)
 		view.Load(New QUrl.Create("http://www.google.com/ncr"))
 		connect(view, "loadFinished", Self, "adjustLocation")

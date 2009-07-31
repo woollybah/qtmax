@@ -284,6 +284,10 @@ void bmx_qt_qwidget_settooltip(QWidget * widget, BBString * text) {
 	widget->setToolTip(qStringFromBBString(text));
 }
 
+MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget) {
+	return new MaxQSizePolicy(widget->sizePolicy());
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {

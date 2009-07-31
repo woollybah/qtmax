@@ -86,6 +86,7 @@ Extern
 	Function bmx_qt_qwidget_setattribute(handle:Byte Ptr, attribute:Int)
 	Function bmx_qt_qwidget_move(handle:Byte Ptr, x:Int, y:Int)
 	Function bmx_qt_qwidget_settooltip(handle:Byte Ptr, text:String)
+	Function bmx_qt_qwidget_sizepolicy:Byte Ptr(handle:Byte Ptr)
 
 	Function bmx_qt_qwidget_height:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_width:Int(handle:Byte Ptr)

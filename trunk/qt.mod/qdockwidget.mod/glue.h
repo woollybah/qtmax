@@ -20,49 +20,21 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QSIZEPOLICY
-#define MAX_QT_QSIZEPOLICY
+#ifndef MAX_QT_QDOCKWIDGET
+#define MAX_QT_QDOCKWIDGET
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QSizePolicy>
-
-class MaxQSizePolicy;
+#include <QDockWidget>
 
 extern "C" {
 
 #include <blitz.h>
 
-	int bmx_qt_qsizepolicy_controltype(MaxQSizePolicy * sp);
-	int bmx_qt_qsizepolicy_expandingdirections(MaxQSizePolicy * sp);
-	int bmx_qt_qsizepolicy_hasheightforwidth(MaxQSizePolicy * sp);
-	int bmx_qt_qsizepolicy_horizontalpolicy(MaxQSizePolicy * sp);
-	int bmx_qt_qsizepolicy_horizontalstretch(MaxQSizePolicy * sp);
-	void bmx_qt_qsizepolicy_setcontroltype(MaxQSizePolicy * sp, int controlType);
-	void bmx_qt_qsizepolicy_setheightforwidth(MaxQSizePolicy * sp, int dependent);
-	void bmx_qt_qsizepolicy_sethorizontalpolicy(MaxQSizePolicy * sp, int policy);
-	void bmx_qt_qsizepolicy_sethorizontalstretch(MaxQSizePolicy * sp, int stretchFactor);
-	void bmx_qt_qsizepolicy_setverticalpolicy(MaxQSizePolicy * sp, int policy);
-	void bmx_qt_qsizepolicy_setverticalstretch(MaxQSizePolicy * sp, int stretchFactor);
-	void bmx_qt_qsizepolicy_transpose(MaxQSizePolicy * sp);
-	int bmx_qt_qsizepolicy_verticalpolicy(MaxQSizePolicy * sp);
-	int bmx_qt_qsizepolicy_verticalstretch(MaxQSizePolicy * sp);
-	void bmx_qt_qsizepolicy_free(MaxQSizePolicy * sp);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQSizePolicy
-{
-public:
-	MaxQSizePolicy(const QSizePolicy & p);
-	~MaxQSizePolicy();
-
-	QSizePolicy & Policy();
-
-private:
-	QSizePolicy policy;
-};
 
 #endif
