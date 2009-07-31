@@ -20,43 +20,19 @@
 ' 
 SuperStrict
 
-Import Qt.Core
-Import Qt.QWidget
-Import Qt.QMenu
-Import Qt.QNetwork
-Import Qt.QIcon
-Import Qt.QPalette
-Import Qt.QContextMenuEvent
-Import Qt.QUndoStack
-Import Qt.QPainter
-Import BRL.Blitz
+Module Qt.QSizePolicy
+
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 
-' headers :-)
-?win32
-Import "../lib/win32/include/*.h"
-?macos
-Import "../lib/macos/include/*.h"
-?Not linux
-Import "../src/include/*.h"
-Import "../src/include/Qt/*.h"
-Import "../src/include/QtCore/*.h"
-Import "../src/include/QtGui/*.h"
-Import "../src/include/QtWebKit/*.h"
-?linux
-Import "/usr/include/qt4/*.h"
-Import "/usr/include/qt4/Qt/*.h"
-Import "/usr/include/qt4/QtCore/*.h"
-Import "/usr/include/qt4/QtGui/*.h"
-Import "/usr/include/qt4/QtWebKit/*.h"
-?
+Import "common.bmx"
 
+Type QSizePolicy
 
-Import "glue.cpp"
+	Field qObjectPtr:Byte Ptr
 
-Extern
+End Type
 
-	Function bmx_qt_qwebview_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
-	Function bmx_qt_qwebview_load(handle:Byte Ptr, url:Byte Ptr)
-
-End Extern

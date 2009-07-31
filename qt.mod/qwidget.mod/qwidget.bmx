@@ -310,9 +310,17 @@ Type QWidget Extends QObject
 	Method setLayout(layout:QLayout)
 		bmx_qt_qwidget_setlayout(qObjectPtr, layout.qObjectPtr)
 	End Method
+
+	Method setSizePolicy(policy:QSizePolicy)
+	' TODO
+	End Method
 	
 	Method setToolTip(text:String)
 		bmx_qt_qwidget_settooltip(qObjectPtr, text)
+	End Method
+	
+	Method sizePolicy:QSizePolicy()
+	' TODO
 	End Method
 	
 	Method whatsThis:String()

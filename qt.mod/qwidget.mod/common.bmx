@@ -27,6 +27,7 @@ Import Qt.QRegion
 Import Qt.QPaintEvent
 Import Qt.QMouseEvent
 Import Qt.QIcon
+Import Qt.QSizePolicy
 Import BRL.Blitz
 
 

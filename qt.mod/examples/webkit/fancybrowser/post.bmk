@@ -1,0 +1,66 @@
+# post build script
+#
+# We want to ensure that that dlls are here !
+#
+
+@define copydll
+	local ext
+	local pre
+
+	if bmk.Platform() == "win32" then
+		pre = ""
+		ext = "4.dll"
+	else
+		pre = "lib"
+		ext = ".4.dylib"
+	end
+
+	local path = utils.ModulePath("qt.core") .. "/../lib/" .. bmk.Platform() .. "/"
+	local file = pre .. arg1 .. ext
+
+	sys.CopyFile(path .. file, %exepath% .. "/" .. file)
+@end
+
+@define copynib
+
+	if bmk.Platform() == "macos" then
+		local path = utils.ModulePath("qt.core") .. "/../lib/" .. bmk.Platform() .. "/"
+		sys.CopyDir(path .. "qt_menu.nib", %exepath% .. "/../Resources/qt_menu.nib")
+	end
+	
+@end
+
+@define copyplugin
+	local ext
+	local pre
+	local loc
+
+	if bmk.Platform() == "win32" then
+		pre = ""
+		ext = "4.dll"
+		loc = ""
+	else
+		pre = "libq"
+		ext = ".dylib"
+		loc = "../plugins/" .. arg2 .. "/"
+
+		sys.CreateDir(%exepath% .. "/" .. loc, 1)
+	end
+
+	local path = utils.ModulePath("qt.core") .. "/../plugins/" .. bmk.Platform() .. "/" .. arg2 .. "/"
+	local file = pre .. arg1 .. ext
+
+	sys.CopyFile(path .. file, %exepath% .. "/" .. loc .. file)
+@end
+
+# do the copy
+copydll QtCore
+copydll QtGui
+copydll QtWebKit
+copydll QtNetwork
+copydll phonon
+
+copyplugin gif imageformats
+copyplugin jpeg imageformats
+
+copynib
