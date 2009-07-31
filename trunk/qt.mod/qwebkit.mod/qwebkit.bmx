@@ -294,6 +294,155 @@ End Type
 
 Type QWebFrame Extends QObject
 
+	Method addToJavaScriptWindowObject(name:String, obj:QObject)
+	' TODO
+	End Method
+	
+	Method addToJavaScriptWindowObjectOwner(name:String, obj:QObject, own:Int)
+	' TODO
+	End Method
+	
+	Method childFrames:QWebFrame[]()
+	' TODO
+	End Method
+	
+	Method contentsSize(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	Method frameName:String()
+	' TODO
+	End Method
+	
+	Method geometry:QRect()
+	' TODO
+	End Method
+	
+	Method hitTestContent:QWebHitTestResult(x:Int, y:Int)
+	' TODO
+	End Method
+	
+	Method icon:QIcon()
+	' TODO
+	End Method
+	
+	Method Load(url:QUrl)
+	' TODO
+	End Method
+	
+	'Method loadRequest(req:QWebNetworkRequest)
+	' TODO
+	'End Method
+	
+	Method metaData:TMap()
+	' TODO
+	End Method
+	
+	Method page:QWebPage()
+	' TODO
+	End Method
+	
+	Method parentFrame:QWebFrame()
+	' TODO
+	End Method
+	
+	Method pos(x:Int Var, y:Int Var)
+	' TODO
+	End Method
+	
+	Method render(painter:QPainter, clip:QRegion = Null)
+	' TODO
+	End Method
+	
+	Method renderTreeDump:String()
+	' TODO
+	End Method
+	
+	Method scroll(dx:Int, dy:Int)
+	' TODO
+	End Method
+	
+	Method scrollBarMaximum:Int(orientation:Int)
+	' TODO
+	End Method
+	
+	Method scrollBarMinimum:Int(orientation:Int)
+	' TODO
+	End Method
+	
+	Method scrollBarPolicy:Int(orientation:Int)
+	' TODO
+	End Method
+	
+	Method scrollBarValue(orientation:Int)
+	' TODO
+	End Method
+	
+	Method scrollPosition(x:Int Var, y:Int Var)
+	' TODO
+	End Method
+	
+	Method securityOrigin:QWebSecurityOrigin()
+	' TODO
+	End Method
+	
+	'Method setContent(QByteArray & data, QString & mimeType = QString(), QUrl & baseUrl = QUrl())
+	' TODO
+	'End Method
+	
+	Method setHtml(html:String, baseUrl:QUrl = Null)
+	' TODO
+	End Method
+	
+	Method setScrollBarPolicy(orientation:Int, policy:Int)
+	' TODO
+	End Method
+	
+	Method setScrollBarValue(orientation:Int, value:Int)
+	' TODO
+	End Method
+	
+	Method setScrollPosition(x:Int, y:Int)
+	' TODO
+	End Method
+	
+	Method setTextSizeMultiplier(factor:Double)
+	' TODO
+	End Method
+	
+	Method setUrl(url:QUrl)
+	' TODO
+	End Method
+	
+	Method setZoomFactor(factor:Double)
+	' TODO
+	End Method
+	
+	Method textSizeMultiplier:Double()
+	' TODO
+	End Method
+	
+	Method title:String()
+	' TODO
+	End Method
+	
+	Method toHtml:String()
+	' TODO
+	End Method
+	
+	Method toPlainText:String()
+	' TODO
+	End Method
+	
+	Method url:QUrl()
+	' TODO
+	End Method
+	
+	Method zoomFactor:Double()
+	' TODO
+	End Method
+
+	
 End Type
 
 
@@ -313,4 +462,15 @@ Type QWebSettings
 
 End Type
 
+Type QWebHitTestResult
+
+	Field qObjectPtr:Byte Ptr
+
+End Type
+
+Type QWebSecurityOrigin
+
+	Field qObjectPtr:Byte Ptr
+
+End Type
 

@@ -40,7 +40,11 @@ Type QMainWindow Extends QWidget
 	End Function
 	
 	Method Create:QMainWindow(parent:QWidget = Null, flags:Int = 0)
-		
+		If parent Then
+			qObjectPtr = bmx_qt_qmainwindow_create(Self, parent.qObjectPtr, flags)
+		Else
+			qObjectPtr = bmx_qt_qmainwindow_create(Self, Null, flags)
+		End If
 		OnInit()
 		Return Self
 	End Method
