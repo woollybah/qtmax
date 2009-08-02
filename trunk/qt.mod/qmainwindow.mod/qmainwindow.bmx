@@ -49,5 +49,196 @@ Type QMainWindow Extends QWidget
 		Return Self
 	End Method
 
+	Method addDockWidget(area:Int, dockwidget:QDockWidget, orientation:Int = Qt_Vertical)
+		bmx_qt_qmainwindow_adddockwidget(qObjectPtr, area, dockwidget.qObjectPtr, orientation)
+	End Method
+	
+	Method addToolBarArea(area:Int, toolbar:QToolBar)
+		bmx_qt_qmainwindow_addtoolbararea(qObjectPtr, area, toolbar.qObjectPtr)
+	End Method
+	
+	Method addToolBar:QToolBar(toolbar:Object)
+		If QToolBar(toolbar) Then
+			Return QToolBar._find(bmx_qt_qmainwindow_addtoolbar(qObjectPtr, QToolBar(toolbar).qObjectPtr))
+		Else If String(toolbar)
+			Return QToolBar._find(bmx_qt_qmainwindow_addtoolbartxt(qObjectPtr, String(toolbar)))
+		End If
+	End Method
+	
+	Method addToolBarBreak(area:Int = Qt_TopToolBarArea)
+		bmx_qt_qmainwindow_addtoolbarbreak(qObjectPtr, area)
+	End Method
+	
+	Method centralWidget:QWidget()
+		Return QWidget._find(bmx_qt_qmainwindow_centralwidget(qObjectPtr))
+	End Method
+	
+	Method corner:Int(c:Int)
+		Return bmx_qt_qmainwindow_corner(qObjectPtr, c)
+	End Method
+	
+	Method createPopupMenu:QMenu()
+		Return QMenu._find(bmx_qt_qmainwindow_createpopupmenu(qObjectPtr))
+	End Method
+	
+	Method dockOptions:Int()
+		Return bmx_qt_qmainwindow_dockoptions(qObjectPtr)
+	End Method
+	
+	Method dockWidgetArea:Int(dockwidget:QDockWidget)
+		Return bmx_qt_qmainwindow_dockwidgetarea(qObjectPtr, dockwidget.qObjectPtr)
+	End Method
+	
+	Method documentMode:Int()
+		Return bmx_qt_qmainwindow_documentmode(qObjectPtr)
+	End Method
+	
+	Method iconSize(w:Int Var, h:Int Var)
+		bmx_qt_qmainwindow_iconsize(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method insertToolBar(before:QToolBar, toolbar:QToolBar)
+		bmx_qt_qmainwindow_inserttoolbar(qObjectPtr, before.qObjectPtr, toolbar.qObjectPtr)
+	End Method
+	
+	Method insertToolBarBreak(before:QToolBar)
+		bmx_qt_qmainwindow_inserttoolbarbreak(qObjectPtr, before.qObjectPtr)
+	End Method
+	
+	Method isAnimated:Int()
+		Return bmx_qt_qmainwindow_isanimated(qObjectPtr)
+	End Method
+	
+	Method isDockNestingEnabled:Int()
+		Return bmx_qt_qmainwindow_isdocknestingenabled(qObjectPtr)
+	End Method
+	
+	Method menuBar:QMenuBar()
+		Return QMenuBar._find(bmx_qt_qmainwindow_menubar(qObjectPtr))
+	End Method
+	
+	Method menuWidget:QWidget()
+		Return QWidget._find(bmx_qt_qmainwindow_menuwidget(qObjectPtr))
+	End Method
+	
+	Method removeDockWidget(dockwidget:QDockWidget)
+		bmx_qt_qmainwindow_removedockwidget(qObjectPtr, dockwidget.qObjectPtr)
+	End Method
+	
+	Method removeToolBar(toolbar:QToolBar)
+		bmx_qt_qmainwindow_removetoolbar(qObjectPtr, toolbar.qObjectPtr)
+	End Method
+	
+	Method removeToolBarBreak(before:QToolBar)
+		bmx_qt_qmainwindow_removetoolbarbreak(qObjectPtr, before.qObjectPtr)
+	End Method
+	
+	Method restoreDockWidget(dockwidget:QDockWidget)
+		bmx_qt_qmainwindow_restoredockwidget(qObjectPtr, dockwidget.qObjectPtr)
+	End Method
+	
+	'Method restoreState:Int(Const QByteArray & state, version:Int = 0)
+	'	Return bmx_qt_qmainwindow_restorestate(qObjectPtr
+	'End Method
+	
+	'Method saveState:Byte Ptr(Int version = 0)
+	'	Return bmx_qt_qmainwindow_ (qObjectPtr
+	'End Method
+	
+	Method setCentralWidget(widget:QWidget)
+		bmx_qt_qmainwindow_setcentralwidget(qObjectPtr, widget.qObjectPtr)
+	End Method
+	
+	Method setCorner(corner:Int, area:Int)
+		bmx_qt_qmainwindow_setcorner(qObjectPtr, corner, area)
+	End Method
+	
+	Method setDockOptions(options:Int)
+		bmx_qt_qmainwindow_setdockoptions(qObjectPtr, options)
+	End Method
+	
+	Method setDocumentMode(enabled:Int)
+		bmx_qt_qmainwindow_setdocumentmode(qObjectPtr, enabled)
+	End Method
+	
+	Method setIconSize(w:Int, h:Int)
+		bmx_qt_qmainwindow_seticonsize(qObjectPtr, w, h)
+	End Method
+	
+	Method setMenuBar(menuBar:QMenuBar)
+		bmx_qt_qmainwindow_setmenubar(qObjectPtr, menuBar.qObjectPtr)
+	End Method
+	
+	Method setMenuWidget(widget:QWidget)
+		bmx_qt_qmainwindow_setmenuwidget(qObjectPtr, widget.qObjectPtr)
+	End Method
+	
+	Method setStatusBar(statusbar:QStatusBar)
+		bmx_qt_qmainwindow_setstatusbar(qObjectPtr, statusbar.qObjectPtr)
+	End Method
+	
+	Method setTabPosition(areas:Int, tabPosition:Int)
+		bmx_qt_qmainwindow_settabposition(qObjectPtr, areas, tabPosition)
+	End Method
+	
+	Method setTabShape(tabShape:Int)
+		bmx_qt_qmainwindow_settabshape(qObjectPtr, tabShape)
+	End Method
+	
+	Method setToolButtonStyle(toolButtonStyle:Int)
+		bmx_qt_qmainwindow_settoolbuttonstyle(qObjectPtr, toolButtonStyle)
+	End Method
+	
+	Method setUnifiedTitleAndToolBarOnMac(set:Int)
+		bmx_qt_qmainwindow_setunifiedtitleandtoolbaronmac(qObjectPtr, set)
+	End Method
+	
+	Method splitDockWidget(_first:QDockWidget, _second:QDockWidget, orientation:Int)
+		bmx_qt_qmainwindow_splitdockwidget(qObjectPtr, _first.qObjectPtr, _second.qObjectPtr, orientation)
+	End Method
+	
+	Method statusBar:QStatusBar()
+		Return QStatusBar._find(bmx_qt_qmainwindow_statusBar(qObjectPtr))
+	End Method
+	
+	Method tabPosition:Int(area:Int)
+		Return bmx_qt_qmainwindow_tabposition(qObjectPtr, area)
+	End Method
+	
+	Method tabShape:Int()
+		Return bmx_qt_qmainwindow_tabshape(qObjectPtr)
+	End Method
+	
+	Method tabifiedDockWidgets:QDockWidget[](dockwidget:QDockWidget)
+		'Return bmx_qt_qmainwindow_(qObjectPtr
+	End Method
+	
+	Method tabifyDockWidget(_first:QDockWidget, _second:QDockWidget)
+		bmx_qt_qmainwindow_tabifydockwidget(qObjectPtr, _first.qObjectPtr, _second.qObjectPtr)
+	End Method
+	
+	Method toolBarArea:Int(toolbar:QToolBar)
+		Return bmx_qt_qmainwindow_toolbararea(qObjectPtr, toolbar.qObjectPtr)
+	End Method
+	
+	Method toolBarBreak:Int(toolbar:QToolBar)
+		Return bmx_qt_qmainwindow_toolbarbreak(qObjectPtr, toolbar.qObjectPtr)
+	End Method
+	
+	Method toolButtonStyle:Int()
+		Return bmx_qt_qmainwindow_toolbuttonstyle(qObjectPtr)
+	End Method
+	
+	Method unifiedTitleAndToolBarOnMac:Int()
+		Return bmx_qt_qmainwindow_unifiedtitleandtoolbaronmac(qObjectPtr)
+	End Method
+
+	Method setAnimated(enabled:Int)
+		bmx_qt_qmainwindow_setanimated(qObjectPtr, enabled)
+	End Method
+	
+	Method setDockNestingEnabled(enabled:Int)
+		bmx_qt_qmainwindow_setdocknestingenabled(qObjectPtr, enabled)
+	End Method
 
 End Type

@@ -24,61 +24,54 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQToolBar::MaxQToolBar(BBObject * handle, QWidget * parent)
-	: maxHandle(handle), QToolBar(parent)
+MaxQStatusBar::MaxQStatusBar(BBObject * handle, QWidget * parent)
+	: maxHandle(handle), QStatusBar(parent)
 {
 	qbind(this, handle);
 }
 
-MaxQToolBar::MaxQToolBar(QWidget * parent)
-	: QToolBar(parent)
-{
-	maxHandle = _qt_qtoolbar_QToolBar___create(this);
-	qbind(this, maxHandle);
-}
-
-MaxQToolBar::~MaxQToolBar()
+MaxQStatusBar::~MaxQStatusBar()
 {
 	qunbind(this);
-}
-
-void MaxQToolBar::onActionTriggered(QAction * action) {
-
-}
-
-void MaxQToolBar::onAllowedAreasChanged(Qt::ToolBarAreas allowedAreas) {
-
-}
-
-void MaxQToolBar::onIconSizeChanged(const QSize & iconSize) {
-
-}
-
-void MaxQToolBar::onMovableChanged(bool movable) {
-
-}
-
-void MaxQToolBar::onOrientationChanged(Qt::Orientation orientation) {
-
-}
-
-void MaxQToolBar::onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle) {
-
-}
-
-void MaxQToolBar::onCustomContextMenuRequested(const QPoint & pos) {
-
 }
 
 
 // *********************************************
 
-QToolBar * bmx_qt_qtoolbar_create(BBObject * handle, QWidget * parent) {
-	return new MaxQToolBar(handle, parent);
+QStatusBar * bmx_qt_qstatusbar_create(BBObject * handle, QWidget  * parent) {
+	return new MaxQStatusBar(handle, parent);
 }
 
-void bmx_qt_qtoolbar_addwidget(QToolBar * tb, QWidget * widget) {
-	tb->addWidget(widget);
+void bmx_qt_qstatusbar_addpermanentwidget(QStatusBar * sb, QWidget * widget, int stretch) {
+	sb->addPermanentWidget(widget, stretch);
+}
+
+void bmx_qt_qstatusbar_addwidget(QStatusBar * sb, QWidget * widget, int stretch) {
+	sb->addWidget(widget, stretch);
+}
+
+BBString * bmx_qt_qstatusbar_currentmessage(QStatusBar * sb) {
+	return bbStringFromQString(sb->currentMessage());
+}
+
+int bmx_qt_qstatusbar_insertpermanentwidget(QStatusBar * sb, int index, QWidget * widget, int stretch) {
+	return sb->insertPermanentWidget(index, widget, stretch);
+}
+
+int bmx_qt_qstatusbar_insertwidget(QStatusBar * sb, int index, QWidget * widget, int stretch) {
+	return sb->insertWidget(index, widget, stretch);
+}
+
+int bmx_qt_qstatusbar_issizegripenabled(QStatusBar * sb) {
+	return static_cast<int>(sb->isSizeGripEnabled());
+}
+
+void bmx_qt_qstatusbar_removewidget(QStatusBar * sb, QWidget * widget) {
+	sb->removeWidget(widget);
+}
+
+void bmx_qt_qstatusbar_setsizegripenabled(QStatusBar * sb, int value) {
+	sb->setSizeGripEnabled(static_cast<bool>(value));
 }
 
 

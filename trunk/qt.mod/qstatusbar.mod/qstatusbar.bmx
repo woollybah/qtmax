@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QToolBar
+Module Qt.QStatusBar
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,118 +30,71 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-Rem
-bbdoc: A movable panel that contains a set of controls.
-End Rem
-Type QToolBar Extends QWidget
+Type QStatusBar Extends QWidget
 
-	Function CreateToolBar:QToolBar(parent:QWidget = Null)
-		Return New QToolBar.Create(parent)
+	Function CreateStatusBar:QStatusBar(parent:QWidget = Null)
 	End Function
 	
-	Method Create:QToolBar(parent:QWidget = Null)
+	Method Create:QStatusBar(parent:QWidget = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qtoolbar_create(Self, parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qstatusbar_create(Self, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qtoolbar_create(Self, Null)
+			qObjectPtr = bmx_qt_qstatusbar_create(Self, Null)
 		End If
 		OnInit()
 		Return Self
 	End Method
 
-	Function __create:QToolBar(qObjectPtr:Byte Ptr)
+	Function __create:QStatusBar(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
-			Local this:QToolBar = New QToolBar
+			Local this:QStatusBar = New QStatusBar
 			this.qObjectPtr = qObjectPtr
 			Return this
 		End If
 	End Function
 	
-	Function _find:QToolBar(qObjectPtr:Byte Ptr)
+	Function _find:QStatusBar(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
-			Local widget:QToolBar = QToolBar(qfind(qObjectPtr))
+			Local widget:QStatusBar = QStatusBar(qfind(qObjectPtr))
 			If Not widget Then
-				Return QToolBar.__create(qObjectPtr)
+				Return QStatusBar.__create(qObjectPtr)
 			End If
 			Return widget
 		End If
 	End Function
-	
-	Method actionAt:QAction(x:Int, y:Int)
-	' TODO
+
+	Method addPermanentWidget(widget:QWidget, stretch:Int = 0)
+		bmx_qt_qstatusbar_addpermanentwidget(qObjectPtr, widget.qObjectPtr, stretch)
 	End Method
 	
-	Method addWidget(widget:QWidget)
-		bmx_qt_qtoolbar_addwidget(qObjectPtr, widget.qObjectPtr)
+	Method addWidget(widget:QWidget, stretch:Int = 0)
+		bmx_qt_qstatusbar_addwidget(qObjectPtr, widget.qObjectPtr, stretch)
 	End Method
 	
-	Method allowedAreas:Int()
-	' TODO
+	Method currentMessage:String()
+		Return bmx_qt_qstatusbar_currentmessage(qObjectPtr)
 	End Method
 	
-	Method clear()
-	' TODO
+	Method insertPermanentWidget:Int(index:Int, widget:QWidget, stretch:Int = 0)
+		bmx_qt_qstatusbar_insertpermanentwidget(qObjectPtr, index, widget.qObjectPtr, stretch)
 	End Method
 	
-	Method iconSize(w:Int Var, h:Int Var)
-	' TODO
+	Method insertWidget:Int(index:Int, widget:QWidget, stretch:Int = 0)
+		Return bmx_qt_qstatusbar_insertwidget(qObjectPtr, index, widget.qObjectPtr, stretch)
 	End Method
 	
-	Method insertSeparator:QAction(before:QAction)
-	' TODO
+	Method isSizeGripEnabled:Int()
+		Return bmx_qt_qstatusbar_issizegripenabled(qObjectPtr)
 	End Method
 	
-	Method insertWidget:QAction(before:QAction, widget:QWidget)
-	' TODO
+	Method removeWidget(widget:QWidget)
+		bmx_qt_qstatusbar_removewidget(qObjectPtr, widget.qObjectPtr)
 	End Method
 	
-	Method isAreaAllowed:Int(area:Int)
-	' TODO
+	Method setSizeGripEnabled(value:Int)
+		bmx_qt_qstatusbar_setsizegripenabled(qObjectPtr, value)
 	End Method
-	
-	Method isFloatable:Int()
-	' TODO
-	End Method
-	
-	Method isFloating:Int()
-	' TODO
-	End Method
-	
-	Method isMovable:Int()
-	' TODO
-	End Method
-	
-	Method orientation:Int()
-	' TODO
-	End Method
-	
-	Method setAllowedAreas(areas:Int)
-	' TODO
-	End Method
-	
-	Method setFloatable(floatable:Int)
-	' TODO
-	End Method
-	
-	Method setMovable(movable:Int)
-	' TODO
-	End Method
-	
-	Method setOrientation(orientation:Int)
-	' TODO
-	End Method
-	
-	Method toggleViewAction:QAction()
-	' TODO
-	End Method
-	
-	Method toolButtonStyle:Int()
-	' TODO
-	End Method
-	
-	Method widgetForAction:QWidget(action:QAction)
-	' TODO
-	End Method
+
 	
 End Type
 

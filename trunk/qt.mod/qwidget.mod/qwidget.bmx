@@ -315,6 +315,10 @@ Type QWidget Extends QObject
 	' TODO
 	End Method
 	
+	Method setSizePolicyHV(horizontalPolicy:Int, verticalPolicy:Int)
+		bmx_qt_qwidget_setsizepolicyhv(qObjectPtr, horizontalPolicy, verticalPolicy)
+	End Method
+	
 	Method setToolTip(text:String)
 		bmx_qt_qwidget_settooltip(qObjectPtr, text)
 	End Method
@@ -632,6 +636,180 @@ Type QAction Extends QObject
 		qObjectPtr = bmx_qt_qaction_create(Self, text, parent.qObjectPtr)
 		Return Self
 	End Method
+
+	Method actionGroup:QActionGroup()
+		Return QActionGroup._create(bmx_qt_qaction_actiongroup(qObjectPtr))
+	End Method
+	
+	Method activate(event:Int)
+		bmx_qt_qaction_activate(qObjectPtr, event)
+	End Method
+	
+	'QList<QGraphicsWidget *> associatedGraphicsWidgets()
+	
+	'QList<QWidget *> associatedWidgets()
+	
+	Method autoRepeat:Int()
+		Return bmx_qt_qaction_autorepeat(qObjectPtr)
+	End Method
+	
+	Method data:Object()
+		Return bmx_qt_qaction_data(qObjectPtr)
+	End Method
+	
+	Method font:QFont()
+		Return QFont._create(bmx_qt_qaction_font(qObjectPtr))
+	End Method
+	
+	Method icon:QIcon()
+		' TODO
+		'Return bmx_qt_qaction_icon(qObjectPtr)
+	End Method
+	
+	Method iconText:String()
+		Return bmx_qt_qaction_icontext(qObjectPtr)
+	End Method
+	
+	Method isCheckable:Int()
+		Return bmx_qt_qaction_ischeckable(qObjectPtr)
+	End Method
+	
+	Method isChecked:Int()
+		Return bmx_qt_qaction_ischecked(qObjectPtr)
+	End Method
+	
+	Method isEnabled:Int()
+		Return bmx_qt_qaction_isenabled(qObjectPtr)
+	End Method
+	
+	Method isIconVisibleInMenu:Int()
+		Return bmx_qt_qaction_isiconvisibleinmenu(qObjectPtr)
+	End Method
+	
+	Method isSeparator:Int()
+		Return bmx_qt_qaction_isseparator(qObjectPtr)
+	End Method
+	
+	Method isVisible:Int()
+		Return bmx_qt_qaction_isvisible(qObjectPtr)
+	End Method
+	
+	' Note : moved to Qt.QMenu, because of referencing issues.
+	'Method menu:QMenu()
+	'	Return QMenu._find(bmx_qt_qaction_menu(qObjectPtr))
+	'End Method
+	
+	Method menuRole:Int()
+		Return bmx_qt_qaction_menurole(qObjectPtr)
+	End Method
+	
+	Method parentWidget:QWidget()
+		Return QWidget._find(bmx_qt_qaction_parentwidget(qObjectPtr))
+	End Method
+	
+	Method setActionGroup(group:QActionGroup)
+		bmx_qt_qaction_setactiongroup(qObjectPtr, group.qObjectPtr)
+	End Method
+	
+	Method setAutoRepeat(value:Int)
+		bmx_qt_qaction_setautorepeat(qObjectPtr, value)
+	End Method
+	
+	Method setCheckable(value:Int)
+		bmx_qt_qaction_setcheckable(qObjectPtr, value)
+	End Method
+	
+	Method setData(userData:Object)
+		bmx_qt_qaction_setdata(qObjectPtr, userData)
+	End Method
+	
+	Method setFont(font:QFont)
+		bmx_qt_qaction_setfont(qObjectPtr, font.qObjectPtr)
+	End Method
+	
+	Method setIcon(icon:QIcon)
+		' TODO
+		'bmx_qt_qaction_seticon(qObjectPtr)
+	End Method
+	
+	Method setIconText(text:String)
+		bmx_qt_qaction_seticontext(qObjectPtr, text)
+	End Method
+	
+	Method setIconVisibleInMenu(visible:Int)
+		bmx_qt_qaction_seticonvisibleinmenu(qObjectPtr, visible)
+	End Method
+	
+	' Note : moved to Qt.QMenu, because of referencing issues.
+	'Method setMenu(menu:QMenu)
+	'	bmx_qt_qaction_setmenu(qObjectPtr, menu.qObjectPtr)
+	'End Method
+	
+	Method setMenuRole(menuRole:Int)
+		bmx_qt_qaction_setmenurole(qObjectPtr, menuRole)
+	End Method
+	
+	Method setSeparator(value:Int)
+		bmx_qt_qaction_setseparator(qObjectPtr, value)
+	End Method
+	
+	Method setShortcutContext(context:Int)
+		bmx_qt_qaction_setshortcutcontext(qObjectPtr, context)
+	End Method
+	
+	'method setShortcuts(QList<QKeySequence> & shortcuts)
+	
+	'method setShortcuts(QKeySequence::StandardKey key)
+	
+	Method setStatusTip(statusTip:String)
+		bmx_qt_qaction_setstatustip(qObjectPtr, statusTip)
+	End Method
+	
+	Method setText(text:String)
+		bmx_qt_qaction_settext(qObjectPtr, text)
+	End Method
+	
+	Method setToolTip(tip:String)
+		bmx_qt_qaction_settooltip(qObjectPtr, tip)
+	End Method
+	
+	Method setWhatsThis(what:String)
+		bmx_qt_qaction_setwhatsthis(qObjectPtr, what)
+	End Method
+	
+	Method shortcut:String()
+		Return bmx_qt_qaction_shortcut(qObjectPtr)
+	End Method
+	
+	Method shortcutContext:Int()
+		Return bmx_qt_qaction_shortcutcontext(qObjectPtr)
+	End Method
+	
+	'QList<QKeySequence> shortcuts()
+	
+	Method showStatusText:Int(widget:QWidget = Null)
+		If widget Then
+			Return bmx_qt_qaction_showstatustext(qObjectPtr, widget.qObjectPtr)
+		Else
+			Return bmx_qt_qaction_showstatustext(qObjectPtr, Null)
+		End If
+	End Method
+	
+	Method statusTip:String()
+		Return bmx_qt_qaction_statustip(qObjectPtr)
+	End Method
+	
+	Method text:String()
+		Return bmx_qt_qaction_text(qObjectPtr)
+	End Method
+	
+	Method toolTip:String()
+		Return bmx_qt_qaction_tooltip(qObjectPtr)
+	End Method
+	
+	Method whatsThis:String() 
+		Return bmx_qt_qaction_whatsthis(qObjectPtr)
+	End Method
 	
 	Method setShortcut(sequence:String)
 		bmx_qt_qaction_setshortcut(qObjectPtr, sequence)
@@ -655,6 +833,28 @@ Type QAction Extends QObject
 	' SIGNAL : triggered
 	Function _OnTriggered(obj:QAction, checked:Int)
 		obj._InvokeSignals("triggered", [String(checked)])
+	End Function
+
+End Type
+
+Type QActionGroup Extends QObject
+
+	Function _create:QActionGroup(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QActionGroup = New QActionGroup
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Function _find:QActionGroup(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QActionGroup = QActionGroup(qfind(qObjectPtr))
+			If Not widget Then
+				Return QActionGroup._create(qObjectPtr)
+			End If
+			Return widget
+		End If
 	End Function
 
 End Type

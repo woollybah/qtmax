@@ -288,6 +288,10 @@ MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget) {
 	return new MaxQSizePolicy(widget->sizePolicy());
 }
 
+void bmx_qt_qwidget_setsizepolicyhv(QWidget * widget, int horizontalPolicy, int verticalPolicy) {
+	widget->setSizePolicy((QSizePolicy::Policy)horizontalPolicy, (QSizePolicy::Policy)verticalPolicy);
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
@@ -297,6 +301,158 @@ QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * pa
 void bmx_qt_qaction_setshortcut(QAction * handle, BBString * sequence) {
 	handle->setShortcut(qStringFromBBString(sequence));
 }
+
+QActionGroup * bmx_qt_qaction_actiongroup(QAction * action) {
+	return action->actionGroup();
+}
+
+void bmx_qt_qaction_activate(QAction * action, int event) {
+	action->activate((QAction::ActionEvent)event);
+}
+
+int bmx_qt_qaction_autorepeat(QAction * action) {
+	return static_cast<int>(action->autoRepeat());
+}
+
+BBObject * bmx_qt_qaction_data(QAction * action) {
+	return &bbNullObject;
+	// TODO
+	//return action->
+}
+
+MaxQFont * bmx_qt_qaction_font(QAction * action) {
+	return new MaxQFont(action->font());
+}
+
+BBString * bmx_qt_qaction_icontext(QAction * action) {
+	return bbStringFromQString(action->iconText());
+}
+
+int bmx_qt_qaction_ischeckable(QAction * action) {
+	return static_cast<int>(action->isCheckable());
+}
+
+int bmx_qt_qaction_ischecked(QAction * action) {
+	return static_cast<int>(action->isChecked());
+}
+
+int bmx_qt_qaction_isenabled(QAction * action) {
+	return static_cast<int>(action->isEnabled());
+}
+
+int bmx_qt_qaction_isiconvisibleinmenu(QAction * action) {
+	return static_cast<int>(action->isIconVisibleInMenu());
+}
+
+int bmx_qt_qaction_isseparator(QAction * action) {
+	return static_cast<int>(action->isSeparator());
+}
+
+int bmx_qt_qaction_isvisible(QAction * action) {
+	return static_cast<int>(action->isVisible());
+}
+
+QMenu * bmx_qt_qaction_menu(QAction * action) {
+	return action->menu();
+}
+
+int bmx_qt_qaction_menurole(QAction * action) {
+	return action->menuRole();
+}
+
+QWidget * bmx_qt_qaction_parentwidget(QAction * action) {
+	return action->parentWidget();
+}
+
+void bmx_qt_qaction_setactiongroup(QAction * action, QActionGroup * group) {
+	action->setActionGroup(group);
+}
+
+void bmx_qt_qaction_setautorepeat(QAction * action, int value) {
+	action->setAutoRepeat(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_setcheckable(QAction * action, int value) {
+	action->setCheckable(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_setdata(QAction * action, BBObject * userData) {
+	// TODO
+	//action->
+}
+
+void bmx_qt_qaction_setfont(QAction * action, MaxQFont * font) {
+	action->setFont(font->Font());
+}
+
+void bmx_qt_qaction_seticontext(QAction * action, BBString * text) {
+	action->setIconText(qStringFromBBString(text));
+}
+
+void bmx_qt_qaction_seticonvisibleinmenu(QAction * action, int visible) {
+	action->setIconVisibleInMenu(static_cast<bool>(visible));
+}
+
+void bmx_qt_qaction_setmenu(QAction * action, QMenu * menu) {
+	action->setMenu(menu);
+}
+
+void bmx_qt_qaction_setmenurole(QAction * action, int menuRole) {
+	action->setMenuRole((QAction::MenuRole)menuRole);
+}
+
+void bmx_qt_qaction_setseparator(QAction * action, int value) {
+	action->setSeparator(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_setshortcutcontext(QAction * action, int context) {
+	action->setShortcutContext((Qt::ShortcutContext)context);
+}
+
+void bmx_qt_qaction_setstatustip(QAction * action, BBString * statusTip) {
+	action->setStatusTip(qStringFromBBString(statusTip));
+}
+
+void bmx_qt_qaction_settext(QAction * action, BBString * text) {
+	action->setText(qStringFromBBString(text));
+}
+
+void bmx_qt_qaction_settooltip(QAction * action, BBString * tip) {
+	action->setToolTip(qStringFromBBString(tip));
+}
+
+void bmx_qt_qaction_setwhatsthis(QAction * action, BBString * what) {
+	action->setWhatsThis(qStringFromBBString(what));
+}
+
+BBString * bmx_qt_qaction_shortcut(QAction * action) {
+	return bbStringFromQString(action->shortcut().toString());
+}
+
+int bmx_qt_qaction_shortcutcontext(QAction * action) {
+	return action->shortcutContext();
+}
+
+int bmx_qt_qaction_showstatustext(QAction * action, QWidget * widget) {
+	return static_cast<int>(action->showStatusText());
+}
+
+BBString * bmx_qt_qaction_statustip(QAction * action) {
+	return bbStringFromQString(action->statusTip());
+}
+
+BBString * bmx_qt_qaction_text(QAction * action) {
+	return bbStringFromQString(action->text());
+}
+
+BBString * bmx_qt_qaction_tooltip(QAction * action) {
+	return bbStringFromQString(action->toolTip());
+}
+
+BBString * bmx_qt_qaction_whatsthis(QAction * action) {
+	return bbStringFromQString(action->whatsThis());
+}
+
 
 // *********************************************
 

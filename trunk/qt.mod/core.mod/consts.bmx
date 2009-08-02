@@ -282,3 +282,12 @@ end rem
 Const Qt_CustomDashLine:Int = 6
 
 
+Const Qt_Horizontal:Int = $1
+Const Qt_Vertical:Int = $2
+
+Const Qt_LeftToolBarArea:Int = $1
+Const Qt_RightToolBarArea:Int = $2
+Const Qt_TopToolBarArea:Int = $4
+Const Qt_BottomToolBarArea:Int = $8
+Const Qt_AllToolBarAreas:Int = $F
+Const Qt_NoToolBarArea:Int = 0

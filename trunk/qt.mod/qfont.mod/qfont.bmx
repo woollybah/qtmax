@@ -34,5 +34,12 @@ Type QFont
 
 	Field qObjectPtr:Byte Ptr
 	
+	Function _create:QFont(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QFont = New QFont
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
 End Type

@@ -28,6 +28,7 @@ Import Qt.QPaintEvent
 Import Qt.QMouseEvent
 Import Qt.QIcon
 Import Qt.QSizePolicy
+Import Qt.QFont
 Import BRL.Blitz
 
 
@@ -87,13 +88,52 @@ Extern
 	Function bmx_qt_qwidget_move(handle:Byte Ptr, x:Int, y:Int)
 	Function bmx_qt_qwidget_settooltip(handle:Byte Ptr, text:String)
 	Function bmx_qt_qwidget_sizepolicy:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setsizepolicyhv(handle:Byte Ptr, horizontalPolicy:Int, verticalPolicy:Int)
 
 	Function bmx_qt_qwidget_height:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_width:Int(handle:Byte Ptr)
 
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_setshortcut(handle:Byte Ptr, sequence:String)
+	Function bmx_qt_qaction_actiongroup:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qaction_activate(handle:Byte Ptr, event:Int)
+	Function bmx_qt_qaction_autorepeat:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_data:Object(handle:Byte Ptr)
+	Function bmx_qt_qaction_font:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qaction_icontext:String(handle:Byte Ptr)
+	Function bmx_qt_qaction_ischeckable:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_ischecked:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_isenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_isiconvisibleinmenu:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_isseparator:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_isvisible:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_menu:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qaction_menurole:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_parentwidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qaction_setactiongroup(handle:Byte Ptr, group:Byte Ptr)
+	Function bmx_qt_qaction_setautorepeat(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_setcheckable(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_setdata(handle:Byte Ptr, userData:Object)
+	Function bmx_qt_qaction_setfont(handle:Byte Ptr, font:Byte Ptr)
+	Function bmx_qt_qaction_seticontext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qaction_seticonvisibleinmenu(handle:Byte Ptr, visible:Int)
+	Function bmx_qt_qaction_setmenu(handle:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qaction_setmenurole(handle:Byte Ptr, menuRole:Int)
+	Function bmx_qt_qaction_setseparator(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_setshortcutcontext(handle:Byte Ptr, context:Int)
+	Function bmx_qt_qaction_setstatustip(handle:Byte Ptr, statusTip:String)
+	Function bmx_qt_qaction_settext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qaction_settooltip(handle:Byte Ptr, tip:String)
+	Function bmx_qt_qaction_setwhatsthis(handle:Byte Ptr, what:String)
+	Function bmx_qt_qaction_shortcut:String(handle:Byte Ptr)
+	Function bmx_qt_qaction_shortcutcontext:Int(handle:Byte Ptr)
+	Function bmx_qt_qaction_showstatustext:Int(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qaction_statustip:String(handle:Byte Ptr)
+	Function bmx_qt_qaction_text:String(handle:Byte Ptr)
+	Function bmx_qt_qaction_tooltip:String(handle:Byte Ptr)
+	Function bmx_qt_qaction_whatsthis:String(handle:Byte Ptr)
 
+	
 End Extern
 
 Rem

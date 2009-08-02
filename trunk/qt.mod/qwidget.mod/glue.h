@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qsizepolicy.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -87,13 +88,51 @@ extern "C" {
 	void bmx_qt_qwidget_move(QWidget * widget, int x, int y);
 	void bmx_qt_qwidget_settooltip(QWidget * widget, BBString * text);
 	MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget);
+	void bmx_qt_qwidget_setsizepolicyhv(QWidget * widget, int horizontalPolicy, int verticalPolicy);
 
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	void bmx_qt_qaction_setshortcut(QAction * handle, BBString * sequence);
-
+	QActionGroup * bmx_qt_qaction_actiongroup(QAction * action);
+	void bmx_qt_qaction_activate(QAction * action, int event);
+	int bmx_qt_qaction_autorepeat(QAction * action);
+	BBObject * bmx_qt_qaction_data(QAction * action);
+	MaxQFont * bmx_qt_qaction_font(QAction * action);
+	BBString * bmx_qt_qaction_icontext(QAction * action);
+	int bmx_qt_qaction_ischeckable(QAction * action);
+	int bmx_qt_qaction_ischecked(QAction * action);
+	int bmx_qt_qaction_isenabled(QAction * action);
+	int bmx_qt_qaction_isiconvisibleinmenu(QAction * action);
+	int bmx_qt_qaction_isseparator(QAction * action);
+	int bmx_qt_qaction_isvisible(QAction * action);
+	QMenu * bmx_qt_qaction_menu(QAction * action);
+	int bmx_qt_qaction_menurole(QAction * action);
+	QWidget * bmx_qt_qaction_parentwidget(QAction * action);
+	void bmx_qt_qaction_setactiongroup(QAction * action, QActionGroup * group);
+	void bmx_qt_qaction_setautorepeat(QAction * action, int value);
+	void bmx_qt_qaction_setcheckable(QAction * action, int value);
+	void bmx_qt_qaction_setdata(QAction * action, BBObject * userData);
+	void bmx_qt_qaction_setfont(QAction * action, MaxQFont * font);
+	void bmx_qt_qaction_seticontext(QAction * action, BBString * text);
+	void bmx_qt_qaction_seticonvisibleinmenu(QAction * action, int visible);
+	void bmx_qt_qaction_setmenu(QAction * action, QMenu * menu);
+	void bmx_qt_qaction_setmenurole(QAction * action, int menuRole);
+	void bmx_qt_qaction_setseparator(QAction * action, int value);
+	void bmx_qt_qaction_setshortcutcontext(QAction * action, int context);
+	void bmx_qt_qaction_setstatustip(QAction * action, BBString * statusTip);
+	void bmx_qt_qaction_settext(QAction * action, BBString * text);
+	void bmx_qt_qaction_settooltip(QAction * action, BBString * tip);
+	void bmx_qt_qaction_setwhatsthis(QAction * action, BBString * what);
+	BBString * bmx_qt_qaction_shortcut(QAction * action);
+	int bmx_qt_qaction_shortcutcontext(QAction * action);
+	int bmx_qt_qaction_showstatustext(QAction * action, QWidget * widget);
+	BBString * bmx_qt_qaction_statustip(QAction * action);
+	BBString * bmx_qt_qaction_text(QAction * action);
+	BBString * bmx_qt_qaction_tooltip(QAction * action);
+	BBString * bmx_qt_qaction_whatsthis(QAction * action);
+	
 	Qt::WidgetAttribute bmx_qt_inttowidgetattribute(int a);
 }
 

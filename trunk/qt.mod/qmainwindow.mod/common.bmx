@@ -22,6 +22,11 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
+Import Qt.QDockWidget
+Import Qt.QToolBar
+Import Qt.QMenu
+Import Qt.QMenuBar
+Import Qt.QStatusBar
 Import BRL.Blitz
 
 
@@ -49,4 +54,50 @@ Extern
 
 	Function bmx_qt_qmainwindow_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
 
+	Function bmx_qt_qmainwindow_adddockwidget(handle:Byte Ptr, area:Int, dockwidget:Byte Ptr, orientation:Int)
+	Function bmx_qt_qmainwindow_addtoolbararea(handle:Byte Ptr, area:Int, toolbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_addtoolbar:Byte Ptr(handle:Byte Ptr, toolbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_addtoolbartxt:Byte Ptr(handle:Byte Ptr, toolbar:String)
+	Function bmx_qt_qmainwindow_addtoolbarbreak(handle:Byte Ptr, area:Int)
+	Function bmx_qt_qmainwindow_centralwidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_corner:Int(handle:Byte Ptr, c:Int)
+	Function bmx_qt_qmainwindow_createpopupmenu:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_dockoptions:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_dockwidgetarea:Int(handle:Byte Ptr, dockwidget:Byte Ptr)
+	Function bmx_qt_qmainwindow_documentmode:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_iconsize(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qmainwindow_inserttoolbar(handle:Byte Ptr, before:Byte Ptr, toolbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_inserttoolbarbreak(handle:Byte Ptr, before:Byte Ptr)
+	Function bmx_qt_qmainwindow_isanimated:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_isdocknestingenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_menubar:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_menuwidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_removedockwidget(handle:Byte Ptr, dockwidget:Byte Ptr)
+	Function bmx_qt_qmainwindow_removetoolbar(handle:Byte Ptr, toolbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_removetoolbarbreak(handle:Byte Ptr, before:Byte Ptr)
+	Function bmx_qt_qmainwindow_restoredockwidget(handle:Byte Ptr, dockwidget:Byte Ptr)
+	Function bmx_qt_qmainwindow_setcentralwidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qmainwindow_setcorner(handle:Byte Ptr, corner:Int, area:Int)
+	Function bmx_qt_qmainwindow_setdockoptions(handle:Byte Ptr, options:Int)
+	Function bmx_qt_qmainwindow_setdocumentmode(handle:Byte Ptr, enabled:Int)
+	Function bmx_qt_qmainwindow_seticonsize(handle:Byte Ptr, w:Int, h:Int)
+	Function bmx_qt_qmainwindow_setmenubar(handle:Byte Ptr, menuBar:Byte Ptr)
+	Function bmx_qt_qmainwindow_setmenuwidget(handle:Byte Ptr, menuBar:Byte Ptr)
+	Function bmx_qt_qmainwindow_setstatusbar(handle:Byte Ptr, statusbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_settabposition(handle:Byte Ptr, areas:Int, tabPosition:Int)
+	Function bmx_qt_qmainwindow_settabshape(handle:Byte Ptr, tabShape:Int)
+	Function bmx_qt_qmainwindow_settoolbuttonstyle(handle:Byte Ptr, toolButtonStyle:Int)
+	Function bmx_qt_qmainwindow_setunifiedtitleandtoolbaronmac(handle:Byte Ptr, set:Int)
+	Function bmx_qt_qmainwindow_splitdockwidget(handle:Byte Ptr, _first:Byte Ptr, _second:Byte Ptr, orientation:Int)
+	Function bmx_qt_qmainwindow_statusBar:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_tabposition:Int(handle:Byte Ptr, area:Int)
+	Function bmx_qt_qmainwindow_tabshape:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_tabifydockwidget(handle:Byte Ptr, _first:Byte Ptr, _second:Byte Ptr)
+	Function bmx_qt_qmainwindow_toolbararea:Int(handle:Byte Ptr, toolbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_toolbarbreak:Int(handle:Byte Ptr, toolbar:Byte Ptr)
+	Function bmx_qt_qmainwindow_toolbuttonstyle:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_unifiedtitleandtoolbaronmac:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_setanimated(handle:Byte Ptr, enabled:Int)
+	Function bmx_qt_qmainwindow_setdocknestingenabled(handle:Byte Ptr, enabled:Int)
+	
 End Extern

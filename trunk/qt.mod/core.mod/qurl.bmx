@@ -31,11 +31,22 @@ Type QUrl
 		Return New QUrl.Create(url)
 	End Function
 
-	Method Create:Qurl(url:String = "")
+	Method Create:QUrl(url:String = "")
 		qObjectPtr = bmx_qt_qurl_create(url)
 		Return Self
 	End Method
 
+	Function _create:QUrl(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QUrl = New QUrl
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Method toString:String()
+		Return bmx_qt_qurl_tostring(qObjectPtr)
+	End Method
 
 	Method Free()
 		If qObjectPtr Then

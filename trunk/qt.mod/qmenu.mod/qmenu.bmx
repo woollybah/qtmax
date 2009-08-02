@@ -197,5 +197,25 @@ Type QMenu Extends QWidget
 		Return bmx_qt_qmenu_title(qObjectPtr)
 	End Method
 
+	Rem
+	bbdoc: Returns the menu contained by the action.
+	about: Actions that contain menus can be used to create menu items with submenus, or inserted into toolbars to create buttons
+	with popup menus.
+	<p>
+	Note : This should really be a Method on QAction, but because of reference issues with BlitzMax, it is here as a Function instead.
+	</p>
+	End Rem
+	Function menuForAction:QMenu(action:QAction)
+		Return QMenu._find(bmx_qt_qaction_menu(action.qObjectPtr))
+	End Function
+	
+	Rem
+	bbdoc: Sets the menu contained by the action to the specified @menu.
+	about: Note : This should really be a Method on QAction, but because of reference issues with BlitzMax, it is here as a Function instead.
+	End Rem
+	Function setMenuForAction(action:QAction, menu:QMenu)
+		bmx_qt_qaction_setmenu(action.qObjectPtr, menu.qObjectPtr)
+	End Function
+	
 End Type
 
