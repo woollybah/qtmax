@@ -50,6 +50,7 @@ extern "C" {
 
 	MaxQUrl * bmx_qt_qurl_create(BBString * url);
 	void bmx_qt_qurl_free(MaxQUrl * url);
+	BBString * bmx_qt_qurl_tostring(MaxQUrl * url);
 
 	MaxQRect * bmx_qt_qrect_create(int x, int y, int w, int h);
 	void bmx_qt_qrect_free(MaxQRect * rect);

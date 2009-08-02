@@ -115,6 +115,10 @@ void bmx_qt_qurl_free(MaxQUrl * url) {
 	delete url;
 }
 
+BBString * bmx_qt_qurl_tostring(MaxQUrl * url) {
+	return bbStringFromQString(url->Url().toString());
+}
+
 // *********************************************
 
 

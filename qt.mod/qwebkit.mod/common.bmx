@@ -58,5 +58,16 @@ Extern
 
 	Function bmx_qt_qwebview_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
 	Function bmx_qt_qwebview_load(handle:Byte Ptr, url:Byte Ptr)
+	Function bmx_qt_qwebview_pageaction:Byte Ptr(handle:Byte Ptr, action:Int)
+	Function bmx_qt_qwebview_title:String(handle:Byte Ptr)
+	Function bmx_qt_qwebview_url:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwebview_settings:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwebview_page:Byte Ptr(handle:Byte Ptr)
+
+	Function bmx_qt_qwebsettings_setattribute(handle:Byte Ptr, attribute:Int, on:Int)
+
+	Function bmx_qt_qwebpage_mainframe:Byte Ptr(handle:Byte Ptr)
+
+	Function bmx_qt_qwebframe_evaluatejavascript:String(handle:Byte Ptr, scriptSource:String)
 
 End Extern

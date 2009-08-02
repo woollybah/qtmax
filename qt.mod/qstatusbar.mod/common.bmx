@@ -46,7 +46,15 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qtoolbar_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-	Function bmx_qt_qtoolbar_addwidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qstatusbar_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qstatusbar_addpermanentwidget(handle:Byte Ptr, widget:Byte Ptr, stretch:Int)
+	Function bmx_qt_qstatusbar_addwidget(handle:Byte Ptr, widget:Byte Ptr, stretch:Int)
+	Function bmx_qt_qstatusbar_currentmessage:String(handle:Byte Ptr)
+	Function bmx_qt_qstatusbar_insertpermanentwidget:Int(handle:Byte Ptr, index:Int, widget:Byte Ptr, stretch:Int)
+	Function bmx_qt_qstatusbar_insertwidget:Int(handle:Byte Ptr, index:Int, widget:Byte Ptr, stretch:Int)
+	Function bmx_qt_qstatusbar_issizegripenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qstatusbar_removewidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qstatusbar_setsizegripenabled(handle:Byte Ptr, value:Int)
 
+	
 End Extern

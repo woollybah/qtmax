@@ -20,48 +20,48 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QMENUBAR
+#define MAX_QT_QMENUBAR
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qmenu.mod/glue.h"
 #include <QtCore>
-#include <QToolBar>
+#include <QMenuBar>
 
-class MaxQToolBar;
+class MaxQMenuBar;
 
 extern "C" {
 
 #include <blitz.h>
 
-	BBObject * _qt_qtoolbar_QToolBar___create(QToolBar * toolbar);
-
-	QToolBar * bmx_qt_qtoolbar_create(BBObject * handle, QWidget * parent);
-	void bmx_qt_qtoolbar_addwidget(QToolBar * tb, QWidget * widget);
+	QMenuBar * bmx_qt_qmenubar_create(BBObject * handle, QWidget * parent);
+	QAction * bmx_qt_qmenubar_activeaction(QMenuBar * mb);
+	QAction * bmx_qt_qmenubar_adaction(QMenuBar * mb, QAction * action);
+	QAction * bmx_qt_qmenubar_adactiontxt(QMenuBar * mb, BBString *action);
+	QMenu * bmx_qt_qmenubar_addmenu(QMenuBar * mb, QMenu * menu);
+	QMenu * bmx_qt_qmenubar_addmenutxt(QMenuBar * mb, BBString * menu);
+	QAction * bmx_qt_qmenubar_addseparator(QMenuBar * mb);
+	void bmx_qt_qmenubar_clear(QMenuBar * mb);
+	QAction * bmx_qt_qmenubar_insertmenu(QMenuBar * mb, QAction * before, QMenu * menu);
+	QAction * bmx_qt_qmenubar_insertSeparator(QMenuBar * mb, QAction * before);
+	int bmx_qt_qmenubar_isdefaultup(QMenuBar * mb);
+	void bmx_qt_qmenubar_setactiveaction(QMenuBar * mb, QAction * act);
+	void bmx_qt_qmenubar_setdefaultup(QMenuBar * mb, int value);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQToolBar : public QToolBar
+class MaxQMenuBar : public QMenuBar
 {
-	Q_OBJECT
-
 public:
-	MaxQToolBar(BBObject * handle, QWidget * parent);
-	MaxQToolBar(QWidget * parent);
-	~MaxQToolBar();
+	MaxQMenuBar(BBObject * handle, QWidget * parent);
+	~MaxQMenuBar();
 
 private:
 	BBObject * maxHandle;
-
-private slots:
-	void onActionTriggered(QAction * action);
-	void onAllowedAreasChanged(Qt::ToolBarAreas allowedAreas);
-	void onIconSizeChanged(const QSize & iconSize);
-	void onMovableChanged(bool movable);
-	void onOrientationChanged(Qt::Orientation orientation);
-	void onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle);
-	void onCustomContextMenuRequested(const QPoint & pos);
+	
 };
 
 #endif

@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
+Import Qt.QMenu
 Import BRL.Blitz
 
 
@@ -46,7 +47,18 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qtoolbar_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-	Function bmx_qt_qtoolbar_addwidget(handle:Byte Ptr, widget:Byte Ptr)
-
+	Function bmx_qt_qmenubar_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qmenubar_activeaction:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenubar_adaction:Byte Ptr(handle:Byte Ptr, action:Byte Ptr)
+	Function bmx_qt_qmenubar_adactiontxt:Byte Ptr(handle:Byte Ptr, action:String)
+	Function bmx_qt_qmenubar_addmenu:Byte Ptr(handle:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qmenubar_addmenutxt:Byte Ptr(handle:Byte Ptr, menu:String)
+	Function bmx_qt_qmenubar_addseparator:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmenubar_clear(handle:Byte Ptr)
+	Function bmx_qt_qmenubar_insertmenu:Byte Ptr(handle:Byte Ptr, before:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qmenubar_insertSeparator:Byte Ptr(handle:Byte Ptr, before:Byte Ptr)
+	Function bmx_qt_qmenubar_isdefaultup:Int(handle:Byte Ptr)
+	Function bmx_qt_qmenubar_setactiveaction(handle:Byte Ptr, act:Byte Ptr)
+	Function bmx_qt_qmenubar_setdefaultup(handle:Byte Ptr, value:Int)
+	
 End Extern

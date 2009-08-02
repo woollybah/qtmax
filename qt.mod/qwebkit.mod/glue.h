@@ -26,6 +26,8 @@
 #include "../core.mod/glue.h"
 #include <QtCore>
 #include <QWebView>
+#include <QWebFrame>
+#include <QWebPage>
 
 class MaxQWebView;
 
@@ -33,8 +35,29 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qwebkit_QWebView__OnIconChanged(BBObject * handle);
+	void _qt_qwebkit_QWebView__OnLinkClicked(BBObject * handle, MaxQUrl * url);
+	void _qt_qwebkit_QWebView__OnLoadFinished(BBObject * handle, int ok);
+	void _qt_qwebkit_QWebView__OnLoadProgress(BBObject * handle, int progress);
+	void _qt_qwebkit_QWebView__OnLoadStarted(BBObject * handle);
+	void _qt_qwebkit_QWebView__OnSelectionChanged(BBObject * handle);
+	void _qt_qwebkit_QWebView__OnStatusBarMessage(BBObject * handle, BBString * text);
+	void _qt_qwebkit_QWebView__OnTitleChanged(BBObject * handle, BBString * title);
+	void _qt_qwebkit_QWebView__OnUrlChanged(BBObject * handle, MaxQUrl * url);
+
 	QWebView * bmx_qt_qwebview_create(BBObject * handle, QWidget * parent, int flags);
 	void bmx_qt_qwebview_load(QWebView * view, MaxQUrl * url);
+	QAction * bmx_qt_qwebview_pageaction(QWebView * view, int action);
+	BBString * bmx_qt_qwebview_title(QWebView * view);
+	MaxQUrl * bmx_qt_qwebview_url(QWebView * view);
+	QWebSettings * bmx_qt_qwebview_settings(QWebView * view);
+	QWebPage * bmx_qt_qwebview_page(QWebView * view);
+
+	void bmx_qt_qwebsettings_setattribute(QWebSettings * settings, int attribute, int on);
+
+	QWebFrame * bmx_qt_qwebpage_mainframe(QWebPage * page);
+
+	BBString * bmx_qt_qwebframe_evaluatejavascript(QWebFrame * frame, BBString * scriptSource);
 
 }
 
@@ -42,12 +65,25 @@ extern "C" {
 
 class MaxQWebView: public QWebView
 {
+	Q_OBJECT
+
 public:
 	MaxQWebView(BBObject * handle, QWidget * parent);
 	~MaxQWebView();
 
 private:
 	BBObject * maxHandle;
+	
+private slots:
+	void onIconChanged();
+	void onLinkClicked( const QUrl & url );
+	void onLoadFinished( bool ok );
+	void onLoadProgress( int progress );
+	void onLoadStarted();
+	void onSelectionChanged();
+	void onStatusBarMessage( const QString & text );
+	void onTitleChanged( const QString & title );
+	void onUrlChanged( const QUrl & url );
 };
 
 #endif

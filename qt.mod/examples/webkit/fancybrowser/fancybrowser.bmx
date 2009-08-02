@@ -41,6 +41,9 @@ Type TMainWindow Extends QMainWindow
 		jQuery = LoadText("incbin::jquery.min.js")
 	
 		view = New QWebView.Create(Self)
+		
+		view.settings().setAttribute(QWebSettings.WA_PluginsEnabled) ' enable plugins
+		
 		view.Load(New QUrl.Create("http://www.google.com/ncr"))
 		connect(view, "loadFinished", Self, "adjustLocation")
 		connect(view, "titleChanged", Self, "adjustTitle")
@@ -48,31 +51,30 @@ Type TMainWindow Extends QMainWindow
 		connect(view, "loadFinished", Self, "finishLoading")
 		
 		locationEdit = New QLineEdit.Create(Self)
-		'locationEdit.setSizePolicy(QSizePolicy_Expanding, locationEdit.sizePolicy().verticalPolicy())
+		locationEdit.setSizePolicyHV(QSizePolicy.Expanding, locationEdit.sizePolicy().verticalPolicy())
 		connect(locationEdit, "returnPressed", Self, "changeLocation")
 		
 		Local toolBar:QToolBar = addToolBar(tr("Navigation"))
-		toolBar.addAction(view.pageAction(QWebPage.Back))
-		toolBar.addAction(view.pageAction(QWebPage.Forward))
-		toolBar.addAction(view.pageAction(QWebPage.Reload))
-		toolBar.addAction(view.pageAction(QWebPage.Stop))
+		toolBar.addAction(view.pageAction(QWebPage.WA_Back))
+		toolBar.addAction(view.pageAction(QWebPage.WA_Forward))
+		toolBar.addAction(view.pageAction(QWebPage.WA_Reload))
+		toolBar.addAction(view.pageAction(QWebPage.WA_Stop))
 		toolBar.addWidget(locationEdit)
 		
 		Local effectMenu:QMenu = menuBar().addMenu(tr("&Effect"))
-		effectMenu.addAction("Highlight all links", Self, "highlightAllLinks")
+		effectMenu.addActionConnect("Highlight all links", Self, "highlightAllLinks")
 		
-		Local rotateAction:QAction = New QAction.Create(Self)
-		rotateAction.setIcon(style().standardIcon(QStyle_SP_FileDialogDetailedView))
+		Local rotateAction:QAction = New QAction.Create(tr("Turn images upside down"), Self)
+		'rotateAction.setIcon(style().standardIcon(QStyle_SP_FileDialogDetailedView))
 		rotateAction.setCheckable(True)
-		rotateAction.setText(tr("Turn images upside down"))
 		connect(rotateAction, "toggled", Self, "rotateImages")
 		effectMenu.addAction(rotateAction)
 		
 		Local toolsMenu:QMenu = menuBar().addMenu(tr("&Tools"))
-		toolsMenu.addAction(tr("Remove GIF images"), Self, "removeGifImages")
-		toolsMenu.addAction(tr("Remove all inline frames"), Self, "removeInlineFrames")
-		toolsMenu.addAction(tr("Remove all object elements"), Self, "removeObjectElements")
-		toolsMenu.addAction(tr("Remove all embedded elements"), Self, "removeEmbeddedElements")
+		toolsMenu.addActionConnect(tr("Remove GIF images"), Self, "removeGifImages")
+		toolsMenu.addActionConnect(tr("Remove all inline frames"), Self, "removeInlineFrames")
+		toolsMenu.addActionConnect(tr("Remove all object elements"), Self, "removeObjectElements")
+		toolsMenu.addActionConnect(tr("Remove all embedded elements"), Self, "removeEmbeddedElements")
 		
 		setCentralWidget(view)
 	End Method
@@ -112,6 +114,14 @@ Type TMainWindow Extends QMainWindow
 	End Method
 	
 	Method rotateImages(toggle:Int)
+		Local code:String = "$('img').each( function () { $(this).css('-webkit-transition', '-webkit-transform 2s') } )"
+		view.page().mainFrame().evaluateJavaScript(code)
+		If toggle Then
+			code = "$('img').each( function () { $(this).css('-webkit-transform', 'rotate(180deg)') } )"
+		Else
+			code = "$('img').each( function () { $(this).css('-webkit-transform', 'rotate(0deg)') } )"
+		End If
+		view.page().mainFrame().evaluateJavaScript(code)
 	End Method
 	
 	Method removeGifImages()

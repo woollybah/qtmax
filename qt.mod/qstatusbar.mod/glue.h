@@ -20,48 +20,42 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QSTATUSBAR
+#define MAX_QT_QSTATUSBAR
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QToolBar>
+#include <QStatusBar>
 
-class MaxQToolBar;
+class MaxQStatusBar;
 
 extern "C" {
 
 #include <blitz.h>
 
-	BBObject * _qt_qtoolbar_QToolBar___create(QToolBar * toolbar);
+	QStatusBar * bmx_qt_qstatusbar_create(BBObject * handle, QWidget  * parent);
+	void bmx_qt_qstatusbar_addpermanentwidget(QStatusBar * sb, QWidget * widget, int stretch);
+	void bmx_qt_qstatusbar_addwidget(QStatusBar * sb, QWidget * widget, int stretch);
+	BBString * bmx_qt_qstatusbar_currentmessage(QStatusBar * sb);
+	int bmx_qt_qstatusbar_insertpermanentwidget(QStatusBar * sb, int index, QWidget * widget, int stretch);
+	int bmx_qt_qstatusbar_insertwidget(QStatusBar * sb, int index, QWidget * widget, int stretch);
+	int bmx_qt_qstatusbar_issizegripenabled(QStatusBar * sb);
+	void bmx_qt_qstatusbar_removewidget(QStatusBar * sb, QWidget * widget);
+	void bmx_qt_qstatusbar_setsizegripenabled(QStatusBar * sb, int value);
 
-	QToolBar * bmx_qt_qtoolbar_create(BBObject * handle, QWidget * parent);
-	void bmx_qt_qtoolbar_addwidget(QToolBar * tb, QWidget * widget);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQToolBar : public QToolBar
+class MaxQStatusBar : public QStatusBar
 {
-	Q_OBJECT
-
 public:
-	MaxQToolBar(BBObject * handle, QWidget * parent);
-	MaxQToolBar(QWidget * parent);
-	~MaxQToolBar();
+	MaxQStatusBar(BBObject * handle, QWidget * parent);
+	~MaxQStatusBar();
 
 private:
 	BBObject * maxHandle;
-
-private slots:
-	void onActionTriggered(QAction * action);
-	void onAllowedAreasChanged(Qt::ToolBarAreas allowedAreas);
-	void onIconSizeChanged(const QSize & iconSize);
-	void onMovableChanged(bool movable);
-	void onOrientationChanged(Qt::Orientation orientation);
-	void onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle);
-	void onCustomContextMenuRequested(const QPoint & pos);
 };
 
 #endif
