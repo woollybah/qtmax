@@ -33,6 +33,7 @@
 class MaxQUrl;
 class MaxQRect;
 class MaxQTime;
+class MaxQRectF;
 
 extern "C" {
 
@@ -137,6 +138,63 @@ extern "C" {
 	MaxQTime * bmx_qt_qtime_currenttime();
 	void bmx_qt_qtime_free(MaxQTime * time);
 
+	MaxQRectF * bmx_qt_qrectf_create(double x, double y, double w, double h);
+	void bmx_qt_qrectf_free(MaxQRectF * rect);
+	void bmx_qt_qrectf_adjust(MaxQRectF * rect, double dx1, double dy1, double dx2, double dy2);
+	MaxQRectF * bmx_qt_qrectf_adjusted(MaxQRectF * rect, double dx1, double dy1, double dx2, double dy2);
+	double bmx_qt_qrectf_bottom(MaxQRectF * rect);
+	void bmx_qt_qrectf_bottomleft(MaxQRectF * rect, double * x, double * y);
+	void bmx_qt_qrectf_bottomright(MaxQRectF * rect, double * x, double * y);
+	void bmx_qt_qrectf_center(MaxQRectF * rect, double * x, double * y);
+	int bmx_qt_qrectf_contains(MaxQRectF * rect, double x, double y);
+	int bmx_qt_qrectf_containsrect(MaxQRectF * rect, MaxQRectF * rectangle);
+	void bmx_qt_qrectf_getcoords(MaxQRectF * rect, double * x1, double * y1, double * x2, double * y2);
+	void bmx_qt_qrectf_getrect(MaxQRectF * rect, double * x, double * y, double * width, double * height);
+	double bmx_qt_qrectf_height(MaxQRectF * rect);
+	MaxQRectF * bmx_qt_qrectf_intersected(MaxQRectF * rect, MaxQRectF * rectangle);
+	int bmx_qt_qrectf_intersects(MaxQRectF * rect, MaxQRectF * rectangle);
+	int bmx_qt_qrectf_isempty(MaxQRectF * rect);
+	int bmx_qt_qrectf_isnull(MaxQRectF * rect);
+	int bmx_qt_qrectf_isvalid(MaxQRectF * rect);
+	double bmx_qt_qrectf_left(MaxQRectF * rect);
+	void bmx_qt_qrectf_movebottom(MaxQRectF * rect, double y);
+	void bmx_qt_qrectf_movebottomleft(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_movebottomright(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_movecenter(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_moveleft(MaxQRectF * rect, double x);
+	void bmx_qt_qrectf_moveright(MaxQRectF * rect, double x);
+	void bmx_qt_qrectf_moveto(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_movetop(MaxQRectF * rect, double y);
+	void bmx_qt_qrectf_movetopleft(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_movetopright(MaxQRectF * rect, double x, double y);
+	MaxQRectF * bmx_qt_qrectf_normalized(MaxQRectF * rect);
+	double bmx_qt_qrectf_right(MaxQRectF * rect);
+	void bmx_qt_qrectf_setbottom(MaxQRectF * rect, double y);
+	void bmx_qt_qrectf_setbottomleft(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_setbottomright(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_setcoords(MaxQRectF * rect, double x1, double y1, double x2, double y2);
+	void bmx_qt_qrectf_setheight(MaxQRectF * rect, double height);
+	void bmx_qt_qrectf_setleft(MaxQRectF * rect, double x);
+	void bmx_qt_qrectf_setrect(MaxQRectF * rect, double x, double y, double width, double height);
+	void bmx_qt_qrectf_setright(MaxQRectF * rect, double x);
+	void bmx_qt_qrectf_setsize(MaxQRectF * rect, double w, double h);
+	void bmx_qt_qrectf_settop(MaxQRectF * rect, double y);
+	void bmx_qt_qrectf_settopleft(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_settopright(MaxQRectF * rect, double x, double y);
+	void bmx_qt_qrectf_setwidth(MaxQRectF * rect, double width);
+	void bmx_qt_qrectf_setx(MaxQRectF * rect, double x);
+	void bmx_qt_qrectf_sety(MaxQRectF * rect, double y);
+	void bmx_qt_qrectf_size(MaxQRectF * rect, double * w, double * h);
+	double bmx_qt_qrectf_top(MaxQRectF * rect);
+	void bmx_qt_qrectf_topleft(MaxQRectF * rect, double * x, double * y);
+	void bmx_qt_qrectf_topright(MaxQRectF * rect, double * x, double * y);
+	void bmx_qt_qrectf_translate(MaxQRectF * rect, double dx, double dy);
+	MaxQRectF * bmx_qt_qrectf_translated(MaxQRectF * rect, double dx, double dy);
+	MaxQRectF * bmx_qt_qrectf_united(MaxQRectF * rect, MaxQRectF * rectangle);
+	double bmx_qt_qrectf_width(MaxQRectF * rect);
+	double bmx_qt_qrectf_x(MaxQRectF * rect);
+	double bmx_qt_qrectf_y(MaxQRectF * rect);
+
 	
 }
 
@@ -176,6 +234,19 @@ public:
 
 private:
 	QTime time;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQRectF
+{
+public:
+	MaxQRectF(const QRectF & r);
+	QRectF & Rect();
+	void SetRect(const QRectF & r);
+
+private:
+	QRectF rect;
 };
 
 

@@ -291,3 +291,55 @@ Const Qt_TopToolBarArea:Int = $4
 Const Qt_BottomToolBarArea:Int = $8
 Const Qt_AllToolBarAreas:Int = $F
 Const Qt_NoToolBarArea:Int = 0
+
+Rem
+bbdoc: Specifies the size using absolute measurements.
+End Rem
+Const Qt_AbsoluteSize:Int = 0
+Rem
+bbdoc: Specifies the size relative to the bounding rectangle, typically using percentage measurements.
+End Rem
+Const Qt_RelativeSize:Int = 1
+
+Rem
+bbdoc: The items are sorted ascending e.g. starts with 'AAA' ends with 'ZZZ' in Latin-1 locales
+End Rem
+Const Qt_AscendingOrder:Int = 0
+Rem
+bbdoc: The items are sorted descending e.g. starts with 'ZZZ' ends with 'AAA' in Latin-1 locales
+End Rem
+Const Qt_DescendingOrder:Int = 1
+
+Rem
+bbdoc: The ellipsis should appear at the beginning of the text.
+end rem
+Const Qt_ElideLeft:Int = 0
+Rem
+bbdoc: The ellipsis should appear at the end of the text.
+end rem
+Const Qt_ElideRight:Int = 1
+Rem
+bbdoc: The ellipsis should appear in the middle of the text.
+end rem
+Const Qt_ElideMiddle:Int = 2
+Rem
+bbdoc: Ellipsis should NOT appear in the text.
+end rem
+Const Qt_ElideNone:Int = 3
+
+Rem
+bbdoc: Specifies that the region is filled using the odd even fill rule.
+about: With this rule, we determine whether a point is inside the shape by using the following method. Draw
+a horizontal line from the point to a location outside the shape, and count the number of intersections. If the
+number of intersections is an odd number, the point is inside the shape. This mode is the default.
+End Rem
+Const Qt_OddEvenFill:Int = 0
+Rem
+bbdoc: Specifies that the region is filled using the non zero winding rule.
+about: With this rule, we determine whether a point is inside the shape by using the following method. Draw a
+horizontal line from the point to a location outside the shape. Determine whether the direction of the line at
+each intersection point is up or down. The winding number is determined by summing the direction of each
+intersection. If the number is non zero, the point is inside the shape. This fill mode can also in most cases
+be considered as the intersection of closed shapes.
+End Rem
+Const Qt_WindingFill:Int = 1

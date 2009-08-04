@@ -22,7 +22,6 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
-Import Qt.QPainter
 Import BRL.Blitz
 
 

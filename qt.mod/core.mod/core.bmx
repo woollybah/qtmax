@@ -44,6 +44,7 @@ Import "-lQtCore"
 
 Import "qvariant.bmx"
 Import "qrect.bmx"
+Import "qrectf.bmx"
 Import "qevent.bmx"
 Import "qtime.bmx"
 Import "common.bmx"

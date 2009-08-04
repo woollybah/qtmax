@@ -23,7 +23,7 @@ SuperStrict
 Import Qt.Core
 Import Qt.QGradient
 Import Qt.QPixmap
-Import Qt.QMatrix
+Import Qt.QPainterPath
 Import Qt.QImage
 Import BRL.Blitz
 
