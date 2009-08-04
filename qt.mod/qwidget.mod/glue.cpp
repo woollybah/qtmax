@@ -59,42 +59,42 @@ void MaxQWidget::mouseReleaseEvent(QMouseEvent * event) {
 
 // ---------------------------------------------------------------------------------------
 
-MaxQAction::MaxQAction(BBObject * handle, const QString & text, QObject * parent)
-	: maxHandle(handle), QAction(text, parent)
+MaxQAction::MaxQAction(BBObject * handle, QAction * action)
+	: action(action), MaxQObjectWrapper(handle, action)
 {
-	qbind(this, handle);
-
 	doConnections();
 }
 
 MaxQAction::~MaxQAction()
 {
-	qunbind(this);
 }
 
-MaxQAction::MaxQAction(QObject * obj)
-	: QAction(obj)
+MaxQAction::MaxQAction(QAction * a)
+	: action(a), MaxQObjectWrapper(a)
 {
-	maxHandle = _qt_qwidget_QAction__create(this);
-	qbind(this, maxHandle);
-
-	doConnections();
-}
-
-MaxQAction::MaxQAction(const QString & text, QObject * obj)
-	: QAction(text, obj)
-{
-	maxHandle = _qt_qwidget_QAction__create(this);
-	qbind(this, maxHandle);
+	maxHandle = _qt_qwidget_QAction__create(action);
+	qbind(action, maxHandle);
 
 	doConnections();
 }
 
 void MaxQAction::doConnections() {
-	connect(this, SIGNAL(changed()), SLOT(onChanged()));
-	connect(this, SIGNAL(hovered()), SLOT(onHovered()));
-	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
-	connect(this, SIGNAL(triggered(bool)), SLOT(onTriggered(bool)));
+	connect(action, SIGNAL(changed()), SLOT(onChanged()));
+	connect(action, SIGNAL(hovered()), SLOT(onHovered()));
+	connect(action, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
+	connect(action, SIGNAL(triggered(bool)), SLOT(onTriggered(bool)));
+}
+
+QAction * MaxQAction::Action() {
+	return action;
+}
+
+void MaxQAction::link(QAction * a) {
+	BBObject * handle = qfind(a);
+	
+	if (handle == &bbNullObject) {
+		MaxQAction * action = new MaxQAction(a);
+	}
 }
 
 void MaxQAction::onChanged() {
@@ -295,11 +295,12 @@ void bmx_qt_qwidget_setsizepolicyhv(QWidget * widget, int horizontalPolicy, int 
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
-	return new MaxQAction(handle, qStringFromBBString(text), parent);
+	MaxQAction * action = new MaxQAction(handle, new QAction(qStringFromBBString(text), parent));
+	return action->Action();
 }
 
-void bmx_qt_qaction_setshortcut(QAction * handle, BBString * sequence) {
-	handle->setShortcut(qStringFromBBString(sequence));
+void bmx_qt_qaction_setshortcut(QAction * action, BBString * sequence) {
+	action->setShortcut(qStringFromBBString(sequence));
 }
 
 QActionGroup * bmx_qt_qaction_actiongroup(QAction * action) {

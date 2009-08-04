@@ -43,7 +43,9 @@ QMenuBar * bmx_qt_qmenubar_create(BBObject * handle, QWidget * parent) {
 }
 
 QAction * bmx_qt_qmenubar_activeaction(QMenuBar * mb) {
-	return mb->activeAction();
+	QAction * action = mb->activeAction();
+	MaxQAction::link(action);
+	return action;
 }
 
 QAction * bmx_qt_qmenubar_adaction(QMenuBar * mb, QAction * action) {
@@ -51,10 +53,10 @@ QAction * bmx_qt_qmenubar_adaction(QMenuBar * mb, QAction * action) {
 	return action;
 }
 
-QAction * bmx_qt_qmenubar_adactiontxt(QMenuBar * mb, BBString *action) {
-	MaxQAction *ret = new MaxQAction(qStringFromBBString(action), mb);
-	mb->addAction(ret);
-	return ret;
+QAction * bmx_qt_qmenubar_adactiontxt(QMenuBar * mb, BBString *a) {
+	QAction * action = mb->addAction(qStringFromBBString(a));
+	MaxQAction::link(action);
+	return action;
 }
 
 QMenu * bmx_qt_qmenubar_addmenu(QMenuBar * mb, QMenu * menu) {
@@ -68,10 +70,9 @@ QMenu * bmx_qt_qmenubar_addmenutxt(QMenuBar * mb, BBString * menu) {
 }
 
 QAction * bmx_qt_qmenubar_addseparator(QMenuBar * mb) {
-	MaxQAction *ret = new MaxQAction(mb);
-	ret->setSeparator(true);
-	mb->addAction(ret);
-	return ret;
+	QAction * action = mb->addSeparator();
+	MaxQAction::link(action);
+	return action;
 }
 
 void bmx_qt_qmenubar_clear(QMenuBar * mb) {
@@ -79,15 +80,14 @@ void bmx_qt_qmenubar_clear(QMenuBar * mb) {
 }
 
 QAction * bmx_qt_qmenubar_insertmenu(QMenuBar * mb, QAction * before, QMenu * menu) {
-	QAction *action = menu->menuAction();
-	mb->insertAction(before, action);
+	QAction * action = mb->insertMenu(before, menu);
+	MaxQAction::link(action);
 	return action;
 }
 
 QAction * bmx_qt_qmenubar_insertSeparator(QMenuBar * mb, QAction * before) {
-	MaxQAction *action = new MaxQAction(mb);
-	action->setSeparator(true);
-	mb->insertAction(before, action);
+	QAction *action = mb->insertSeparator(before);
+	MaxQAction::link(action);
 	return action;
 }
 

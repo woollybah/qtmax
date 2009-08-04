@@ -159,19 +159,23 @@ private:
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQAction : public QAction
+class MaxQAction : public MaxQObjectWrapper
 {
 	Q_OBJECT
 
 public:
-	MaxQAction(BBObject * handle, const QString & text, QObject * parent);
-	MaxQAction(QObject * obj);
-	MaxQAction(const QString & text, QObject * obj);
+	MaxQAction(BBObject * handle, QAction * action);
+	MaxQAction(QAction * action);
+	
+	QAction * Action();
+	
+	static void link(QAction * a);
+	
 	~MaxQAction();
 
 private:
 	void doConnections();
-	BBObject * maxHandle;
+	QAction * action;
 	
 private slots:
 	void onChanged();

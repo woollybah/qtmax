@@ -91,8 +91,10 @@ void bmx_qt_qwebview_load(QWebView * view, MaxQUrl * url) {
 	view->load(url->Url());
 }
 
-QAction * bmx_qt_qwebview_pageaction(QWebView * view, int action) {
-	return view->pageAction((QWebPage::WebAction)action);
+QAction * bmx_qt_qwebview_pageaction(QWebView * view, int a) {
+	QAction * action = view->pageAction((QWebPage::WebAction)a);
+	MaxQAction::link(action);
+	return action;
 }
 
 BBString * bmx_qt_qwebview_title(QWebView * view) {

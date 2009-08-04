@@ -24,6 +24,7 @@
 #define MAX_QT_QWEBKIT
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QWebView>
 #include <QWebFrame>
