@@ -25,7 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-
+#include <QObject>
 
 extern "C" {
 

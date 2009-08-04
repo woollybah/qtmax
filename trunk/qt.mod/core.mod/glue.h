@@ -21,6 +21,7 @@
 */ 
 
 #include <QtCore>
+#include <QObject>
 #include <QUrl>
 #include <QRect>
 #include <QTime>
@@ -34,6 +35,8 @@ class MaxQUrl;
 class MaxQRect;
 class MaxQTime;
 class MaxQRectF;
+
+class MaxQObjectWrapper;
 
 extern "C" {
 
@@ -249,5 +252,25 @@ private:
 	QRectF rect;
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQObjectWrapper : public QObject
+{
+	Q_OBJECT
+
+public:
+	MaxQObjectWrapper(BBObject * handle, QObject * o);
+	MaxQObjectWrapper(QObject * o);
+	~MaxQObjectWrapper();
+	
+private:
+	QObject * obj;
+
+private slots:
+	void onDestroy(QObject * obj);
+
+protected:
+	BBObject * maxHandle;
+};
 
 #endif

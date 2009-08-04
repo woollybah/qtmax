@@ -79,6 +79,32 @@ void MaxQRectF::SetRect(const QRectF & r) {
 	rect = r;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQObjectWrapper::MaxQObjectWrapper(BBObject * handle, QObject * o)
+	: maxHandle(handle), obj(o)
+{
+	qbind(obj, handle);
+	connect(obj, SIGNAL(destroyed(QObject *)), SLOT(onDestroy(QObject *)));
+}
+
+MaxQObjectWrapper::MaxQObjectWrapper(QObject * o)
+	: obj(o)
+{
+	// we assume that this object will be qbind() elsewhere...
+	
+	connect(obj, SIGNAL(destroyed(QObject *)), SLOT(onDestroy(QObject *)));
+}
+
+MaxQObjectWrapper::~MaxQObjectWrapper()
+{
+}
+
+void MaxQObjectWrapper::onDestroy(QObject * obj) {
+	qunbind(obj);
+	delete this;
+}
+
 // *********************************************
 
 typedef std::map<QObject*, BBObject*> PeerMap;
