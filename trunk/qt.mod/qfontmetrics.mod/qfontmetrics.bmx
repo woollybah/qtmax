@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QPaintEvent
+Module Qt.QFontMetrics
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,23 +30,48 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-Type QPaintEvent Extends QEvent
+Type QFontMetrics
 
-	Function _create:QPaintEvent(qObjectPtr:Byte Ptr)
+	Field qObjectPtr:Byte Ptr
+	
+	Function _create:QFontMetrics(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
-			Local this:QPaintEvent = New QPaintEvent
+			Local this:QFontMetrics = New QFontMetrics
 			this.qObjectPtr = qObjectPtr
 			Return this
 		End If
 	End Function
+
+	Function CreateFontMetrics:QFontMetrics(font:QFont)
+		Return New QFontMetrics.Create(font)
+	End Function
 	
-	Method rect:QRect()
-		Return QRect._create(bmx_qt_qpaintevent_rect(qObjectPtr))
+	Method Create:QFontMetrics(font:QFont)
+		qObjectPtr = bmx_qt_qfontmetrics_create(font.qObjectPtr)
+		Return Self
 	End Method
 	
-	Method region:QRegion()
+	Method ascent:Int()
+		Return bmx_qt_qfontmetrics_ascent(qObjectPtr)
 	End Method
 
+	Method averageCharWidth:Int()
+		Return bmx_qt_qfontmetrics_averagecharwidth(qObjectPtr)
+	End Method
+
+	Method boundingRect:QRect(text:String)
+		Return QRect._create(bmx_qt_qfontmetrics_boundingrect(qObjectPtr, text))
+	End Method
+
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qfontmetrics_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
 End Type
-
-

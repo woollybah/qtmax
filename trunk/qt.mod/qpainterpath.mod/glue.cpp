@@ -55,6 +55,14 @@ QPainterPath::Element & MaxPathElement::Element() {
 
 // *********************************************
 
+MaxQPainterPath * bmx_qt_qpainterpath_create() {
+	return new MaxQPainterPath(QPainterPath());
+}
+
+void bmx_qt_qpainterpath_free(MaxQPainterPath * path) {
+	delete path;
+}
+
 void bmx_qt_qpainterpath_addellipse(MaxQPainterPath * path, double x, double y, double width, double height) {
 	path->Path().addEllipse(x, y, width, height);
 }

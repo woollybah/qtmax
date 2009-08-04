@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QFont
 Import BRL.Blitz
 
 
@@ -45,91 +46,12 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qcolor_free(handle:Byte Ptr)
+	Function bmx_qt_qfontmetrics_create:Byte Ptr(font:Byte Ptr)
+	Function bmx_qt_qfontmetrics_ascent:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontmetrics_averagecharwidth:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontmetrics_boundingrect:Byte Ptr(handle:Byte Ptr, text:String)
+	Function bmx_qt_qfontmetrics_free(handle:Byte Ptr)
 
-	Function bmx_qt_qcolor_create:Byte Ptr(r:Int, g:Int, b:Int, a:Int)
-	Function bmx_qt_qcolor_createwithglobalcolor:Byte Ptr(color:Int)
 
 End Extern
 
-
-Rem
-bbdoc:  White (#ffffff)
-end rem
-Const Qt_white:Int = 3
-Rem
-bbdoc: Black (#000000)
-end rem
-Const Qt_black:Int = 2
-Rem
-bbdoc: Red (#ff0000)
-end rem
-Const Qt_red:Int = 7
-Rem
-bbdoc: Dark red (#800000)
-end rem
-Const Qt_darkRed:Int = 13
-Rem
-bbdoc: Green (#00ff00)
-end rem
-Const Qt_green:Int = 8
-Rem
-bbdoc: Dark green (#008000)
-end rem
-Const Qt_darkGreen:Int = 14
-Rem
-bbdoc: Blue (#0000ff)
-end rem
-Const Qt_blue:Int = 9
-Rem
-bbdoc: Dark blue (#000080)
-end rem
-Const Qt_darkBlue:Int = 15
-Rem
-bbdoc: Cyan (#00ffff)
-end rem
-Const Qt_cyan:Int = 10
-Rem
-bbdoc: Dark cyan (#008080)
-end rem
-Const Qt_darkCyan:Int = 16
-Rem
-bbdoc: Magenta (#ff00ff)
-end rem
-Const Qt_magenta:Int = 11
-Rem
-bbdoc: Dark magenta (#800080)
-end rem
-Const Qt_darkMagenta:Int = 17
-Rem
-bbdoc: Yellow (#ffff00)
-end rem
-Const Qt_yellow:Int = 12
-Rem
-bbdoc: Dark yellow (#808000)
-end rem
-Const Qt_darkYellow:Int = 18
-Rem
-bbdoc: Gray (#a0a0a4)
-end rem
-Const Qt_gray:Int = 5
-Rem
-bbdoc: Dark gray (#808080)
-end rem
-Const Qt_darkGray:Int = 4
-Rem
-bbdoc: Light gray (#c0c0c0)
-end rem
-Const Qt_lightGray:Int = 6
-Rem
-bbdoc: a transparent black value (i.e., QColor(0, 0, 0, 0))
-end rem
-Const Qt_transparent:Int = 19
-Rem
-bbdoc: 0 pixel value (for bitmaps)
-end rem
-Const Qt_color0:Int = 0
-Rem
-bbdoc: 1 pixel value (for bitmaps)
-end rem
-Const Qt_color1:Int = 1

@@ -42,6 +42,8 @@ extern "C" {
 	QComboBox * bmx_qt_qcombobox_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBObject * userData);
 	void bmx_qt_qcombobox_addItems(QComboBox * cb, BBArray * texts);
+	int bmx_qt_qcombobox_count(QComboBox * cb);
+	int bmx_qt_qcombobox_currentindex(QComboBox * cb);
 
 }
 

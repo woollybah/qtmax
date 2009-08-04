@@ -46,6 +46,8 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+	Function bmx_qt_qpainterpath_create:Byte Ptr()
+	Function bmx_qt_qpainterpath_free(handle:Byte Ptr)
 
 	Function bmx_qt_qpainterpath_addellipse(handle:Byte Ptr, x:Double, y:Double, width:Double, height:Double)
 	Function bmx_qt_qpainterpath_addellipsecenter(handle:Byte Ptr, cx:Double, cy:Double, rx:Double, ry:Double)

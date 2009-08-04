@@ -38,6 +38,9 @@ extern "C" {
 
 #include <blitz.h>
 
+	MaxQPainterPath * bmx_qt_qpainterpath_create();
+	void bmx_qt_qpainterpath_free(MaxQPainterPath * path);
+
 	void bmx_qt_qpainterpath_addellipse(MaxQPainterPath * path, double x, double y, double width, double height);
 	void bmx_qt_qpainterpath_addellipsecenter(MaxQPainterPath * path, double cx, double cy, double rx, double ry);
 	void bmx_qt_qpainterpath_addpath(MaxQPainterPath * path, MaxQPainterPath * p);

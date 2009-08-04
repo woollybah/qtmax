@@ -47,7 +47,7 @@ Type QPainterPath
 	End Function
 	
 	Method Create:QPainterPath()
-		
+		qObjectPtr = bmx_qt_qpainterpath_create()
 		Return Self
 	End Method
 
@@ -223,6 +223,16 @@ Type QPainterPath
 		Return QPainterPath._create(bmx_qt_qpainterpath_toreversed(qObjectPtr))
 	End Method
 
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qpainterpath_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
 
 End Type
 

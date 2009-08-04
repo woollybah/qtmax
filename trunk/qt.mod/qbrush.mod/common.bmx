@@ -49,6 +49,11 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qbrush_create:Byte Ptr()
+	Function bmx_qt_qbrush_createwithglobalcolor:Byte Ptr(color:Int, style:Int)
+	Function bmx_qt_qbrush_free(handle:Byte Ptr)
+
+
 End Extern
 
 Rem

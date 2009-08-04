@@ -35,6 +35,17 @@ MaxQWidget::~MaxQWidget()
 	qunbind(this);
 }
 
+QSize MaxQWidget::sizeHint() const {
+	int w, h;
+	_qt_qwidget_QWidget__SizeHint(maxHandle, &w, &h);
+	return QSize(w, h);
+}
+
+QSize MaxQWidget::minimumSizeHint() const {
+	int w, h;
+	_qt_qwidget_QWidget__MinimumSizeHint(maxHandle, &w, &h);
+	return QSize(w, h);
+}
 
 void MaxQWidget::paintEvent(QPaintEvent * event) {
 	QPainter p(this);
@@ -290,6 +301,18 @@ MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget) {
 
 void bmx_qt_qwidget_setsizepolicyhv(QWidget * widget, int horizontalPolicy, int verticalPolicy) {
 	widget->setSizePolicy((QSizePolicy::Policy)horizontalPolicy, (QSizePolicy::Policy)verticalPolicy);
+}
+
+MaxQFont * bmx_qt_qwidget_font(QWidget * widget) {
+	return new MaxQFont(widget->font());
+}
+
+MaxQFontMetrics * bmx_qt_qwidget_fontmetrics(QWidget * widget) {
+	return new MaxQFontMetrics(widget->fontMetrics());
+}
+
+void bmx_qt_qwidget_setfont(QWidget * widget, MaxQFont * font) {
+	widget->setFont(font->Font());
 }
 
 // *********************************************

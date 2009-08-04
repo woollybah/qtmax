@@ -279,6 +279,38 @@ Type QPainter
 		bmx_qt_qpainter_drawlined(qObjectPtr, x1, y1, x2, y2)
 	End Method
 	
+	Method DrawRectRect(rectangle:QRect)
+		bmx_qt_qpainter_drawrectrect(qObjectPtr, rectangle.qObjectPtr)
+	End Method
+	
+	Method DrawRect(x:Int, y:Int, width:Int, height:Int)
+		bmx_qt_qpainter_drawrect(qObjectPtr, x, y, width, height)
+	End Method
+	
+	Method DrawText(x:Int, y:Int, text:String)
+		bmx_qt_qpainter_drawtext(qObjectPtr, x, y, text)
+	End Method
+
+	Method fillPath(path:QPainterPath, brush:QBrush)
+		bmx_qt_qpainter_fillpath(qObjectPtr, path.qObjectPtr, brush.qObjectPtr)
+	End Method
+	
+	Method fillRect(x:Int, y:Int, width:Int, height:Int, style:Int)
+		bmx_qt_qpainter_fillrect(qObjectPtr, x, y, width, height, style)
+	End Method
+	
+	Method fillRectRect(rectangle:QRect, style:Int)
+		bmx_qt_qpainter_fillrectrect(qObjectPtr, rectangle.qObjectPtr, style)
+	End Method
+
+	Method fillRectBrush(x:Int, y:Int, width:Int, height:Int, brush:QBrush)
+		bmx_qt_qpainter_fillrectbrush(qObjectPtr, x, y, width, height, brush.qObjectPtr)
+	End Method
+	
+	Method fillRectRectBrush(rectangle:QRect, brush:QBrush)
+		bmx_qt_qpainter_fillrectrectbrush(qObjectPtr, rectangle.qObjectPtr, brush.qObjectPtr)
+	End Method
+	
 	Method resetMatrix()
 		bmx_qt_qpainter_resetmatrix(qObjectPtr)
 	End Method

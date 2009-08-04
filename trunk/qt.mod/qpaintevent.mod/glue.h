@@ -25,11 +25,13 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QPaintEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQRect * bmx_qt_qpaintevent_rect(QPaintEvent * event);
 
 }
 

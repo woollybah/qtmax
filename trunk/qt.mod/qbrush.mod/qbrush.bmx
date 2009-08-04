@@ -41,6 +41,8 @@ Type QBrush
 	End Function
 	
 	Method Create:QBrush()
+		qObjectPtr = bmx_qt_qbrush_create()
+		Return Self
 	End Method
 	
 	Method CreateWithStyle:QBrush(style:Int)
@@ -50,6 +52,8 @@ Type QBrush
 	End Method
 	
 	Method CreateWithGlobalColor:QBrush(color:Int, style:Int = Qt_SolidPattern)
+		qObjectPtr = bmx_qt_qbrush_createwithglobalcolor(color, style)
+		Return Self
 	End Method
 	
 	Method CreateWithPattern:QBrush(color:QColor, pixmap:QPixmap)
@@ -126,7 +130,7 @@ Type QBrush
 
 	Method Free()
 		If qObjectPtr Then
-			'bmx_qt_qbrush_free(qObjectPtr)
+			bmx_qt_qbrush_free(qObjectPtr)
 			qObjectPtr = Null
 		End If
 	End Method

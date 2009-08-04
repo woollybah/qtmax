@@ -49,6 +49,10 @@ Type QColor
 		Return Self
 	End Method
 	
+	Method CreateWithGlobalColor:QColor(color:Int)
+		qObjectPtr = bmx_qt_qcolor_createwithglobalcolor(color)
+		Return Self
+	End Method
 	
 
 	Method Free()

@@ -1,7 +1,6 @@
 SuperStrict
 
 Framework Qt.QApplication
-Import Qt.QPainterPath
 Import Qt.QComboBox
 Import Qt.QGridLayout
 
@@ -25,7 +24,7 @@ Type TWindow Extends QWidget
 
 	Field shapeComboBox:QComboBox
 	Field operationComboBoxes:QComboBox[NumTransformedAreas]
-	Field shapes:TList
+	Field shapes:TList = New TList
 
 	Method Create:TWindow()
 		Return TWindow(Super._Create())
@@ -44,6 +43,20 @@ Type TWindow Extends QWidget
 		layout.addWidget(originalRenderArea, 0, 0)
 		layout.addWidget(shapeComboBox, 1, 0)
 
+		For Local i:Int = 0 Until NumTransformedAreas
+			transformedRenderAreas[i] = New RenderArea.Create()
+			
+			operationComboBoxes[i] = New QComboBox.Create()
+			operationComboBoxes[i].addItem(tr("No transformation"))
+			operationComboBoxes[i].addItem(tr("Rotate by 60\xB0"))
+			operationComboBoxes[i].addItem(tr("Scale to 75%"))
+			operationComboBoxes[i].addItem(tr("Translate by (50, 50)"))
+			
+			connect(operationComboBoxes[i], "activated", Self, "operationChanged")
+			
+			layout.addWidget(transformedRenderAreas[i], 0, i + 1)
+			layout.addWidget(operationComboBoxes[i], 1, i + 1)
+		Next
 
 		setLayout(layout)
 		setupShapes()
@@ -100,9 +113,9 @@ Type TWindow Extends QWidget
 		Local font:QFont = New QFont.Create()
 		font.setPixelSize(50)
 		Local fontBoundingRect:QRect = New QFontMetrics.Create(font).boundingRect(tr("Qt"))
-		Local x:Float, y:Float
+		Local x:Int, y:Int
 		fontBoundingRect.center(x, y)
-		text.addText(x, y, font, tr("Qt"))
+		text.addText(-x, -y, font, tr("Qt"))
 		
 		shapes.AddLast(clock)
 		shapes.AddLast(house)
@@ -110,14 +123,28 @@ Type TWindow Extends QWidget
 		shapes.AddLast(truck)
 		
 		connect(shapeComboBox, "activated", Self, "shapeSelected")
-		
 
 	End Method
 	
 	Method operationChanged()
+	
+		Global operationTable:Int[] = [Operation_NoTransformation, Operation_Rotate, Operation_Scale, Operation_Translate]
+	
+		Local operations:Int[] = New Int[NumTransformedAreas]
+		For Local i:Int = 0 Until NumTransformedAreas
+			Local index:Int = operationComboBoxes[i].currentIndex()
+			operations[i] = operationTable[index]
+			transformedRenderAreas[i].setOperations(operations[..i+1])
+		Next
+	
 	End Method
 	
 	Method shapeSelected(index:Int)
+		Local shape:QPainterPath = QPainterPath(shapes.ValueAtIndex(index))
+		originalRenderArea.setShape(shape)
+		For Local i:Int = 0 Until NumTransformedAreas
+			transformedRenderAreas[i].setShape(shape)
+		Next
 	End Method
 
 End Type

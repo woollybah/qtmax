@@ -72,5 +72,13 @@ Extern
 	Function bmx_qt_qpainter_translate(handle:Byte Ptr, dx:Double, dy:Double)
 	Function bmx_qt_qpainter_setrenderhint(handle:Byte Ptr, hint:Int, on:Int)
 	Function bmx_qt_qpainter_setbrushgradient(handle:Byte Ptr, gradient:Byte Ptr)
+	Function bmx_qt_qpainter_fillrect(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, style:Int)
+	Function bmx_qt_qpainter_fillrectrect(handle:Byte Ptr, rectangle:Byte Ptr, style:Int)
+	Function bmx_qt_qpainter_fillrectbrush(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, brush:Byte Ptr)
+	Function bmx_qt_qpainter_fillrectrectbrush(handle:Byte Ptr, rectangle:Byte Ptr, brush:Byte Ptr)
+	Function bmx_qt_qpainter_fillpath(handle:Byte Ptr, path:Byte Ptr, brush:Byte Ptr)
+	Function bmx_qt_qpainter_drawrectrect(handle:Byte Ptr, rectangle:Byte Ptr)
+	Function bmx_qt_qpainter_drawrect(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int)
+	Function bmx_qt_qpainter_drawtext(handle:Byte Ptr, x:Int, y:Int, text:String)
 
 End Extern
