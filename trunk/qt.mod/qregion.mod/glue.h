@@ -25,6 +25,9 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QRegion>
+
+class MaxQRegion;
 
 extern "C" {
 
@@ -35,5 +38,17 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+class MaxQRegion
+{
+public:
+	MaxQRegion(const QRegion & r);
+	~MaxQRegion();
+	
+	QRegion & Region();
+
+private:
+	QRegion region;
+};
 
 #endif

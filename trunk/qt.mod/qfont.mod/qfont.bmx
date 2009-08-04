@@ -42,4 +42,14 @@ Type QFont
 		End If
 	End Function
 
+	Function CreateFont:QFont(family:String = "", pointSize:Int = -1, weight:Int = -1, italic:Int = False)
+		Return New QFont.Create(family, pointSize, weight, italic)
+	End Function
+
+	Method Create:QFont(family:String = "", pointSize:Int = -1, weight:Int = -1, italic:Int = False)
+		
+		Return Self
+	End Method
+	
 End Type
+

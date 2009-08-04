@@ -64,6 +64,21 @@ QTime & MaxQTime::Time() {
 	return time;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQRectF::MaxQRectF(const QRectF & r)
+	: rect(r)
+{
+}
+
+QRectF & MaxQRectF::Rect() {
+	return rect;
+}
+
+void MaxQRectF::SetRect(const QRectF & r) {
+	rect = r;
+}
+
 // *********************************************
 
 typedef std::map<QObject*, BBObject*> PeerMap;
@@ -120,7 +135,6 @@ BBString * bmx_qt_qurl_tostring(MaxQUrl * url) {
 }
 
 // *********************************************
-
 
 MaxQRect * bmx_qt_qrect_create(int x, int y, int w, int h) {
 	QRect r(x, y, w, h);
@@ -552,6 +566,245 @@ void bmx_qt_qtime_free(MaxQTime * time) {
 	delete time;
 }
 
+
+// *********************************************
+
+MaxQRectF * bmx_qt_qrectf_create(double x, double y, double w, double h) {
+	QRectF r(x, y, w, h);
+	return new MaxQRectF(r);
+}
+
+void bmx_qt_qrectf_free(MaxQRectF * rect) {
+	delete rect;
+}
+
+void bmx_qt_qrectf_adjust(MaxQRectF * rect, double dx1, double dy1, double dx2, double dy2) {
+	rect->Rect().adjust(dx1, dy1, dx2, dy2);
+}
+
+MaxQRectF * bmx_qt_qrectf_adjusted(MaxQRectF * rect, double dx1, double dy1, double dx2, double dy2) {
+	return new MaxQRectF(rect->Rect().adjusted(dx1, dy1, dx2, dy2));
+}
+
+double bmx_qt_qrectf_bottom(MaxQRectF * rect) {
+	return rect->Rect().bottom();
+}
+
+void bmx_qt_qrectf_bottomleft(MaxQRectF * rect, double * x, double * y) {
+	QPointF p(rect->Rect().bottomLeft());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qrectf_bottomright(MaxQRectF * rect, double * x, double * y) {
+	QPointF p(rect->Rect().bottomRight());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qrectf_center(MaxQRectF * rect, double * x, double * y) {
+	QPointF p(rect->Rect().center());
+	*x = p.x();
+	*y = p.y();
+}
+
+int bmx_qt_qrectf_contains(MaxQRectF * rect, double x, double y) {
+	return static_cast<int>(rect->Rect().contains(x, y));
+}
+
+int bmx_qt_qrectf_containsrect(MaxQRectF * rect, MaxQRectF * rectangle) {
+	return static_cast<int>(rect->Rect().contains(rectangle->Rect()));
+}
+
+void bmx_qt_qrectf_getcoords(MaxQRectF * rect, double * x1, double * y1, double * x2, double * y2) {
+	rect->Rect().getCoords(x1, y1, x2, y2);
+}
+
+void bmx_qt_qrectf_getrect(MaxQRectF * rect, double * x, double * y, double * width, double * height) {
+	rect->Rect().getRect(x, y, width, height);
+}
+
+double bmx_qt_qrectf_height(MaxQRectF * rect) {
+	return rect->Rect().height();
+}
+
+MaxQRectF * bmx_qt_qrectf_intersected(MaxQRectF * rect, MaxQRectF * rectangle) {
+	return new MaxQRectF(rect->Rect().intersected(rectangle->Rect()));
+}
+
+int bmx_qt_qrectf_intersects(MaxQRectF * rect, MaxQRectF * rectangle) {
+	return static_cast<int>(rect->Rect().intersects(rectangle->Rect()));
+}
+
+int bmx_qt_qrectf_isempty(MaxQRectF * rect) {
+	return static_cast<int>(rect->Rect().isEmpty());
+}
+
+int bmx_qt_qrectf_isnull(MaxQRectF * rect) {
+	return static_cast<int>(rect->Rect().isNull());
+}
+
+int bmx_qt_qrectf_isvalid(MaxQRectF * rect) {
+	return static_cast<int>(rect->Rect().isValid());
+}
+
+double bmx_qt_qrectf_left(MaxQRectF * rect) {
+	return rect->Rect().left();
+}
+
+void bmx_qt_qrectf_movebottom(MaxQRectF * rect, double y) {
+	rect->Rect().moveBottom(y);
+}
+
+void bmx_qt_qrectf_movebottomleft(MaxQRectF * rect, double x, double y) {
+	rect->Rect().moveBottomLeft(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_movebottomright(MaxQRectF * rect, double x, double y) {
+	rect->Rect().moveBottomRight(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_movecenter(MaxQRectF * rect, double x, double y) {
+	rect->Rect().moveCenter(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_moveleft(MaxQRectF * rect, double x) {
+	rect->Rect().moveLeft(x);
+}
+
+void bmx_qt_qrectf_moveright(MaxQRectF * rect, double x) {
+	rect->Rect().moveRight(x);
+}
+
+void bmx_qt_qrectf_moveto(MaxQRectF * rect, double x, double y) {
+	rect->Rect().moveTo(x, y);
+}
+
+void bmx_qt_qrectf_movetop(MaxQRectF * rect, double y) {
+	rect->Rect().moveTop(y);
+}
+
+void bmx_qt_qrectf_movetopleft(MaxQRectF * rect, double x, double y) {
+	rect->Rect().moveTopLeft(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_movetopright(MaxQRectF * rect, double x, double y) {
+	rect->Rect().moveTopRight(QPointF(x, y));
+}
+
+MaxQRectF * bmx_qt_qrectf_normalized(MaxQRectF * rect) {
+	return new MaxQRectF(rect->Rect().normalized());
+}
+
+double bmx_qt_qrectf_right(MaxQRectF * rect) {
+	return rect->Rect().right();
+}
+
+void bmx_qt_qrectf_setbottom(MaxQRectF * rect, double y) {
+	rect->Rect().setBottom(y);
+}
+
+void bmx_qt_qrectf_setbottomleft(MaxQRectF * rect, double x, double y) {
+	rect->Rect().setBottomLeft(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_setbottomright(MaxQRectF * rect, double x, double y) {
+	rect->Rect().setBottomRight(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_setcoords(MaxQRectF * rect, double x1, double y1, double x2, double y2) {
+	rect->Rect().setCoords(x1, y1, x2, y2);
+}
+
+void bmx_qt_qrectf_setheight(MaxQRectF * rect, double height) {
+	rect->Rect().setHeight(height);
+}
+
+void bmx_qt_qrectf_setleft(MaxQRectF * rect, double x) {
+	rect->Rect().setLeft(x);
+}
+
+void bmx_qt_qrectf_setrect(MaxQRectF * rect, double x, double y, double width, double height) {
+	rect->Rect().setRect(x, y, width, height);
+}
+
+void bmx_qt_qrectf_setright(MaxQRectF * rect, double x) {
+	rect->Rect().setRight(x);
+}
+
+void bmx_qt_qrectf_setsize(MaxQRectF * rect, double w, double h) {
+	rect->Rect().setSize(QSize(w, h));
+}
+
+void bmx_qt_qrectf_settop(MaxQRectF * rect, double y) {
+	rect->Rect().setTop(y);
+}
+
+void bmx_qt_qrectf_settopleft(MaxQRectF * rect, double x, double y) {
+	rect->Rect().setTopLeft(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_settopright(MaxQRectF * rect, double x, double y) {
+	rect->Rect().setTopRight(QPointF(x, y));
+}
+
+void bmx_qt_qrectf_setwidth(MaxQRectF * rect, double width) {
+	rect->Rect().setWidth(width);
+}
+
+void bmx_qt_qrectf_setx(MaxQRectF * rect, double x) {
+	rect->Rect().setX(x);
+}
+
+void bmx_qt_qrectf_sety(MaxQRectF * rect, double y) {
+	rect->Rect().setY(y);
+}
+
+void bmx_qt_qrectf_size(MaxQRectF * rect, double * w, double * h) {
+	QSizeF s(rect->Rect().size());
+	*w = s.width();
+	*h = s.height();
+}
+
+double bmx_qt_qrectf_top(MaxQRectF * rect) {
+	return rect->Rect().top();
+}
+
+void bmx_qt_qrectf_topleft(MaxQRectF * rect, double * x, double * y) {
+	QPointF p(rect->Rect().topLeft());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qrectf_topright(MaxQRectF * rect, double * x, double * y) {
+	QPointF p(rect->Rect().topRight());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qrectf_translate(MaxQRectF * rect, double dx, double dy) {
+	rect->Rect().translate(dx, dy);
+}
+
+MaxQRectF * bmx_qt_qrectf_translated(MaxQRectF * rect, double dx, double dy) {
+	return new MaxQRectF(rect->Rect().translated(dx, dy));
+}
+
+MaxQRectF * bmx_qt_qrectf_united(MaxQRectF * rect, MaxQRectF * rectangle) {
+	return new MaxQRectF(rect->Rect().united(rectangle->Rect()));
+}
+
+double bmx_qt_qrectf_width(MaxQRectF * rect) {
+	return rect->Rect().width();
+}
+
+double bmx_qt_qrectf_x(MaxQRectF * rect) {
+	return rect->Rect().x();
+}
+
+double bmx_qt_qrectf_y(MaxQRectF * rect) {
+	return rect->Rect().y();
+}
 
 // *********************************************
 

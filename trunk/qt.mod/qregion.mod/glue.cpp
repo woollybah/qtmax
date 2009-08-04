@@ -24,6 +24,18 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQRegion::MaxQRegion(const QRegion & r)
+	: region(r)
+{
+}
+
+MaxQRegion::~MaxQRegion()
+{
+}
+
+QRegion & MaxQRegion::Region() {
+	return region;
+}
 
 
 // *********************************************
