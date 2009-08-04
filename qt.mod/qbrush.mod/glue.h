@@ -27,10 +27,15 @@
 #include <QtCore>
 #include <QBrush>
 
+class MaxQBrush;
+
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQBrush * bmx_qt_qbrush_create();
+	MaxQBrush * bmx_qt_qbrush_createwithglobalcolor(int color, int style);
+	void bmx_qt_qbrush_free(MaxQBrush * brush);
 
 }
 

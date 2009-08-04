@@ -29,6 +29,7 @@ Import Qt.QMouseEvent
 Import Qt.QIcon
 Import Qt.QSizePolicy
 Import Qt.QFont
+Import Qt.QFontMetrics
 Import BRL.Blitz
 
 
@@ -89,6 +90,9 @@ Extern
 	Function bmx_qt_qwidget_settooltip(handle:Byte Ptr, text:String)
 	Function bmx_qt_qwidget_sizepolicy:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setsizepolicyhv(handle:Byte Ptr, horizontalPolicy:Int, verticalPolicy:Int)
+	Function bmx_qt_qwidget_font:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_fontmetrics:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setfont(handle:Byte Ptr, font:Byte Ptr)
 
 	Function bmx_qt_qwidget_height:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_width:Int(handle:Byte Ptr)

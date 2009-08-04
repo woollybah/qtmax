@@ -28,6 +28,9 @@
 
 // *********************************************
 
+MaxQRect * bmx_qt_qpaintevent_rect(QPaintEvent * event) {
+	return new MaxQRect(event->rect());
+}
 
 
 // NOTES :

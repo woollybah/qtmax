@@ -20,38 +20,40 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCOLOR
-#define MAX_QT_QCOLOR
+#ifndef MAX_QT_ template
+#define MAX_QT_ template
 
 #include "../core.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
-#include <QColor>
+#include <QFontMetrics>
 
-class MaxQColor;
+class MaxQFontMetrics;
 
 extern "C" {
 
 #include <blitz.h>
 
-	void bmx_qt_qcolor_free(MaxQColor * handle);
-
-	MaxQColor * bmx_qt_qcolor_create(int r, int g, int b, int a);
-	MaxQColor * bmx_qt_qcolor_createwithglobalcolor(int color);
+	MaxQFontMetrics * bmx_qt_qfontmetrics_create(MaxQFont * font);
+	int bmx_qt_qfontmetrics_ascent(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_averagecharwidth(MaxQFontMetrics * fm);
+	MaxQRect * bmx_qt_qfontmetrics_boundingrect(MaxQFontMetrics * fm, BBString * text);
+	void bmx_qt_qfontmetrics_free(MaxQFontMetrics * fm);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQColor
+class MaxQFontMetrics
 {
 public:
-	MaxQColor(const QColor & c);
-	~MaxQColor();
-	
-	QColor & Color();
+	MaxQFontMetrics(const QFontMetrics & m);
+	~MaxQFontMetrics();
+
+	QFontMetrics & Metrics();
 
 private:
-	QColor color;
+	QFontMetrics metrics;
 };
 
 #endif

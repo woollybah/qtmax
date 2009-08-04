@@ -55,6 +55,14 @@ Type QComboBox Extends QWidget
 		bmx_qt_qcombobox_addItems(qObjectPtr, texts)
 	End Method
 	
+	Method count:Int()
+		Return bmx_qt_qcombobox_count(qObjectPtr)
+	End Method
+	
+	Method currentIndex:Int()
+		Return bmx_qt_qcombobox_currentindex(qObjectPtr)
+	End Method
+	
 	' SIGNAL : activated
 	Function _OnActivated(obj:QComboBox, index:Int)
 		obj._InvokeSignals("activated", [String(index)])

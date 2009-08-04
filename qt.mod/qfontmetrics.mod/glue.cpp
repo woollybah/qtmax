@@ -24,34 +24,42 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQBrush::MaxQBrush(const QBrush & b)
-	: brush(b)
+MaxQFontMetrics::MaxQFontMetrics(const QFontMetrics & m)
+	: metrics(m)
 {
 }
 
-MaxQBrush::~MaxQBrush()
+MaxQFontMetrics::~MaxQFontMetrics()
 {
 }
 
-QBrush & MaxQBrush::Brush() {
-	return brush;
+QFontMetrics & MaxQFontMetrics::Metrics() {
+	return metrics;
 }
 
 
 // *********************************************
 
-MaxQBrush * bmx_qt_qbrush_create() {
-	return new MaxQBrush(QBrush());
+MaxQFontMetrics * bmx_qt_qfontmetrics_create(MaxQFont * font) {
+	return new MaxQFontMetrics(font->Font());
 }
 
-MaxQBrush * bmx_qt_qbrush_createwithglobalcolor(int color, int style) {
-	QBrush b((Qt::GlobalColor)color, (Qt::BrushStyle)style);
-	return new MaxQBrush(b);
+int bmx_qt_qfontmetrics_ascent(MaxQFontMetrics * fm) {
+	return fm->Metrics().ascent();
 }
 
-void bmx_qt_qbrush_free(MaxQBrush * brush) {
-	delete brush;
+int bmx_qt_qfontmetrics_averagecharwidth(MaxQFontMetrics * fm) {
+	return fm->Metrics().averageCharWidth();
 }
+
+MaxQRect * bmx_qt_qfontmetrics_boundingrect(MaxQFontMetrics * fm, BBString * text) {
+	return new MaxQRect(fm->Metrics().boundingRect(qStringFromBBString(text)));
+}
+
+void bmx_qt_qfontmetrics_free(MaxQFontMetrics * fm) {
+	delete fm;
+}
+
 
 
 // NOTES :

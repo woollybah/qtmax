@@ -26,6 +26,7 @@
 #include "../core.mod/glue.h"
 #include "../qsizepolicy.mod/glue.h"
 #include "../qfont.mod/glue.h"
+#include "../qfontmetrics.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -43,6 +44,9 @@ extern "C" {
 	void _qt_qwidget_QWidget__OnMouseMoveEvent(BBObject * handle, QMouseEvent * event);
 	void _qt_qwidget_QWidget__OnMousePressEvent(BBObject * handle, QMouseEvent * event);
 	void _qt_qwidget_QWidget__OnMouseReleseEvent(BBObject * handle, QMouseEvent * event);
+
+	void _qt_qwidget_QWidget__SizeHint(BBObject * handle, int * w, int * h);
+	void _qt_qwidget_QWidget__MinimumSizeHint(BBObject * handle, int * w, int * h);
 
 	void _qt_qwidget_QAction__OnChanged(BBObject * handle);
 	void _qt_qwidget_QAction__OnHovered(BBObject * handle);
@@ -89,6 +93,9 @@ extern "C" {
 	void bmx_qt_qwidget_settooltip(QWidget * widget, BBString * text);
 	MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget);
 	void bmx_qt_qwidget_setsizepolicyhv(QWidget * widget, int horizontalPolicy, int verticalPolicy);
+	MaxQFont * bmx_qt_qwidget_font(QWidget * widget);
+	MaxQFontMetrics * bmx_qt_qwidget_fontmetrics(QWidget * widget);
+	void bmx_qt_qwidget_setfont(QWidget * widget, MaxQFont * font);
 
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);
@@ -146,6 +153,9 @@ public:
 	MaxQWidget(BBObject * handle, QWidget * parent, Qt::WindowFlags flags);
 	~MaxQWidget();
 
+	QSize sizeHint() const;
+	QSize minimumSizeHint() const;
+	
 protected:
 	void paintEvent(QPaintEvent * event);
 	void mouseDoubleClickEvent(QMouseEvent * event);

@@ -90,6 +90,14 @@ Type QWidget Extends QObject
 			Return QAction(action)
 		End If
 	End Method
+	
+	Method font:QFont()
+		Return QFont._create(bmx_qt_qwidget_font(qObjectPtr))
+	End Method
+	
+	Method fontMetrics:QFontMetrics()
+		Return QFontMetrics._create(bmx_qt_qwidget_fontmetrics(qObjectPtr))
+	End Method
 
 	Method frameGeometry:QRect()
 		Return QRect._create(bmx_qt_qwidget_framegeometry(qObjectPtr))
@@ -260,11 +268,6 @@ Type QWidget Extends QObject
 	' TODO
 	End Method
 	
-	' overridable
-	Method minimumSizeHint(w:Int Var, h:Int Var)
-	' TODO
-	End Method
-	
 	Method minimumWidth:Int()
 	' TODO
 	End Method
@@ -293,6 +296,10 @@ Type QWidget Extends QObject
 	
 	Method setContextMenuPolicy(policy:Int)
 		bmx_qt_qwidget_setcontextmenupolicy(qObjectPtr, policy)
+	End Method
+	
+	Method setFont(font:QFont)
+		bmx_qt_qwidget_setfont(qObjectPtr, font.qObjectPtr)
 	End Method
 	
 	Method stackUnder(w:QWidget)
@@ -482,6 +489,26 @@ Type QWidget Extends QObject
 	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr, painter:Object)
 		obj._painter = painter
 		obj.paintEvent(QPaintEvent._create(event))
+	End Function
+	
+	Method sizeHint(w:Int Var, h:Int Var)
+	End Method
+	
+	Function _SizeHint(obj:QWidget, w:Int Ptr, h:Int Ptr)
+		Local width:Int, height:Int
+		obj.sizeHint(width, height)
+		w[0] = width
+		h[0] = height
+	End Function
+
+	Method minimumSizeHint(w:Int Var, h:Int Var)
+	End Method
+	
+	Function _MinimumSizeHint(obj:QWidget, w:Int Ptr, h:Int Ptr)
+		Local width:Int, height:Int
+		obj.minimumSizeHint(width, height)
+		w[0] = width
+		h[0] = height
 	End Function
 	
 	Rem

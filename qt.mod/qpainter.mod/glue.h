@@ -27,6 +27,7 @@
 #include "../qbrush.mod/glue.h"
 #include "../qcolor.mod/glue.h"
 #include "../qgradient.mod/glue.h"
+#include "../qpainterpath.mod/glue.h"
 #include <QtCore>
 #include <QPainter>
 
@@ -61,6 +62,14 @@ extern "C" {
 	void bmx_qt_qpainter_translate(QPainter * painter, double dx, double dy);
 	void bmx_qt_qpainter_setrenderhint(QPainter * painter, int hint, int on);
 	void bmx_qt_qpainter_setbrushgradient(QPainter * painter, MaxQGradient * gradient);
+	void bmx_qt_qpainter_fillrect(QPainter * painter, int x, int y, int width, int height, int style);
+	void bmx_qt_qpainter_fillrectrect(QPainter * painter, MaxQRect * rectangle, int style);
+	void bmx_qt_qpainter_fillrectbrush(QPainter * painter, int x, int y, int width, int height, MaxQBrush * brush);
+	void bmx_qt_qpainter_fillrectrectbrush(QPainter * painter, MaxQRect * rectangle, MaxQBrush * brush);
+	void bmx_qt_qpainter_fillpath(QPainter * painter, MaxQPainterPath * path, MaxQBrush * brush);
+	void bmx_qt_qpainter_drawrectrect(QPainter * painter, MaxQRect * rectangle);
+	void bmx_qt_qpainter_drawrect(QPainter * painter, int x, int y, int width, int height);
+	void bmx_qt_qpainter_drawtext(QPainter * painter, int x, int y, BBString * text);
 
 }
 

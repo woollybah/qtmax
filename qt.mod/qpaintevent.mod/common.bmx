@@ -46,4 +46,6 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qpaintevent_rect:Byte Ptr(handle:Byte Ptr)
+
 End Extern
