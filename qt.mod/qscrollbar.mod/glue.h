@@ -20,20 +20,46 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCONTEXTMENUEVENT
-#define MAX_QT_QCONTEXTMENUEVENT
+#ifndef MAX_QT_QSCROLLBAR
+#define MAX_QT_QSCROLLBAR
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qabstractslider.mod/glue.h"
 #include <QtCore>
+#include <QScrollBar>
+
+class MaxQScrollBar;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QScrollBar * bmx_qt_qscrollbar_create(BBObject * handle, int orientation, QWidget * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQScrollBar : public QScrollBar
+{
+	Q_OBJECT
+	
+public:
+	MaxQScrollBar(BBObject * handle, Qt::Orientation orientation, QWidget * parent);
+	~MaxQScrollBar();
+
+private:
+	BBObject * maxHandle;
+
+private slots:
+	void onActionTriggered(int action);
+	void onRangeChanged(int min, int max);
+	void onSliderMoved(int value);
+	void onSliderPressed();
+	void onSliderReleased();
+	void onValueChanged(int value);
+	void onCustomContextMenuRequested(const QPoint & pos);
+};
 
 #endif

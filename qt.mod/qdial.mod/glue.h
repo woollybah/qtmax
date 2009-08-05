@@ -20,20 +20,54 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCONTEXTMENUEVENT
-#define MAX_QT_QCONTEXTMENUEVENT
+#ifndef MAX_QT_QDIAL
+#define MAX_QT_QDIAL
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qabstractslider.mod/glue.h"
 #include <QtCore>
+#include <QDial>
+
+class MaxQDial;
 
 extern "C" {
 
 #include <blitz.h>
 
 
+	QDial * bmx_qt_qdial_create(BBObject * handle, QWidget * parent);
+	int bmx_qt_qdial_notchsize(QDial * dial);
+	double bmx_qt_qdial_notchtarget(QDial * dial);
+	int bmx_qt_qdial_notchesvisible(QDial * dial);
+	void bmx_qt_qdial_setnotchtarget(QDial * dial, double target);
+	int bmx_qt_qdial_wrapping(QDial * dial);
+	void bmx_qt_qdial_setnotchesvisible(QDial * dial, int visible);
+	void bmx_qt_qdial_setwrapping(QDial * dial, int on);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQDial : public QDial
+{
+	Q_OBJECT
+	
+public:
+	MaxQDial(BBObject * handle, QWidget * parent);
+	~MaxQDial();
+
+private slots:
+	void onActionTriggered(int action);
+	void onRangeChanged(int min, int max);
+	void onSliderMoved(int value);
+	void onSliderPressed();
+	void onSliderReleased();
+	void onValueChanged(int value);
+	void onCustomContextMenuRequested(const QPoint & pos);
+	
+private:
+	BBObject * maxHandle;
+};
 
 #endif

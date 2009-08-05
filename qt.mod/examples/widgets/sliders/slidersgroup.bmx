@@ -4,6 +4,7 @@ Import Qt.QGroupBox
 Import Qt.QSlider
 Import Qt.QScrollBar
 Import Qt.QDial
+Import Qt.QBoxLayout
 
 Type SlidersGroup Extends QGroupBox
 
@@ -15,7 +16,7 @@ Type SlidersGroup Extends QGroupBox
 	
 	Method CreateGroup:SlidersGroup(orientation:Int, title:String, parent:QWidget)
 		Self.orientation = orientation
-		Return Super.Create(title, parent)
+		Return SlidersGroup(Super.Create(title, parent))
 	End Method
 
 	Method OnInit()
@@ -44,7 +45,7 @@ Type SlidersGroup Extends QGroupBox
 			direction = QBoxLayout_LeftToRight
 		End If
 		
-		Local slidersLayout:QBoxLayout = New QBoxLayout:Create(direction)
+		Local slidersLayout:QBoxLayout = New QBoxLayout.Create(direction)
 		slidersLayout.addWidget(slider)
 		slidersLayout.addWidget(scrollBar)
 		slidersLayout.addWidget(dial)

@@ -20,20 +20,50 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCONTEXTMENUEVENT
-#define MAX_QT_QCONTEXTMENUEVENT
+#ifndef MAX_QT_QSLIDER
+#define MAX_QT_QSLIDER
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qabstractslider.mod/glue.h"
 #include <QtCore>
+#include <QSlider>
+
+class MaxQSlider;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QSlider * bmx_qt_qslider_create(BBObject * handle, int orientation, QWidget * parent);
+	void bmx_qt_qslider_settickinterval(QSlider * slider, int interval);
+	void bmx_qt_qslider_settickposition(QSlider * slider, int position);
+	int bmx_qt_qslider_tickinterval(QSlider * slider);
+	int bmx_qt_qslider_tickposition(QSlider * slider);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQSlider : public QSlider
+{
+	Q_OBJECT
+	
+public:
+	MaxQSlider(BBObject * handle, Qt::Orientation orientation, QWidget * parent);
+	~MaxQSlider();
+
+private:
+	BBObject * maxHandle;
+
+private slots:
+	void onActionTriggered(int action);
+	void onRangeChanged(int min, int max);
+	void onSliderMoved(int value);
+	void onSliderPressed();
+	void onSliderReleased();
+	void onValueChanged(int value);
+	void onCustomContextMenuRequested(const QPoint & pos);
+};
 
 #endif
