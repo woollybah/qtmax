@@ -28,6 +28,10 @@ MaxQSpinBox::MaxQSpinBox(BBObject * handle, QWidget * parent)
 	: maxHandle(handle), QSpinBox(parent)
 {
 	qbind(this, handle);
+
+	connect(this, SIGNAL(valueChanged(int)), SLOT(onValueChanged(int)));
+	connect(this, SIGNAL(editingFinished()), SLOT(onEditingFinished()));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 MaxQSpinBox::~MaxQSpinBox()
@@ -43,10 +47,9 @@ void MaxQSpinBox::onEditingFinished() {
 	_qt_qabstractspinbox_QAbstractSpinBox__OnEditingFinished(maxHandle);
 }
 
-void MaxQSpinBox::customContextMenuRequested(const QPoint & pos) {
+void MaxQSpinBox::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
-
 
 // *********************************************
 

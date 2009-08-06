@@ -32,5 +32,18 @@ Import "common.bmx"
 
 Type QHBoxLayout Extends QBoxLayout
 
+	Function CreateHBoxLayout:QHBoxLayout(parent:QWidget = Null)
+		Return New QHBoxLayout.Create(parent)
+	End Function
+	
+	Method Create:QHBoxLayout(parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qhboxlayout_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qhboxlayout_create(Self, Null)
+		End If
+		Return Self
+	End Method
+	
 End Type
 

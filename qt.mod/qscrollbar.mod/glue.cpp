@@ -28,6 +28,14 @@ MaxQScrollBar::MaxQScrollBar(BBObject * handle, Qt::Orientation orientation, QWi
 	: maxHandle(handle), QScrollBar(orientation, parent)
 {
 	qbind(this, handle);
+
+	connect(this, SIGNAL(actionTriggered(int)), SLOT(onActionTriggered(int)));
+	connect(this, SIGNAL(rangeChanged(int, int)), SLOT(onRangeChanged(int, int)));
+	connect(this, SIGNAL(sliderMoved(int)), SLOT(onSliderMoved(int)));
+	connect(this, SIGNAL(sliderPressed()), SLOT(onSliderPressed()));
+	connect(this, SIGNAL(sliderReleased()), SLOT(onSliderReleased()));
+	connect(this, SIGNAL(valueChanged(int)), SLOT(onValueChanged(int)));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 MaxQScrollBar::~MaxQScrollBar()

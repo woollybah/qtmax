@@ -112,7 +112,7 @@ Type TWindow Extends QWidget
 		controlsLayout.addWidget(valueSpinBox, 2, 1)
 		controlsLayout.addWidget(invertedAppearance, 0, 2)
 		controlsLayout.addWidget(invertedKeyBindings, 1, 2)
-		controlsLayout.addWidget(orientationCombo, 3, 0, 1, 3)
+		controlsLayout.addWidgetSpan(orientationCombo, 3, 0, 1, 3)
 		controlsGroup.setLayout(controlsLayout)
 	End Method
 	
