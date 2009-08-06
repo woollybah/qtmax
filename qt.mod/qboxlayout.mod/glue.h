@@ -27,10 +27,14 @@
 #include <QtCore>
 #include <QBoxLayout>
 
+class MaxQBoxLayout;
+
 extern "C" {
 
 #include <blitz.h>
 
+	QBoxLayout * bmx_qt_qboxlayout_create(BBObject * handle, QWidget * parent);
+	QBoxLayout * bmx_qt_qboxlayout_createlayout(BBObject * handle, int dir, QWidget * parent);
 	void bmx_qt_qboxlayout_addwidget(QBoxLayout * layout, QWidget * widget, int stretch, int alignment);
 	void bmx_qt_qboxlayout_addstretch(QBoxLayout * layout, int stretch);
 
@@ -38,5 +42,15 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQBoxLayout : public QBoxLayout
+{
+public:
+	MaxQBoxLayout(BBObject * handle, QBoxLayout::Direction dir, QWidget * parent);
+	MaxQBoxLayout(BBObject * handle, QWidget * parent);
+	~MaxQBoxLayout();
+
+private:
+	BBObject * maxHandle;
+};
 
 #endif

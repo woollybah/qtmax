@@ -298,14 +298,6 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_setcontextmenupolicy(qObjectPtr, policy)
 	End Method
 	
-	Method setFont(font:QFont)
-		bmx_qt_qwidget_setfont(qObjectPtr, font.qObjectPtr)
-	End Method
-	
-	Method stackUnder(w:QWidget)
-		bmx_qt_qwidget_stackunder(qObjectPtr, w.qObjectPtr)
-	End Method
-
 	Method setFixedSize(w:Int, h:Int)
 		bmx_qt_qwidget_setfixedsize(qObjectPtr, w, h)
 	End Method
@@ -313,9 +305,101 @@ Type QWidget Extends QObject
 	Method setFixedWidth(w:Int)
 		bmx_qt_qwidget_setfixedwidth(qObjectPtr, w)
 	End Method
+
+	Method setFocusPolicy(policy:Int)
+	' TODO
+	End Method
 	
+	Method setFocusProxy(w:QWidget)
+	' TODO
+	End Method
+
+	Method setFont(font:QFont)
+		bmx_qt_qwidget_setfont(qObjectPtr, font.qObjectPtr)
+	End Method
+	
+	Method setForegroundRole(role:Int)
+	' TODO
+	End Method
+	
+	Method setGeometryRect(rect:QRect)
+	' TODO
+	End Method
+	
+	Method setGeometry(x:Int, y:Int, w:Int, h:Int)
+	' TODO
+	End Method
+	
+	'Method setInputContext(context:QInputContext)
+	' TODO
+	'End Method
+
 	Method setLayout(layout:QLayout)
 		bmx_qt_qwidget_setlayout(qObjectPtr, layout.qObjectPtr)
+	End Method
+
+	Method setLayoutDirection(direction:Int)
+	' TODO
+	End Method
+	
+	Method setLocale(locale:QLocale)
+	' TODO
+	End Method
+	
+	'Method setMask(bitmap:QBitmap)
+	' TODO
+	'End Method
+	
+	Method setMaskRegion(region:QRegion)
+	' TODO
+	End Method
+	
+	Method setMaximumHeight(maxh:Int)
+	' TODO
+	End Method
+	
+	Method setMaximumSize(w:Int, h:Int)
+	' TODO
+	End Method
+	
+	Method setMaximumWidth(maxw:Int)
+	' TODO
+	End Method
+	
+	Method setMinimumHeight(minh:Int)
+	' TODO
+	End Method
+	
+	Method setMinimumSize(w:Int, h:Int)
+	' TODO
+	End Method
+	
+	Method setMinimumWidth(minw:Int)
+	' TODO
+	End Method
+	
+	Method setMouseTracking(enable:Int)
+	' TODO
+	End Method
+
+	'Method setPalette(p:QPalette)
+	' TODO
+	'End Method
+	
+	Method setParent(parent:QWidget)
+	' TODO
+	End Method
+	
+	Method setShortcutAutoRepeat(id:Int, enable:Int = True)
+	' TODO
+	End Method
+	
+	Method setShortcutEnabled(id:Int, enable:Int = True)
+	' TODO
+	End Method
+	
+	Method setSizeIncrement(w:Int, h:Int)
+	' TODO
 	End Method
 
 	Method setSizePolicy(policy:QSizePolicy)
@@ -325,15 +409,75 @@ Type QWidget Extends QObject
 	Method setSizePolicyHV(horizontalPolicy:Int, verticalPolicy:Int)
 		bmx_qt_qwidget_setsizepolicyhv(qObjectPtr, horizontalPolicy, verticalPolicy)
 	End Method
-	
+
+	Method setStatusTip(tip:String)
+	' TODO
+	End Method
+
+	'Method setStyle(style:QStyle)
+	' TODO
+	'End Method
+
 	Method setToolTip(text:String)
 		bmx_qt_qwidget_settooltip(qObjectPtr, text)
 	End Method
+
+	Method setUpdatesEnabled(enable:Int)
+	' TODO
+	End Method
 	
+	Method setWhatsThis(text:String)
+	' TODO
+	End Method
+	
+	Method setWindowFilePath(filePath:String)
+	' TODO
+	End Method
+	
+	Method setWindowFlags(flags:Int)
+	' TODO
+	End Method
+	
+	Method setWindowIcon(icon:QIcon)
+	' TODO
+	End Method
+	
+	Method setWindowIconText(text:String)
+	' TODO
+	End Method
+	
+	Method setWindowModality(windowModality:Int)
+	' TODO
+	End Method
+	
+	Method setWindowOpacity(level:Double)
+	' TODO
+	End Method
+	
+	Method setWindowRole(role:String)
+	' TODO
+	End Method
+	
+	Method setWindowState(windowState:Int)
+	' TODO
+	End Method
+
+	Method size(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+
+	Method sizeIncrement(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+
 	Method sizePolicy:QSizePolicy()
 		Return QSizePolicy._create(bmx_qt_qwidget_sizepolicy(qObjectPtr))
 	End Method
-	
+
+	Method stackUnder(w:QWidget)
+		bmx_qt_qwidget_stackunder(qObjectPtr, w.qObjectPtr)
+	End Method
+
 	Method whatsThis:String()
 	' TODO
 	End Method
@@ -544,11 +688,158 @@ Type QWidget Extends QObject
 	Rem
 	bbdoc: 
 	End Rem
-	Method mouseReleseEvent(event:QMouseEvent)
+	Method mouseReleaseEvent(event:QMouseEvent)
 	End Method
 
-	Function _OnMouseReleseEvent(obj:QWidget, event:Byte Ptr)
-		obj.mouseReleseEvent(QMouseEvent._create(event))
+	Function _OnMouseReleaseEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseReleaseEvent(QMouseEvent._create(event))
+	End Function
+
+	Method actionEvent(event:QActionEvent)
+	End Method
+	
+	Function _OnActionEvent(obj:QWidget, event:Byte Ptr)
+		obj.actionEvent(QActionEvent._create(event))
+	End Function
+	
+	Method changeEvent(event:QEvent)
+	End Method
+	
+	Function _OnChangeEvent(obj:QWidget, event:Byte Ptr)
+		obj.changeEvent(QEvent._create(event))
+	End Function
+	
+	Method closeEvent(event:QCloseEvent)
+	End Method
+	
+	Function _OnCloseEvent(obj:QWidget, event:Byte Ptr)
+		obj.closeEvent(QCloseEvent._create(event))
+	End Function
+	
+	Method contextMenuEvent(event:QContextMenuEvent)
+	End Method
+	
+	Function _OnContextMenuEvent(obj:QWidget, event:Byte Ptr)
+		obj.contextMenuEvent(QContextMenuEvent._create(event))
+	End Function
+	
+	Method dragEnterEvent(event:QDragEnterEvent)
+	End Method
+	
+	Function _OnDragEnterEvent(obj:QWidget, event:Byte Ptr)
+		obj.dragEnterEvent(QDragEnterEvent._create(event))
+	End Function
+	
+	Method dragLeaveEvent(event:QDragLeaveEvent)
+	End Method
+	
+	Function _OnDragLeaveEvent(obj:QWidget, event:Byte Ptr)
+		obj.dragLeaveEvent(QDragLeaveEvent._create(event))
+	End Function
+	
+	Method dragMoveEvent(event:QDragMoveEvent)
+	End Method
+	
+	Function _OnDragMoveEvent(obj:QWidget, event:Byte Ptr)
+		obj.dragMoveEvent(QDragMoveEvent._create(event))
+	End Function
+	
+	Method dropEvent(event:QDropEvent)
+	End Method
+	
+	Function _OnDropEvent(obj:QWidget, event:Byte Ptr)
+		obj.dropEvent(QDropEvent._create(event))
+	End Function
+	
+	Method enterEvent(event:QEvent)
+	End Method
+	
+	Function _OnEnterEvent(obj:QWidget, event:Byte Ptr)
+		obj.enterEvent(QEvent._create(event))
+	End Function
+	
+	Method focusInEvent(event:QFocusEvent)
+	End Method
+	
+	Function _OnFocusInEvent(obj:QWidget, event:Byte Ptr)
+		obj.focusInEvent(QFocusEvent._create(event))
+	End Function
+	
+	Method focusOutEvent(event:QFocusEvent)
+	End Method
+	
+	Function _OnFocusOutEvent(obj:QWidget, event:Byte Ptr)
+		obj.focusOutEvent(QFocusEvent._create(event))
+	End Function
+	
+	Method hideEvent(event:QHideEvent)
+	End Method
+	
+	Function _OnHideEvent(obj:QWidget, event:Byte Ptr)
+		obj.hideEvent(QHideEvent._create(event))
+	End Function
+	
+	Method inputMethodEvent(event:QInputMethodEvent)
+	End Method
+	
+	Function _OnInputMethodEvent(obj:QWidget, event:Byte Ptr)
+		obj.inputMethodEvent(QInputMethodEvent._create(event))
+	End Function
+	
+	Method keyPressEvent(event:QKeyEvent)
+	End Method
+	
+	Function _OnKeyPressEvent(obj:QWidget, event:Byte Ptr)
+		obj.keyPressEvent(QKeyEvent._create(event))
+	End Function
+	
+	Method keyReleaseEvent(event:QKeyEvent)
+	End Method
+	
+	Function _OnKeyReleaseEvent(obj:QWidget, event:Byte Ptr)
+		obj.keyReleaseEvent(QKeyEvent._create(event))
+	End Function
+	
+	Method leaveEvent(event:QEvent)
+	End Method
+	
+	Function _OnLeaveEvent(obj:QWidget, event:Byte Ptr)
+		obj.leaveEvent(QEvent._create(event))
+	End Function
+	
+	Method moveEvent(event:QMoveEvent)
+	End Method
+	
+	Function _OnMoveEvent(obj:QWidget, event:Byte Ptr)
+		obj.moveEvent(QMoveEvent._create(event))
+	End Function
+	
+	Method resizeEvent(event:QResizeEvent)
+	End Method
+	
+	Function _OnResizeEvent(obj:QWidget, event:Byte Ptr)
+		obj.resizeEvent(QResizeEvent._create(event))
+	End Function
+	
+	Method showEvent(event:QShowEvent)
+	End Method
+	
+	Function _OnShowEvent(obj:QWidget, event:Byte Ptr)
+		obj.showEvent(QShowEvent._create(event))
+	End Function
+	
+	Method tabletEvent(event:QTabletEvent)
+	End Method
+	
+	Function _OnTabletEvent(obj:QWidget, event:Byte Ptr)
+		obj.tabletEvent(QTabletEvent._create(event))
+	End Function
+	
+	Method wheelEvent(event:QWheelEvent)
+	End Method
+	
+	Function _OnWheelEvent(obj:QWidget, event:Byte Ptr)
+		obj.wheelEvent(QWheelEvent._create(event))
 	End Function
 	
 	' SIGNAL : customContextMenuRequested
@@ -886,4 +1177,63 @@ Type QActionGroup Extends QObject
 
 End Type
 
+Type QActionEvent Extends QEvent
+
+	Function _create:QActionEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QActionEvent = New QActionEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QDropEvent Extends QEvent
+
+	Function _create:QDropEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QDropEvent = New QDropEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QDragMoveEvent Extends QDropEvent
+
+	Function _create:QDragMoveEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QDragMoveEvent = New QDragMoveEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QDragEnterEvent Extends QDragMoveEvent
+
+	Function _create:QDragEnterEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QDragEnterEvent = New QDragEnterEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QDragLeaveEvent Extends QEvent
+
+	Function _create:QDragLeaveEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QDragLeaveEvent = New QDragLeaveEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
 

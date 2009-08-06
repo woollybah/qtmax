@@ -46,6 +46,8 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qboxlayout_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qboxlayout_createlayout:Byte Ptr(handle:Object, dir:Int, parent:Byte Ptr)
 	Function bmx_qt_qboxlayout_addwidget(handle:Byte Ptr, widget:Byte Ptr, stretch:Int, alignment:Int)
 	Function bmx_qt_qboxlayout_addstretch(handle:Byte Ptr, stretch:Int)
 

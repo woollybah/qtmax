@@ -32,6 +32,45 @@ Import "common.bmx"
 
 Type QBoxLayout Extends QLayout
 
+	Rem
+	bbdoc: Horizontal from left to right.
+	end rem
+	Const LeftToRight:Int = 0
+	Rem
+	bbdoc: Horizontal from right to left.
+	end rem
+	Const RightToLeft:Int = 1
+	Rem
+	bbdoc: Vertical from top to bottom.
+	end rem
+	Const TopToBottom:Int = 2
+	Rem
+	bbdoc: Vertical from bottom to top.
+	end rem
+	Const BottomToTop:Int = 3
+	
+	Function CreateBoxLayout:QBoxLayout(parent:QWidget = Null)
+		Return New QBoxLayout.Create(parent)
+	End Function
+
+	Method Create:QBoxLayout(parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qboxlayout_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qboxlayout_create(Self, Null)
+		End If
+		Return Self
+	End Method
+	
+	Method CreateLayout:QBoxLayout(dir:Int, parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qboxlayout_createlayout(Self, dir, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qboxlayout_createlayout(Self, dir, Null)
+		End If
+		Return Self
+	End Method
+	
 	Method addWidget(widget:QWidget, stretch:Int = 0, alignment:Int = 0)
 		bmx_qt_qboxlayout_addwidget(qObjectPtr, widget.qObjectPtr, stretch, alignment)
 	End Method

@@ -33,5 +33,13 @@ Import "common.bmx"
 
 Type QContextMenuEvent Extends QInputEvent
 
+	Function _create:QContextMenuEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QContextMenuEvent = New QContextMenuEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
 End Type
 

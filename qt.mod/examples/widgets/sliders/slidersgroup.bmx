@@ -14,7 +14,7 @@ Type SlidersGroup Extends QGroupBox
 	
 	Field orientation:Int
 	
-	Method CreateGroup:SlidersGroup(orientation:Int, title:String, parent:QWidget)
+	Method CreateGroup:SlidersGroup(orientation:Int, title:String, parent:QWidget = Null)
 		Self.orientation = orientation
 		Return SlidersGroup(Super.Create(title, parent))
 	End Method
@@ -40,12 +40,12 @@ Type SlidersGroup Extends QGroupBox
 		Local direction:Int
 		
 		If orientation = Qt_Horizontal Then
-			direction = QBoxLayout_TopToBottom
+			direction = QBoxLayout.TopToBottom
 		Else
-			direction = QBoxLayout_LeftToRight
+			direction = QBoxLayout.LeftToRight
 		End If
 		
-		Local slidersLayout:QBoxLayout = New QBoxLayout.Create(direction)
+		Local slidersLayout:QBoxLayout = New QBoxLayout.CreateLayout(direction)
 		slidersLayout.addWidget(slider)
 		slidersLayout.addWidget(scrollBar)
 		slidersLayout.addWidget(dial)

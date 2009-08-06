@@ -343,3 +343,25 @@ intersection. If the number is non zero, the point is inside the shape. This fil
 be considered as the intersection of closed shapes.
 End Rem
 Const Qt_WindingFill:Int = 1
+
+Rem
+bbdoc: the widget accepts focus by tabbing.
+end rem
+Const Qt_TabFocus:Int = $1
+Rem
+bbdoc: the widget accepts focus by clicking.
+end rem
+Const Qt_ClickFocus:Int = $2
+Rem
+bbdoc: the widget accepts focus by both tabbing and clicking.
+about: On Mac OS X this will also be indicate that the widget accepts tab focus when in 'Text/List focus mode'.
+end rem
+Const Qt_StrongFocus:Int = Qt_TabFocus | Qt_ClickFocus | $8
+Rem
+bbdoc: like Qt_StrongFocus plus the widget accepts focus by using the mouse wheel.
+end rem
+Const Qt_WheelFocus:Int = Qt_StrongFocus | $4
+Rem
+bbdoc: the widget does not accept focus.
+end rem
+Const Qt_NoFocus:Int = 0
