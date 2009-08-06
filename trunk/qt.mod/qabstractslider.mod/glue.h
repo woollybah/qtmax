@@ -60,7 +60,8 @@ extern "C" {
 	int bmx_qt_qabstractslider_sliderposition(QAbstractSlider * slider);
 	void bmx_qt_qabstractslider_triggeraction(QAbstractSlider * slider, int sliderAction);
 	int bmx_qt_qabstractslider_value(QAbstractSlider * slider);
-
+	void bmx_qt_qabstractslider_setorientation(QAbstractSlider * slider, int orientation);
+	void bmx_qt_qabstractslider_setvalue(QAbstractSlider * slider, int value);
 	
 }
 

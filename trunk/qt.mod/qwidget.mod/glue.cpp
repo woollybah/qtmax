@@ -65,7 +65,91 @@ void MaxQWidget::mousePressEvent(QMouseEvent * event) {
 }
 
 void MaxQWidget::mouseReleaseEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__OnMouseReleseEvent(maxHandle, event);
+	_qt_qwidget_QWidget__OnMouseReleaseEvent(maxHandle, event);
+}
+
+void MaxQWidget::actionEvent(QActionEvent * event){
+	_qt_qwidget_QWidget__OnActionEvent(maxHandle, event);
+}
+
+void MaxQWidget::changeEvent(QEvent * event){
+	_qt_qwidget_QWidget__OnChangeEvent(maxHandle, event);
+}
+
+void MaxQWidget::closeEvent(QCloseEvent * event){
+	_qt_qwidget_QWidget__OnCloseEvent(maxHandle, event);
+}
+
+void MaxQWidget::contextMenuEvent(QContextMenuEvent * event){
+	_qt_qwidget_QWidget__OnContextMenuEvent(maxHandle, event);
+}
+
+void MaxQWidget::dragEnterEvent(QDragEnterEvent * event){
+	_qt_qwidget_QWidget__OnDragEnterEvent(maxHandle, event);
+}
+
+void MaxQWidget::dragLeaveEvent(QDragLeaveEvent * event){
+	_qt_qwidget_QWidget__OnDragLeaveEvent(maxHandle, event);
+}
+
+void MaxQWidget::dragMoveEvent(QDragMoveEvent * event){
+	_qt_qwidget_QWidget__OnDragMoveEvent(maxHandle, event);
+}
+
+void MaxQWidget::dropEvent(QDropEvent * event){
+	_qt_qwidget_QWidget__OnDropEvent(maxHandle, event);
+}
+
+void MaxQWidget::enterEvent(QEvent * event){
+	_qt_qwidget_QWidget__OnEnterEvent(maxHandle, event);
+}
+
+void MaxQWidget::focusInEvent(QFocusEvent * event){
+	_qt_qwidget_QWidget__OnFocusInEvent(maxHandle, event);
+}
+
+void MaxQWidget::focusOutEvent(QFocusEvent * event){
+	_qt_qwidget_QWidget__OnFocusOutEvent(maxHandle, event);
+}
+
+void MaxQWidget::hideEvent(QHideEvent * event){
+	_qt_qwidget_QWidget__OnHideEvent(maxHandle, event);
+}
+
+void MaxQWidget::inputMethodEvent(QInputMethodEvent * event){
+	_qt_qwidget_QWidget__OnInputMethodEvent(maxHandle, event);
+}
+
+void MaxQWidget::keyPressEvent(QKeyEvent * event){
+	_qt_qwidget_QWidget__OnKeyPressEvent(maxHandle, event);
+}
+
+void MaxQWidget::keyReleaseEvent(QKeyEvent * event){
+	_qt_qwidget_QWidget__OnKeyReleaseEvent(maxHandle, event);
+}
+
+void MaxQWidget::leaveEvent(QEvent * event){
+	_qt_qwidget_QWidget__OnLeaveEvent(maxHandle, event);
+}
+
+void MaxQWidget::moveEvent(QMoveEvent * event){
+	_qt_qwidget_QWidget__OnMoveEvent(maxHandle, event);
+}
+
+void MaxQWidget::resizeEvent(QResizeEvent * event){
+	_qt_qwidget_QWidget__OnResizeEvent(maxHandle, event);
+}
+
+void MaxQWidget::showEvent(QShowEvent * event){
+	_qt_qwidget_QWidget__OnShowEvent(maxHandle, event);
+}
+
+void MaxQWidget::tabletEvent(QTabletEvent * event){
+	_qt_qwidget_QWidget__OnTabletEvent(maxHandle, event);
+}
+
+void MaxQWidget::wheelEvent(QWheelEvent * event){
+	_qt_qwidget_QWidget__OnWheelEvent(maxHandle, event);
 }
 
 // ---------------------------------------------------------------------------------------

@@ -50,7 +50,15 @@ End Rem
 Type QEvent
 
 	Field qObjectPtr:Byte Ptr
-	
+
+	Function _create:QEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QEvent = New QEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
 	Method accept()
 		bmx_qt_qevent_accept(qObjectPtr)
 	End Method

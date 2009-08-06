@@ -26,6 +26,17 @@ Import Qt.QLocale
 Import Qt.QRegion
 Import Qt.QPaintEvent
 Import Qt.QMouseEvent
+Import Qt.QMoveEvent
+Import Qt.QCloseEvent
+Import Qt.QContextMenuEvent
+Import Qt.QFocusEvent
+Import Qt.QHideEvent
+Import Qt.QInputMethodEvent
+Import Qt.QKeyEvent
+Import Qt.QResizeEvent
+Import Qt.QShowEvent
+Import Qt.QTabletEvent
+Import Qt.QWheelEvent
 Import Qt.QIcon
 Import Qt.QSizePolicy
 Import Qt.QFont

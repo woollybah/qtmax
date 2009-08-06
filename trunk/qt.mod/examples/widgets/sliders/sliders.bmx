@@ -4,7 +4,10 @@ Framework Qt.QApplication
 Import Qt.QComboBox
 Import Qt.QStackedWidget
 Import Qt.QSpinBox
+Import Qt.QCheckBox
 Import Qt.QLabel
+Import Qt.QHBoxLayout
+Import Qt.QGridLayout
 
 Import "slidersgroup.bmx"
 

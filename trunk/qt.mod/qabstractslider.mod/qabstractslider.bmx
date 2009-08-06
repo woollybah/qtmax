@@ -129,6 +129,14 @@ Type QAbstractSlider Extends QWidget
 	Method value:Int()
 		Return bmx_qt_qabstractslider_value(qObjectPtr)
 	End Method
+	
+	Method setOrientation(orientation:Int)
+		bmx_qt_qabstractslider_setorientation(qObjectPtr, orientation)
+	End Method
+	
+	Method setValue(value:Int)
+		bmx_qt_qabstractslider_setvalue(qObjectPtr, value)
+	End Method
 
 	' SIGNAL : actionTriggered
 	Function _OnActionTriggered(obj:QAbstractSlider, action:Int)

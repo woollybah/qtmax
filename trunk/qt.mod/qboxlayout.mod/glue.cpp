@@ -24,9 +24,33 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQBoxLayout::MaxQBoxLayout(BBObject * handle, QBoxLayout::Direction dir, QWidget * parent)
+	: maxHandle(handle), QBoxLayout(dir, parent)
+{
+	qbind(this, handle);
+}
+
+MaxQBoxLayout::MaxQBoxLayout(BBObject * handle, QWidget * parent)
+	: maxHandle(handle), QBoxLayout(QBoxLayout::LeftToRight, parent)
+{
+	qbind(this, handle);
+}
+
+MaxQBoxLayout::~MaxQBoxLayout()
+{
+	qunbind(this);
+}
 
 
 // *********************************************
+
+QBoxLayout * bmx_qt_qboxlayout_create(BBObject * handle, QWidget * parent) {
+	return new MaxQBoxLayout(handle, parent);
+}
+
+QBoxLayout * bmx_qt_qboxlayout_createlayout(BBObject * handle, int dir, QWidget * parent) {
+	return new MaxQBoxLayout(handle, (QBoxLayout::Direction)dir, parent);
+}
 
 void bmx_qt_qboxlayout_addwidget(QBoxLayout * layout, QWidget * widget, int stretch, int alignment) {
 	layout->addWidget(widget, stretch, bmx_qt_getalignment(alignment));

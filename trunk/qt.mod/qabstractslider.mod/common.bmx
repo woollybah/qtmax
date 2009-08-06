@@ -68,6 +68,7 @@ Extern
 	Function bmx_qt_qabstractslider_sliderposition:Int(handle:Byte Ptr)
 	Function bmx_qt_qabstractslider_triggeraction(handle:Byte Ptr, sliderAction:Int)
 	Function bmx_qt_qabstractslider_value:Int(handle:Byte Ptr)
-		
+	Function bmx_qt_qabstractslider_setorientation(handle:Byte Ptr, orientation:Int)
+	Function bmx_qt_qabstractslider_setvalue(handle:Byte Ptr, value:Int)
 
 End Extern
