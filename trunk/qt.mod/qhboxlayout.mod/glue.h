@@ -25,15 +25,29 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QHBoxLayout>
+
+class MaxQHBoxLayout;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QHBoxLayout * bmx_qt_qhboxlayout_create(BBObject * handle, QWidget * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQHBoxLayout : public QHBoxLayout
+{
+public:
+	MaxQHBoxLayout(BBObject * handle, QWidget * parent);
+	MaxQHBoxLayout(BBObject * handle);
+	~MaxQHBoxLayout();
+
+private:
+	BBObject * maxHandle;
+};
 
 #endif

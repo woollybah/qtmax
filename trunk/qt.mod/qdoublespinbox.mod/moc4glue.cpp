@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Thu 6. Aug 14:36:33 2009
+** Created: Thu Aug 6 20:32:41 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -39,7 +39,7 @@ static const uint qt_meta_data_MaxQDoubleSpinBox[] = {
 static const char qt_meta_stringdata_MaxQDoubleSpinBox[] = {
     "MaxQDoubleSpinBox\0\0value\0"
     "onValueChanged(double)\0onEditingFinished()\0"
-    "pos\0customContextMenuRequested(QPoint)\0"
+    "pos\0onCustomContextMenuRequested(QPoint)\0"
 };
 
 const QMetaObject MaxQDoubleSpinBox::staticMetaObject = {
@@ -69,7 +69,7 @@ int MaxQDoubleSpinBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: onValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 1: onEditingFinished(); break;
-        case 2: customContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 2: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 3;

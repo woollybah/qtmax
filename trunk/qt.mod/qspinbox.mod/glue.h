@@ -71,7 +71,7 @@ private:
 private slots:
 	void onValueChanged(int i);
 	void onEditingFinished();
-	void customContextMenuRequested(const QPoint & pos);
+	void onCustomContextMenuRequested(const QPoint & pos);
 };
 
 #endif
