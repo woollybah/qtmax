@@ -50,5 +50,23 @@ Extern
 	Function bmx_qt_qboxlayout_createlayout:Byte Ptr(handle:Object, dir:Int, parent:Byte Ptr)
 	Function bmx_qt_qboxlayout_addwidget(handle:Byte Ptr, widget:Byte Ptr, stretch:Int, alignment:Int)
 	Function bmx_qt_qboxlayout_addstretch(handle:Byte Ptr, stretch:Int)
+	Function bmx_qt_qboxlayout_addlayout(handle:Byte Ptr, layout:Byte Ptr, stretch:Int)
+	Function bmx_qt_qboxlayout_addspaceritem(handle:Byte Ptr, spacerItem:Byte Ptr)
+	Function bmx_qt_qboxlayout_addspacing(handle:Byte Ptr, size:Int)
+	Function bmx_qt_qboxlayout_addstrut(handle:Byte Ptr, size:Int)
+	Function bmx_qt_qboxlayout_direction:Int(handle:Byte Ptr)
+	Function bmx_qt_qboxlayout_insertlayout(handle:Byte Ptr, index:Int, layout:Byte Ptr, stretch:Int)
+	Function bmx_qt_qboxlayout_insertspaceritem(handle:Byte Ptr, index:Int, spacerItem:Byte Ptr)
+	Function bmx_qt_qboxlayout_insertspacing(handle:Byte Ptr, index:Int, size:Int)
+	Function bmx_qt_qboxlayout_insertstretch(handle:Byte Ptr, index:Int, stretch:Int)
+	Function bmx_qt_qboxlayout_insertwidget(handle:Byte Ptr, index:Int, widget:Byte Ptr, stretch:Int, alignment:Int)
+	Function bmx_qt_qboxlayout_setdirection(handle:Byte Ptr, direction:Int)
+	Function bmx_qt_qboxlayout_setspacing(handle:Byte Ptr, spacing:Int)
+	Function bmx_qt_qboxlayout_setstretch(handle:Byte Ptr, index:Int, stretch:Int)
+	Function bmx_qt_qboxlayout_setstretchfactor:Int(handle:Byte Ptr, widget:Byte Ptr, stretch:Int)
+	Function bmx_qt_qboxlayout_setstretchfactorwidget:Int(handle:Byte Ptr, widget:Byte Ptr, stretch:Int)
+	Function bmx_qt_qboxlayout_spacing:Int(handle:Byte Ptr)
+	Function bmx_qt_qboxlayout_stretch:Int(handle:Byte Ptr, index:Int)
+	
 
 End Extern

@@ -21,7 +21,6 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QInputEvent
 Import BRL.Blitz
 
 
@@ -45,14 +44,5 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qcontextmenuevent_globalpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
-	Function bmx_qt_qcontextmenuevent_globalx:Int(handle:Byte Ptr)
-	Function bmx_qt_qcontextmenuevent_globaly:Int(handle:Byte Ptr)
-	Function bmx_qt_qcontextmenuevent_pos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
-	Function bmx_qt_qcontextmenuevent_reason:Int(handle:Byte Ptr)
-	Function bmx_qt_qcontextmenuevent_x:Int(handle:Byte Ptr)
-	Function bmx_qt_qcontextmenuevent_y:Int(handle:Byte Ptr)
-
 
 End Extern

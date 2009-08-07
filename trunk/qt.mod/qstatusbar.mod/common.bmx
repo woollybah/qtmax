@@ -55,6 +55,8 @@ Extern
 	Function bmx_qt_qstatusbar_issizegripenabled:Int(handle:Byte Ptr)
 	Function bmx_qt_qstatusbar_removewidget(handle:Byte Ptr, widget:Byte Ptr)
 	Function bmx_qt_qstatusbar_setsizegripenabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qstatusbar_clearmessage(handle:Byte Ptr)
+	Function bmx_qt_qstatusbar_showmessage(handle:Byte Ptr, message:String, timeout:Int)
 
 	
 End Extern

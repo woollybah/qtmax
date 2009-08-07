@@ -51,5 +51,9 @@ Extern
 
 	Function bmx_qt_qapplication_create:Byte Ptr(handle:Object)
 	Function bmx_qt_qapplication_exec:Int()
+	Function bmx_qt_qapplication_aboutqt(handle:Byte Ptr)
+	Function bmx_qt_qapplication_closeallwindows(handle:Byte Ptr)
+	Function bmx_qt_qapplication_setstylesheet(handle:Byte Ptr, sheet:String)
+
 
 End Extern

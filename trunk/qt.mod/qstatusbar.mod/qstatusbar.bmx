@@ -95,6 +95,18 @@ Type QStatusBar Extends QWidget
 		bmx_qt_qstatusbar_setsizegripenabled(qObjectPtr, value)
 	End Method
 
+	Method clearMessage()
+		bmx_qt_qstatusbar_clearmessage(qObjectPtr)
+	End Method
 	
+	Method showMessage(message:String, timeout:Int = 0)
+		bmx_qt_qstatusbar_showmessage(qObjectPtr, message, timeout)
+	End Method
+
+	' SIGNAL : messageChanged
+	Function _OnMessageChanged(obj:QStatusBar, message:String)
+		obj._InvokeSignals("messageChanged", [message])
+	End Function
+
 End Type
 

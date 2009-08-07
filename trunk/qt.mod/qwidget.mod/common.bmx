@@ -41,6 +41,7 @@ Import Qt.QIcon
 Import Qt.QSizePolicy
 Import Qt.QFont
 Import Qt.QFontMetrics
+Import Qt.QKeySequence
 Import BRL.Blitz
 
 
@@ -147,8 +148,29 @@ Extern
 	Function bmx_qt_qaction_text:String(handle:Byte Ptr)
 	Function bmx_qt_qaction_tooltip:String(handle:Byte Ptr)
 	Function bmx_qt_qaction_whatsthis:String(handle:Byte Ptr)
+	Function bmx_qt_qaction_setshortcuts(handle:Byte Ptr, key:Int)
+	Function bmx_qt_qaction_hover(handle:Byte Ptr)
+	Function bmx_qt_qaction_setchecked(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_setdisabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_setenabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_setvisible(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qaction_toggle(handle:Byte Ptr)
+	Function bmx_qt_qaction_trigger(handle:Byte Ptr)
 
-	
+
+	Function bmx_qt_qactiongroup_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qactiongroup_addaction:Byte Ptr(handle:Byte Ptr, action:Byte Ptr)
+	Function bmx_qt_qactiongroup_addactiontext:Byte Ptr(handle:Byte Ptr, text:String)
+	Function bmx_qt_qactiongroup_checkedaction:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qactiongroup_isenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qactiongroup_isexclusive:Int(handle:Byte Ptr)
+	Function bmx_qt_qactiongroup_isvisible:Int(handle:Byte Ptr)
+	Function bmx_qt_qactiongroup_removeaction(handle:Byte Ptr, action:Byte Ptr)
+	Function bmx_qt_qactiongroup_setdisabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qactiongroup_setenabled(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qactiongroup_setexclusive(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qactiongroup_setvisible(handle:Byte Ptr, value:Int)
+
 End Extern
 
 Rem

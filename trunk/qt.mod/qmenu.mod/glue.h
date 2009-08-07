@@ -41,6 +41,7 @@ extern "C" {
 	void _qt_qmenu_QMenu__OnTriggered(BBObject * handle, QAction * action);
 
 	QMenu * bmx_qt_qmenu_create(BBObject * handle, QWidget * parent);
+	void bmx_qt_qmenu_free(QMenu * menu);
 
 	QAction * bmx_qt_qmenu_actionat(QMenu * m, int x, int y);
 	MaxQRect * bmx_qt_qmenu_actiongeometry(QMenu * m, QAction * act);
@@ -97,7 +98,7 @@ private slots:
 	void onAboutToShow();
 	void onHovered(QAction * action);
 	void onTriggered(QAction * action);
-	void customContextMenuRequested(const QPoint & pos);
+	void onCustomContextMenuRequested(const QPoint & pos);
 };
 
 #endif

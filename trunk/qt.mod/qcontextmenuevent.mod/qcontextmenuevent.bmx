@@ -41,5 +41,34 @@ Type QContextMenuEvent Extends QInputEvent
 		End If
 	End Function
 
+	Method globalPos(x:Int Var, y:Int Var)
+		bmx_qt_qcontextmenuevent_globalpos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method globalX:Int()
+		Return bmx_qt_qcontextmenuevent_globalx(qObjectPtr)
+	End Method
+	
+	Method globalY:Int()
+		Return bmx_qt_qcontextmenuevent_globaly(qObjectPtr)
+	End Method
+	
+	Method pos (x:Int Var, y:Int Var)
+		bmx_qt_qcontextmenuevent_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method reason:Int()
+		Return bmx_qt_qcontextmenuevent_reason(qObjectPtr)
+	End Method
+	
+	Method x:Int()
+		Return bmx_qt_qcontextmenuevent_x(qObjectPtr)
+	End Method
+	
+	Method y:Int()
+		Return bmx_qt_qcontextmenuevent_y(qObjectPtr)
+	End Method
+	
+
 End Type
 

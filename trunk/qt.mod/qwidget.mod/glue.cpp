@@ -208,6 +208,28 @@ void MaxQAction::onTriggered(bool checked) {
 	_qt_qwidget_QAction__OnTriggered(maxHandle, static_cast<int>(checked));
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQActionGroup::MaxQActionGroup(BBObject * handle, QObject * parent)
+	: maxHandle(handle), QActionGroup(parent)
+{
+	qbind(this, handle);
+}
+
+MaxQActionGroup::~MaxQActionGroup()
+{
+	qunbind(this);
+}
+
+void MaxQActionGroup::onHovered(QAction * action) {
+	MaxQAction::link(action);
+	_qt_qwidget_QActionGroup__OnHovered(maxHandle, action);
+}
+
+void MaxQActionGroup::onTriggered(QAction * action) {
+	MaxQAction::link(action);
+	_qt_qwidget_QActionGroup__OnTriggered(maxHandle, action);
+}
 
 // *********************************************
 
@@ -559,6 +581,96 @@ BBString * bmx_qt_qaction_tooltip(QAction * action) {
 
 BBString * bmx_qt_qaction_whatsthis(QAction * action) {
 	return bbStringFromQString(action->whatsThis());
+}
+
+void bmx_qt_qaction_setshortcuts(QAction * action, int key) {
+	action->setShortcuts((QKeySequence::StandardKey)key);
+}
+
+void bmx_qt_qaction_hover(QAction * action) {
+	action->hover();
+}
+
+void bmx_qt_qaction_setchecked(QAction * action, int value) {
+	action->setChecked(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_setdisabled(QAction * action, int value) {
+	action->setDisabled(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_setenabled(QAction * action, int value) {
+	action->setEnabled(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_setvisible(QAction * action, int value) {
+	action->setVisible(static_cast<bool>(value));
+}
+
+void bmx_qt_qaction_toggle(QAction * action) {
+	action->toggle();
+}
+
+void bmx_qt_qaction_trigger(QAction * action) {
+	action->trigger();
+}
+
+
+
+// *********************************************
+
+QActionGroup * bmx_qt_qactiongroup_create(BBObject * handle, QObject * parent) {
+	return new MaxQActionGroup(handle, parent);
+}
+
+QAction * bmx_qt_qactiongroup_addaction(QActionGroup * group, QAction * a) {
+	QAction * action = group->addAction(a);
+	MaxQAction::link(action);
+	return action;
+}
+
+QAction * bmx_qt_qactiongroup_addactiontext(QActionGroup * group, BBString * text) {
+	QAction * action = group->addAction(qStringFromBBString(text));
+	MaxQAction::link(action);
+	return action;
+}
+
+QAction * bmx_qt_qactiongroup_checkedaction(QActionGroup * group) {
+	QAction * action = group->checkedAction();
+	MaxQAction::link(action);
+	return action;
+}
+
+int bmx_qt_qactiongroup_isenabled(QActionGroup * group) {
+	return static_cast<int>(group->isEnabled());
+}
+
+int bmx_qt_qactiongroup_isexclusive(QActionGroup * group) {
+	return static_cast<int>(group->isExclusive());
+}
+
+int bmx_qt_qactiongroup_isvisible(QActionGroup * group) {
+	return static_cast<int>(group->isVisible());
+}
+
+void bmx_qt_qactiongroup_removeaction(QActionGroup * group, QAction * action) {
+	group->removeAction(action);
+}
+
+void bmx_qt_qactiongroup_setdisabled(QActionGroup * group, int value) {
+	group->setDisabled(static_cast<bool>(value));
+}
+
+void bmx_qt_qactiongroup_setenabled(QActionGroup * group, int value) {
+	group->setEnabled(static_cast<bool>(value));
+}
+
+void bmx_qt_qactiongroup_setexclusive(QActionGroup * group, int value) {
+	group->setExclusive(static_cast<bool>(value));
+}
+
+void bmx_qt_qactiongroup_setvisible(QActionGroup * group, int value) {
+	group->setVisible(static_cast<bool>(value));
 }
 
 

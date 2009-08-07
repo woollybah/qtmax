@@ -46,8 +46,18 @@ Type QApplication Extends QCoreApplication
 		Return bmx_qt_qapplication_exec()
 	End Method
 
-
-
+	Method aboutQt()
+		bmx_qt_qapplication_aboutqt(qObjectPtr)
+	End Method
+	
+	Method closeAllWindows()
+		bmx_qt_qapplication_closeallwindows(qObjectPtr)
+	End Method
+	
+	Method setStyleSheet(sheet:String)
+		bmx_qt_qapplication_setstylesheet(qObjectPtr, sheet)
+	End Method
+	
 	' SIGNAL : commitDataRequest
 	Function _OnCommitDataRequest(obj:QApplication, m:Byte Ptr)
 		obj._InvokeSignals("commitDataRequest", [QSessionManager._create(m)])

@@ -24,6 +24,7 @@
 #define MAX_QT_QSTATUSBAR
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QStatusBar>
 
@@ -32,6 +33,8 @@ class MaxQStatusBar;
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qstatusbar_QStatusBar__OnMessageChanged(BBObject * handle, BBString * message);
 
 	QStatusBar * bmx_qt_qstatusbar_create(BBObject * handle, QWidget  * parent);
 	void bmx_qt_qstatusbar_addpermanentwidget(QStatusBar * sb, QWidget * widget, int stretch);
@@ -42,7 +45,8 @@ extern "C" {
 	int bmx_qt_qstatusbar_issizegripenabled(QStatusBar * sb);
 	void bmx_qt_qstatusbar_removewidget(QStatusBar * sb, QWidget * widget);
 	void bmx_qt_qstatusbar_setsizegripenabled(QStatusBar * sb, int value);
-
+	void bmx_qt_qstatusbar_clearmessage(QStatusBar * sb);
+	void bmx_qt_qstatusbar_showmessage(QStatusBar * sb, BBString * message, int timeout);
 
 }
 
@@ -50,12 +54,18 @@ extern "C" {
 
 class MaxQStatusBar : public QStatusBar
 {
+	Q_OBJECT
+	
 public:
 	MaxQStatusBar(BBObject * handle, QWidget * parent);
 	~MaxQStatusBar();
 
 private:
 	BBObject * maxHandle;
+	
+private slots:
+	void onMessageChanged(const QString & message);
+	void onCustomContextMenuRequested(const QPoint & pos);
 };
 
 #endif

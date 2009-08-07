@@ -77,6 +77,7 @@ Type QObject Extends QCoreObjectPtr
 	End Method
 	
 	Function _Free(obj:QObject)
+		obj.qObjectPtr = Null
 		obj.Free()
 	End Function
 
@@ -100,11 +101,15 @@ Type TSignalSlotConnection
 	End Function
 	
 	Method invoke(args:Object[])
-		If args And args.length > _method.ArgTypes().length Then
-			args = args[.._method.ArgTypes().length]
+		If _method Then
+			If args And args.length > _method.ArgTypes().length Then
+				args = args[.._method.ArgTypes().length]
+			End If
+			
+			_method.invoke(receiver, args)
+		Else
+			DebugLog "Method '" + slot + "' does not exist."
 		End If
-		
-		_method.invoke(receiver, args)
 	End Method
 	
 End Type

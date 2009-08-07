@@ -238,5 +238,13 @@ Type QMenu Extends QWidget
 		obj._InvokeSignals("triggered", [QAction._find(action)])
 	End Function
 
+	Method Free()
+		Super.Free()
+		If qObjectPtr Then
+			bmx_qt_qmenu_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
 End Type
 

@@ -78,6 +78,75 @@ Type QBoxLayout Extends QLayout
 	Method addStretch(stretch:Int = 0)
 		bmx_qt_qboxlayout_addstretch(qObjectPtr, stretch)
 	End Method
+
+	Method addLayout(layout:QLayout, stretch:Int = 0)
+		bmx_qt_qboxlayout_addlayout(qObjectPtr, layout.qObjectPtr, stretch)
+	End Method
+	
+	Method addSpacerItem(spacerItem:QSpacerItem)
+		bmx_qt_qboxlayout_addspaceritem(qObjectPtr, spacerItem.qObjectPtr)
+	End Method
+	
+	Method addSpacing(size:Int)
+		bmx_qt_qboxlayout_addspacing(qObjectPtr, size)
+	End Method
+	
+	Method addStrut(size:Int)
+		bmx_qt_qboxlayout_addstrut(qObjectPtr, size)
+	End Method
+	
+	Method direction:Int()
+		Return bmx_qt_qboxlayout_direction(qObjectPtr)
+	End Method
+	
+	Method insertLayout(index:Int, layout:QLayout, stretch:Int = 0)
+		bmx_qt_qboxlayout_insertlayout(qObjectPtr, index, layout.qObjectPtr, stretch)
+	End Method
+	
+	Method insertSpacerItem(index:Int, spacerItem:QSpacerItem)
+		bmx_qt_qboxlayout_insertspaceritem(qObjectPtr, index, spacerItem.qObjectPtr)
+	End Method
+	
+	Method insertSpacing(index:Int, size:Int)
+		bmx_qt_qboxlayout_insertspacing(qObjectPtr, index, size)
+	End Method
+	
+	Method insertStretch(index:Int, stretch:Int = 0)
+		bmx_qt_qboxlayout_insertstretch(qObjectPtr, index, stretch)
+	End Method
+	
+	Method insertWidget(index:Int, widget:QWidget, stretch:Int = 0, alignment:Int = 0)
+		bmx_qt_qboxlayout_insertwidget(qObjectPtr, index, widget.qObjectPtr, stretch, alignment)
+	End Method
+	
+	Method setDirection(direction:Int)
+		bmx_qt_qboxlayout_setdirection(qObjectPtr, direction)
+	End Method
+	
+	Method setSpacing(spacing:Int)
+		bmx_qt_qboxlayout_setspacing(qObjectPtr, spacing)
+	End Method
+	
+	Method setStretch(index:Int, stretch:Int)
+		bmx_qt_qboxlayout_setstretch(qObjectPtr, index, stretch)
+	End Method
+	
+	Method setStretchFactor:Int(widget:QObject, stretch:Int)
+		If QLayout(widget) Then
+			Return bmx_qt_qboxlayout_setstretchfactor(qObjectPtr, widget.qObjectPtr, stretch)
+		ElseIf QWidget(widget) Then
+			Return bmx_qt_qboxlayout_setstretchfactorwidget(qObjectPtr, widget.qObjectPtr, stretch)
+		End If
+	End Method
+	
+	Method spacing:Int()
+		Return bmx_qt_qboxlayout_spacing(qObjectPtr)
+	End Method
+	
+	Method stretch:Int(index:Int)
+		Return bmx_qt_qboxlayout_stretch(qObjectPtr, index)
+	End Method
+
 	
 End Type
 

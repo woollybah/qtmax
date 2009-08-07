@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Fri 7. Aug 11:40:12 2009
+** Created: Fri Aug 7 22:48:23 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -42,7 +42,7 @@ static const char qt_meta_stringdata_MaxQMenu[] = {
     "MaxQMenu\0\0onAboutToHide()\0onAboutToShow()\0"
     "action\0onHovered(QAction*)\0"
     "onTriggered(QAction*)\0pos\0"
-    "customContextMenuRequested(QPoint)\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
 const QMetaObject MaxQMenu::staticMetaObject = {
@@ -74,7 +74,7 @@ int MaxQMenu::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: onAboutToShow(); break;
         case 2: onHovered((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
         case 3: onTriggered((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
-        case 4: customContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 4: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 5;

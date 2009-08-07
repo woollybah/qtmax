@@ -28,6 +28,39 @@
 
 // *********************************************
 
+void bmx_qt_qcontextmenuevent_globalpos(QContextMenuEvent * event, int * x, int * y) {
+	QPoint p(event->globalPos());
+	*x = p.x();
+	*y = p.y();
+}
+
+int bmx_qt_qcontextmenuevent_globalx(QContextMenuEvent * event) {
+	return event->globalX();
+}
+
+int bmx_qt_qcontextmenuevent_globaly(QContextMenuEvent * event) {
+	return event->globalY();
+}
+
+void bmx_qt_qcontextmenuevent_pos(QContextMenuEvent * event, int * x, int * y) {
+	QPoint p(event->pos());
+	*x = p.x();
+	*y = p.y();
+}
+
+int bmx_qt_qcontextmenuevent_reason(QContextMenuEvent * event) {
+	return event->reason();
+}
+
+int bmx_qt_qcontextmenuevent_x(QContextMenuEvent * event) {
+	return event->x();
+}
+
+int bmx_qt_qcontextmenuevent_y(QContextMenuEvent * event) {
+	return event->y();
+}
+
+
 
 
 // NOTES :
