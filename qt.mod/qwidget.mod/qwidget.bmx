@@ -1077,7 +1077,9 @@ Type QAction Extends QObject
 	
 	'method setShortcuts(QList<QKeySequence> & shortcuts)
 	
-	'method setShortcuts(QKeySequence::StandardKey key)
+	Method setShortcuts(key:Int)
+		bmx_qt_qaction_setshortcuts(qObjectPtr, key)
+	End Method
 	
 	Method setStatusTip(statusTip:String)
 		bmx_qt_qaction_setstatustip(qObjectPtr, statusTip)
@@ -1132,6 +1134,34 @@ Type QAction Extends QObject
 	Method setShortcut(sequence:String)
 		bmx_qt_qaction_setshortcut(qObjectPtr, sequence)
 	End Method
+
+	Method hover()
+		bmx_qt_qaction_hover(qObjectPtr)
+	End Method
+	
+	Method setChecked(value:Int)
+		bmx_qt_qaction_setchecked(qObjectPtr, value)
+	End Method
+	
+	Method setDisabled(value:Int)
+		bmx_qt_qaction_setdisabled(qObjectPtr, value)
+	End Method
+	
+	Method setEnabled(value:Int)
+		bmx_qt_qaction_setenabled(qObjectPtr, value)
+	End Method
+	
+	Method setVisible(value:Int)
+		bmx_qt_qaction_setvisible(qObjectPtr, value)
+	End Method
+	
+	Method toggle()
+		bmx_qt_qaction_toggle(qObjectPtr)
+	End Method
+	
+	Method trigger()
+		bmx_qt_qaction_trigger(qObjectPtr)
+	End Method
 	
 	' SIGNAL : changed
 	Function _OnChanged(obj:QAction)
@@ -1173,6 +1203,69 @@ Type QActionGroup Extends QObject
 			End If
 			Return widget
 		End If
+	End Function
+
+	Function CreateActionGroup:QActionGroup(parent:QObject)
+		Return New QActionGroup.Create(parent)
+	End Function
+	
+	Method Create:QActionGroup(parent:QObject)
+		qObjectPtr = bmx_qt_qactiongroup_create(Self, parent.qObjectPtr)
+		Return Self
+	End Method
+	
+	Method AddAction:QAction(action:QAction)
+		Return QAction._find(bmx_qt_qactiongroup_addaction(qObjectPtr, action.qObjectPtr))
+	End Method
+	
+	Method AddActionText:QAction(text:String)
+		Return QAction._find(bmx_qt_qactiongroup_addactiontext(qObjectPtr, text))
+	End Method
+	
+	Method checkedAction:QAction()
+		Return QAction._find(bmx_qt_qactiongroup_checkedaction(qObjectPtr))
+	End Method
+	
+	Method isEnabled:Int()
+		Return bmx_qt_qactiongroup_isenabled(qObjectPtr)
+	End Method
+	
+	Method isExclusive:Int()
+		Return bmx_qt_qactiongroup_isexclusive(qObjectPtr)
+	End Method
+	
+	Method isVisible:Int()
+		Return bmx_qt_qactiongroup_isvisible(qObjectPtr)
+	End Method
+	
+	Method removeAction(action:QAction)
+		bmx_qt_qactiongroup_removeaction(qObjectPtr, action.qObjectPtr)
+	End Method
+
+	Method setDisabled(value:Int)
+		bmx_qt_qactiongroup_setdisabled(qObjectPtr, value)
+	End Method
+	
+	Method setEnabled(value:Int)
+		bmx_qt_qactiongroup_setenabled(qObjectPtr, value)
+	End Method
+	
+	Method setExclusive(value:Int)
+		bmx_qt_qactiongroup_setexclusive(qObjectPtr, value)
+	End Method
+	
+	Method setVisible(value:Int)
+		bmx_qt_qactiongroup_setvisible(qObjectPtr, value)
+	End Method
+
+	' SIGNAL : hovered
+	Function _OnHovered(obj:QActionGroup, action:Byte Ptr)
+		obj._InvokeSignals("hovered", [QAction._find(action)])
+	End Function
+
+	' SIGNAL : triggered
+	Function _OnTriggered(obj:QActionGroup, action:Byte Ptr)
+		obj._InvokeSignals("triggered", [QAction._find(action)])
 	End Function
 
 End Type

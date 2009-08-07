@@ -37,7 +37,25 @@ extern "C" {
 	QBoxLayout * bmx_qt_qboxlayout_createlayout(BBObject * handle, int dir, QWidget * parent);
 	void bmx_qt_qboxlayout_addwidget(QBoxLayout * layout, QWidget * widget, int stretch, int alignment);
 	void bmx_qt_qboxlayout_addstretch(QBoxLayout * layout, int stretch);
+	void bmx_qt_qboxlayout_addlayout(QBoxLayout * layout, QLayout * lt, int stretch);
+	void bmx_qt_qboxlayout_addspaceritem(QBoxLayout * layout, QSpacerItem * spacerItem);
+	void bmx_qt_qboxlayout_addspacing(QBoxLayout * layout, int size);
+	void bmx_qt_qboxlayout_addstrut(QBoxLayout * layout, int size);
+	int bmx_qt_qboxlayout_direction(QBoxLayout * layout);
+	void bmx_qt_qboxlayout_insertlayout(QBoxLayout * layout, int index, QLayout * lt, int stretch);
+	void bmx_qt_qboxlayout_insertspaceritem(QBoxLayout * layout, int index, QSpacerItem * spacerItem);
+	void bmx_qt_qboxlayout_insertspacing(QBoxLayout * layout, int index, int size);
+	void bmx_qt_qboxlayout_insertstretch(QBoxLayout * layout, int index, int stretch);
+	void bmx_qt_qboxlayout_insertwidget(QBoxLayout * layout, int index, QWidget * widget, int stretch, int alignment);
+	void bmx_qt_qboxlayout_setdirection(QBoxLayout * layout, int direction);
+	void bmx_qt_qboxlayout_setspacing(QBoxLayout * layout, int spacing);
+	void bmx_qt_qboxlayout_setstretch(QBoxLayout * layout, int index, int stretch);
+	int bmx_qt_qboxlayout_setstretchfactor(QBoxLayout * layout, QLayout * widget, int stretch);
+	int bmx_qt_qboxlayout_setstretchfactorwidget(QBoxLayout * layout, QWidget * widget, int stretch);
+	int bmx_qt_qboxlayout_spacing(QBoxLayout * layout);
+	int bmx_qt_qboxlayout_stretch(QBoxLayout * layout, int index);
 
+	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

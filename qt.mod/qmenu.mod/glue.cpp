@@ -79,7 +79,7 @@ void MaxQMenu::onTriggered(QAction * action) {
 	_qt_qmenu_QMenu__OnTriggered(maxHandle, action);
 }
 
-void MaxQMenu::customContextMenuRequested(const QPoint & pos) {
+void MaxQMenu::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
@@ -89,6 +89,10 @@ void MaxQMenu::customContextMenuRequested(const QPoint & pos) {
 QMenu * bmx_qt_qmenu_create(BBObject * handle, QWidget * parent) {
 	MaxQMenu * menu = new MaxQMenu(handle, new QMenu(parent));
 	return menu->Menu();
+}
+
+void bmx_qt_qmenu_free(QMenu * menu) {
+	delete menu;
 }
 
 QAction * bmx_qt_qmenu_actionat(QMenu * m, int x, int y) {
@@ -153,7 +157,9 @@ QAction * bmx_qt_qmenu_exec(QMenu * m) {
 
 QAction * bmx_qt_qmenu_execaction(QMenu * m, int x, int y, QAction * a) {
 	QAction * action = m->exec(QPoint(x, y),a);
-	MaxQAction::link(action);
+	if (action) {
+		MaxQAction::link(action);
+	}
 	return action;
 }
 

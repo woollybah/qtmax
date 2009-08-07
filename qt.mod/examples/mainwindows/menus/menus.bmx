@@ -1,11 +1,12 @@
 SuperStrict
 
 Framework Qt.QApplication
-Import Qt.QWidget
+Import Qt.QMainWindow
 Import Qt.QMenu
 Import Qt.QLabel
+Import Qt.QVBoxLayout
 
-Local app:QApplication = New QApplication.Create()
+Global app:QApplication = New QApplication.Create()
 
 Local window:TWindow = New TWindow.Create()
 window.show()
@@ -14,7 +15,7 @@ app.exec()
 
 End
 
-Type TWindow Extends QWidget
+Type TWindow Extends QMainWindow
 
 	Field fileMenu:QMenu
 	Field editMenu:QMenu
@@ -43,34 +44,70 @@ Type TWindow Extends QWidget
 	Field aboutQtAct:QAction
 	Field infoLabel:QLabel
 	
-	Method Create:TWindow()
-		Return TWindow(Super._Create())
+	Method Create:TWindow(parent:QWidget = Null, flags:Int = 0)
+		Return TWindow(Super.Create(parent, flags))
 	End Method
 
 	Method OnInit()
+		Local widget:QWidget = New QWidget._Create()
+		setCentralWidget(widget)
+		
+		Local topFiller:QWidget = New QWidget._Create()
+		topFiller.setSizePolicyHV(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		
+		infoLabel = New QLabel.Create(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"))
+		infoLabel.setFrameStyle(QFrame.Shape_StyledPanel | QFrame.Shadow_Sunken)
+		infoLabel.setAlignment(Qt_AlignCenter)
+		
+		Local bottomFiller:QWidget = New QWidget._Create()
+		bottomFiller.setSizePolicyHV(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		
+		Local layout:QVBoxLayout = New QVBoxLayout.Create()
+		layout.addWidget(topFiller)
+		layout.addWidget(infoLabel)
+		layout.addWidget(bottomFiller)
+		widget.setLayout(layout)
+		
+		createActions()
+		createMenus()
+		
+		Local message:String = tr("A context menu is available by right-clicking")
+		statusBar().showMessage(message)
+		
+		setWindowTitle(tr("Menus"))
+		setMinimumSize(160, 160)
+		resize(480, 320)
 	End Method
 	
 	Method contextMenuEvent(event:QContextMenuEvent)
+		Local menu:QMenu = New QMenu.Create(Self)
+		menu.addAction(cutAct)
+		menu.addAction(copyAct)
+		menu.addAction(pasteAct)
+		Local x:Int, y:Int
+		event.globalPos(x, y)
+		menu.execAction(x, y)
+		menu.Free()
 	End Method
 
 	Method createActions()
 		newAct = New QAction.Create(tr("&New"), Self)
-		newAct.setShortcuts(QKeySequence::New)
+		newAct.setShortcuts(QKeySequence.Key_New)
 		newAct.setStatusTip(tr("Create a new file"))
 		connect(newAct, "triggered", Self, "newFile")
 		
 		openAct = New QAction.Create(tr("&Open..."), Self)
-		openAct.setShortcuts(QKeySequence::Open)
+		openAct.setShortcuts(QKeySequence.Key_Open)
 		openAct.setStatusTip(tr("Open an existing file"))
 		connect(openAct, "triggered", Self, "open")
 		
 		saveAct = New QAction.Create(tr("&Save"), Self)
-		saveAct.setShortcuts(QKeySequence::Save)
+		saveAct.setShortcuts(QKeySequence.Key_Save)
 		saveAct.setStatusTip(tr("Save the document to disk"))
 		connect(saveAct, "triggered", Self, "save")
 		
 		printAct = New QAction.Create(tr("&Print..."), Self)
-		printAct.setShortcuts(QKeySequence::Print)
+		printAct.setShortcuts(QKeySequence.Key_Print)
 		printAct.setStatusTip(tr("Print the document"))
 		connect(printAct, "triggered", Self, "print")
 		
@@ -80,17 +117,17 @@ Type TWindow Extends QWidget
 		connect(exitAct, "triggered", Self, "close")
 		
 		undoAct = New QAction.Create(tr("&Undo"), Self)
-		undoAct.setShortcuts(QKeySequence::Undo)
+		undoAct.setShortcuts(QKeySequence.Key_Undo)
 		undoAct.setStatusTip(tr("Undo the last operation"))
 		connect(undoAct, "triggered", Self, "undo")
 		
 		redoAct = New QAction.Create(tr("&Redo"), Self)
-		redoAct.setShortcuts(QKeySequence::Redo)
+		redoAct.setShortcuts(QKeySequence.Key_Redo)
 		redoAct.setStatusTip(tr("Redo the last operation"))
 		connect(redoAct, "triggered", Self, "redo")
 		
 		cutAct = New QAction.Create(tr("Cu&t"), Self)
-		cutAct.setShortcuts(QKeySequence::Cut)
+		cutAct.setShortcuts(QKeySequence.Key_Cut)
 		cutAct.setStatusTip(tr("Cut the current selection's contents to the clipboard"))
 		connect(cutAct, "triggered", Self, "cut")
 		
@@ -100,7 +137,7 @@ Type TWindow Extends QWidget
 		connect(copyAct, "triggered", Self, "copy")
 		
 		pasteAct = New QAction.Create(tr("&Paste"), Self)
-		pasteAct.setShortcuts(QKeySequence::Paste)
+		pasteAct.setShortcuts(QKeySequence.Key_Paste)
 		pasteAct.setStatusTip(tr("Paste the clipboard's contents into the current selection"))
 		connect(pasteAct, "triggered", Self, "paste")
 		
@@ -138,8 +175,8 @@ Type TWindow Extends QWidget
 		
 		aboutQtAct = New QAction.Create(tr("About &Qt"), Self)
 		aboutQtAct.setStatusTip(tr("Show the Qt library's About box"))
-		connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()))
-		connect(aboutQtAct, SIGNAL(triggered()), Self, SLOT(aboutQt()))
+		connect(aboutQtAct, "triggered", app, "aboutQt")
+		connect(aboutQtAct, "triggered", Self, "aboutQt")
 		
 		leftAlignAct = New QAction.Create(tr("&Left Align"), Self)
 		leftAlignAct.setCheckable(True)
@@ -209,60 +246,79 @@ Type TWindow Extends QWidget
 	End Method
 
 	Method newFile()
+		infoLabel.setText(tr("Invoked <b>File|New</b>"))
 	End Method
 	
 	Method open()
+		infoLabel.setText(tr("Invoked <b>File|Open</b>"))
 	End Method
 	
 	Method save()
+		infoLabel.setText(tr("Invoked <b>File|Save</b>"))
 	End Method
 	
 	Method Print()
+		infoLabel.setText(tr("Invoked <b>File|Print</b>"))
 	End Method
 	
 	Method undo()
+		infoLabel.setText(tr("Invoked <b>Edit|Undo</b>"))
 	End Method
 	
 	Method redo()
+		infoLabel.setText(tr("Invoked <b>Edit|Redo</b>"))
 	End Method
 	
 	Method cut()
+		infoLabel.setText(tr("Invoked <b>Edit|Cut</b>"))
 	End Method
 	
 	Method copy()
+		infoLabel.setText(tr("Invoked <b>Edit|Copy</b>"))
 	End Method
 	
 	Method paste()
+		infoLabel.setText(tr("Invoked <b>Edit|Paste</b>"))
 	End Method
 	
 	Method bold()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Bold</b>"))
 	End Method
 	
 	Method italic()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Italic</b>"))
 	End Method
 	
 	Method leftAlign()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Left Align</b>"))
 	End Method
 	
 	Method rightAlign()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Right Align</b>"))
 	End Method
 	
 	Method justify()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Justify</b>"))
 	End Method
 	
 	Method center()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Center</b>"))
 	End Method
 	
 	Method setLineSpacing()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Set Line Spacing</b>"))
 	End Method
 	
 	Method setParagraphSpacing()
+		infoLabel.setText(tr("Invoked <b>Edit|Format|Set Paragraph Spacing</b>"))
 	End Method
 	
 	Method about()
+		' TODO
 	End Method
 	
 	Method aboutQt()
+		infoLabel.setText(tr("Invoked <b>Help|About Qt</b>"))
 	End Method
 	
 End Type

@@ -20,24 +20,15 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCONTEXTMENUEVENT
-#define MAX_QT_QCONTEXTMENUEVENT
+#ifndef MAX_QT_ template
+#define MAX_QT_ template
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QContextMenuEvent>
 
 extern "C" {
 
 #include <blitz.h>
-
-	void bmx_qt_qcontextmenuevent_globalpos(QContextMenuEvent * event, int * x, int * y);
-	int bmx_qt_qcontextmenuevent_globalx(QContextMenuEvent * event);
-	int bmx_qt_qcontextmenuevent_globaly(QContextMenuEvent * event);
-	void bmx_qt_qcontextmenuevent_pos(QContextMenuEvent * event, int * x, int * y);
-	int bmx_qt_qcontextmenuevent_reason(QContextMenuEvent * event);
-	int bmx_qt_qcontextmenuevent_x(QContextMenuEvent * event);
-	int bmx_qt_qcontextmenuevent_y(QContextMenuEvent * event);
 
 
 }

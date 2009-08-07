@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Thu Aug 6 20:32:42 2009
+** Created: Fri Aug 7 22:48:24 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -117,6 +117,62 @@ int MaxQAction::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         default: ;
         }
         _id -= 4;
+    }
+    return _id;
+}
+static const uint qt_meta_data_MaxQActionGroup[] = {
+
+ // content:
+       2,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       2,   12, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+
+ // slots: signature, parameters, type, tag, flags
+      24,   17,   16,   16, 0x08,
+      44,   17,   16,   16, 0x08,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_MaxQActionGroup[] = {
+    "MaxQActionGroup\0\0action\0onHovered(QAction*)\0"
+    "onTriggered(QAction*)\0"
+};
+
+const QMetaObject MaxQActionGroup::staticMetaObject = {
+    { &QActionGroup::staticMetaObject, qt_meta_stringdata_MaxQActionGroup,
+      qt_meta_data_MaxQActionGroup, 0 }
+};
+
+const QMetaObject *MaxQActionGroup::metaObject() const
+{
+    return &staticMetaObject;
+}
+
+void *MaxQActionGroup::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQActionGroup))
+        return static_cast<void*>(const_cast< MaxQActionGroup*>(this));
+    return QActionGroup::qt_metacast(_clname);
+}
+
+int MaxQActionGroup::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QActionGroup::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: onHovered((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        case 1: onTriggered((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        default: ;
+        }
+        _id -= 2;
     }
     return _id;
 }

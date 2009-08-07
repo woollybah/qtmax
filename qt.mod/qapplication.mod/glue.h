@@ -42,6 +42,10 @@ extern "C" {
 
 	QApplication * bmx_qt_qapplication_create(BBObject * handle);
 	int bmx_qt_qapplication_exec();
+	void bmx_qt_qapplication_aboutqt(QApplication * app);
+	void bmx_qt_qapplication_closeallwindows(QApplication * app);
+	void bmx_qt_qapplication_setstylesheet(QApplication * app, BBString * sheet);
+
 
 }
 

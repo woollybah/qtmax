@@ -58,8 +58,11 @@ extern "C" {
 	BBString * bmx_qt_qabstractspinbox_text(QAbstractSpinBox * box);
 	int bmx_qt_qabstractspinbox_validate(QAbstractSpinBox * box, BBString * inp, int * pos);
 	int bmx_qt_qabstractspinbox_wrapping(QAbstractSpinBox * box);
+	void bmx_qt_qabstractspinbox_clear(QAbstractSpinBox * box);
+	void bmx_qt_qabstractspinbox_selectall(QAbstractSpinBox * box);
+	void bmx_qt_qabstractspinbox_stepdown(QAbstractSpinBox * box);
+	void bmx_qt_qabstractspinbox_stepup(QAbstractSpinBox * box);
 
-	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

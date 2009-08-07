@@ -70,5 +70,9 @@ Extern
 	Function bmx_qt_qabstractspinbox_text:String(handle:Byte Ptr)
 	Function bmx_qt_qabstractspinbox_validate:Int(handle:Byte Ptr, inp:String, pos:Int Ptr)
 	Function bmx_qt_qabstractspinbox_wrapping:Int(handle:Byte Ptr)
-	
+	Function bmx_qt_qabstractspinbox_clear(handle:Byte Ptr)
+	Function bmx_qt_qabstractspinbox_selectall(handle:Byte Ptr)
+	Function bmx_qt_qabstractspinbox_stepdown(handle:Byte Ptr)
+	Function bmx_qt_qabstractspinbox_stepup(handle:Byte Ptr)
+
 End Extern

@@ -30,13 +30,18 @@
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
+#include <QActionGroup>
 
 class MaxQWidget;
 class MaxQAction;
+class MaxQActionGroup;
 
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qwidget_QActionGroup__OnHovered(BBObject * handle, QAction * action);
+	void _qt_qwidget_QActionGroup__OnTriggered(BBObject * handle, QAction * action);
 
 	void _qt_qwidget_QWidget__OnCustomContextMenuRequested(BBObject * handle, int x, int y);
 	void _qt_qwidget_QWidget__OnPaintEvent(BBObject * handle, QPaintEvent * event, BBObject * painter);
@@ -160,7 +165,29 @@ extern "C" {
 	BBString * bmx_qt_qaction_text(QAction * action);
 	BBString * bmx_qt_qaction_tooltip(QAction * action);
 	BBString * bmx_qt_qaction_whatsthis(QAction * action);
-	
+	void bmx_qt_qaction_setshortcuts(QAction * action, int key);
+	void bmx_qt_qaction_hover(QAction * action);
+	void bmx_qt_qaction_setchecked(QAction * action, int value);
+	void bmx_qt_qaction_setdisabled(QAction * action, int value);
+	void bmx_qt_qaction_setenabled(QAction * action, int value);
+	void bmx_qt_qaction_setvisible(QAction * action, int value);
+	void bmx_qt_qaction_toggle(QAction * action);
+	void bmx_qt_qaction_trigger(QAction * action);
+
+
+	QActionGroup * bmx_qt_qactiongroup_create(BBObject * handle, QObject * parent);
+	QAction * bmx_qt_qactiongroup_addaction(QActionGroup * group, QAction * action);
+	QAction * bmx_qt_qactiongroup_addactiontext(QActionGroup * group, BBString * text);
+	QAction * bmx_qt_qactiongroup_checkedaction(QActionGroup * group);
+	int bmx_qt_qactiongroup_isenabled(QActionGroup * group);
+	int bmx_qt_qactiongroup_isexclusive(QActionGroup * group);
+	int bmx_qt_qactiongroup_isvisible(QActionGroup * group);
+	void bmx_qt_qactiongroup_removeaction(QActionGroup * group, QAction * action);
+	void bmx_qt_qactiongroup_setdisabled(QActionGroup * group, int value);
+	void bmx_qt_qactiongroup_setenabled(QActionGroup * group, int value);
+	void bmx_qt_qactiongroup_setexclusive(QActionGroup * group, int value);
+	void bmx_qt_qactiongroup_setvisible(QActionGroup * group, int value);
+
 	Qt::WidgetAttribute bmx_qt_inttowidgetattribute(int a);
 }
 
@@ -235,6 +262,24 @@ private slots:
 	void onToggled(bool checked);
 	void onTriggered(bool checked);
 
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQActionGroup : public QActionGroup
+{
+	Q_OBJECT
+	
+public:
+	MaxQActionGroup(BBObject * handle, QObject * parent);
+	~MaxQActionGroup();
+
+private:
+	BBObject * maxHandle;
+
+private slots:
+	void onHovered(QAction * action);
+	void onTriggered(QAction * action);
 };
 
 #endif
