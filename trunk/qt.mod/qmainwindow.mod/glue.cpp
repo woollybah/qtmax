@@ -49,6 +49,106 @@ void MaxQMainWindow::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQMainWindow::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMouseMoveEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMousePressEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__OnMouseReleaseEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::actionEvent(QActionEvent * event){
+	_qt_qwidget_QWidget__OnActionEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::changeEvent(QEvent * event){
+	_qt_qwidget_QWidget__OnChangeEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::closeEvent(QCloseEvent * event){
+	_qt_qwidget_QWidget__OnCloseEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::contextMenuEvent(QContextMenuEvent * event){
+	_qt_qwidget_QWidget__OnContextMenuEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::dragEnterEvent(QDragEnterEvent * event){
+	_qt_qwidget_QWidget__OnDragEnterEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::dragLeaveEvent(QDragLeaveEvent * event){
+	_qt_qwidget_QWidget__OnDragLeaveEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::dragMoveEvent(QDragMoveEvent * event){
+	_qt_qwidget_QWidget__OnDragMoveEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::dropEvent(QDropEvent * event){
+	_qt_qwidget_QWidget__OnDropEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::enterEvent(QEvent * event){
+	_qt_qwidget_QWidget__OnEnterEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::focusInEvent(QFocusEvent * event){
+	_qt_qwidget_QWidget__OnFocusInEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::focusOutEvent(QFocusEvent * event){
+	_qt_qwidget_QWidget__OnFocusOutEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::hideEvent(QHideEvent * event){
+	_qt_qwidget_QWidget__OnHideEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::inputMethodEvent(QInputMethodEvent * event){
+	_qt_qwidget_QWidget__OnInputMethodEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::keyPressEvent(QKeyEvent * event){
+	_qt_qwidget_QWidget__OnKeyPressEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::keyReleaseEvent(QKeyEvent * event){
+	_qt_qwidget_QWidget__OnKeyReleaseEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::leaveEvent(QEvent * event){
+	_qt_qwidget_QWidget__OnLeaveEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::moveEvent(QMoveEvent * event){
+	_qt_qwidget_QWidget__OnMoveEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::resizeEvent(QResizeEvent * event){
+	_qt_qwidget_QWidget__OnResizeEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::showEvent(QShowEvent * event){
+	_qt_qwidget_QWidget__OnShowEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::tabletEvent(QTabletEvent * event){
+	_qt_qwidget_QWidget__OnTabletEvent(maxHandle, event);
+}
+
+void MaxQMainWindow::wheelEvent(QWheelEvent * event){
+	_qt_qwidget_QWidget__OnWheelEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QMainWindow * bmx_qt_qmainwindow_create(BBObject * handle, QWidget * parent, int flags) {
