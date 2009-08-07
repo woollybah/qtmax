@@ -241,4 +241,14 @@ Type QMainWindow Extends QWidget
 		bmx_qt_qmainwindow_setdocknestingenabled(qObjectPtr, enabled)
 	End Method
 
+	' SIGNAL : iconSizeChanged
+	Function _OnIconSizeChanged(obj:QMainWindow, width:Int, height:Int)
+		obj._InvokeSignals("iconSizeChanged", [String(width), String(height)])
+	End Function
+
+	' SIGNAL : toolButtonStyleChanged
+	Function _OnToolButtonStyleChanged(obj:QMainWindow, style:Int)
+		obj._InvokeSignals("toolButtonStyleChanged", [String(style)])
+	End Function
+
 End Type

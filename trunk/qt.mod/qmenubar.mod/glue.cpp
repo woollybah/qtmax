@@ -59,14 +59,16 @@ QAction * bmx_qt_qmenubar_adactiontxt(QMenuBar * mb, BBString *a) {
 	return action;
 }
 
-QMenu * bmx_qt_qmenubar_addmenu(QMenuBar * mb, QMenu * menu) {
-	mb->addMenu(menu);
+QAction * bmx_qt_qmenubar_addmenu(QMenuBar * mb, QMenu * menu) {
+	QAction * action = mb->addMenu(menu);
+	MaxQAction::link(action);
+	return action;
 }
 
-QMenu * bmx_qt_qmenubar_addmenutxt(QMenuBar * mb, BBString * menu) {
-	MaxQMenu *m = new MaxQMenu(qStringFromBBString(menu), mb);
-	mb->addAction(m->menuAction());
-	return m;
+QMenu * bmx_qt_qmenubar_addmenutxt(QMenuBar * mb, BBString * m) {
+	QMenu * menu = mb->addMenu(qStringFromBBString(m));
+	MaxQMenu::link(menu);
+	return menu;
 }
 
 QAction * bmx_qt_qmenubar_addseparator(QMenuBar * mb) {

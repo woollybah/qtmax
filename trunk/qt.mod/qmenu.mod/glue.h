@@ -35,6 +35,10 @@ extern "C" {
 #include <blitz.h>
 
 	BBObject * _qt_qmenu_QMenu___create(QMenu * menu);
+	void _qt_qmenu_QMenu__OnAboutToHide(BBObject * handle);
+	void _qt_qmenu_QMenu__OnAboutToShow(BBObject * handle);
+	void _qt_qmenu_QMenu__OnHovered(BBObject * handle, QAction * action);
+	void _qt_qmenu_QMenu__OnTriggered(BBObject * handle, QAction * action);
 
 	QMenu * bmx_qt_qmenu_create(BBObject * handle, QWidget * parent);
 
@@ -71,18 +75,22 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQMenu : public QMenu
+class MaxQMenu : public MaxQObjectWrapper
 {
 	Q_OBJECT
 
 public:
-	MaxQMenu(BBObject * handle, QWidget * parent);
-	MaxQMenu(BBObject * handle, const QString & text, QWidget * parent);
-	MaxQMenu(const QString & text, QWidget * parent);
+	MaxQMenu(BBObject * handle, QMenu * m);
+	MaxQMenu(QMenu * m);
 	~MaxQMenu();
 
+	QMenu * Menu();
+	
+	static void link(QMenu * m);
+
 private:
-	BBObject * maxHandle;
+	void doConnections();
+	QMenu * menu;
 	
 private slots:
 	void onAboutToHide();

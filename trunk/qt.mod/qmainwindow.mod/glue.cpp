@@ -28,6 +28,8 @@ MaxQMainWindow::MaxQMainWindow(BBObject * handle, QWidget * parent, Qt::WindowFl
 	: maxHandle(handle), QMainWindow(parent, flags)
 {
 	qbind(this, handle);
+
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint & )), SLOT(onCustomContextMenuRequested(const QPoint & )));
 }
 
 MaxQMainWindow::~MaxQMainWindow()
@@ -35,6 +37,17 @@ MaxQMainWindow::~MaxQMainWindow()
 	qunbind(this);
 }
 
+void MaxQMainWindow::onIconSizeChanged(const QSize & iconSize) {
+	_qt_qmainwindow_QMainWindow__OnIconSizeChanged(maxHandle, iconSize.width(), iconSize.height());
+}
+
+void MaxQMainWindow::onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle) {
+	_qt_qmainwindow_QMainWindow__OnToolButtonStyleChanged(maxHandle, toolButtonStyle);
+}
+
+void MaxQMainWindow::onCustomContextMenuRequested(const QPoint & pos) {
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
+}
 
 // *********************************************
 

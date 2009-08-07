@@ -39,7 +39,7 @@ extern "C" {
 	QAction * bmx_qt_qmenubar_activeaction(QMenuBar * mb);
 	QAction * bmx_qt_qmenubar_adaction(QMenuBar * mb, QAction * action);
 	QAction * bmx_qt_qmenubar_adactiontxt(QMenuBar * mb, BBString *action);
-	QMenu * bmx_qt_qmenubar_addmenu(QMenuBar * mb, QMenu * menu);
+	QAction * bmx_qt_qmenubar_addmenu(QMenuBar * mb, QMenu * menu);
 	QMenu * bmx_qt_qmenubar_addmenutxt(QMenuBar * mb, BBString * menu);
 	QAction * bmx_qt_qmenubar_addseparator(QMenuBar * mb);
 	void bmx_qt_qmenubar_clear(QMenuBar * mb);

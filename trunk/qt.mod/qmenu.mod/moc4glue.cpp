@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Thu Aug 6 20:32:41 2009
+** Created: Fri 7. Aug 11:40:12 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -46,7 +46,7 @@ static const char qt_meta_stringdata_MaxQMenu[] = {
 };
 
 const QMetaObject MaxQMenu::staticMetaObject = {
-    { &QMenu::staticMetaObject, qt_meta_stringdata_MaxQMenu,
+    { &MaxQObjectWrapper::staticMetaObject, qt_meta_stringdata_MaxQMenu,
       qt_meta_data_MaxQMenu, 0 }
 };
 
@@ -60,12 +60,12 @@ void *MaxQMenu::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_MaxQMenu))
         return static_cast<void*>(const_cast< MaxQMenu*>(this));
-    return QMenu::qt_metacast(_clname);
+    return MaxQObjectWrapper::qt_metacast(_clname);
 }
 
 int MaxQMenu::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QMenu::qt_metacall(_c, _id, _a);
+    _id = MaxQObjectWrapper::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
