@@ -24,55 +24,60 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQMenu::MaxQMenu(BBObject * handle, const QString & text, QWidget * parent)
-	: maxHandle(handle), QMenu(text, parent)
+MaxQMenu::MaxQMenu(BBObject * handle, QMenu * m)
+	: menu(m), MaxQObjectWrapper(handle, m)
 {
-	qbind(this, handle);
-}
-
-MaxQMenu::MaxQMenu(BBObject * handle, QWidget * parent)
-	: maxHandle(handle), QMenu(parent)
-{
-	qbind(this, handle);
-}
-
-MaxQMenu::MaxQMenu(const QString & text, QWidget * parent)
-	: QMenu(text, parent)
-{
-	maxHandle = _qt_qmenu_QMenu___create(this);
-	qbind(this, maxHandle);
+	doConnections();
 }
 
 MaxQMenu::~MaxQMenu()
 {
-	qunbind(this);
 }
 
-void MaxQMenu::onAboutToHide() {
+MaxQMenu::MaxQMenu(QMenu * m)
+	: menu(m), MaxQObjectWrapper(m)
+{
+	maxHandle = _qt_qmenu_QMenu___create(m);
+	qbind(m, maxHandle);
 
+	doConnections();
+}
+
+void MaxQMenu::doConnections() {
+	connect(menu, SIGNAL(aboutToHide()), SLOT(onAboutToHide()));
+	connect(menu, SIGNAL(aboutToShow()), SLOT(onAboutToShow()));
+	connect(menu, SIGNAL(hovered(QAction *)), SLOT(onHovered(QAction *)));
+	connect(menu, SIGNAL(triggered(QAction *)), SLOT(onTriggered(QAction *)));
+	connect(menu, SIGNAL(customContextMenuRequested(const QPoint & )), SLOT(onCustomContextMenuRequested(const QPoint & )));
+}
+
+
+void MaxQMenu::onAboutToHide() {
+	_qt_qmenu_QMenu__OnAboutToHide(maxHandle);
 }
 
 void MaxQMenu::onAboutToShow() {
-
+	_qt_qmenu_QMenu__OnAboutToShow(maxHandle);
 }
 
 void MaxQMenu::onHovered(QAction * action) {
-
+	_qt_qmenu_QMenu__OnHovered(maxHandle, action);
 }
 
 void MaxQMenu::onTriggered(QAction * action) {
-
+	_qt_qmenu_QMenu__OnTriggered(maxHandle, action);
 }
 
 void MaxQMenu::customContextMenuRequested(const QPoint & pos) {
-
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
 
 // *********************************************
 
 QMenu * bmx_qt_qmenu_create(BBObject * handle, QWidget * parent) {
-	return new MaxQMenu(handle, parent);
+	MaxQMenu * menu = new MaxQMenu(handle, new QMenu(parent));
+	return menu->Menu();
 }
 
 QAction * bmx_qt_qmenu_actionat(QMenu * m, int x, int y) {
@@ -108,8 +113,8 @@ QAction * bmx_qt_qmenu_addmenuaction(QMenu * m, QMenu * menu) {
 }
 
 QMenu * bmx_qt_qmenu_addmenu(QMenu * m, BBString * title) {
-	MaxQMenu * menu = new MaxQMenu(qStringFromBBString(title), m);
-	m->addMenu(menu);
+	QMenu * menu = m->addMenu(qStringFromBBString(title));
+	MaxQMenu::link(menu);
 	return menu;
 }
 

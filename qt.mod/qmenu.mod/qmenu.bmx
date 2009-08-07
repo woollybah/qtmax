@@ -216,6 +216,27 @@ Type QMenu Extends QWidget
 	Function setMenuForAction(action:QAction, menu:QMenu)
 		bmx_qt_qaction_setmenu(action.qObjectPtr, menu.qObjectPtr)
 	End Function
-	
+
+
+	' SIGNAL : aboutToHide
+	Function _OnAboutToHide(obj:QMenu)
+		obj._InvokeSignals("aboutToHide", Null)
+	End Function
+
+	' SIGNAL : aboutToShow
+	Function _OnAboutToShow(obj:QMenu)
+		obj._InvokeSignals("aboutToShow", Null)
+	End Function
+
+	' SIGNAL : hovered
+	Function _OnHovered(obj:QMenu, action:Byte Ptr)
+		obj._InvokeSignals("hovered", [QAction._find(action)])
+	End Function
+
+	' SIGNAL : triggered
+	Function _OnTriggered(obj:QMenu, action:Byte Ptr)
+		obj._InvokeSignals("triggered", [QAction._find(action)])
+	End Function
+
 End Type
 

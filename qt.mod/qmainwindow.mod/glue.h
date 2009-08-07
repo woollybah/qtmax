@@ -24,6 +24,7 @@
 #define MAX_QT_QMAINWINDOW
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include "../qtoolbar.mod/glue.h"
 #include <QtCore>
 #include <QMainWindow>
@@ -33,6 +34,9 @@ class MaxQMainWindow;
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qmainwindow_QMainWindow__OnIconSizeChanged(BBObject * handle, int width, int height);
+	void _qt_qmainwindow_QMainWindow__OnToolButtonStyleChanged(BBObject * handle, int style);
 
 	QMainWindow * bmx_qt_qmainwindow_create(BBObject * handle, QWidget * parent, int flags);
 
@@ -89,12 +93,19 @@ extern "C" {
 
 class MaxQMainWindow : public QMainWindow
 {
+	Q_OBJECT
+	
 public:
 	MaxQMainWindow(BBObject * handle, QWidget * parent, Qt::WindowFlags flags);
 	~MaxQMainWindow();
 
 private:
 	BBObject * maxHandle;
+	
+private slots:
+	void onIconSizeChanged(const QSize & iconSize);
+	void onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle);
+	void onCustomContextMenuRequested(const QPoint & pos);
 };
 
 #endif
