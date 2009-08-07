@@ -51,6 +51,17 @@ void MaxQMenu::doConnections() {
 	connect(menu, SIGNAL(customContextMenuRequested(const QPoint & )), SLOT(onCustomContextMenuRequested(const QPoint & )));
 }
 
+QMenu * MaxQMenu::Menu() {
+	return menu;
+}
+
+void MaxQMenu::link(QMenu * m) {
+	BBObject * handle = qfind(m);
+	
+	if (handle == &bbNullObject) {
+		MaxQMenu * menu = new MaxQMenu(m);
+	}
+}
 
 void MaxQMenu::onAboutToHide() {
 	_qt_qmenu_QMenu__OnAboutToHide(maxHandle);

@@ -31,6 +31,7 @@ MaxQLabel::MaxQLabel(BBObject * handle, const QString & text, QWidget * parent, 
 	
 	connect(this, SIGNAL(linkActivated(const QString & )), SLOT(onLinkActivated(const QString & )));
 	connect(this, SIGNAL(linkHovered(const QString & )), SLOT(onLinkHovered(const QString & )));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint & )), SLOT(onCustomContextMenuRequested(const QPoint & )));
 }
 
 MaxQLabel::~MaxQLabel()
