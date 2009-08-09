@@ -24,23 +24,47 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQToolBar::MaxQToolBar(BBObject * handle, QWidget * parent)
-	: maxHandle(handle), QToolBar(parent)
+MaxQToolBar::MaxQToolBar(BBObject * handle, QToolBar * tb)
+	: toolBar(tb), MaxQObjectWrapper(handle, tb)
 {
-	qbind(this, handle);
+	doConnections();
 }
 
-MaxQToolBar::MaxQToolBar(QWidget * parent)
-	: QToolBar(parent)
+MaxQToolBar::MaxQToolBar(QToolBar * tb)
+	: toolBar(tb), MaxQObjectWrapper(tb)
 {
-	maxHandle = _qt_qtoolbar_QToolBar___create(this);
-	qbind(this, maxHandle);
+	maxHandle = _qt_qtoolbar_QToolBar___create(tb);
+	qbind(tb, maxHandle);
+
+	doConnections();
 }
 
 MaxQToolBar::~MaxQToolBar()
 {
-	qunbind(this);
 }
+
+void MaxQToolBar::doConnections() {
+	connect(toolBar, SIGNAL(actionTriggered(QAction *)), SLOT(onActionTriggered(QAction *)));
+	connect(toolBar, SIGNAL(allowedAreasChanged(Qt::ToolBarAreas)), SLOT(onAllowedAreasChanged(Qt::ToolBarAreas)));
+	connect(toolBar, SIGNAL(iconSizeChanged(const QSize &)), SLOT(onIconSizeChanged(const QSize &)));
+	connect(toolBar, SIGNAL(movableChanged(bool)), SLOT(onMovableChanged(bool)));
+	connect(toolBar, SIGNAL(orientationChanged(Qt::Orientation)), SLOT(onOrientationChanged(Qt::Orientation)));
+	connect(toolBar, SIGNAL(toolButtonStyleChanged(Qt::ToolButtonStyle)), SLOT(onToolButtonStyleChanged(Qt::ToolButtonStyle)));
+	connect(toolBar, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
+}
+
+QToolBar * MaxQToolBar::ToolBar() {
+	return toolBar;
+}
+
+void MaxQToolBar::link(QToolBar * tb) {
+	BBObject * handle = qfind(tb);
+	
+	if (handle == &bbNullObject) {
+		MaxQToolBar * toolbar = new MaxQToolBar(tb);
+	}
+}
+
 
 void MaxQToolBar::onActionTriggered(QAction * action) {
 
@@ -74,7 +98,8 @@ void MaxQToolBar::onCustomContextMenuRequested(const QPoint & pos) {
 // *********************************************
 
 QToolBar * bmx_qt_qtoolbar_create(BBObject * handle, QWidget * parent) {
-	return new MaxQToolBar(handle, parent);
+	MaxQToolBar * tb = new MaxQToolBar(handle, new QToolBar(parent));
+	return tb->ToolBar();
 }
 
 void bmx_qt_qtoolbar_addwidget(QToolBar * tb, QWidget * widget) {

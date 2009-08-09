@@ -113,6 +113,7 @@ static PeerMap peerMap;
 
 void qbind( QObject *obj, BBObject *peer ) {
 	if( !obj || peer==&bbNullObject ) return;
+//printf("qbind(%s)\n", obj->metaObject()->className());fflush(stdout);
 	peerMap.insert( std::make_pair( obj,peer ) );
 	BBRETAIN( peer );
 }
@@ -125,6 +126,7 @@ BBObject *qfind( QObject *obj ){
 }
 
 void qunbind(QObject *obj) {
+//printf("qunbind(%s)\n", obj->metaObject()->className());fflush(stdout);
 	BBObject * peer = qfind(obj);
 	if (peer != &bbNullObject) {
 		peerMap.erase(obj);

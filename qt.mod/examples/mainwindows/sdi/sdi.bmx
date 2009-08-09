@@ -7,6 +7,8 @@ Import Qt.QLabel
 Import Qt.QVBoxLayout
 Import Qt.QTextEdit
 Import Qt.QMessageBox
+Import Qt.QFile
+Import Qt.QTextStream
 Import BRL.RamStream
 Import BRL.PngLoader
 
@@ -199,6 +201,21 @@ Type TWindow Extends QMainWindow
 	End Method
 	
 	Method loadFile(fileName:String)
+		Local file:QFile = New QFile.Create(fileName)
+		If Not file.open(QFile.ReadOnly | QFile.Text) Then
+			QMessageBox.warning(Self, tr("SDI"), tr("Cannot read file " + fileName + ":~n" + file.errorString() + "."))
+			Return
+		End If
+		
+		Local in:QTextStream = New QTextStream.Create(file)
+		'QApplication.setOverrideCursor(Qt_WaitCursor)
+		textEdit.setPlainText(in.readAll())
+		'QApplication.restoreOverrideCursor()
+		
+		setCurrentFile(fileName)
+		statusBar().showMessage(tr("File loaded"), 2000)
+		
+		file.Free()
 	End Method
 	
 	Method saveFile:Int(fileName:String)

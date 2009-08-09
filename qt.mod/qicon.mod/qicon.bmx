@@ -34,6 +34,14 @@ Type QIcon
 
 	Field qObjectPtr:Byte Ptr
 	
+	Function _create:QIcon(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QIcon = New QIcon
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
 	Method Create:QIcon(icon:Object)
 		If String(icon) Then
 			Local str:String = String(icon)
@@ -73,5 +81,16 @@ Type QIcon
 		Return Self
 	End Method
 
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qicon_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
 End Type
 

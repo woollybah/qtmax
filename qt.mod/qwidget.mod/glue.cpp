@@ -421,6 +421,58 @@ void bmx_qt_qwidget_setfont(QWidget * widget, MaxQFont * font) {
 	widget->setFont(font->Font());
 }
 
+QWidget * bmx_qt_qwidget_window(QWidget * widget) {
+	return widget->window();
+}
+
+BBString * bmx_qt_qwidget_windowfilepath(QWidget * widget) {
+	return bbStringFromQString(widget->windowFilePath());
+}
+
+int bmx_qt_qwidget_windowflags(QWidget * widget) {
+	return widget->windowFlags();
+}
+
+MaxQIcon * bmx_qt_qwidget_windowicon(QWidget * widget) {
+	return new MaxQIcon(widget->windowIcon());
+}
+
+BBString * bmx_qt_qwidget_windowicontext(QWidget * widget) {
+	return bbStringFromQString(widget->windowIconText());
+}
+
+int bmx_qt_qwidget_windowmodality(QWidget * widget) {
+	return widget->windowModality();
+}
+
+double bmx_qt_qwidget_windowopacity(QWidget * widget) {
+	return widget->windowOpacity();
+}
+
+BBString * bmx_qt_qwidget_windowrole(QWidget * widget) {
+	return bbStringFromQString(widget->windowRole());
+}
+
+int bmx_qt_qwidget_windowstate(QWidget * widget) {
+	return widget->windowState();
+}
+
+BBString * bmx_qt_qwidget_windowtitle(QWidget * widget) {
+	return bbStringFromQString(widget->windowTitle());
+}
+
+int bmx_qt_qwidget_windowtype(QWidget * widget) {
+	return widget->windowType();
+}
+
+int bmx_qt_qwidget_x(QWidget * widget) {
+	return widget->x();
+}
+
+int bmx_qt_qwidget_y(QWidget * widget) {
+	return widget->y();
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {

@@ -491,39 +491,39 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method window:QWidget()
-	' TODO
+		Return QWidget._find(bmx_qt_qwidget_window(qObjectPtr))
 	End Method
 	
 	Method windowFilePath:String()
-	' TODO
+		Return bmx_qt_qwidget_windowfilepath(qObjectPtr)
 	End Method
 	
 	Method windowFlags:Int()
-	' TODO
+		Return bmx_qt_qwidget_windowflags(qObjectPtr)
 	End Method
 	
 	Method windowIcon:QIcon()
-	' TODO
+		Return QIcon._create(bmx_qt_qwidget_windowicon(qObjectPtr))
 	End Method
 	
 	Method windowIconText:String()
-	' TODO
+		Return bmx_qt_qwidget_windowicontext(qObjectPtr)
 	End Method
 	
 	Method windowModality:Int()
-	' TODO
+		Return bmx_qt_qwidget_windowmodality(qObjectPtr)
 	End Method
 	
 	Method windowOpacity:Double()
-	' TODO
+		Return bmx_qt_qwidget_windowopacity(qObjectPtr)
 	End Method
 	
 	Method windowRole:String()
-	' TODO
+		Return bmx_qt_qwidget_windowrole(qObjectPtr)
 	End Method
 	
 	Method windowState:Int()
-	' TODO
+		Return bmx_qt_qwidget_windowstate(qObjectPtr)
 	End Method
 	
 	'Method windowSurface:QWindowSurface()
@@ -531,19 +531,19 @@ Type QWidget Extends QObject
 	'End Method
 	
 	Method windowTitle:String()
-	' TODO
+		Return bmx_qt_qwidget_windowtitle(qObjectPtr)
 	End Method
 	
 	Method windowType:Int()
-	' TODO
+		Return bmx_qt_qwidget_windowtype(qObjectPtr)
 	End Method
 	
 	Method x:Int()
-	' TODO
+		Return bmx_qt_qwidget_x(qObjectPtr)
 	End Method
 	
 	Method y:Int()
-	' TODO
+		Return bmx_qt_qwidget_y(qObjectPtr)
 	End Method
 	
 

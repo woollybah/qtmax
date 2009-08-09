@@ -20,34 +20,42 @@
 ' 
 SuperStrict
 
-Import Qt.Core
-Import Qt.QPixmap
-Import BRL.Blitz
+Module Qt.QTextStream
 
-' headers :-)
-?win32
-Import "../lib/win32/include/*.h"
-?macos
-Import "../lib/macos/include/*.h"
-?Not linux
-Import "../src/include/*.h"
-Import "../src/include/Qt/*.h"
-Import "../src/include/QtCore/*.h"
-Import "../src/include/QtGui/*.h"
-?linux
-Import "/usr/include/qt4/*.h"
-Import "/usr/include/qt4/Qt/*.h"
-Import "/usr/include/qt4/QtCore/*.h"
-Import "/usr/include/qt4/QtGui/*.h"
-?
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
-Import "glue.cpp"
 
-Extern
+Import "common.bmx"
 
-	Function bmx_qt_qicon_free(handle:Byte Ptr)
-	Function bmx_qt_qicon_createwithpixmap:Byte Ptr(pix:Byte Ptr)
-	Function bmx_qt_qicon_createempty:Byte Ptr()
-	Function bmx_qt_qicon_createwithfile:Byte Ptr(filename:String)
+Type QTextStream
 
-End Extern
+	Field qObjectPtr:Byte Ptr
+	
+	Function CreateTextStream:QTextStream(device:QIODevice)
+		Return New QTextStream.Create(device)
+	End Function
+	
+	Method Create:QTextStream(device:QIODevice)
+		qObjectPtr = bmx_qt_qtextstream_create(device.qObjectPtr)
+		Return Self
+	End Method
+
+	Method readAll:String()
+		Return bmx_qt_qtextstream_readall(qObjectPtr)
+	End Method
+	
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qtextstream_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+
+End Type

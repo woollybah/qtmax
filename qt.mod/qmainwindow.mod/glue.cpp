@@ -169,9 +169,8 @@ QToolBar * bmx_qt_qmainwindow_addtoolbar(QMainWindow * window, QToolBar * toolba
 }
 
 QToolBar * bmx_qt_qmainwindow_addtoolbartxt(QMainWindow * window, BBString * title) {
-	QToolBar *toolBar = new MaxQToolBar(window);
-	toolBar->setWindowTitle(qStringFromBBString(title));
-	window->addToolBar(toolBar);
+	QToolBar *toolBar = window->addToolBar(qStringFromBBString(title));
+	MaxQToolBar::link(toolBar);
 	return toolBar;
 }
 

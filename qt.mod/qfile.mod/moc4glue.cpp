@@ -17,62 +17,64 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQDoubleSpinBox[] = {
+static const uint qt_meta_data_MaxQFile[] = {
 
  // content:
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       4,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // slots: signature, parameters, type, tag, flags
-      25,   19,   18,   18, 0x08,
-      48,   18,   18,   18, 0x08,
-      72,   68,   18,   18, 0x08,
+      10,    9,    9,    9, 0x08,
+      33,   27,    9,    9, 0x08,
+      56,    9,    9,    9, 0x08,
+      80,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQDoubleSpinBox[] = {
-    "MaxQDoubleSpinBox\0\0value\0"
-    "onValueChanged(double)\0onEditingFinished()\0"
-    "pos\0onCustomContextMenuRequested(QPoint)\0"
+static const char qt_meta_stringdata_MaxQFile[] = {
+    "MaxQFile\0\0onAboutToClose()\0bytes\0"
+    "onBytesWritten(qint64)\0onReadChannelFinished()\0"
+    "onReadyRead()\0"
 };
 
-const QMetaObject MaxQDoubleSpinBox::staticMetaObject = {
-    { &QDoubleSpinBox::staticMetaObject, qt_meta_stringdata_MaxQDoubleSpinBox,
-      qt_meta_data_MaxQDoubleSpinBox, 0 }
+const QMetaObject MaxQFile::staticMetaObject = {
+    { &MaxQObjectWrapper::staticMetaObject, qt_meta_stringdata_MaxQFile,
+      qt_meta_data_MaxQFile, 0 }
 };
 
-const QMetaObject *MaxQDoubleSpinBox::metaObject() const
+const QMetaObject *MaxQFile::metaObject() const
 {
     return &staticMetaObject;
 }
 
-void *MaxQDoubleSpinBox::qt_metacast(const char *_clname)
+void *MaxQFile::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQDoubleSpinBox))
-        return static_cast<void*>(const_cast< MaxQDoubleSpinBox*>(this));
-    return QDoubleSpinBox::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQFile))
+        return static_cast<void*>(const_cast< MaxQFile*>(this));
+    return MaxQObjectWrapper::qt_metacast(_clname);
 }
 
-int MaxQDoubleSpinBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQFile::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QDoubleSpinBox::qt_metacall(_c, _id, _a);
+    _id = MaxQObjectWrapper::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 1: onEditingFinished(); break;
-        case 2: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 0: onAboutToClose(); break;
+        case 1: onBytesWritten((*reinterpret_cast< qint64(*)>(_a[1]))); break;
+        case 2: onReadChannelFinished(); break;
+        case 3: onReadyRead(); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }
