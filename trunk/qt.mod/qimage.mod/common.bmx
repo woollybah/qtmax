@@ -23,7 +23,7 @@ SuperStrict
 Import Qt.Core
 Import Qt.QPaintDevice
 Import BRL.Blitz
-
+Import BRL.Pixmap
 
 ' headers :-)
 ?win32
@@ -45,5 +45,9 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qimage_createwithdata:Byte Ptr(data:Byte Ptr, width:Int, height:Int, bytesPerLine:Int, format:Int)
+	Function bmx_qt_qimage_free(handle:Byte Ptr)
+
 
 End Extern

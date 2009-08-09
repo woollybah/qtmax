@@ -26,6 +26,7 @@
 #include "../core.mod/glue.h"
 #include "../qcolor.mod/glue.h"
 #include "../qfont.mod/glue.h"
+#include "../qtextdocument.mod/glue.h"
 #include <QtCore>
 #include <QTextEdit>
 
@@ -66,6 +67,7 @@ extern "C" {
 
 	BBString * bmx_qt_qtextedit_tohtml(QTextEdit * edit);
 	BBString * bmx_qt_qtextedit_toplaintext(QTextEdit * edit);
+	QTextDocument * bmx_qt_qtextedit_document(QTextEdit * edit);
 
 }
 

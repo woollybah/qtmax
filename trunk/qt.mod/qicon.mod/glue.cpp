@@ -24,10 +24,42 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQIcon::MaxQIcon()
+	: icon()
+{
+}
+
+MaxQIcon::MaxQIcon(const QIcon & i)
+	: icon(i)
+{
+}
+
+MaxQIcon::~MaxQIcon()
+{
+}
+
+QIcon & MaxQIcon::Icon() {
+	return icon;
+}
 
 
 // *********************************************
 
+MaxQIcon * bmx_qt_qicon_createwithpixmap(MaxQPixmap * pix) {
+	QIcon icon(pix->Pixmap());
+	return new MaxQIcon(icon);
+}
+
+MaxQIcon * bmx_qt_qicon_createempty() {
+	QIcon icon;
+	return new MaxQIcon(icon);
+
+}
+
+MaxQIcon * bmx_qt_qicon_createwithfile(BBString * filename) {
+	QIcon icon(qStringFromBBString(filename));
+	return new MaxQIcon(icon);
+}
 
 
 // NOTES :

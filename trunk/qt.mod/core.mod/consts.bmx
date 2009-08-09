@@ -365,3 +365,48 @@ Rem
 bbdoc: the widget does not accept focus.
 end rem
 Const Qt_NoFocus:Int = 0
+
+Rem
+bbdoc: (default) - If the image has depth 1 and contains only black and white pixels, the pixmap becomes monochrome.
+end rem
+Const Qt_AutoColor:Int = $00000000
+Rem
+bbdoc: The pixmap is dithered/converted to the native display depth.
+end rem
+Const Qt_ColorOnly:Int = $00000003
+Rem
+bbdoc: The pixmap becomes monochrome. If necessary, it is dithered using the chosen dithering algorithm.
+end rem
+Const Qt_MonoOnly:Int = $00000002
+Rem
+bbdoc: (default) - A high-quality dither.
+end rem
+Const Qt_DiffuseDither:Int = $00000000
+Rem
+bbdoc: A faster, more ordered dither.
+end rem
+Const Qt_OrderedDither:Int = $00000010
+Rem
+bbdoc: No dithering; closest color is used.
+end rem
+Const Qt_ThresholdDither:Int = $00000020
+Rem
+bbdoc: (default) - No dithering.
+end rem
+Const Qt_ThresholdAlphaDither:Int = $00000000
+Rem
+bbdoc: A faster, more ordered dither.
+end rem
+Const Qt_OrderedAlphaDither:Int = $00000004
+Rem
+bbdoc: A high-quality dither.
+end rem
+Const Qt_DiffuseAlphaDither:Int = $00000008
+Rem
+bbdoc: (default when converting to a pixmap) - Always dither 32-bit images when the image is converted to 8 bits.
+end rem
+Const Qt_PreferDither:Int = $00000040
+Rem
+bbdoc: (default when converting for the purpose of saving to file) - Dither 32-bit images only if the image has more than 256 colors and it is being converted to 8 bits.
+end rem
+Const Qt_AvoidDither:Int = $00000080

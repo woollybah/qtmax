@@ -24,16 +24,35 @@
 #define MAX_QT_QICON
 
 #include "../core.mod/glue.h"
+#include "../qpixmap.mod/glue.h"
 #include <QtCore>
+#include <QIcon>
+
+class MaxQIcon;
 
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQIcon * bmx_qt_qicon_createwithpixmap(MaxQPixmap * pix);
+	MaxQIcon * bmx_qt_qicon_createempty();
+	MaxQIcon * bmx_qt_qicon_createwithfile(BBString * filename);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQIcon
+{
+public:
+	MaxQIcon();
+	MaxQIcon(const QIcon & i);
+	~MaxQIcon();
+	
+	QIcon & Icon();
+
+private:
+	QIcon icon;
+};
 
 #endif

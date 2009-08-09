@@ -24,6 +24,7 @@ Import Qt.Core
 Import Qt.QCoreApplication
 Import Qt.QPainter
 Import Qt.QSessionManager
+Import Qt.QWidget
 Import BRL.Blitz
 
 

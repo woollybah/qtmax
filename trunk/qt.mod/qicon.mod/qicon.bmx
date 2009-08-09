@@ -33,6 +33,45 @@ Import "common.bmx"
 Type QIcon
 
 	Field qObjectPtr:Byte Ptr
+	
+	Method Create:QIcon(icon:Object)
+		If String(icon) Then
+			Local str:String = String(icon)
+			
+			If str.Find( "::",0 ) > 0 Then
+			
+				Local pixmap:TPixmap = LoadPixmap(str)
+				
+				If pixmap Then
+					Local image:QImage = New QImage.CreateWithPixmap(pixmap)
+					Local pix:QPixmap = QPixmap.fromImage(image)
+					
+					qObjectPtr = bmx_qt_qicon_createwithpixmap(pix.qObjectPtr)
+				Else
+					qObjectPtr = bmx_qt_qicon_createempty()
+				End If
+			Else
+				' use the default loader
+				qObjectPtr = bmx_qt_qicon_createwithfile(str)
+			End If
+			
+		ElseIf TStream(icon) Then
+			Local pixmap:TPixmap = LoadPixmap(icon)
+			If pixmap Then
+				Local image:QImage = New QImage.CreateWithPixmap(pixmap)
+				Local pix:QPixmap = QPixmap.fromImage(image)
+				
+				qObjectPtr = bmx_qt_qicon_createwithpixmap(pix.qObjectPtr)
+			Else
+				qObjectPtr = bmx_qt_qicon_createempty()
+			End If
+		ElseIf QPixmap(icon) Then
+			qObjectPtr = bmx_qt_qicon_createwithpixmap(QPixmap(icon).qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qicon_createempty()
+		End If
+		Return Self
+	End Method
 
 End Type
 

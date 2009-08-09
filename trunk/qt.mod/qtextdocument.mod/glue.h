@@ -25,15 +25,80 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QTextDocument>
+#include <QTextCursor>
+
+class MaxQTextDocument;
+class MaxQTextCursor;
 
 extern "C" {
 
 #include <blitz.h>
 
+	BBObject * _qt_qtextdocument_QTextDocument__create(QTextDocument * doc);
+	
+	void _qt_qtextdocument_QTextDocument__OnBlockCountChanged(BBObject * handle, int newBlockCount);
+	void _qt_qtextdocument_QTextDocument__OnContentsChange(BBObject * handle, int position, int charsRemoved, int charsAdded);
+	void _qt_qtextdocument_QTextDocument__OnContentsChanged(BBObject * handle);
+	void _qt_qtextdocument_QTextDocument__OnCursorPositionChanged(BBObject * handle, MaxQTextCursor * cursor);
+	void _qt_qtextdocument_QTextDocument__OnDocumentLayoutChanged(BBObject * handle);
+	void _qt_qtextdocument_QTextDocument__OnModificationChanged(BBObject * handle, int changed);
+	void _qt_qtextdocument_QTextDocument__OnRedoAvailable(BBObject * handle, int available);
+	void _qt_qtextdocument_QTextDocument__OnUndoAvailable(BBObject * handle, int available);
+	void _qt_qtextdocument_QTextDocument__OnUndoCommandAdded(BBObject * handle);
+
+	double bmx_qt_qtextdocument_idealwidth(QTextDocument * doc);
+	double bmx_qt_qtextdocument_indentewidth(QTextDocument * doc);
+	int bmx_qt_qtextdocument_isempty(QTextDocument * doc);
+	int bmx_qt_qtextdocument_ismodified(QTextDocument * doc);
+	int bmx_qt_qtextdocument_isredoavailable(QTextDocument * doc);
+	int bmx_qt_qtextdocument_isundoavailable(QTextDocument * doc);
+	int bmx_qt_qtextdocument_isundoredoenabled(QTextDocument * doc);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQTextDocument : public MaxQObjectWrapper
+{
+	Q_OBJECT
+
+public:
+	MaxQTextDocument(BBObject * handle, QTextDocument * doc);
+	MaxQTextDocument(QTextDocument * doc);
+	
+	QTextDocument * Document();
+	
+	static void link(QTextDocument * doc);
+	
+	~MaxQTextDocument();
+
+private:
+	void doConnections();
+	QTextDocument * document;
+
+private slots:
+	void onBlockCountChanged(int newBlockCount);
+	void onContentsChange(int position, int charsRemoved, int charsAdded);
+	void onContentsChanged();
+	void onCursorPositionChanged(const QTextCursor & cursor);
+	void onDocumentLayoutChanged();
+	void onModificationChanged(bool changed);
+	void onRedoAvailable(bool available);
+	void onUndoAvailable(bool available);
+	void onUndoCommandAdded();
+};
+
+class MaxQTextCursor
+{
+public:
+	MaxQTextCursor(const QTextCursor & c);
+	~MaxQTextCursor();
+	
+	QTextCursor & Cursor();
+
+private:
+	QTextCursor cursor;
+};
 
 #endif

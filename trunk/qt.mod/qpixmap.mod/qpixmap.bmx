@@ -32,6 +32,17 @@ Import "common.bmx"
 
 Type QPixmap Extends QPaintDevice
 
+	Function _create:QPixmap(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QPixmap = New QPixmap
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+	Function FromImage:QPixmap(image:QImage, flags:Int = Qt_AutoColor)
+		Return QPixmap._create(bmx_qt_qpixmap_fromimage(image.qObjectPtr, flags))
+	End Function
 
 End Type
 

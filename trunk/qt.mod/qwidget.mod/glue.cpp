@@ -428,6 +428,11 @@ QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * pa
 	return action->Action();
 }
 
+QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent) {
+	MaxQAction * action = new MaxQAction(handle, new QAction(icon->Icon(), qStringFromBBString(text), parent));
+	return action->Action();
+}
+
 void bmx_qt_qaction_setshortcut(QAction * action, BBString * sequence) {
 	action->setShortcut(qStringFromBBString(sequence));
 }
