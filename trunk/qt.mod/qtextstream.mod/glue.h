@@ -20,54 +20,38 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QTOOLBAR
-#define MAX_QT_QTOOLBAR
+#ifndef MAX_QT_QTEXTSTREAM
+#define MAX_QT_QTEXTSTREAM
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QToolBar>
+#include <QTextStream>
 
-class MaxQToolBar;
+class MaxQTextStream;
 
 extern "C" {
 
 #include <blitz.h>
 
-	BBObject * _qt_qtoolbar_QToolBar___create(QToolBar * toolbar);
-
-	QToolBar * bmx_qt_qtoolbar_create(BBObject * handle, QWidget * parent);
-	void bmx_qt_qtoolbar_addwidget(QToolBar * tb, QWidget * widget);
+	MaxQTextStream * bmx_qt_qtextstream_create(QIODevice * device);
+	BBString * bmx_qt_qtextstream_readall(MaxQTextStream * stream);
+	void bmx_qt_qtextstream_free(MaxQTextStream * stream);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQToolBar : public MaxQObjectWrapper
+class MaxQTextStream
 {
-	Q_OBJECT
-
 public:
-	MaxQToolBar(BBObject * handle, QToolBar * tb);
-	MaxQToolBar(QToolBar * tb);
+	MaxQTextStream(QIODevice * device);
+	~MaxQTextStream();
+	
+	QTextStream & Stream();
 
-	QToolBar * ToolBar();
-	
-	static void link(QToolBar * t);
-	
-	~MaxQToolBar();
 
 private:
-	void doConnections();
-	QToolBar * toolBar;
-
-private slots:
-	void onActionTriggered(QAction * action);
-	void onAllowedAreasChanged(Qt::ToolBarAreas allowedAreas);
-	void onIconSizeChanged(const QSize & iconSize);
-	void onMovableChanged(bool movable);
-	void onOrientationChanged(Qt::Orientation orientation);
-	void onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle);
-	void onCustomContextMenuRequested(const QPoint & pos);
+	QTextStream stream;
 };
 
 #endif

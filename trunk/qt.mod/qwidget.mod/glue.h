@@ -123,6 +123,19 @@ extern "C" {
 	MaxQFont * bmx_qt_qwidget_font(QWidget * widget);
 	MaxQFontMetrics * bmx_qt_qwidget_fontmetrics(QWidget * widget);
 	void bmx_qt_qwidget_setfont(QWidget * widget, MaxQFont * font);
+	QWidget * bmx_qt_qwidget_window(QWidget * widget);
+	BBString * bmx_qt_qwidget_windowfilepath(QWidget * widget);
+	int bmx_qt_qwidget_windowflags(QWidget * widget);
+	MaxQIcon * bmx_qt_qwidget_windowicon(QWidget * widget);
+	BBString * bmx_qt_qwidget_windowicontext(QWidget * widget);
+	int bmx_qt_qwidget_windowmodality(QWidget * widget);
+	double bmx_qt_qwidget_windowopacity(QWidget * widget);
+	BBString * bmx_qt_qwidget_windowrole(QWidget * widget);
+	int bmx_qt_qwidget_windowstate(QWidget * widget);
+	BBString * bmx_qt_qwidget_windowtitle(QWidget * widget);
+	int bmx_qt_qwidget_windowtype(QWidget * widget);
+	int bmx_qt_qwidget_x(QWidget * widget);
+	int bmx_qt_qwidget_y(QWidget * widget);
 
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);

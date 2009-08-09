@@ -45,6 +45,10 @@ QIcon & MaxQIcon::Icon() {
 
 // *********************************************
 
+void bmx_qt_qicon_free(MaxQIcon * icon) {
+	delete icon;
+}
+
 MaxQIcon * bmx_qt_qicon_createwithpixmap(MaxQPixmap * pix) {
 	QIcon icon(pix->Pixmap());
 	return new MaxQIcon(icon);

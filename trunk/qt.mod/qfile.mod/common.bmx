@@ -21,8 +21,9 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QPixmap
+Import Qt.QIODevice
 Import BRL.Blitz
+
 
 ' headers :-)
 ?win32
@@ -33,21 +34,42 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
-Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
-Import "/usr/include/qt4/QtGui/*.h"
 ?
 
 Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qicon_free(handle:Byte Ptr)
-	Function bmx_qt_qicon_createwithpixmap:Byte Ptr(pix:Byte Ptr)
-	Function bmx_qt_qicon_createempty:Byte Ptr()
-	Function bmx_qt_qicon_createwithfile:Byte Ptr(filename:String)
+	Function bmx_qt_qfile_create:Byte Ptr(handle:Object, name:String)
+	Function bmx_qt_qfile_free(handle:Byte Ptr)
+
+	Function bmx_qt_qfile_atend:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_close(handle:Byte Ptr)
+	Function bmx_qt_qfile_copy:Int(handle:Byte Ptr, newName:String)
+	Function bmx_qt_qfile_error:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_exists:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_filename:String(handle:Byte Ptr)
+	Function bmx_qt_qfile_flush:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_handle:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_issequential:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_link:Int(handle:Byte Ptr, linkName:String)
+	Function bmx_qt_qfile_map:Byte Ptr(handle:Byte Ptr, offset:Long, size:Long, flags:Int)
+	Function bmx_qt_qfile_open:Int(handle:Byte Ptr, Mode:Int)
+	Function bmx_qt_qfile_openhandle:Int(handle:Byte Ptr, h:Int, Mode:Int)
+	Function bmx_qt_qfile_permissions:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_remove:Int(handle:Byte Ptr)
+	Function bmx_qt_qfile_rename:Int(handle:Byte Ptr, newName:String)
+	Function bmx_qt_qfile_resize:Int(handle:Byte Ptr, sz:Long)
+	Function bmx_qt_qfile_setfilename(handle:Byte Ptr, name:String)
+	Function bmx_qt_qfile_setpermissions:Int(handle:Byte Ptr, permissions:Int)
+	Function bmx_qt_qfile_size(handle:Byte Ptr, s:Long Ptr)
+	Function bmx_qt_qfile_symlinktarget:String(handle:Byte Ptr)
+	Function bmx_qt_qfile_unmap:Int(handle:Byte Ptr, address:Byte Ptr)
+	Function bmx_qt_qfile_unseterror(handle:Byte Ptr)
+
 
 End Extern

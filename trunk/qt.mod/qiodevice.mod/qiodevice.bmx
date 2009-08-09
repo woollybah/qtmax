@@ -33,6 +33,40 @@ Import "common.bmx"
 
 Type QIODevice Extends QObject
 
+	Rem
+	bbdoc: The device is not open.
+	end rem
+	Const NotOpen:Int = $0000
+	Rem
+	bbdoc: The device is open for reading.
+	end rem
+	Const ReadOnly:Int = $0001
+	Rem
+	bbdoc: The device is open for writing.
+	end rem
+	Const WriteOnly:Int = $0002
+	Rem
+	bbdoc: The device is open for reading and writing.
+	end rem
+	Const ReadWrite:Int = ReadOnly | WriteOnly
+	Rem
+	bbdoc: The device is opened in append mode, so that all data is written to the end of the file.
+	end rem
+	Const Append:Int = $0004
+	Rem
+	bbdoc: If possible, the device is truncated before it is opened. All earlier contents of the device are lost.
+	end rem
+	Const Truncate:Int = $0008
+	Rem
+	bbdoc: When reading, the end-of-line terminators are translated to '\n'. When writing, the end-of-line terminators are translated to the local encoding, for example '\r\n' for Win32.
+	end rem
+	const Text:int = $0010
+	rem
+	bbdoc: Any buffer in the device is bypassed.
+	end rem
+	const Unbuffered:int = $0020
+
+	
 	Method atEnd:Int()
 	' TODO
 	End Method
@@ -141,7 +175,7 @@ Type QIODevice Extends QObject
 	' TODO
 	End Method
 	
-	Method ungetChar(c:int)
+	Method ungetChar(c:Int)
 	' TODO
 	End Method
 	
