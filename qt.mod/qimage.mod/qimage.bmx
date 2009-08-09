@@ -128,8 +128,8 @@ Type QImage Extends QPaintDevice
 				Return Format_ARGB32
 			Case PF_RGBA8888
 				Return Format_ARGB32
-			Case PF_ARGB8888
-				Return Format_ARGB32
+			'Case PF_ARGB8888
+			'	Return Format_ARGB32
 		End Select
 	End Method
 	

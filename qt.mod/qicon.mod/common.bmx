@@ -38,7 +38,7 @@ Import "../src/include/QtGui/*.h"
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
-Import "/usr/include/qt4/QtIcon/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
 
 Import "glue.cpp"
