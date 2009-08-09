@@ -97,7 +97,7 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method document:QTextDocument()
-	' TODO
+		Return QTextDocument._find(bmx_qt_qtextedit_document(qObjectPtr))
 	End Method
 	
 	Method documentTitle:String()
@@ -370,6 +370,40 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_zoomout(qObjectPtr, _range)
 	End Method
 	
+	' SIGNAL : copyAvailable
+	Function _OnCopyAvailable(obj:QTextEdit, yes:Int)
+		obj._InvokeSignals("copyAvailable", [String(yes)])
+	End Function
+
+	' SIGNAL : currentCharFormatChanged
+	Function _OnCurrentCharFormatChanged(obj:QTextEdit, format:Byte Ptr)
+		obj._InvokeSignals("currentCharFormatChanged", [QTextCharFormat._create(format)])
+	End Function
+
+	' SIGNAL : cursorPositionChanged
+	Function _OnCursorPositionChanged(obj:QTextEdit)
+		obj._InvokeSignals("cursorPositionChanged", Null)
+	End Function
+
+	' SIGNAL : redoAvailable
+	Function _OnRedoAvailable(obj:QTextEdit, available:Int)
+		obj._InvokeSignals("redoAvailable", [String(available)])
+	End Function
+
+	' SIGNAL : selectionChanged
+	Function _OnSelectionChanged(obj:QTextEdit)
+		obj._InvokeSignals("selectionChanged", Null)
+	End Function
+
+	' SIGNAL : textChanged
+	Function _OnTextChanged(obj:QTextEdit)
+		obj._InvokeSignals("textChanged", Null)
+	End Function
+
+	' SIGNAL : undoAvailable
+	Function _OnUndoAvailable(obj:QTextEdit, available:Int)
+		obj._InvokeSignals("undoAvailable", [String(available)])
+	End Function
 
 End Type
 

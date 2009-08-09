@@ -955,6 +955,11 @@ Type QAction Extends QObject
 		Return Self
 	End Method
 
+	Method CreateWithIcon:QAction(icon:QIcon, text:String, parent:QObject)
+		qObjectPtr = bmx_qt_qaction_createwithicon(Self, icon.qObjectPtr, text, parent.qObjectPtr)
+		Return Self
+	End Method
+
 	Method actionGroup:QActionGroup()
 		Return QActionGroup._create(bmx_qt_qaction_actiongroup(qObjectPtr))
 	End Method

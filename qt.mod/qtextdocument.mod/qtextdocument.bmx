@@ -66,6 +66,96 @@ undoAvailable(), and redoAvailable() signals that inform connected editor widget
 End Rem
 Type QTextDocument Extends QObject
 
+	Function _create:QTextDocument(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextDocument = New QTextDocument
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+	Function _find:QTextDocument(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QTextDocument = QTextDocument(qfind(qObjectPtr))
+			If Not widget Then
+				Return QTextDocument._create(qObjectPtr)
+			End If
+			Return widget
+		End If
+	End Function
+
+	Method idealWidth:Double()
+		Return bmx_qt_qtextdocument_idealwidth(qObjectPtr)
+	End Method
+	
+	Method indentWidth:Double()
+		Return bmx_qt_qtextdocument_indentewidth(qObjectPtr)
+	End Method
+
+	Method isEmpty:Int()
+		Return bmx_qt_qtextdocument_isempty(qObjectPtr)
+	End Method
+
+	Method isModified:Int()
+		Return bmx_qt_qtextdocument_ismodified(qObjectPtr)
+	End Method
+
+	Method isRedoAvailable:Int()
+		Return bmx_qt_qtextdocument_isredoavailable(qObjectPtr)
+	End Method
+
+	Method isUndoAvailable:Int()
+		Return bmx_qt_qtextdocument_isundoavailable(qObjectPtr)
+	End Method
+
+	Method isUndoRedoEnabled:Int()
+		Return bmx_qt_qtextdocument_isundoredoenabled(qObjectPtr)
+	End Method
+
+	' SIGNAL : blockCountChanged
+	Function _OnBlockCountChanged(obj:QTextDocument, newBlockCount:Int)
+		obj._InvokeSignals("blockCountChanged", [String(newBlockCount)])
+	End Function
+
+	' SIGNAL : contentsChange
+	Function _OnContentsChange(obj:QTextDocument, position:Int, charsRemoved:Int, charsAdded:Int)
+		obj._InvokeSignals("contentsChange", [String(position), String(charsRemoved), String(charsAdded)])
+	End Function
+
+	' SIGNAL : contentsChanged
+	Function _OnContentsChanged(obj:QTextDocument)
+		obj._InvokeSignals("contentsChanged", Null)
+	End Function
+
+	' SIGNAL : cursorPositionChanged
+	Function _OnCursorPositionChanged(obj:QTextDocument, cursor:Byte Ptr)
+		obj._InvokeSignals("cursorPositionChanged", [QTextCursor._create(cursor)])
+	End Function
+
+	' SIGNAL : documentLayoutChanged
+	Function _OnDocumentLayoutChanged(obj:QTextDocument)
+		obj._InvokeSignals("documentLayoutChanged", Null)
+	End Function
+
+	' SIGNAL : modificationChanged
+	Function _OnModificationChanged(obj:QTextDocument, changed:Int)
+		obj._InvokeSignals("modificationChanged", [String(changed)])
+	End Function
+
+	' SIGNAL : redoAvailable
+	Function _OnRedoAvailable(obj:QTextDocument, available:Int)
+		obj._InvokeSignals("redoAvailable", [String(available)])
+	End Function
+
+	' SIGNAL : undoAvailable
+	Function _OnUndoAvailable(obj:QTextDocument, available:Int)
+		obj._InvokeSignals("undoAvailable", [String(available)])
+	End Function
+
+	' SIGNAL : undoCommandAdded
+	Function _OnUndoCommandAdded(obj:QTextDocument)
+		obj._InvokeSignals("undoCommandAdded", Null)
+	End Function
 
 End Type
 
@@ -139,6 +229,12 @@ Type QTextCursor
 
 	Field qObjectPtr:Byte Ptr
 	
-	
+	Function _create:QTextCursor(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextCursor = New QTextCursor
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
 End Type

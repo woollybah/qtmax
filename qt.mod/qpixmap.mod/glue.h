@@ -24,16 +24,32 @@
 #define MAX_QT_QPIXMAP
 
 #include "../core.mod/glue.h"
+#include "../qimage.mod/glue.h"
 #include <QtCore>
+#include <QPixmap>
+
+class MaxQPixmap;
 
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQPixmap * bmx_qt_qpixmap_fromimage(MaxQImage * image, int flags);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQPixmap
+{
+public:
+	MaxQPixmap(const QPixmap & p);
+	~MaxQPixmap();
+
+	QPixmap & Pixmap();
+
+private:
+	QPixmap pixmap;
+};
 
 #endif

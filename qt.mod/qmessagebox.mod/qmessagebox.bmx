@@ -172,9 +172,29 @@ Type QMessageBox Extends QDialog
 	bbdoc: An invalid button.
 	end rem
 	Const Button_NoButton:Int = $00000000
+	
+	Function about(parent:QWidget, title:String, text:String)
+		bmx_qt_qmessagebox_about(parent.qObjectPtr, title, text)
+	End Function
+	
+	Function aboutQt(parent:QWidget, title:String = Null)
+		bmx_qt_qmessagebox_aboutqt(parent.qObjectPtr, title)
+	End Function
+	
+	Function critical:Int(parent:QWidget, title:String, text:String, buttons:Int = Button_Ok, defaultButton:Int = Button_NoButton)
+		Return bmx_qt_qmessagebox_critical(parent.qObjectPtr, title, text, buttons, defaultButton)
+	End Function
 
 	Function information:Int(parent:QWidget, title:String, text:String, buttons:Int = Button_Ok, defaultButton:Int = Button_NoButton)
 		Return bmx_qt_qmessagebox_information(parent.qObjectPtr, title, text, buttons, defaultButton)
+	End Function
+
+	Function question:Int(parent:QWidget, title:String, text:String, buttons:Int = Button_Ok, defaultButton:Int = Button_NoButton)
+		Return bmx_qt_qmessagebox_question(parent.qObjectPtr, title, text, buttons, defaultButton)
+	End Function
+
+	Function warning:Int(parent:QWidget, title:String, text:String, buttons:Int = Button_Ok, defaultButton:Int = Button_NoButton)
+		Return bmx_qt_qmessagebox_warning(parent.qObjectPtr, title, text, buttons, defaultButton)
 	End Function
 
 End Type

@@ -83,5 +83,6 @@ Extern
 
 	Function bmx_qt_qtextedit_tohtml:String(handle:Byte Ptr)
 	Function bmx_qt_qtextedit_toplaintext:String(handle:Byte Ptr)
+	Function bmx_qt_qtextedit_document:Byte Ptr(handle:Byte Ptr)
 
 End Extern

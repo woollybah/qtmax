@@ -31,7 +31,12 @@ extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qmessagebox_about(QWidget * parent, BBString * title, BBString * text);
+	void bmx_qt_qmessagebox_aboutqt(QWidget * parent, BBString * title);
+	int bmx_qt_qmessagebox_critical(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton);
 	int bmx_qt_qmessagebox_information(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton);
+	int bmx_qt_qmessagebox_question(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton);
+	int bmx_qt_qmessagebox_warning(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton);
 
 }
 

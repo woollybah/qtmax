@@ -27,14 +27,29 @@
 #include <QtCore>
 #include <QImage>
 
+class MaxQImage;
+
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQImage * bmx_qt_qimage_createwithdata(const uchar * data, int width, int height, int format);
+	void bmx_qt_qimage_free(MaxQImage * image);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQImage
+{
+public:
+	MaxQImage(const QImage & i);
+	~MaxQImage();
+	
+	QImage & Image();
+
+private:
+	QImage image;
+};
 
 #endif

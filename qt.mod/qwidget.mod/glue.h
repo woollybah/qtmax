@@ -27,6 +27,7 @@
 #include "../qsizepolicy.mod/glue.h"
 #include "../qfont.mod/glue.h"
 #include "../qfontmetrics.mod/glue.h"
+#include "../qicon.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -127,6 +128,7 @@ extern "C" {
 	int bmx_qt_qwidget_width(QWidget * widget);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
+	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
 	void bmx_qt_qaction_setshortcut(QAction * handle, BBString * sequence);
 	QActionGroup * bmx_qt_qaction_actiongroup(QAction * action);
 	void bmx_qt_qaction_activate(QAction * action, int event);

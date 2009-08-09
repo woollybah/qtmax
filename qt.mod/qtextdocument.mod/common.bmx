@@ -35,14 +35,24 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
 
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qtextdocument_idealwidth:Double(handle:Byte Ptr)
+	Function bmx_qt_qtextdocument_indentewidth:Double(handle:Byte Ptr)
+	Function bmx_qt_qtextdocument_isempty:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextdocument_ismodified:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextdocument_isredoavailable:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextdocument_isundoavailable:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextdocument_isundoredoenabled:Int(handle:Byte Ptr)
 
 End Extern

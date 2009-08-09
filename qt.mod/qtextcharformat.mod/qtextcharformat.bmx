@@ -32,5 +32,13 @@ Import "common.bmx"
 
 Type QTextCharFormat Extends QTextFormat
 
+	Function _create:QTextCharFormat(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextCharFormat = New QTextCharFormat
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
 End Type
 

@@ -46,6 +46,11 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qmessagebox_about(parent:Byte Ptr, title:String, text:String)
+	Function bmx_qt_qmessagebox_aboutqt(parent:Byte Ptr, title:String)
+	Function bmx_qt_qmessagebox_critical:Int(parent:Byte Ptr, title:String, text:String, buttons:Int, defaultButton:Int)
 	Function bmx_qt_qmessagebox_information:Int(parent:Byte Ptr, title:String, text:String, buttons:Int, defaultButton:Int)
+	Function bmx_qt_qmessagebox_question:Int(parent:Byte Ptr, title:String, text:String, buttons:Int, defaultButton:Int)
+	Function bmx_qt_qmessagebox_warning:Int(parent:Byte Ptr, title:String, text:String, buttons:Int, defaultButton:Int)
 
 End Extern
