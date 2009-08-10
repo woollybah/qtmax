@@ -659,6 +659,7 @@ Type QWidget Extends QObject
 	bbdoc: 
 	End Rem
 	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
 	End Method
 
 	Function _OnMouseDoubleClickEvent(obj:QWidget, event:Byte Ptr)
@@ -669,6 +670,7 @@ Type QWidget Extends QObject
 	bbdoc: 
 	End Rem
 	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 
 	Function _OnMouseMoveEvent(obj:QWidget, event:Byte Ptr)
@@ -679,6 +681,7 @@ Type QWidget Extends QObject
 	bbdoc: 
 	End Rem
 	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousepressevent(qObjectPtr, event.qObjectPtr)
 	End Method
 
 	Function _OnMousePressEvent(obj:QWidget, event:Byte Ptr)
@@ -689,6 +692,7 @@ Type QWidget Extends QObject
 	bbdoc: 
 	End Rem
 	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
 	End Method
 
 	Function _OnMouseReleaseEvent(obj:QWidget, event:Byte Ptr)
@@ -696,6 +700,7 @@ Type QWidget Extends QObject
 	End Function
 
 	Method actionEvent(event:QActionEvent)
+		bmx_qt_qwidget_default_actionevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnActionEvent(obj:QWidget, event:Byte Ptr)
@@ -703,6 +708,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method changeEvent(event:QEvent)
+		bmx_qt_qwidget_default_changeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnChangeEvent(obj:QWidget, event:Byte Ptr)
@@ -710,6 +716,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method closeEvent(event:QCloseEvent)
+		bmx_qt_qwidget_default_closeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnCloseEvent(obj:QWidget, event:Byte Ptr)
@@ -717,6 +724,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method contextMenuEvent(event:QContextMenuEvent)
+		bmx_qt_qwidget_default_contextmenuevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnContextMenuEvent(obj:QWidget, event:Byte Ptr)
@@ -724,6 +732,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method dragEnterEvent(event:QDragEnterEvent)
+		bmx_qt_qwidget_default_dragenterevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnDragEnterEvent(obj:QWidget, event:Byte Ptr)
@@ -731,6 +740,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method dragLeaveEvent(event:QDragLeaveEvent)
+		bmx_qt_qwidget_default_dragleaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnDragLeaveEvent(obj:QWidget, event:Byte Ptr)
@@ -738,6 +748,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method dragMoveEvent(event:QDragMoveEvent)
+		bmx_qt_qwidget_default_dragmoveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnDragMoveEvent(obj:QWidget, event:Byte Ptr)
@@ -745,6 +756,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method dropEvent(event:QDropEvent)
+		bmx_qt_qwidget_default_dropevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnDropEvent(obj:QWidget, event:Byte Ptr)
@@ -752,6 +764,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method enterEvent(event:QEvent)
+		bmx_qt_qwidget_default_enterevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnEnterEvent(obj:QWidget, event:Byte Ptr)
@@ -759,6 +772,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method focusInEvent(event:QFocusEvent)
+		bmx_qt_qwidget_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnFocusInEvent(obj:QWidget, event:Byte Ptr)
@@ -766,6 +780,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method focusOutEvent(event:QFocusEvent)
+		bmx_qt_qwidget_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnFocusOutEvent(obj:QWidget, event:Byte Ptr)
@@ -773,6 +788,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method hideEvent(event:QHideEvent)
+		bmx_qt_qwidget_default_hideevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnHideEvent(obj:QWidget, event:Byte Ptr)
@@ -780,6 +796,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method inputMethodEvent(event:QInputMethodEvent)
+		bmx_qt_qwidget_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnInputMethodEvent(obj:QWidget, event:Byte Ptr)
@@ -787,6 +804,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method keyPressEvent(event:QKeyEvent)
+		bmx_qt_qwidget_default_keypressevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnKeyPressEvent(obj:QWidget, event:Byte Ptr)
@@ -794,6 +812,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method keyReleaseEvent(event:QKeyEvent)
+		bmx_qt_qwidget_default_keyreleaseevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnKeyReleaseEvent(obj:QWidget, event:Byte Ptr)
@@ -801,6 +820,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method leaveEvent(event:QEvent)
+		bmx_qt_qwidget_default_leaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnLeaveEvent(obj:QWidget, event:Byte Ptr)
@@ -808,6 +828,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method moveEvent(event:QMoveEvent)
+		bmx_qt_qwidget_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnMoveEvent(obj:QWidget, event:Byte Ptr)
@@ -815,6 +836,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method resizeEvent(event:QResizeEvent)
+		bmx_qt_qwidget_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnResizeEvent(obj:QWidget, event:Byte Ptr)
@@ -822,6 +844,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method showEvent(event:QShowEvent)
+		bmx_qt_qwidget_default_showevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnShowEvent(obj:QWidget, event:Byte Ptr)
@@ -829,6 +852,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method tabletEvent(event:QTabletEvent)
+		bmx_qt_qwidget_default_tabletevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnTabletEvent(obj:QWidget, event:Byte Ptr)
@@ -836,6 +860,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method wheelEvent(event:QWheelEvent)
+		bmx_qt_qwidget_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnWheelEvent(obj:QWidget, event:Byte Ptr)
