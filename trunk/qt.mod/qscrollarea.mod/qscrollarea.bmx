@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QScrollBar
+Module Qt.QScrollArea
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,40 +30,57 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
+Type QScrollArea Extends QAbstractScrollArea
 
-Type QScrollBar Extends QAbstractSlider
-
-	Function CreateScrollBar:QScrollBar(orientation:Int, parent:QWidget = Null)
-		Return New QScrollBar.Create(orientation, parent)
+	Function CreateScrollArea:QScrollArea(parent:QWidget = Null)
 	End Function
 	
-	Method Create:QScrollBar(orientation:Int, parent:QWidget = Null)
+	Method Create:QScrollArea(parent:QWidget = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qscrollbar_create(Self, orientation, parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qscrollarea_create(Self, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qscrollbar_create(Self, orientation, Null)
+			qObjectPtr = bmx_qt_qscrollarea_create(Self, Null)
 		End If
 		OnInit()
 		Return Self
 	End Method
-
-	Function __create:QScrollBar(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QScrollBar = New QScrollBar
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
-	End Function
 	
-	Function _find:QScrollBar(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local widget:QScrollBar = QScrollBar(qfind(qObjectPtr))
-			If Not widget Then
-				Return QScrollBar.__create(qObjectPtr)
-			End If
-			Return widget
-		End If
-	End Function
+	Method alignment:Int()
+		Return bmx_qt_qscrollarea_alignment(qObjectPtr)
+	End Method
+	
+	Method ensureVisible(x:Int, y:Int, xmargin:Int = 50, ymargin:Int = 50)
+		bmx_qt_qscrollarea_ensurevisible(qObjectPtr, x, y, xmargin, ymargin)
+	End Method
+	
+	Method ensureWidgetVisible(childWidget:QWidget, xmargin:Int = 50, ymargin:Int = 50)
+		bmx_qt_qscrollarea_ensurewidgetvisible(qObjectPtr, childWidget.qObjectPtr, xmargin, ymargin)
+	End Method
+	
+	Method setAlignment(alignment:Int)
+		bmx_qt_qscrollarea_setalignment(qObjectPtr, alignment)
+	End Method
+	
+	Method setWidget(widget:QWidget)
+		bmx_qt_qscrollarea_setwidget(qObjectPtr, widget.qObjectPtr)
+	End Method
+	
+	Method setWidgetResizable(resizable:Int)
+		bmx_qt_qscrollarea_setwidgetresizable(qObjectPtr, resizable)
+	End Method
+	
+	Method takeWidget:QWidget()
+		Return QWidget._find(bmx_qt_qscrollarea_takewidget(qObjectPtr))
+	End Method
+	
+	Method widget:QWidget()
+		Return QWidget._find(bmx_qt_qscrollarea_widget(qObjectPtr))
+	End Method
+	
+	Method widgetResizable:Int()
+		Return bmx_qt_qscrollarea_widgetresizable(qObjectPtr)
+	End Method
+
 
 End Type
 

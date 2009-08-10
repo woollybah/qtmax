@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QFrame
+Import Qt.QScrollBar
 Import BRL.Blitz
 
 
@@ -46,5 +47,20 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qabstractscrollarea_addscrollbarwidget(handle:Byte Ptr, widget:Byte Ptr, alignment:Int)
+	Function bmx_qt_qabstractscrollarea_cornerwidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_horizontalscrollbar:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_horizontalscrollbarpolicy:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_maximumviewportsize(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qabstractscrollarea_setcornerwidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_sethorizontalscrollbar(handle:Byte Ptr, scrollBar:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_sethorizontalscrollbarpolicy(handle:Byte Ptr, policy:Int)
+	Function bmx_qt_qabstractscrollarea_setverticalscrollbar(handle:Byte Ptr, scrollBar:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_setverticalscrollbarpolicy(handle:Byte Ptr, policy:Int)
+	Function bmx_qt_qabstractscrollarea_setviewport(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_verticalscrollbar:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_verticalscrollbarpolicy:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_viewport:Byte Ptr(handle:Byte Ptr)
 
 End Extern

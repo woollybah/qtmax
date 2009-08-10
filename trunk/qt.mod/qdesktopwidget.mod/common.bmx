@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QWidget
 Import BRL.Blitz
 
 

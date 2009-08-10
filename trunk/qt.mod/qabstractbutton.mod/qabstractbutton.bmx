@@ -53,8 +53,9 @@ Type QAbstractButton Extends QWidget
 		Return QButtonGroup._create(bmx_qt_qabstractbutton_group(qObjectPtr))
 	End Method
 	
-	'Method icon:QIcon()
-	'End Method
+	Method icon:QIcon()
+		Return QIcon._create(bmx_qt_qabstractbutton_icon(qObjectPtr))
+	End Method
 	
 	Method iconSize(w:Int Var, h:Int Var)
 		bmx_qt_qabstractbutton_iconsize(qObjectPtr, Varptr w, Varptr h)
@@ -97,7 +98,7 @@ Type QAbstractButton Extends QWidget
 	End Method
 
 	Method setIcon(icon:QIcon)
-	' TODO
+		bmx_qt_qabstractbutton_seticon(qObjectPtr, icon.qObjectPtr)
 	End Method
 	
 	'Method setShortcut(key:QKeySequence)
@@ -154,7 +155,7 @@ Type QButtonGroup Extends QObject
 		Return Self
 	End Method
 	
-	Method addButton(button:QAbstractButton, id:Int)
+	Method addButton(button:QAbstractButton, id:Int = -1)
 	' TODO
 	End Method
 	

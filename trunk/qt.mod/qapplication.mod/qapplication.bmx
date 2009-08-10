@@ -57,7 +57,197 @@ Type QApplication Extends QCoreApplication
 	Method setStyleSheet(sheet:String)
 		bmx_qt_qapplication_setstylesheet(qObjectPtr, sheet)
 	End Method
+
+
+	Function activeModalWidget:QWidget()
+		Return QWidget._find(bmx_qt_qapplication_activemodalwidget())
+	End Function
 	
+	Function activePopupWidget:QWidget()
+		Return QWidget._find(bmx_qt_qapplication_activepopupwidget())
+	End Function
+	
+	Function activeWindow:QWidget()
+		Return QWidget._find(bmx_qt_qapplication_activewindow())
+	End Function
+	
+	Function alert(widget:QWidget, msec:Int = 0)
+		bmx_qt_qapplication_alert(widget.qObjectPtr, msec)
+	End Function
+	
+	'Function allWidgets()
+	'	Return bmx_qt_qapplication()
+	'End Function
+	
+	Function beep()
+		bmx_qt_qapplication_beep()
+	End Function
+	
+	Function changeOverrideCursor(cursor:QCursor)
+		bmx_qt_qapplication_changeoverridecursor(cursor.qObjectPtr)
+	End Function
+	
+	Function clipboard:QClipboard()
+		Return QClipboard._find(bmx_qt_qapplication_clipboard())
+	End Function
+	
+	Function colorSpec:Int()
+		Return bmx_qt_qapplication_colorspec()
+	End Function
+	
+	Function cursorFlashTime:Int()
+		Return bmx_qt_qapplication_cursorflashtime()
+	End Function
+	
+	Function Desktop:QDesktopWidget()
+		Return QDesktopWidget._find(bmx_qt_qapplication_desktop())
+	End Function
+	
+	Function desktopSettingsAware:Int()
+		Return bmx_qt_qapplication_desktopsettingsaware()
+	End Function
+	
+	Function doubleClickInterval:Int()
+		Return bmx_qt_qapplication_doubleclickinterval()
+	End Function
+	
+	Function focusWidget:QWidget()
+		Return QWidget._find(bmx_qt_qapplication_focuswidget())
+	End Function
+	
+	Function font:QFont()
+		Return QFont._create(bmx_qt_qapplication_font())
+	End Function
+	
+	Function fontWidget:QFont(widget:QWidget)
+		Return QFont._create(bmx_qt_qapplication_fontwidget(widget.qObjectPtr))
+	End Function
+	
+	Function FontName:QFont(className:String)
+		Return QFont._create(bmx_qt_qapplication_fontname(className))
+	End Function
+	
+	Function fontMetrics:QFontMetrics()
+		Return QFontMetrics._create(bmx_qt_qapplication_fontmetrics())
+	End Function
+	
+	Function globalStrut(w:Int Var, h:Int Var)
+		bmx_qt_qapplication_globalstrut(Varptr w, Varptr h)
+	End Function
+	
+	Function isEffectEnabled:Int(effect:Int)
+		Return bmx_qt_qapplication_iseffectenabled(effect)
+	End Function
+	
+	Function isLeftToRight:Int()
+		Return bmx_qt_qapplication_islefttoright()
+	End Function
+	
+	Function isRightToLeft:Int()
+		Return bmx_qt_qapplication_isrighttoleft()
+	End Function
+	
+	Function keyboardInputDirection:Int()
+		Return bmx_qt_qapplication_keyboardinputdirection()
+	End Function
+	
+	Function keyboardInputInterval:Int()
+		Return bmx_qt_qapplication_keyboardinputinterval()
+	End Function
+	
+	Function keyboardInputLocale:QLocale()
+		Return QLocale._create(bmx_qt_qapplication_keyboardinputlocale())
+	End Function
+	
+	Function keyboardModifiers:Int()
+		Return bmx_qt_qapplication_keyboardmodifiers()
+	End Function
+	
+	Function layoutDirection:Int()
+		Return bmx_qt_qapplication_layoutdirection()
+	End Function
+	
+	Function mouseButtons:Int()
+		Return bmx_qt_qapplication_mousebuttons()
+	End Function
+	
+	Function overrideCursor:QCursor()
+		Return QCursor._create(bmx_qt_qapplication_overridecursor())
+	End Function
+	
+	Function quitOnLastWindowClosed:Int()
+		Return bmx_qt_qapplication_quitonlastwindowclosed()
+	End Function
+	
+	Function restoreOverrideCursor()
+		bmx_qt_qapplication_restoreoverridecursor()
+	End Function
+	
+	Function setActiveWindow(active:QWidget)
+		bmx_qt_qapplication_setactivewindow(active.qObjectPtr)
+	End Function
+	
+	Function setColorSpec(spec:Int)
+		bmx_qt_qapplication_setcolorspec(spec)
+	End Function
+	
+	Function setCursorFlashTime(time:Int)
+		bmx_qt_qapplication_setcursorflashtime(time)
+	End Function
+	
+	Function setDesktopSettingsAware(on:Int)
+		bmx_qt_qapplication_setdesktopsettingsaware(on)
+	End Function
+	
+	Function setDoubleClickInterval(interval:Int)
+		bmx_qt_qapplication_setdoubleclickinterval(interval)
+	End Function
+	
+	Function setEffectEnabled(effect:Int, enable:Int = True)
+		bmx_qt_qapplication_seteffectenabled(effect, enable)
+	End Function
+	
+	Function setFont(font:QFont, className:String = Null)
+		bmx_qt_qapplication_setfont(font.qObjectPtr, className)
+	End Function
+	
+	Function setGlobalStrut(w:Int, h:Int)
+		bmx_qt_qapplication_setglobalstrut(w, h)
+	End Function
+	
+	Function setGraphicsSystem(system:String)
+		bmx_qt_qapplication_setgraphicssystem(system)
+	End Function
+	
+	Function setKeyboardInputInterval(interval:Int)
+		bmx_qt_qapplication_setkeyboardinputinterval(interval)
+	End Function
+	
+	Function setLayoutDirection(direction:Int)
+		bmx_qt_qapplication_setlayoutdirection(direction)
+	End Function
+	
+	Function setOverrideCursor(cursor:QCursor)
+		bmx_qt_qapplication_setoverridecursor(cursor.qObjectPtr)
+	End Function
+	
+	Function setPalette(palette:QPalette, className:String = Null)
+		bmx_qt_qapplication_setpalette(palette.qObjectPtr, className)
+	End Function
+	
+	Function setQuitOnLastWindowClosed(quit:Int)
+		bmx_qt_qapplication_setquitonlastwindowclosed(quit)
+	End Function
+	
+	Function setStartDragDistance(l:Int)
+		bmx_qt_qapplication_setstartdragdistance(l)
+	End Function
+	
+	Function setStartDragTime(ms:Int)
+		bmx_qt_qapplication_setstartdragtime(ms)
+	End Function
+	
+
 	' SIGNAL : commitDataRequest
 	Function _OnCommitDataRequest(obj:QApplication, m:Byte Ptr)
 		obj._InvokeSignals("commitDataRequest", [QSessionManager._create(m)])

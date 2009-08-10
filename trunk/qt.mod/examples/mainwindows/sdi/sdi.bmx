@@ -208,9 +208,9 @@ Type TWindow Extends QMainWindow
 		End If
 		
 		Local in:QTextStream = New QTextStream.Create(file)
-		'QApplication.setOverrideCursor(Qt_WaitCursor)
+		QApplication.setOverrideCursor(New QCursor.Create(Qt_WaitCursor))
 		textEdit.setPlainText(in.readAll())
-		'QApplication.restoreOverrideCursor()
+		QApplication.restoreOverrideCursor()
 		
 		setCurrentFile(fileName)
 		statusBar().showMessage(tr("File loaded"), 2000)

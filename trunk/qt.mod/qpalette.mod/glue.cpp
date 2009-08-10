@@ -24,6 +24,18 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQPalette::MaxQPalette(const QPalette & p)
+	: palette(p)
+{
+}
+
+MaxQPalette::~MaxQPalette()
+{
+}
+
+QPalette & MaxQPalette::Palette() {
+	return palette;
+}
 
 
 // *********************************************

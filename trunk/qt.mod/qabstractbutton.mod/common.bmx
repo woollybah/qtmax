@@ -68,5 +68,7 @@ Extern
 	Function bmx_qt_qabstractbutton_setchecked(handle:Byte Ptr, value:Int)
 	Function bmx_qt_qabstractbutton_seticonsize(handle:Byte Ptr, w:Int, h:Int)
 	Function bmx_qt_qabstractbutton_toggle(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_icon:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qabstractbutton_seticon(handle:Byte Ptr, icon:Byte Ptr)
 
 End Extern

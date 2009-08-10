@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QAbstractScrollArea
 Import BRL.Blitz
 
 
@@ -45,4 +46,15 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qscrollarea_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qscrollarea_alignment:Int(handle:Byte Ptr)
+	Function bmx_qt_qscrollarea_ensurevisible(handle:Byte Ptr, x:Int, y:Int, xmargin:Int, ymargin:Int)
+	Function bmx_qt_qscrollarea_ensurewidgetvisible(handle:Byte Ptr, childWidget:Byte Ptr, xmargin:Int, ymargin:Int)
+	Function bmx_qt_qscrollarea_setalignment(handle:Byte Ptr, alignment:Int)
+	Function bmx_qt_qscrollarea_setwidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qscrollarea_setwidgetresizable(handle:Byte Ptr, resizable:Int)
+	Function bmx_qt_qscrollarea_takewidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qscrollarea_widget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qscrollarea_widgetresizable:Int(handle:Byte Ptr)
+	
 End Extern
