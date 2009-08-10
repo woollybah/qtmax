@@ -25,6 +25,9 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QLocale>
+
+class MaxQLocale;
 
 extern "C" {
 
@@ -35,5 +38,16 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQLocale
+{
+public:
+	MaxQLocale(const QLocale & l);
+	~MaxQLocale();
+	
+	QLocale & Locale();
+
+private:
+	QLocale locale;
+};
 
 #endif

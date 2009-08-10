@@ -25,11 +25,26 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QAbstractScrollArea>
 
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qabstractscrollarea_addscrollbarwidget(QAbstractScrollArea * sa, QWidget * widget, int alignment);
+	QWidget * bmx_qt_qabstractscrollarea_cornerwidget(QAbstractScrollArea * sa);
+	QScrollBar * bmx_qt_qabstractscrollarea_horizontalscrollbar(QAbstractScrollArea * sa);
+	int bmx_qt_qabstractscrollarea_horizontalscrollbarpolicy(QAbstractScrollArea * sa);
+	void bmx_qt_qabstractscrollarea_maximumviewportsize(QAbstractScrollArea * sa, int * w, int * h);
+	void bmx_qt_qabstractscrollarea_setcornerwidget(QAbstractScrollArea * sa, QWidget * widget);
+	void bmx_qt_qabstractscrollarea_sethorizontalscrollbar(QAbstractScrollArea * sa, QScrollBar * scrollBar);
+	void bmx_qt_qabstractscrollarea_sethorizontalscrollbarpolicy(QAbstractScrollArea * sa, int policy);
+	void bmx_qt_qabstractscrollarea_setverticalscrollbar(QAbstractScrollArea * sa, QScrollBar * scrollBar);
+	void bmx_qt_qabstractscrollarea_setverticalscrollbarpolicy(QAbstractScrollArea * sa, int policy);
+	void bmx_qt_qabstractscrollarea_setviewport(QAbstractScrollArea * sa, QWidget * widget);
+	QScrollBar * bmx_qt_qabstractscrollarea_verticalscrollbar(QAbstractScrollArea * sa);
+	int bmx_qt_qabstractscrollarea_verticalscrollbarpolicy(QAbstractScrollArea * sa);
+	QWidget * bmx_qt_qabstractscrollarea_viewport(QAbstractScrollArea * sa);
 
 }
 

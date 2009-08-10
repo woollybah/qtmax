@@ -33,5 +33,13 @@ Import "common.bmx"
 Type Qlocale
 
 	Field qObjectPtr:Byte Ptr
+	
+	Function _create:QLocale(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QLocale = New QLocale
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
 End Type

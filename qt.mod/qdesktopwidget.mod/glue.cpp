@@ -24,18 +24,6 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQLocale::MaxQLocale(const QLocale & l)
-	: locale(l)
-{
-}
-
-MaxQLocale::~MaxQLocale()
-{
-}
-
-QLocale & MaxQLocale::Locale() {
-	return locale;
-}
 
 
 // *********************************************

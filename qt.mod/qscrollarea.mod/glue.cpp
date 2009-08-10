@@ -24,21 +24,59 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQLocale::MaxQLocale(const QLocale & l)
-	: locale(l)
+MaxQScrollArea::MaxQScrollArea(BBObject * handle, QWidget * parent)
+	: maxHandle(handle), QScrollArea(parent)
 {
+	qbind(this, handle);
 }
 
-MaxQLocale::~MaxQLocale()
+MaxQScrollArea::~MaxQScrollArea()
 {
-}
-
-QLocale & MaxQLocale::Locale() {
-	return locale;
+	qunbind(this);
 }
 
 
 // *********************************************
+
+QScrollArea * bmx_qt_qscrollarea_create(BBObject * handle, QWidget * parent) {
+	return new MaxQScrollArea(handle, parent);
+}
+
+int bmx_qt_qscrollarea_alignment(QScrollArea * sa) {
+	return sa->alignment();
+}
+
+void bmx_qt_qscrollarea_ensurevisible(QScrollArea * sa, int x, int y, int xmargin, int ymargin) {
+	sa->ensureVisible(x, y, xmargin, ymargin);
+}
+
+void bmx_qt_qscrollarea_ensurewidgetvisible(QScrollArea * sa, QWidget * childWidget, int xmargin, int ymargin) {
+	sa->ensureWidgetVisible(childWidget, xmargin, ymargin);
+}
+
+void bmx_qt_qscrollarea_setalignment(QScrollArea * sa, int alignment) {
+	sa->setAlignment((Qt::Alignment)alignment);
+}
+
+void bmx_qt_qscrollarea_setwidget(QScrollArea * sa, QWidget * widget) {
+	sa->setWidget(widget);
+}
+
+void bmx_qt_qscrollarea_setwidgetresizable(QScrollArea * sa, int resizable) {
+	sa->setWidgetResizable(static_cast<bool>(resizable));
+}
+
+QWidget * bmx_qt_qscrollarea_takewidget(QScrollArea * sa) {
+	return sa->takeWidget();
+}
+
+QWidget * bmx_qt_qscrollarea_widget(QScrollArea * sa) {
+	return sa->widget();
+}
+
+int bmx_qt_qscrollarea_widgetresizable(QScrollArea * sa) {
+	return static_cast<int>(sa->widgetResizable());
+}
 
 
 

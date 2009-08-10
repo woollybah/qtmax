@@ -92,6 +92,210 @@ void bmx_qt_qapplication_setstylesheet(QApplication * app, BBString * sheet) {
 	app->setStyleSheet(qStringFromBBString(sheet));
 }
 
+QWidget * bmx_qt_qapplication_activemodalwidget() {
+	return QApplication::activeModalWidget();
+}
+
+QWidget * bmx_qt_qapplication_activepopupwidget() {
+	return QApplication::activePopupWidget();
+}
+
+QWidget * bmx_qt_qapplication_activewindow() {
+	return QApplication::activeWindow();
+}
+
+void bmx_qt_qapplication_alert(QWidget * widget, int msec) {
+	QApplication::alert(widget, msec);
+}
+
+void bmx_qt_qapplication_beep() {
+	QApplication::beep();
+}
+
+void bmx_qt_qapplication_changeoverridecursor(MaxQCursor * cursor) {
+	QApplication::changeOverrideCursor(cursor->Cursor());
+}
+
+QClipboard * bmx_qt_qapplication_clipboard() {
+	return QApplication::clipboard();
+}
+
+int bmx_qt_qapplication_colorspec() {
+	return QApplication::colorSpec();
+}
+
+int bmx_qt_qapplication_cursorflashtime() {
+	return QApplication::cursorFlashTime();
+}
+
+QDesktopWidget * bmx_qt_qapplication_desktop() {
+	return QApplication::desktop();
+}
+
+int bmx_qt_qapplication_desktopsettingsaware() {
+	return static_cast<int>(QApplication::desktopSettingsAware());
+}
+
+int bmx_qt_qapplication_doubleclickinterval() {
+	return QApplication::doubleClickInterval();
+}
+
+QWidget * bmx_qt_qapplication_focuswidget() {
+	return QApplication::focusWidget();
+}
+
+MaxQFont * bmx_qt_qapplication_font() {
+	return new MaxQFont(QApplication::font());
+}
+
+MaxQFont * bmx_qt_qapplication_fontwidget(QWidget * widget) {
+	return new MaxQFont(QApplication::font(widget));
+}
+
+MaxQFont * bmx_qt_qapplication_fontname(BBString * className) {
+	char * f = bbStringToCString(className);
+	MaxQFont * font = new MaxQFont(QApplication::font(f));
+	bbMemFree(f);
+	return font;
+}
+
+MaxQFontMetrics * bmx_qt_qapplication_fontmetrics() {
+	return new MaxQFontMetrics(QApplication::fontMetrics());
+}
+
+void bmx_qt_qapplication_globalstrut(int * w, int * h) {
+	QSize s(QApplication::globalStrut());
+	*w = s.width();
+	*h = s.height();
+}
+
+int bmx_qt_qapplication_iseffectenabled(int effect) {
+	return static_cast<int>(QApplication::isEffectEnabled((Qt::UIEffect)effect));
+}
+
+int bmx_qt_qapplication_islefttoright() {
+	return static_cast<int>(QApplication::isLeftToRight());
+}
+
+int bmx_qt_qapplication_isrighttoleft() {
+	return static_cast<int>(QApplication::isRightToLeft());
+}
+
+int bmx_qt_qapplication_keyboardinputdirection() {
+	return QApplication::keyboardInputDirection();
+}
+
+int bmx_qt_qapplication_keyboardinputinterval() {
+	return QApplication::keyboardInputInterval();
+}
+
+MaxQLocale * bmx_qt_qapplication_keyboardinputlocale() {
+	return new MaxQLocale(QApplication::keyboardInputLocale());
+}
+
+int bmx_qt_qapplication_keyboardmodifiers() {
+	return QApplication::keyboardModifiers();
+}
+
+int bmx_qt_qapplication_layoutdirection() {
+	return QApplication::layoutDirection();
+}
+
+int bmx_qt_qapplication_mousebuttons() {
+	return QApplication::mouseButtons();
+}
+
+MaxQCursor * bmx_qt_qapplication_overridecursor() {
+	QCursor * c = QApplication::overrideCursor();
+	if (c) {
+		return new MaxQCursor(*c);
+	} else {
+		return 0;
+	}
+}
+
+int bmx_qt_qapplication_quitonlastwindowclosed() {
+	return static_cast<int>(QApplication::quitOnLastWindowClosed());
+}
+
+void bmx_qt_qapplication_restoreoverridecursor() {
+	QApplication::restoreOverrideCursor();
+}
+
+void bmx_qt_qapplication_setactivewindow(QWidget * widget) {
+	QApplication::setActiveWindow(widget);
+}
+
+void bmx_qt_qapplication_setcolorspec(int spec) {
+	QApplication::setColorSpec(spec);
+}
+
+void bmx_qt_qapplication_setcursorflashtime(int time) {
+	QApplication::setCursorFlashTime(time);
+}
+
+void bmx_qt_qapplication_setdesktopsettingsaware(int on) {
+	QApplication::setDesktopSettingsAware(static_cast<bool>(on));
+}
+
+void bmx_qt_qapplication_setdoubleclickinterval(int interval) {
+	QApplication::setDoubleClickInterval(interval);
+}
+
+void bmx_qt_qapplication_seteffectenabled(int effect, int enable) {
+	QApplication::setEffectEnabled((Qt::UIEffect)effect, static_cast<bool>(enable));
+}
+
+void bmx_qt_qapplication_setfont(MaxQFont * font, BBString * className) {
+	char * name = 0;
+	if (className != &bbEmptyString) {
+		name = bbStringToCString(className);
+	}
+	QApplication::setFont(font->Font(), name);
+	if (name) bbMemFree(name);
+}
+
+void bmx_qt_qapplication_setglobalstrut(int w, int h) {
+	QApplication::setGlobalStrut(QSize(w, h));
+}
+
+void bmx_qt_qapplication_setgraphicssystem(BBString * system) {
+	QApplication::setGraphicsSystem(qStringFromBBString(system));
+}
+
+void bmx_qt_qapplication_setkeyboardinputinterval(int interval) {
+	QApplication::setKeyboardInputInterval(interval);
+}
+
+void bmx_qt_qapplication_setlayoutdirection(int direction) {
+	QApplication::setLayoutDirection((Qt::LayoutDirection)direction);
+}
+
+void bmx_qt_qapplication_setoverridecursor(MaxQCursor * cursor) {
+	QApplication::setOverrideCursor(cursor->Cursor());
+}
+
+void bmx_qt_qapplication_setpalette(MaxQPalette * palette, BBString * className) {
+	char * n = 0;
+	if (className != &bbEmptyString) {
+		n = bbStringToCString(className);
+	}
+	QApplication::setPalette(palette->Palette(), n);
+	if (n) bbMemFree(n);
+}
+
+void bmx_qt_qapplication_setquitonlastwindowclosed(int quit) {
+	QApplication::setQuitOnLastWindowClosed(static_cast<bool>(quit));
+}
+
+void bmx_qt_qapplication_setstartdragdistance(int l) {
+	QApplication::setStartDragDistance(l);
+}
+
+void bmx_qt_qapplication_setstartdragtime(int ms) {
+	QApplication::setStartDragTime(ms);
+}
+
 
 // NOTES :
 // The moc4glue.cpp file is generated by running :  moc.sh

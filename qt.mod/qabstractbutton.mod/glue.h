@@ -24,6 +24,7 @@
 #define MAX_QT_QABSTRACTBUTTON
 
 #include "../core.mod/glue.h"
+#include "../qicon.mod/glue.h"
 #include <QtCore>
 #include <QAbstractButton>
 
@@ -53,6 +54,8 @@ extern "C" {
 	void bmx_qt_qabstractbutton_setchecked(QAbstractButton * button, int value);
 	void bmx_qt_qabstractbutton_seticonsize(QAbstractButton * button, int w, int h);
 	void bmx_qt_qabstractbutton_toggle(QAbstractButton * button);
+	MaxQIcon *  bmx_qt_qabstractbutton_icon(QAbstractButton * button);
+	void bmx_qt_qabstractbutton_seticon(QAbstractButton * button, MaxQIcon * icon);
 
 }
 

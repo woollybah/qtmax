@@ -34,6 +34,66 @@ Import "common.bmx"
 
 Type QAbstractScrollArea Extends QFrame
 
+	Method addScrollBarWidget(widget:QWidget, alignment:Int)
+		bmx_qt_qabstractscrollarea_addscrollbarwidget(qObjectPtr, widget.qObjectPtr, alignment)
+	End Method
+	
+	Method cornerWidget:QWidget()
+		Return QWidget._find(bmx_qt_qabstractscrollarea_cornerwidget(qObjectPtr))
+	End Method
+	
+	Method horizontalScrollBar:QScrollBar()
+		Return QScrollBar._find(bmx_qt_qabstractscrollarea_horizontalscrollbar(qObjectPtr))
+	End Method
+	
+	Method horizontalScrollBarPolicy:Int()
+		Return bmx_qt_qabstractscrollarea_horizontalscrollbarpolicy(qObjectPtr)
+	End Method
+	
+	Method maximumViewportSize(w:Int Var, h:Int Var)
+		bmx_qt_qabstractscrollarea_maximumviewportsize(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method scrollBarWidgets:QWidget[](alignment:Int)
+		'Return bmx_qt_qabstractscrollarea_scrollbarwidgets(qObjectPtr)
+	End Method
+	
+	Method setCornerWidget(widget:QWidget)
+		bmx_qt_qabstractscrollarea_setcornerwidget(qObjectPtr, widget.qObjectPtr)
+	End Method
+	
+	Method setHorizontalScrollBar(scrollBar:QScrollBar)
+		bmx_qt_qabstractscrollarea_sethorizontalscrollbar(qObjectPtr, scrollBar.qObjectPtr)
+	End Method
+	
+	Method setHorizontalScrollBarPolicy(policy:Int)
+		bmx_qt_qabstractscrollarea_sethorizontalscrollbarpolicy(qObjectPtr, policy)
+	End Method
+	
+	Method setVerticalScrollBar(scrollBar:QScrollBar)
+		bmx_qt_qabstractscrollarea_setverticalscrollbar(qObjectPtr, scrollBar.qObjectPtr)
+	End Method
+	
+	Method setVerticalScrollBarPolicy(policy:Int)
+		bmx_qt_qabstractscrollarea_setverticalscrollbarpolicy(qObjectPtr, policy)
+	End Method
+	
+	Method SetViewport(widget:QWidget)
+		bmx_qt_qabstractscrollarea_setviewport(qObjectPtr, widget.qObjectPtr)
+	End Method
+	
+	Method verticalScrollBar:QScrollBar()
+		Return QScrollBar._find(bmx_qt_qabstractscrollarea_verticalscrollbar(qObjectPtr))
+	End Method
+	
+	Method verticalScrollBarPolicy:Int()
+		Return bmx_qt_qabstractscrollarea_verticalscrollbarpolicy(qObjectPtr)
+	End Method
+	
+	Method viewport:QWidget() 
+		Return QWidget._find(bmx_qt_qabstractscrollarea_viewport(qObjectPtr))
+	End Method
 
+	
 End Type
 

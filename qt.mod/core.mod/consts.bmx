@@ -410,3 +410,84 @@ Rem
 bbdoc: (default when converting for the purpose of saving to file) - Dither 32-bit images only if the image has more than 256 colors and it is being converted to 8 bits.
 end rem
 Const Qt_AvoidDither:Int = $00000080
+
+Rem
+bbdoc: <img src="images/cursor-arrow.png" /> The standard arrow cursor.
+End Rem
+Const Qt_ArrowCursor:Int = 0
+Rem
+bbdoc: <img src="images/cursor-uparrow.png" /> An arrow pointing upwards toward the top of the screen.
+End Rem
+Const Qt_UpArrowCursor:Int = 1
+Rem
+bbdoc: <img src="images/cursor-cross.png" /> A crosshair cursor, typically used to help the user accurately select a point on the screen.
+End Rem
+Const Qt_CrossCursor:Int = 2
+Rem
+bbdoc: <img src="images/cursor-wait.png" /> An hourglass or watch cursor, usually shown during operations that prevent the user from interacting with the application.
+End Rem
+Const Qt_WaitCursor:Int = 3
+Rem
+bbdoc: <img src="images/cursor-ibeam.png" /> A caret or ibeam cursor, indicating that a widget can accept and display text input.
+End Rem
+Const Qt_IBeamCursor:Int = 4
+Rem
+bbdoc: <img src="images/cursor-sizev.png" /> A cursor used for elements that are used to vertically resize top-level windows.
+End Rem
+Const Qt_SizeVerCursor:Int = 5
+Rem
+bbdoc: <img src="images/cursor-sizeh.png" /> A cursor used for elements that are used to horizontally resize top-level windows.
+End Rem
+Const Qt_SizeHorCursor:Int = 6
+Rem
+bbdoc: <img src="images/cursor-sizeb.png" /> A cursor used for elements that are used to diagonally resize top-level windows at their top-right and bottom-left corners.
+End Rem
+Const Qt_SizeBDiagCursor:Int = 7
+Rem
+bbdoc: <img src="images/cursor-sizef.png" /> A cursor used for elements that are used to diagonally resize top-level windows at their top-left and bottom-right corners.
+End Rem
+Const Qt_SizeFDiagCursor:Int = 8
+Rem
+bbdoc: <img src="images/cursor-sizeall.png" /> A cursor used for elements that are used to resize top-level windows in any direction.
+End Rem
+Const Qt_SizeAllCursor:Int = 9
+Rem
+bbdoc: A blank/invisible cursor, typically used when the cursor shape needs to be hidden.
+End Rem
+Const Qt_BlankCursor:Int = 10
+Rem
+bbdoc: <img src="images/cursor-vsplit.png" /> A cursor used for vertical splitters, indicating that a handle can be dragged horizontally to adjust the use of available space.
+End Rem
+Const Qt_SplitVCursor:Int = 11
+Rem
+bbdoc: <img src="images/cursor-hsplit.png" /> A cursor used for horizontal splitters, indicating that a handle can be dragged vertically to adjust the use of available space.
+End Rem
+Const Qt_SplitHCursor:Int = 12
+Rem
+bbdoc: <img src="images/cursor-hand.png" /> A pointing hand cursor that is typically used for clickable elements such as hyperlinks.
+End Rem
+Const Qt_PointingHandCursor:Int = 13
+Rem
+bbdoc: <img src="images/cursor-forbidden.png" /> A slashed circle cursor, typically used during drag and drop operations to indicate that dragged content cannot be dropped on particular widgets or inside certain regions.
+End Rem
+Const Qt_ForbiddenCursor:Int = 14
+Rem
+bbdoc: <img src="images/cursor-openhand.png" /> A cursor representing an open hand, typically used to indicate that the area under the cursor is the visible part of a canvas that the user can click and drag in order to scroll around.
+End Rem
+Const Qt_OpenHandCursor:Int = 17
+Rem
+bbdoc: <img src="images/cursor-closedhand.png" /> A cursor representing a closed hand, typically used to indicate that a dragging operation is in progress that involves scrolling.
+End Rem
+Const Qt_ClosedHandCursor:Int = 18
+Rem
+bbdoc: <img src="images/cursor-whatsthis.png" /> An arrow with a question mark, typically used to indicate the presence of What's This? help for a widget.
+End Rem
+Const Qt_WhatsThisCursor:Int = 15
+Rem
+bbdoc: <img src="images/cursor-wait.png" /> An hourglass or watch cursor, usually shown during operations that allow the user to interact with the application while they are performed in the background.
+End Rem
+Const Qt_BusyCursor:Int = 16
+Rem
+bbdoc: 
+End Rem
+Const Qt_BitmapCursor:Int = 24

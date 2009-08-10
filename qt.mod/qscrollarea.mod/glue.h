@@ -20,34 +20,43 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QPALETTE
-#define MAX_QT_QPALETTE
+#ifndef MAX_QT_QSCROLLAREA
+#define MAX_QT_QSCROLLAREA
 
 #include "../core.mod/glue.h"
 #include <QtCore>
-#include <QPalette>
+#include <QScrollArea>
 
-class MaxQPalette;
+class MaxQScrollArea;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QScrollArea * bmx_qt_qscrollarea_create(BBObject * handle, QWidget * parent);
+	int bmx_qt_qscrollarea_alignment(QScrollArea * sa);
+	void bmx_qt_qscrollarea_ensurevisible(QScrollArea * sa, int x, int y, int xmargin, int ymargin);
+	void bmx_qt_qscrollarea_ensurewidgetvisible(QScrollArea * sa, QWidget * childWidget, int xmargin, int ymargin);
+	void bmx_qt_qscrollarea_setalignment(QScrollArea * sa, int alignment);
+	void bmx_qt_qscrollarea_setwidget(QScrollArea * sa, QWidget * widget);
+	void bmx_qt_qscrollarea_setwidgetresizable(QScrollArea * sa, int resizable);
+	QWidget * bmx_qt_qscrollarea_takewidget(QScrollArea * sa);
+	QWidget * bmx_qt_qscrollarea_widget(QScrollArea * sa);
+	int bmx_qt_qscrollarea_widgetresizable(QScrollArea * sa);
 
+	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQPalette
+class MaxQScrollArea : public QScrollArea
 {
 public:
-	MaxQPalette(const QPalette & p);
-	~MaxQPalette();
-	
-	QPalette & Palette();
+	MaxQScrollArea(BBObject * handle, QWidget * parent);
+	~MaxQScrollArea();
 
 private:
-	QPalette palette;
+	BBObject * maxHandle;
 };
 
 #endif

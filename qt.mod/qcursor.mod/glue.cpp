@@ -24,22 +24,30 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQLocale::MaxQLocale(const QLocale & l)
-	: locale(l)
+MaxQCursor::MaxQCursor(const QCursor & c)
+	: cursor(c)
 {
 }
 
-MaxQLocale::~MaxQLocale()
+MaxQCursor::~MaxQCursor()
 {
 }
 
-QLocale & MaxQLocale::Locale() {
-	return locale;
+QCursor & MaxQCursor::Cursor() {
+	return cursor;
 }
 
 
 // *********************************************
 
+MaxQCursor * bmx_qt_qcursor_create(int shape) {
+	QCursor c((Qt::CursorShape)shape);
+	return new MaxQCursor(c);
+}
+
+void bmx_qt_qcursor_free(MaxQCursor * cursor) {
+	delete cursor;
+}
 
 
 // NOTES :

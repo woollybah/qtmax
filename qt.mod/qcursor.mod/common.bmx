@@ -45,4 +45,7 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qcursor_create:Byte Ptr(shape:Int)
+	Function bmx_qt_qcursor_free(handle:Byte Ptr)
+
 End Extern
