@@ -137,6 +137,32 @@ extern "C" {
 	int bmx_qt_qwidget_x(QWidget * widget);
 	int bmx_qt_qwidget_y(QWidget * widget);
 
+	void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event);
+	void bmx_qt_qwidget_default_mousemoveevent(MaxQWidget * widget, QMouseEvent * event);
+	void bmx_qt_qwidget_default_mousepressevent(MaxQWidget * widget, QMouseEvent * event);
+	void bmx_qt_qwidget_default_mousereleaseevent(MaxQWidget * widget, QMouseEvent * event);
+	void bmx_qt_qwidget_default_actionevent(MaxQWidget * widget, QActionEvent * event);
+	void bmx_qt_qwidget_default_changeevent(MaxQWidget * widget, QEvent * event);
+	void bmx_qt_qwidget_default_closeevent(MaxQWidget * widget, QCloseEvent * event);
+	void bmx_qt_qwidget_default_contextmenuevent(MaxQWidget * widget, QContextMenuEvent * event);
+	void bmx_qt_qwidget_default_dragenterevent(MaxQWidget * widget, QDragEnterEvent * event);
+	void bmx_qt_qwidget_default_dragleaveevent(MaxQWidget * widget, QDragLeaveEvent * event);
+	void bmx_qt_qwidget_default_dragmoveevent(MaxQWidget * widget, QDragMoveEvent * event);
+	void bmx_qt_qwidget_default_dropevent(MaxQWidget * widget, QDropEvent * event);
+	void bmx_qt_qwidget_default_enterevent(MaxQWidget * widget, QEvent * event);
+	void bmx_qt_qwidget_default_focusinevent(MaxQWidget * widget, QFocusEvent * event);
+	void bmx_qt_qwidget_default_focusoutevent(MaxQWidget * widget, QFocusEvent * event);
+	void bmx_qt_qwidget_default_hideevent(MaxQWidget * widget, QHideEvent * event);
+	void bmx_qt_qwidget_default_inputmethodevent(MaxQWidget * widget, QInputMethodEvent * event);
+	void bmx_qt_qwidget_default_keypressevent(MaxQWidget * widget, QKeyEvent * event);
+	void bmx_qt_qwidget_default_keyreleaseevent(MaxQWidget * widget, QKeyEvent * event);
+	void bmx_qt_qwidget_default_leaveevent(MaxQWidget * widget, QEvent * event);
+	void bmx_qt_qwidget_default_moveevent(MaxQWidget * widget, QMoveEvent * event);
+	void bmx_qt_qwidget_default_resizeevent(MaxQWidget * widget, QResizeEvent * event);
+	void bmx_qt_qwidget_default_showevent(MaxQWidget * widget, QShowEvent * event);
+	void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * event);
+	void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event);
+
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);
 
@@ -218,6 +244,33 @@ public:
 
 	QSize sizeHint() const;
 	QSize minimumSizeHint() const;
+
+	void defaultActionEvent(QActionEvent * event);
+	void defaultChangeEvent(QEvent * event);
+	void defaultCloseEvent(QCloseEvent * event);
+	void defaultContextMenuEvent(QContextMenuEvent * event);
+	void defaultDragEnterEvent(QDragEnterEvent * event);
+	void defaultDragLeaveEvent(QDragLeaveEvent * event);
+	void defaultDragMoveEvent(QDragMoveEvent * event);
+	void defaultDropEvent(QDropEvent * event);
+	void defaultEnterEvent(QEvent * event);
+	void defaultFocusInEvent(QFocusEvent * event);
+	void defaultFocusOutEvent(QFocusEvent * event);
+	void defaultHideEvent(QHideEvent * event);
+	void defaultInputMethodEvent(QInputMethodEvent * event);
+	void defaultKeyPressEvent(QKeyEvent * event);
+	void defaultKeyReleaseEvent(QKeyEvent * event);
+	void defaultLeaveEvent(QEvent * event);
+	void defaultMoveEvent(QMoveEvent * event);
+	void defaultPaintEvent(QPaintEvent * event);
+	void defaultMouseDoubleClickEvent(QMouseEvent * event);
+	void defaultMouseMoveEvent(QMouseEvent * event);
+	void defaultMousePressEvent(QMouseEvent * event);
+	void defaultMouseReleaseEvent(QMouseEvent * event);
+	void defaultResizeEvent(QResizeEvent * event);
+	void defaultShowEvent(QShowEvent * event);
+	void defaultTabletEvent(QTabletEvent * event);
+	void defaultWheelEvent(QWheelEvent * event);
 	
 protected:
 	void actionEvent(QActionEvent * event);
