@@ -58,5 +58,89 @@ Type QGridLayout Extends QLayout
 		bmx_qt_qgridlayout_addwidgetspan(qObjectPtr, widget.qObjectPtr, fromRow, fromColumn, rowSpan, columnSpan, alignment)
 	End Method
 
+	Method cellRect:QRect(row:Int, column:Int)
+		Return QRect._create(bmx_qt_qgridlayout_cellrect(qObjectPtr, row, column))
+	End Method
+	
+	Method columnCount:Int()
+		Return bmx_qt_qgridlayout_columncount(qObjectPtr)
+	End Method
+	
+	Method columnMinimumWidth:Int(column:Int)
+		Return bmx_qt_qgridlayout_columnminimumwidth(qObjectPtr, column)
+	End Method
+	
+	Method columnStretch:Int(column:Int)
+		Return bmx_qt_qgridlayout_columnstretch(qObjectPtr, column)
+	End Method
+	
+	Method getItemPosition(index:Int, row:Int Var, column:Int Var, rowSpan:Int Var, columnSpan:Int Var)
+		bmx_qt_qgridlayout_getitemposition(qObjectPtr, index, Varptr row, Varptr column, Varptr rowSpan, Varptr columnSpan)
+	End Method
+	
+	Method horizontalSpacing:Int()
+		Return bmx_qt_qgridlayout_horizontalspacing(qObjectPtr)
+	End Method
+	
+	Method itemAtPosition:QLayoutItem(row:Int, column:Int)
+		Return QLayoutItem._create(bmx_qt_qgridlayout_itematposition(qObjectPtr, row, column))
+	End Method
+	
+	Method originCorner:Int()
+		Return bmx_qt_qgridlayout_origincorner(qObjectPtr)
+	End Method
+	
+	Method rowCount:Int()
+		Return bmx_qt_qgridlayout_rowcount(qObjectPtr)
+	End Method
+	
+	Method rowMinimumHeight:Int(row:Int)
+		Return bmx_qt_qgridlayout_rowminimumheight(qObjectPtr, row)
+	End Method
+	
+	Method rowStretch:Int(row:Int)
+		Return bmx_qt_qgridlayout_rowstretch(qObjectPtr, row)
+	End Method
+	
+	Method setColumnMinimumWidth(column:Int, minSize:Int)
+		bmx_qt_qgridlayout_setcolumnminimumwidth(qObjectPtr, column, minSize)
+	End Method
+	
+	Method setColumnStretch(column:Int, stretch:Int)
+		bmx_qt_qgridlayout_setcolumnstretch(qObjectPtr, column, stretch)
+	End Method
+	
+	Method setHorizontalSpacing(spacing:Int)
+		bmx_qt_qgridlayout_sethorizontalspacing(qObjectPtr, spacing)
+	End Method
+	
+	Method setOriginCorner(corner:Int)
+		bmx_qt_qgridlayout_setorigincorner(qObjectPtr, corner)
+	End Method
+	
+	Method setRowMinimumHeight(row:Int, minSize:Int)
+		bmx_qt_qgridlayout_setrowminimumheight(qObjectPtr, row, minSize)
+	End Method
+	
+	Method setRowStretch(row:Int, stretch:Int)
+		bmx_qt_qgridlayout_setrowstretch(qObjectPtr, row, stretch)
+	End Method
+	
+	Method setSpacing(spacing:Int)
+		bmx_qt_qgridlayout_setspacing(qObjectPtr, spacing)
+	End Method
+	
+	Method setVerticalSpacing(spacing:Int)
+		bmx_qt_qgridlayout_setverticalspacing(qObjectPtr, spacing)
+	End Method
+	
+	Method spacing:Int()
+		Return bmx_qt_qgridlayout_spacing(qObjectPtr)
+	End Method
+	
+	Method verticalSpacing:Int()
+		Return bmx_qt_qgridlayout_verticalspacing(qObjectPtr)
+	End Method
+
 End Type
 
