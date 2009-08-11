@@ -887,6 +887,14 @@ End Type
 Type QLayoutItem
 
 	Field qObjectPtr:Byte Ptr
+	
+	Function _create:QLayoutItem(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QLayoutItem = New QLayoutItem
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
 	Method alignment:Int()
 	End Method
