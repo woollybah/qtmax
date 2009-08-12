@@ -28,6 +28,7 @@
 #include "../qfont.mod/glue.h"
 #include "../qfontmetrics.mod/glue.h"
 #include "../qicon.mod/glue.h"
+#include "../qregion.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -165,6 +166,21 @@ extern "C" {
 
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);
+	int bmx_qt_qwidget_acceptdrops(QWidget * widget);
+	BBString * bmx_qt_qwidget_accessibledescription(QWidget * widget);
+	BBString * bmx_qt_qwidget_accessiblename(QWidget * widget);
+	void bmx_qt_qwidget_activatewindow(QWidget * widget);
+	void bmx_qt_qwidget_adjustsize(QWidget * widget);
+	int bmx_qt_qwidget_autofillbackground(QWidget * widget);
+	int bmx_qt_qwidget_backgroundrole(QWidget * widget);
+	void bmx_qt_qwidget_basesize(QWidget * widget, int * w, int * h);
+	QWidget * bmx_qt_qwidget_childat(QWidget * widget, int x, int y);
+	MaxQRect * bmx_qt_qwidget_childrenrect(QWidget * widget);
+	MaxQRegion * bmx_qt_qwidget_childrenregion(QWidget * widget);
+	void bmx_qt_qwidget_clearfocus(QWidget * widget);
+	void bmx_qt_qwidget_clearmask(QWidget * widget);
+	MaxQRect * bmx_qt_qwidget_contentsrect(QWidget * widget);
+
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

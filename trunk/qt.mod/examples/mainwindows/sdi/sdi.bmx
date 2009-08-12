@@ -9,6 +9,7 @@ Import Qt.QTextEdit
 Import Qt.QMessageBox
 Import Qt.QFile
 Import Qt.QTextStream
+Import Qt.QFileDialog
 Import BRL.RamStream
 Import BRL.PngLoader
 
@@ -222,9 +223,24 @@ Type TWindow Extends QMainWindow
 	End Method
 	
 	Method setCurrentFile(fileName:String)
+		Global sequenceNumber:Int = 1
+		
+		isUntitled = fileName <> ""
+		If isUntitled Then
+			curFile = tr("document" + sequenceNumber + ".txt")
+			sequenceNumber:+ 1
+		Else
+			curFile = New QFileInfo.Create(fileName).canonicalFilePath()
+		End If
+		
+		textEdit.document().setModified(False)
+		setWindowModified(False)
+		
+		setWindowTitle(tr(strippedName(curFile) + "[*] - SDI"))
 	End Method
 	
 	Method strippedName:String(fullFileName:String)
+		Return New QFileInfo.Create(fullFileName).fileName()
 	End Method
 	
 	Method findMainWindow:TWindow(fileName:String)
@@ -238,6 +254,28 @@ Type TWindow Extends QMainWindow
 	End Method
 		
 	Method open()
+		Local fileName:String = QFileDialog.getOpenFileName(Self)
+		If fileName Then
+			Local existing:TWindow = findMainWindow(fileName)
+			If existing Then
+				existing.show()
+				existing.raise()
+				existing.ActivateWindow()
+				Return
+			End If
+		
+			If isUntitled And textEdit.document().isEmpty() And Not isWindowModified() Then
+				loadFile(fileName)
+			Else
+				Local other:TWindow = New TWindow.CreateWindow(fileName)
+				If other.isUntitled Then
+					other.Free()
+					Return
+				End If
+				other.move(x() + 40, y() + 40)
+				other.show()
+			End If
+		End If
 	End Method
 		
 	Method save:Int()

@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QRegion
+Module Qt.QFileDialog
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,16 +30,15 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-Type QRegion
+Type QFileDialog Extends QDialog
 
-	Field qObjectPtr:Byte Ptr
-
-	Function _create:QRegion(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QRegion = New QRegion
-			this.qObjectPtr = qObjectPtr
-			Return this
+	Function getOpenFileName:String(parent:QWidget = Null, caption:String = "", dir:String = "", filter:String = "", options:Int = 0)
+		If parent Then
+			Return bmx_qt_qfiledialog_getopenfilename(parent.qObjectPtr, caption, dir, filter, options)
+		Else
+			Return bmx_qt_qfiledialog_getopenfilename(Null, caption, dir, filter, options)
 		End If
 	End Function
 
 End Type
+
