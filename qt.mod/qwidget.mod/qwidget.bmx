@@ -83,6 +83,26 @@ Type QWidget Extends QObject
 
 	Method OnInit()
 	End Method
+
+	Method acceptDrops:Int()
+		Return bmx_qt_qwidget_acceptdrops(qObjectPtr)
+	End Method
+	
+	Method accessibleDescription:String()
+		Return bmx_qt_qwidget_accessibledescription(qObjectPtr)
+	End Method
+	
+	Method accessibleName:String()
+		Return bmx_qt_qwidget_accessiblename(qObjectPtr)
+	End Method
+	
+	'method actions:QAction[]()
+	'' TODO
+	'end method
+	
+	Method ActivateWindow()
+		bmx_qt_qwidget_activatewindow(qObjectPtr)
+	End Method
 	
 	Method addAction:QAction(action:Object)
 		If QAction(action) Then
@@ -90,7 +110,48 @@ Type QWidget Extends QObject
 			Return QAction(action)
 		End If
 	End Method
+
+	Method adjustSize()
+		bmx_qt_qwidget_adjustsize(qObjectPtr)
+	End Method
 	
+	Method autoFillBackground:Int()
+		Return bmx_qt_qwidget_autofillbackground(qObjectPtr)
+	End Method
+	
+	Method backgroundRole:Int()
+		Return bmx_qt_qwidget_backgroundrole(qObjectPtr)
+	End Method
+	
+	Method baseSize(w:Int Var, h:Int Var)
+		bmx_qt_qwidget_basesize(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method childAt:QWidget(x:Int, y:Int )
+		Return QWidget._find(bmx_qt_qwidget_childat(qObjectPtr, x, y))
+	End Method
+	
+	Method childrenRect:QRect()
+		Return QRect._create(bmx_qt_qwidget_childrenrect(qObjectPtr))
+	End Method
+	
+	Method childrenRegion:QRegion()
+		Return QRegion._create(bmx_qt_qwidget_childrenregion(qObjectPtr))
+	End Method
+	
+	Method clearFocus()
+		bmx_qt_qwidget_clearfocus(qObjectPtr)
+	End Method
+	
+	Method clearMask()
+		bmx_qt_qwidget_clearmask(qObjectPtr)
+	End Method
+	
+	Method contentsRect:QRect()
+		Return QRect._create(bmx_qt_qwidget_contentsrect(qObjectPtr))
+	End Method
+	
+
 	Method font:QFont()
 		Return QFont._create(bmx_qt_qwidget_font(qObjectPtr))
 	End Method

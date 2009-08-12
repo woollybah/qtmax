@@ -147,7 +147,22 @@ Extern
 
 	Function bmx_qt_qwidget_height:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_width:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_acceptdrops:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_accessibledescription:String(handle:Byte Ptr)
+	Function bmx_qt_qwidget_accessiblename:String(handle:Byte Ptr)
+	Function bmx_qt_qwidget_activatewindow(handle:Byte Ptr)
+	Function bmx_qt_qwidget_adjustsize(handle:Byte Ptr)
+	Function bmx_qt_qwidget_autofillbackground:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_backgroundrole:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_basesize(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qwidget_childat:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)
+	Function bmx_qt_qwidget_childrenrect:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_childrenregion:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_clearfocus(handle:Byte Ptr)
+	Function bmx_qt_qwidget_clearmask(handle:Byte Ptr)
+	Function bmx_qt_qwidget_contentsrect:Byte Ptr(handle:Byte Ptr)
 
+		
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_setshortcut(handle:Byte Ptr, sequence:String)

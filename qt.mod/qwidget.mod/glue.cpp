@@ -577,6 +577,67 @@ int bmx_qt_qwidget_y(QWidget * widget) {
 	return widget->y();
 }
 
+int bmx_qt_qwidget_acceptdrops(QWidget * widget) {
+	return widget->acceptDrops();
+}
+
+BBString * bmx_qt_qwidget_accessibledescription(QWidget * widget) {
+	return bbStringFromQString(widget->accessibleDescription());
+}
+
+BBString * bmx_qt_qwidget_accessiblename(QWidget * widget) {
+	return bbStringFromQString(widget->accessibleName());
+}
+
+void bmx_qt_qwidget_activatewindow(QWidget * widget) {
+	widget->activateWindow();
+}
+
+void bmx_qt_qwidget_adjustsize(QWidget * widget) {
+	widget->adjustSize();
+}
+
+int bmx_qt_qwidget_autofillbackground(QWidget * widget) {
+	return static_cast<int>(widget->autoFillBackground());
+}
+
+int bmx_qt_qwidget_backgroundrole(QWidget * widget) {
+	return widget->backgroundRole();
+}
+
+void bmx_qt_qwidget_basesize(QWidget * widget, int * w, int * h) {
+	QSize s(widget->baseSize());
+	*w = s.width();
+	*h = s.height();
+}
+
+QWidget * bmx_qt_qwidget_childat(QWidget * widget, int x, int y) {
+	return widget->childAt(x, y);
+}
+
+MaxQRect * bmx_qt_qwidget_childrenrect(QWidget * widget) {
+	return new MaxQRect(widget->childrenRect());
+}
+
+MaxQRegion * bmx_qt_qwidget_childrenregion(QWidget * widget) {
+	return new MaxQRegion(widget->childrenRegion());
+}
+
+void bmx_qt_qwidget_clearfocus(QWidget * widget) {
+	widget->clearFocus();
+}
+
+void bmx_qt_qwidget_clearmask(QWidget * widget) {
+	widget->clearMask();
+}
+
+MaxQRect * bmx_qt_qwidget_contentsrect(QWidget * widget) {
+	return new MaxQRect(widget->contentsRect());
+}
+
+
+// *********************************************
+
 void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event) {
 	widget->defaultMouseDoubleClickEvent(event);
 }

@@ -20,26 +20,32 @@
 ' 
 SuperStrict
 
-Module Qt.QRegion
-
-ModuleInfo "Version: 1.00"
-ModuleInfo "License: MIT"
-ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
+Import Qt.Core
+Import Qt.QDialog
+Import BRL.Blitz
 
 
-Import "common.bmx"
+' headers :-)
+?win32
+Import "../lib/win32/include/*.h"
+?macos
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+?linux
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+?
 
-Type QRegion
+Import "glue.cpp"
 
-	Field qObjectPtr:Byte Ptr
+Extern
 
-	Function _create:QRegion(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QRegion = New QRegion
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
-	End Function
+	Function bmx_qt_qfiledialog_getopenfilename:String(parent:Byte Ptr, caption:String, dir:String, filter:String, options:Int)
 
-End Type
+End Extern
