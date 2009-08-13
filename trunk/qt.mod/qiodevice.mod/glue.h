@@ -30,6 +30,10 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qiodevice_QIODevice__OnAboutToClose(BBObject * handle);
+	void _qt_qiodevice_QIODevice__OnBytesWritten(BBObject * handle, BBInt64 bytes);
+	void _qt_qiodevice_QIODevice__OnReadChannelFinished(BBObject * handle);
+	void _qt_qiodevice_QIODevice__OnReadyRead(BBObject * handle);
 
 }
 

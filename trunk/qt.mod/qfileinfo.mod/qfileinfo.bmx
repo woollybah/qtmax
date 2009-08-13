@@ -36,6 +36,7 @@ Type QFileInfo
 	Field qObjectPtr:Byte Ptr
 	
 	Function CreateFileInfo:QFileInfo(file:Object)
+		Return New QFileInfo.Create(file)
 	End Function
 	
 	Method Create:QFileInfo(file:Object)
@@ -43,6 +44,8 @@ Type QFileInfo
 			qObjectPtr = bmx_qt_qfileinfo_create(String(file))
 		ElseIf QFile(file) Then
 			qObjectPtr = bmx_qt_qfileinfo_createfile(QFile(file).qObjectPtr)
+		Else ' empty string?
+			qObjectPtr = bmx_qt_qfileinfo_create("")
 		End If
 		Return Self
 	End Method

@@ -112,6 +112,154 @@ Type QTextDocument Extends QObject
 		Return bmx_qt_qtextdocument_isundoredoenabled(qObjectPtr)
 	End Method
 
+	Method lastBlock:QTextBlock()
+		Return QTextBlock._create(bmx_qt_qtextdocument_lastblock(qObjectPtr))
+	End Method
+	
+	Method lineCount:Int()
+		Return bmx_qt_qtextdocument_linecount(qObjectPtr)
+	End Method
+	
+	Method markContentsDirty(position:Int, length:Int)
+		bmx_qt_qtextdocument_markcontentsdirty(qObjectPtr, position, length)
+	End Method
+	
+	Method maximumBlockCount:Int()
+		Return bmx_qt_qtextdocument_maximumblockcount(qObjectPtr)
+	End Method
+	
+	Method metaInformation:String(info:Int)
+		Return bmx_qt_qtextdocument_metainformation(qObjectPtr, info)
+	End Method
+	
+	Method objectForIndex:QTextObject(objectIndex:Int)
+		Return QTextObject._create(bmx_qt_qtextdocument_object(qObjectPtr, objectIndex))
+	End Method
+	
+	Method objectForFormat:QTextObject(f:QTextFormat)
+		Return QTextObject._create(bmx_qt_qtextdocument_objectforformat(qObjectPtr, f.qObjectPtr))
+	End Method
+	
+	Method pageCount:Int()
+		Return bmx_qt_qtextdocument_pagecount(qObjectPtr)
+	End Method
+	
+	Method pageSize(w:Double Var, h:Double Var)
+		bmx_qt_qtextdocument_pagesize(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method Print(printer:QPrinter)
+		bmx_qt_qtextdocument_print(qObjectPtr, printer.qObjectPtr)
+	End Method
+	
+	Method redo(cursor:QTextCursor)
+		If cursor Then
+			bmx_qt_qtextdocument_redo(qObjectPtr, cursor.qObjectPtr)
+		Else
+			bmx_qt_qtextdocument_redo(qObjectPtr, Null)
+		End If
+	End Method
+	
+	'method resource:QVariant(_type:int, name:QUrl)
+	'	return bmx_qt_qtextdocument_resource(qObjectPtr)
+	'end method
+	
+	Method revision:Int()
+		Return bmx_qt_qtextdocument_revision(qObjectPtr)
+	End Method
+	
+	Method rootFrame:QTextFrame()
+		Return QTextFrame._create(bmx_qt_qtextdocument_rootframe(qObjectPtr))
+	End Method
+	
+	Method setDefaultFont(font:QFont)
+		bmx_qt_qtextdocument_setdefaultfont(qObjectPtr, font.qObjectPtr)
+	End Method
+	
+	Method setDefaultStyleSheet(sheet:String)
+		bmx_qt_qtextdocument_setdefaultstylesheet(qObjectPtr, sheet)
+	End Method
+	
+	Method setDefaultTextOption(option:QTextOption)
+		bmx_qt_qtextdocument_setdefaulttextoption(qObjectPtr, option.qObjectPtr)
+	End Method
+	
+	Method setDocumentLayout(layout:QAbstractTextDocumentLayout)
+		bmx_qt_qtextdocument_setdocumentlayout(qObjectPtr, layout.qObjectPtr)
+	End Method
+	
+	Method setDocumentMargin(margin:Double)
+		bmx_qt_qtextdocument_setdocumentmargin(qObjectPtr, margin)
+	End Method
+	
+	Method setHtml(html:String)
+		bmx_qt_qtextdocument_sethtml(qObjectPtr, html)
+	End Method
+	
+	Method setIndentWidth(width:Double)
+		bmx_qt_qtextdocument_setindentwidth(qObjectPtr, width)
+	End Method
+	
+	Method setMaximumBlockCount(maximum:Int)
+		bmx_qt_qtextdocument_setmaximumblockcount(qObjectPtr, maximum)
+	End Method
+	
+	Method setMetaInformation(info:Int, text:String)
+		bmx_qt_qtextdocument_setmetainformation(qObjectPtr, info, text)
+	End Method
+	
+	Method setModified(m:Int = True)
+		bmx_qt_qtextdocument_setmodified(qObjectPtr, m)
+	End Method
+	
+	Method setPageSize(w:Double, h:Double)
+		bmx_qt_qtextdocument_setpagesize(qObjectPtr, w, h)
+	End Method
+	
+	Method setPlainText(text:String)
+		bmx_qt_qtextdocument_setplaintext(qObjectPtr, text)
+	End Method
+	
+	Method setTextWidth(width:Double)
+		bmx_qt_qtextdocument_settextwidth(qObjectPtr, width)
+	End Method
+	
+	Method setUndoRedoEnabled(enable:Int)
+		bmx_qt_qtextdocument_setundoredoenabled(qObjectPtr, enable)
+	End Method
+	
+	Method setUseDesignMetrics(b:Int)
+		bmx_qt_qtextdocument_setusedesignmetrics(qObjectPtr, b)
+	End Method
+	
+	Method size(w:Double Var, h:Double Var)
+		bmx_qt_qtextdocument_size(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method TextWidth:Double()
+		Return bmx_qt_qtextdocument_textwidth(qObjectPtr)
+	End Method
+	
+	'method toHtml:String(const QByteArray & encoding = QByteArray())
+	'	return bmx_qt_qtextdocument_tohtml(qObjectPtr)
+	'end method
+	
+	Method toPlainText:String()
+		Return bmx_qt_qtextdocument_toplaintext(qObjectPtr)
+	End Method
+	
+	Method undo(cursor:QTextCursor = Null)
+		If cursor Then
+			bmx_qt_qtextdocument_undo(qObjectPtr, cursor.qObjectPtr)
+		Else
+			bmx_qt_qtextdocument_undo(qObjectPtr, Null)
+		End If
+	End Method
+	
+	Method useDesignMetrics:Int()
+		Return bmx_qt_qtextdocument_usedesignmetrics(qObjectPtr)
+	End Method
+
 	' SIGNAL : blockCountChanged
 	Function _OnBlockCountChanged(obj:QTextDocument, newBlockCount:Int)
 		obj._InvokeSignals("blockCountChanged", [String(newBlockCount)])
@@ -238,3 +386,69 @@ Type QTextCursor
 	End Function
 
 End Type
+
+
+Type QTextBlock
+
+	Field qObjectPtr:Byte Ptr
+	
+	Function _create:QTextBlock(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextBlock = New QTextBlock
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QTextObject Extends QObject
+
+	Function _create:QTextObject(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextObject = New QTextObject
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QTextFrame Extends QTextObject
+
+	Function _create:QTextFrame(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextFrame = New QTextFrame
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QTextOption
+
+	Field qObjectPtr:Byte Ptr
+	
+	Function _create:QTextOption(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTextOption = New QTextOption
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
+Type QAbstractTextDocumentLayout Extends QObject
+
+	Function _create:QAbstractTextDocumentLayout(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QAbstractTextDocumentLayout = New QAbstractTextDocumentLayout
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+End Type
+
