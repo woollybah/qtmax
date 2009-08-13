@@ -60,11 +60,11 @@ Type QIODevice Extends QObject
 	Rem
 	bbdoc: When reading, the end-of-line terminators are translated to '\n'. When writing, the end-of-line terminators are translated to the local encoding, for example '\r\n' for Win32.
 	end rem
-	const Text:int = $0010
-	rem
+	Const Text:Int = $0010
+	Rem
 	bbdoc: Any buffer in the device is bypassed.
 	end rem
-	const Unbuffered:int = $0020
+	Const Unbuffered:Int = $0020
 
 	
 	Method atEnd:Int()
@@ -194,6 +194,26 @@ Type QIODevice Extends QObject
 	'Method write:Long(data:Byte Ptr)
 	' TODO
 	'End Method
+
+	' SIGNAL : aboutToClose
+	Function _OnAboutToClose(obj:QIODevice)
+		obj._InvokeSignals("aboutToClose", Null)
+	End Function
+
+	' SIGNAL : bytesWritten
+	Function _OnBytesWritten(obj:QIODevice, bytes:Long)
+		obj._InvokeSignals("bytesWritten", [String(bytes)])
+	End Function
+
+	' SIGNAL : readChannelFinished
+	Function _OnReadChannelFinished(obj:QIODevice)
+		obj._InvokeSignals("readChannelFinished", Null)
+	End Function
+
+	' SIGNAL : readyRead
+	Function _OnReadyRead(obj:QIODevice)
+		obj._InvokeSignals("readyRead", Null)
+	End Function
 
 End Type
 

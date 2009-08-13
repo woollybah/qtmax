@@ -59,23 +59,23 @@ void MaxQFile::doConnections() {
 	connect(file, SIGNAL(aboutToClose()), SLOT(onAboutToClose()));
 	connect(file, SIGNAL(bytesWritten(qint64)), SLOT(onBytesWritten(qint64)));
 	connect(file, SIGNAL(readChannelFinished()), SLOT(onReadChannelFinished()));
-	connect(file, SIGNAL(readyRead()), SLOT(onReadyFinished()));
+	connect(file, SIGNAL(readyRead()), SLOT(onReadyRead()));
 }
 
 void MaxQFile::onAboutToClose() {
-
+	_qt_qiodevice_QIODevice__OnAboutToClose(maxHandle);
 }
 
 void MaxQFile::onBytesWritten(qint64 bytes) {
-
+	_qt_qiodevice_QIODevice__OnBytesWritten(maxHandle, bytes);
 }
 
 void MaxQFile::onReadChannelFinished() {
-
+	_qt_qiodevice_QIODevice__OnReadChannelFinished(maxHandle);
 }
 
 void MaxQFile::onReadyRead() {
-
+	_qt_qiodevice_QIODevice__OnReadyRead(maxHandle);
 }
 
 

@@ -118,6 +118,52 @@ QTextCursor & MaxQTextCursor::Cursor() {
 	return cursor;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQTextFormat::MaxQTextFormat(const QTextFormat & f)
+	: format(f)
+{
+}
+
+MaxQTextFormat::~MaxQTextFormat()
+{
+}
+
+QTextFormat & MaxQTextFormat::Format() {
+	return format;
+}
+
+// ---------------------------------------------------------------------------------------
+
+MaxQTextOption::MaxQTextOption(const QTextOption & o)
+	: option(o)
+{
+}
+
+MaxQTextOption::~MaxQTextOption()
+{
+}
+
+QTextOption & MaxQTextOption::Option() {
+	return option;
+}
+
+// ---------------------------------------------------------------------------------------
+
+MaxQTextBlock::MaxQTextBlock(const QTextBlock & b)
+	: block(b)
+{
+}
+
+MaxQTextBlock::~MaxQTextBlock()
+{
+}
+
+QTextBlock & MaxQTextBlock::Block() {
+	return block;
+}
+
+
 // *********************************************
 
 double bmx_qt_qtextdocument_idealwidth(QTextDocument * doc) {
@@ -146,6 +192,150 @@ int bmx_qt_qtextdocument_isundoavailable(QTextDocument * doc) {
 
 int bmx_qt_qtextdocument_isundoredoenabled(QTextDocument * doc) {
 	return static_cast<int>(doc->isUndoRedoEnabled());
+}
+
+MaxQTextBlock * bmx_qt_qtextdocument_lastblock(QTextDocument * doc) {
+	return new MaxQTextBlock(doc->lastBlock());
+}
+
+int bmx_qt_qtextdocument_linecount(QTextDocument * doc) {
+	return doc->lineCount();
+}
+
+void bmx_qt_qtextdocument_markcontentsdirty(QTextDocument * doc, int position, int length) {
+	doc->markContentsDirty(position, length);
+}
+
+int bmx_qt_qtextdocument_maximumblockcount(QTextDocument * doc) {
+	return doc->maximumBlockCount();
+}
+
+BBString * bmx_qt_qtextdocument_metainformation(QTextDocument * doc, int info) {
+	return bbStringFromQString(doc->metaInformation((QTextDocument::MetaInformation)info));
+}
+
+QTextObject * bmx_qt_qtextdocument_object(QTextDocument * doc, int objectIndex) {
+	return doc->object(objectIndex);
+}
+
+QTextObject * bmx_qt_qtextdocument_objectforformat(QTextDocument * doc, MaxQTextFormat * f) {
+	return doc->objectForFormat(f->Format());
+}
+
+int bmx_qt_qtextdocument_pagecount(QTextDocument * doc) {
+	return doc->pageCount();
+}
+
+void bmx_qt_qtextdocument_pagesize(QTextDocument * doc, double * w, double * h) {
+	QSizeF s(doc->pageSize());
+	*w = s.width();
+	*h = s.height();
+}
+
+void bmx_qt_qtextdocument_print(QTextDocument * doc, QPrinter * printer) {
+	doc->print(printer);
+}
+
+void bmx_qt_qtextdocument_redo(QTextDocument * doc, MaxQTextCursor * cursor) {
+	if (cursor) {
+		doc->redo(&cursor->Cursor());
+	} else {
+		doc->redo();
+	}
+}
+
+int bmx_qt_qtextdocument_revision(QTextDocument * doc) {
+	return doc->revision();
+}
+
+QTextFrame * bmx_qt_qtextdocument_rootframe(QTextDocument * doc) {
+	return doc->rootFrame();
+}
+
+void bmx_qt_qtextdocument_setdefaultfont(QTextDocument * doc, MaxQFont * font) {
+	doc->setDefaultFont(font->Font());
+}
+
+void bmx_qt_qtextdocument_setdefaultstylesheet(QTextDocument * doc, BBString* sheet) {
+	doc->setDefaultStyleSheet(qStringFromBBString(sheet));
+}
+
+void bmx_qt_qtextdocument_setdefaulttextoption(QTextDocument * doc, MaxQTextOption * option) {
+	doc->setDefaultTextOption(option->Option());
+}
+
+void bmx_qt_qtextdocument_setdocumentlayout(QTextDocument * doc, QAbstractTextDocumentLayout * layout) {
+	doc->setDocumentLayout(layout);
+}
+
+void bmx_qt_qtextdocument_setdocumentmargin(QTextDocument * doc, double margin) {
+	doc->setDocumentMargin(margin);
+}
+
+void bmx_qt_qtextdocument_sethtml(QTextDocument * doc, BBString * html) {
+	doc->setHtml(qStringFromBBString(html));
+}
+
+void bmx_qt_qtextdocument_setindentwidth(QTextDocument * doc, double width) {
+	doc->setIndentWidth(width);
+}
+
+void bmx_qt_qtextdocument_setmaximumblockcount(QTextDocument * doc, int maximum) {
+	doc->setMaximumBlockCount(maximum);
+}
+
+void bmx_qt_qtextdocument_setmetainformation(QTextDocument * doc, int info, BBString * text) {
+	doc->setMetaInformation((QTextDocument::MetaInformation)info, qStringFromBBString(text));
+}
+
+void bmx_qt_qtextdocument_setpagesize(QTextDocument * doc, double w, double h) {
+	doc->setPageSize(QSizeF(w, h));
+}
+
+void bmx_qt_qtextdocument_setplaintext(QTextDocument * doc, BBString * text) {
+	doc->setPlainText(qStringFromBBString(text));
+}
+
+void bmx_qt_qtextdocument_settextwidth(QTextDocument * doc, double width) {
+	doc->setTextWidth(width);
+}
+
+void bmx_qt_qtextdocument_setundoredoenabled(QTextDocument * doc, int enable) {
+	doc->setUndoRedoEnabled(static_cast<bool>(enable));
+}
+
+void bmx_qt_qtextdocument_setusedesignmetrics(QTextDocument * doc, int b) {
+	doc->setUseDesignMetrics(static_cast<bool>(b));
+}
+
+void bmx_qt_qtextdocument_size(QTextDocument * doc, double * w, double * h) {
+	QSizeF s(doc->size());
+	*w = s.width();
+	*h = s.height();
+}
+
+double  bmx_qt_qtextdocument_textwidth(QTextDocument * doc) {
+	return doc->textWidth();
+}
+
+BBString * bmx_qt_qtextdocument_toplaintext(QTextDocument * doc) {
+	return bbStringFromQString(doc->toPlainText());
+}
+
+void bmx_qt_qtextdocument_undo(QTextDocument * doc, MaxQTextCursor * cursor) {
+	if (cursor) {
+		doc->undo(&cursor->Cursor());
+	} else {
+		doc->undo();
+	}
+}
+
+int bmx_qt_qtextdocument_usedesignmetrics(QTextDocument * doc) {
+	return static_cast<int>(doc->useDesignMetrics());
+}
+
+void bmx_qt_qtextdocument_setmodified(QTextDocument * doc, int m) {
+	doc->setModified(static_cast<bool>(m));
 }
 
 // NOTES :

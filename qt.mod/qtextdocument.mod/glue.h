@@ -24,12 +24,18 @@
 #define MAX_QT_QTEXTDOCUMENT
 
 #include "../core.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
 #include <QTextDocument>
 #include <QTextCursor>
+#include <QTextBlock>
+#include <QTextOption>
 
 class MaxQTextDocument;
 class MaxQTextCursor;
+class MaxQTextFormat;
+class MaxQTextOption;
+class MaxQTextBlock;
 
 extern "C" {
 
@@ -54,6 +60,39 @@ extern "C" {
 	int bmx_qt_qtextdocument_isredoavailable(QTextDocument * doc);
 	int bmx_qt_qtextdocument_isundoavailable(QTextDocument * doc);
 	int bmx_qt_qtextdocument_isundoredoenabled(QTextDocument * doc);
+	MaxQTextBlock * bmx_qt_qtextdocument_lastblock(QTextDocument * doc);
+	int bmx_qt_qtextdocument_linecount(QTextDocument * doc);
+	void bmx_qt_qtextdocument_markcontentsdirty(QTextDocument * doc, int position, int length);
+	int bmx_qt_qtextdocument_maximumblockcount(QTextDocument * doc);
+	BBString * bmx_qt_qtextdocument_metainformation(QTextDocument * doc, int info);
+	QTextObject * bmx_qt_qtextdocument_object(QTextDocument * doc, int objectIndex);
+	QTextObject * bmx_qt_qtextdocument_objectforformat(QTextDocument * doc, MaxQTextFormat * f);
+	int bmx_qt_qtextdocument_pagecount(QTextDocument * doc);
+	void bmx_qt_qtextdocument_pagesize(QTextDocument * doc, double * w, double * h);
+	void bmx_qt_qtextdocument_print(QTextDocument * doc, QPrinter * printer);
+	void bmx_qt_qtextdocument_redo(QTextDocument * doc, MaxQTextCursor * cursor);
+	int bmx_qt_qtextdocument_revision(QTextDocument * doc);
+	QTextFrame * bmx_qt_qtextdocument_rootframe(QTextDocument * doc);
+	void bmx_qt_qtextdocument_setdefaultfont(QTextDocument * doc, MaxQFont * font);
+	void bmx_qt_qtextdocument_setdefaultstylesheet(QTextDocument * doc, BBString* sheet);
+	void bmx_qt_qtextdocument_setdefaulttextoption(QTextDocument * doc, MaxQTextOption * option);
+	void bmx_qt_qtextdocument_setdocumentlayout(QTextDocument * doc, QAbstractTextDocumentLayout * layout);
+	void bmx_qt_qtextdocument_setdocumentmargin(QTextDocument * doc, double margin);
+	void bmx_qt_qtextdocument_sethtml(QTextDocument * doc, BBString * html);
+	void bmx_qt_qtextdocument_setindentwidth(QTextDocument * doc, double width);
+	void bmx_qt_qtextdocument_setmaximumblockcount(QTextDocument * doc, int maximum);
+	void bmx_qt_qtextdocument_setmetainformation(QTextDocument * doc, int info, BBString * text);
+	void bmx_qt_qtextdocument_setpagesize(QTextDocument * doc, double w, double h);
+	void bmx_qt_qtextdocument_setplaintext(QTextDocument * doc, BBString * text);
+	void bmx_qt_qtextdocument_settextwidth(QTextDocument * doc, double width);
+	void bmx_qt_qtextdocument_setundoredoenabled(QTextDocument * doc, int enable);
+	void bmx_qt_qtextdocument_setusedesignmetrics(QTextDocument * doc, int b);
+	void bmx_qt_qtextdocument_size(QTextDocument * doc, double * w, double * h);
+	double  bmx_qt_qtextdocument_textwidth(QTextDocument * doc);
+	BBString * bmx_qt_qtextdocument_toplaintext(QTextDocument * doc);
+	void bmx_qt_qtextdocument_undo(QTextDocument * doc, MaxQTextCursor * cursor);
+	int bmx_qt_qtextdocument_usedesignmetrics(QTextDocument * doc);
+	void bmx_qt_qtextdocument_setmodified(QTextDocument * doc, int m);
 
 }
 
@@ -89,6 +128,8 @@ private slots:
 	void onUndoCommandAdded();
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 class MaxQTextCursor
 {
 public:
@@ -101,4 +142,47 @@ private:
 	QTextCursor cursor;
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQTextFormat
+{
+public:
+	MaxQTextFormat(const QTextFormat & f);
+	~MaxQTextFormat();
+	
+	QTextFormat & Format();
+
+private:
+	QTextFormat format;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQTextOption
+{
+public:
+	MaxQTextOption(const QTextOption & o);
+	~MaxQTextOption();
+	
+	QTextOption & Option();
+
+private:
+	QTextOption option;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQTextBlock
+{
+public:
+	MaxQTextBlock(const QTextBlock & b);
+	~MaxQTextBlock();
+	
+	QTextBlock & Block();
+
+private:
+	QTextBlock block;
+};
+
 #endif
+

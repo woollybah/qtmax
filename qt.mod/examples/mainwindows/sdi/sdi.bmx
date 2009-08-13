@@ -10,6 +10,7 @@ Import Qt.QMessageBox
 Import Qt.QFile
 Import Qt.QTextStream
 Import Qt.QFileDialog
+Import Qt.QFileInfo
 Import BRL.RamStream
 Import BRL.PngLoader
 
@@ -207,7 +208,7 @@ Type TWindow Extends QMainWindow
 			QMessageBox.warning(Self, tr("SDI"), tr("Cannot read file " + fileName + ":~n" + file.errorString() + "."))
 			Return
 		End If
-		
+
 		Local in:QTextStream = New QTextStream.Create(file)
 		QApplication.setOverrideCursor(New QCursor.Create(Qt_WaitCursor))
 		textEdit.setPlainText(in.readAll())
@@ -225,7 +226,7 @@ Type TWindow Extends QMainWindow
 	Method setCurrentFile(fileName:String)
 		Global sequenceNumber:Int = 1
 		
-		isUntitled = fileName <> ""
+		isUntitled = fileName = ""
 		If isUntitled Then
 			curFile = tr("document" + sequenceNumber + ".txt")
 			sequenceNumber:+ 1

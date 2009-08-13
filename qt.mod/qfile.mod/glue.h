@@ -24,6 +24,7 @@
 #define MAX_QT_QFILE
 
 #include "../core.mod/glue.h"
+#include "../qiodevice.mod/glue.h"
 #include <QtCore>
 #include <QFile>
 
