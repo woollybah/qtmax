@@ -52,7 +52,8 @@ Extern
 	Function bmx_qt_qbrush_create:Byte Ptr()
 	Function bmx_qt_qbrush_createwithglobalcolor:Byte Ptr(color:Int, style:Int)
 	Function bmx_qt_qbrush_free(handle:Byte Ptr)
-
+	Function bmx_qt_qbrush_createwithpixmap:Byte Ptr(pixmap:Byte Ptr)
+	Function bmx_qt_qbrush_texture:Byte Ptr(handle:Byte Ptr)
 
 End Extern
 

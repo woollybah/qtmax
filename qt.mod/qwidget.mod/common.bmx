@@ -161,7 +161,9 @@ Extern
 	Function bmx_qt_qwidget_clearfocus(handle:Byte Ptr)
 	Function bmx_qt_qwidget_clearmask(handle:Byte Ptr)
 	Function bmx_qt_qwidget_contentsrect:Byte Ptr(handle:Byte Ptr)
-
+	Function bmx_qt_qwidget_parentwidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_pos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qwidget_rect:Byte Ptr(handle:Byte Ptr)
 		
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)

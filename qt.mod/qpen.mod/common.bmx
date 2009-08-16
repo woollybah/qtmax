@@ -46,4 +46,31 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qpen_create:Byte Ptr(style:Int)
+	Function bmx_qt_qpen_createwithattributes:Byte Ptr(brush:Byte Ptr, width:Double, style:Int, cap:Int, join:Int)
+	Function bmx_qt_qpen_brush:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qpen_capstyle:Int(handle:Byte Ptr)
+	Function bmx_qt_qpen_color:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qpen_dashoffset:Double(handle:Byte Ptr)
+	Function bmx_qt_qpen_dashpattern:Double[](handle:Byte Ptr)
+	Function bmx_qt_qpen_iscosmetic:Int(handle:Byte Ptr)
+	Function bmx_qt_qpen_issolid:Int(handle:Byte Ptr)
+	Function bmx_qt_qpen_joinstyle:Int(handle:Byte Ptr)
+	Function bmx_qt_qpen_miterlimit:Double(handle:Byte Ptr)
+	Function bmx_qt_qpen_setbrush(handle:Byte Ptr, brush:Byte Ptr)
+	Function bmx_qt_qpen_setcapstyle(handle:Byte Ptr, style:Int)
+	Function bmx_qt_qpen_setcolor(handle:Byte Ptr, color:Byte Ptr)
+	Function bmx_qt_qpen_setcosmetic(handle:Byte Ptr, cosmetic:Int)
+	Function bmx_qt_qpen_setdashoffset(handle:Byte Ptr, offset:Double)
+	Function bmx_qt_qpen_setdashpattern(handle:Byte Ptr, pattern:Double[])
+	Function bmx_qt_qpen_setjoinstyle(handle:Byte Ptr, style:Int)
+	Function bmx_qt_qpen_setmiterlimit(handle:Byte Ptr, limit:Double)
+	Function bmx_qt_qpen_setstyle(handle:Byte Ptr, style:Int)
+	Function bmx_qt_qpen_setwidth(handle:Byte Ptr, width:Int)
+	Function bmx_qt_qpen_setwidthf(handle:Byte Ptr, width:Double)
+	Function bmx_qt_qpen_style:Int(handle:Byte Ptr)
+	Function bmx_qt_qpen_width:Int(handle:Byte Ptr)
+	Function bmx_qt_qpen_widthf:Double(handle:Byte Ptr)
+	Function bmx_qt_qpen_free(handle:Byte Ptr)
+
 End Extern

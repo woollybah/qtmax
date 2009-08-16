@@ -63,6 +63,16 @@ Type QMenu Extends QWidget
 		End If
 		Return Self
 	End Method
+	
+	Method CreateWithTitle:QMenu(title:String, parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qmenu_createwithtitle(Self, title, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qmenu_createwithtitle(Self, title, Null)
+		End If
+		Return Self
+	End Method
+
 
 	Method actionAt:QAction(x:Int, y:Int)
 		Return QAction._find(bmx_qt_qmenu_actionat(qObjectPtr, x, y))

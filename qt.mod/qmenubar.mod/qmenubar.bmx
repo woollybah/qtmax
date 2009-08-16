@@ -76,12 +76,16 @@ Type QMenuBar Extends QWidget
 		End If
 	End Method
 	
-	Method addMenuAction:QAction(menu:QMenu)
-		Return QAction._find(bmx_qt_qmenubar_addmenu(qObjectPtr, QMenu(menu).qObjectPtr))
-	End Method
+	'Method addMenuAction:QAction(menu:QMenu)
+	'	Return QAction._find(bmx_qt_qmenubar_addmenu(qObjectPtr, QMenu(menu).qObjectPtr))
+	'End Method
 
-	Method addMenu:QMenu(menu:String)
-		Return QMenu._find(bmx_qt_qmenubar_addmenutxt(qObjectPtr, String(menu)))
+	Method addMenu:Object(menu:Object)
+		If QMenu(menu) Then
+			Return QAction._find(bmx_qt_qmenubar_addmenu(qObjectPtr, QMenu(menu).qObjectPtr))
+		ElseIf String(menu) Then
+			Return QMenu._find(bmx_qt_qmenubar_addmenutxt(qObjectPtr, String(menu)))
+		End If
 	End Method
 	
 	Method addSeparator:QAction()

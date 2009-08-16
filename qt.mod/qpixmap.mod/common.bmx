@@ -22,8 +22,8 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QPaintDevice
-'Import Qt.QWidget
 Import Qt.QImage
+Import Qt.QColor
 Import BRL.Blitz
 
 
@@ -48,6 +48,12 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qpixmap_create:Byte Ptr(width:Int, height:Int)
+	Function bmx_qt_qpixmap_free(handle:Byte Ptr)
+
 	Function bmx_qt_qpixmap_fromimage:Byte Ptr(image:Byte Ptr, flags:Int)
+
+	Function bmx_qt_qpixmap_fill(handle:Byte Ptr, color:Int)
+	Function bmx_qt_qpixmap_fillcolor(handle:Byte Ptr, color:Byte Ptr)
 	
 End Extern

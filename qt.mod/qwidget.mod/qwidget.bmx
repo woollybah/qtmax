@@ -345,7 +345,17 @@ Type QWidget Extends QObject
 	' TODO
 	End Method
 	
+	Method parentWidget:QWidget()
+		Return QWidget._find(bmx_qt_qwidget_parentwidget(qObjectPtr))
+	End Method
 	
+	Method pos(x:Int Var, y:Int Var)
+		bmx_qt_qwidget_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method rect:QRect()
+		Return QRect._create(bmx_qt_qwidget_rect(qObjectPtr))
+	End Method
 	
 	Method resize(w:Int, h:Int)
 		bmx_qt_qwidget_resize(qObjectPtr, w, h)

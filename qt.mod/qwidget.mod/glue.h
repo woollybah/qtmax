@@ -180,7 +180,9 @@ extern "C" {
 	void bmx_qt_qwidget_clearfocus(QWidget * widget);
 	void bmx_qt_qwidget_clearmask(QWidget * widget);
 	MaxQRect * bmx_qt_qwidget_contentsrect(QWidget * widget);
-
+	QWidget * bmx_qt_qwidget_parentwidget(QWidget * widget);
+	void bmx_qt_qwidget_pos(QWidget * widget, int * x, int * y);
+	MaxQRect * bmx_qt_qwidget_rect(QWidget * widget);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

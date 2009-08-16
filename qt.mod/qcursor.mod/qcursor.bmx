@@ -51,6 +51,37 @@ Type QCursor
 		Return Self
 	End Method
 	
+	Method bitmap:QBitmap()
+		Return QBitmap._create(bmx_qt_qcursor_bitmap(qObjectPtr))
+	End Method
+	
+	Method hotSpot(x:Int Var, y:Int Var)
+		bmx_qt_qcursor_hotspot(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method mask:QBitmap()
+		Return QBitmap._create(bmx_qt_qcursor_mask(qObjectPtr))
+	End Method
+	
+	Method pixmap:QPixmap()
+		Return QPixmap._create(bmx_qt_qcursor_pixmap(qObjectPtr))
+	End Method
+	
+	Method setShape(shape:Int)
+		bmx_qt_qcursor_setshape(qObjectPtr, shape)
+	End Method
+	
+	Method shape:Int()
+		Return bmx_qt_qcursor_shape(qObjectPtr)
+	End Method
+	
+	Function pos(x:Int Var, y:Int Var)
+		bmx_qt_qcursor_pos(Varptr x, Varptr y)
+	End Function
+	
+	Function setPos(x:Int, y:Int)
+		bmx_qt_qcursor_setpos(x, y)
+	End Function
 	
 	Method Free()
 		If qObjectPtr Then

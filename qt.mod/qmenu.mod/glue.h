@@ -41,6 +41,7 @@ extern "C" {
 	void _qt_qmenu_QMenu__OnTriggered(BBObject * handle, QAction * action);
 
 	QMenu * bmx_qt_qmenu_create(BBObject * handle, QWidget * parent);
+	QMenu * bmx_qt_qmenu_createwithtitle(BBObject * handle, BBString * title, QWidget * parent);
 	void bmx_qt_qmenu_free(QMenu * menu);
 
 	QAction * bmx_qt_qmenu_actionat(QMenu * m, int x, int y);

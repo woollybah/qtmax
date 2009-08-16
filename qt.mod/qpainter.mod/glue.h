@@ -37,7 +37,7 @@ extern "C" {
 
 #include <blitz.h>
 
-	QPainter * bmx_qt_qpainter_create();
+	QPainter * bmx_qt_qpainter_create(QPaintDevice * device);
 	void bmx_qt_qpainter_free(QPainter * painter);
 	int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device);
 	int bmx_qt_qpainter_end(QPainter * painter);
@@ -70,6 +70,10 @@ extern "C" {
 	void bmx_qt_qpainter_drawrectrect(QPainter * painter, MaxQRect * rectangle);
 	void bmx_qt_qpainter_drawrect(QPainter * painter, int x, int y, int width, int height);
 	void bmx_qt_qpainter_drawtext(QPainter * painter, int x, int y, BBString * text);
+	void bmx_qt_qpainter_fillrectcolor(QPainter * painter, int x, int y, int width, int height, MaxQColor * color);
+	void bmx_qt_qpainter_drawtiledpixmaprectf(QPainter * painter, MaxQRectF * rectangle, MaxQPixmap * pixmap, double posX, double posY);
+	void bmx_qt_qpainter_drawtiledpixmaprect(QPainter * painter, MaxQRect * rectangle, MaxQPixmap * pixmap, int posX, int posY);
+	void bmx_qt_qpainter_drawtiledpixmap(QPainter * painter, int x, int y, int width, int height, MaxQPixmap * pixmap, int sx, int sy);
 
 }
 

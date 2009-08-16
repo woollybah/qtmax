@@ -37,11 +37,42 @@ QPixmap & MaxQPixmap::Pixmap() {
 	return pixmap;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQBitmap::MaxQBitmap(const QBitmap & b)
+	: bitmap(b)
+{
+}
+
+MaxQBitmap::~MaxQBitmap()
+{
+}
+
+QBitmap & MaxQBitmap::Bitmap() {
+	return bitmap;
+}
 
 // *********************************************
 
+MaxQPixmap * bmx_qt_qpixmap_create(int width, int height) {
+	QPixmap p(width, height);
+	return new MaxQPixmap(p);
+}
+
+void bmx_qt_qpixmap_free(MaxQPixmap * pixmap) {
+	delete pixmap;
+}
+
 MaxQPixmap * bmx_qt_qpixmap_fromimage(MaxQImage * image, int flags) {
 	return new MaxQPixmap(QPixmap::fromImage(image->Image(), (Qt::ImageConversionFlags)flags));
+}
+
+void bmx_qt_qpixmap_fill(MaxQPixmap * pixmap, int color) {
+	pixmap->Pixmap().fill((Qt::GlobalColor)color);
+}
+
+void bmx_qt_qpixmap_fillcolor(MaxQPixmap * pixmap, MaxQColor * color) {
+	pixmap->Pixmap().fill(color->Color());
 }
 
 // NOTES :

@@ -149,6 +149,31 @@ QString qStringFromBBString(BBString * s) {
 
 // *********************************************
 
+QVector<qreal> qRealVectorFromBBDoubleArray(BBArray * p) {
+	int n=p->scales[0];
+	QVector<qreal> vec(n);
+
+	double *s=(double*)BBARRAYDATA( p,p->dims );
+	
+	for( int i=0;i<n;++i ){
+		vec[i] = s[i];
+	}
+	
+	return vec;
+}
+
+BBArray * bbDoubleArrayFromQRealVector(QVector<qreal> vec) {
+	int n = vec.count();
+	BBArray *p=bbArrayNew1D( "d",n );
+	double *s=(double*)BBARRAYDATA( p,p->dims );
+	for( int i=0;i<n;++i ){
+		s[i] = vec[i];
+	}
+	return p;
+}
+
+// *********************************************
+
 MaxQUrl * bmx_qt_qurl_create(BBString * url) {
 	QUrl u(qStringFromBBString(url));
 	return new MaxQUrl(u);

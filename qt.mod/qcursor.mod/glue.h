@@ -24,6 +24,7 @@
 #define MAX_QT_QCURSOR
 
 #include "../core.mod/glue.h"
+#include "../qpixmap.mod/glue.h"
 #include <QtCore>
 #include <QCursor>
 
@@ -35,6 +36,14 @@ extern "C" {
 
 	MaxQCursor * bmx_qt_qcursor_create(int shape);
 	void bmx_qt_qcursor_free(MaxQCursor * cursor);
+	MaxQBitmap * bmx_qt_qcursor_bitmap(MaxQCursor * cursor);
+	void bmx_qt_qcursor_hotspot(MaxQCursor * cursor, int * x, int * y);
+	MaxQBitmap * bmx_qt_qcursor_mask(MaxQCursor * cursor);
+	MaxQPixmap * bmx_qt_qcursor_pixmap(MaxQCursor * cursor);
+	void bmx_qt_qcursor_setshape(MaxQCursor * cursor, int shape);
+	int bmx_qt_qcursor_shape(MaxQCursor * cursor);
+	void bmx_qt_qcursor_pos(int * x, int * y);
+	void bmx_qt_qcursor_setpos(int x, int y);
 
 }
 

@@ -251,9 +251,29 @@ End Type
 
 Type QMatrix
 
+	Field qObjectPtr:Byte Ptr
+
+	Function _create:QMatrix(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QMatrix = New QMatrix
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
 End Type
 
 
 Type QTransform
+
+	Field qObjectPtr:Byte Ptr
+
+	Function _create:QTransform(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTransform = New QTransform
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
 End Type

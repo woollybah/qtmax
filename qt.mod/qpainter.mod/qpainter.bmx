@@ -275,7 +275,7 @@ Type QPainter
 		bmx_qt_qpainter_drawline(qObjectPtr, x1, y1, x2, y2)
 	End Method
 
-	Method drawLineD(x1:Double, y1:Double, x2:Double, y2:Double)
+	Method drawLineF(x1:Double, y1:Double, x2:Double, y2:Double)
 		bmx_qt_qpainter_drawlined(qObjectPtr, x1, y1, x2, y2)
 	End Method
 	
@@ -289,6 +289,18 @@ Type QPainter
 	
 	Method DrawText(x:Int, y:Int, text:String)
 		bmx_qt_qpainter_drawtext(qObjectPtr, x, y, text)
+	End Method
+
+	Method drawTiledPixmapRectF(rectangle:QRectF, pixmap:QPixmap, posX:Double = 0, posY:Double = 0)
+		bmx_qt_qpainter_drawtiledpixmaprectf(qObjectPtr, rectangle.qObjectPtr, pixmap.qObjectPtr, posX, posY)
+	End Method
+	
+	Method drawTiledPixmapRect(rectangle:QRect, pixmap:QPixmap, posX:Int = 0, posY:Int = 0)
+		bmx_qt_qpainter_drawtiledpixmaprect(qObjectPtr, rectangle.qObjectPtr, pixmap.qObjectPtr, posX, posY)
+	End Method
+
+	Method drawTiledPixmap(x:Int, y:Int, width:Int, height:Int, pixmap:QPixmap, sx:Int = 0, sy:Int = 0)
+		bmx_qt_qpainter_drawtiledpixmap(qObjectPtr, x, y, width, height, pixmap.qObjectPtr, sx, sy)
 	End Method
 
 	Method fillPath(path:QPainterPath, brush:QBrush)
@@ -305,6 +317,10 @@ Type QPainter
 
 	Method fillRectBrush(x:Int, y:Int, width:Int, height:Int, brush:QBrush)
 		bmx_qt_qpainter_fillrectbrush(qObjectPtr, x, y, width, height, brush.qObjectPtr)
+	End Method
+
+	Method fillRectColor(x:Int, y:Int, width:Int, height:Int, color:QColor)
+		bmx_qt_qpainter_fillrectcolor(qObjectPtr, x, y, width, height, color.qObjectPtr)
 	End Method
 	
 	Method fillRectRectBrush(rectangle:QRect, brush:QBrush)
