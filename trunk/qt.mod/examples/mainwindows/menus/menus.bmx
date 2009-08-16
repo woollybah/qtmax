@@ -5,6 +5,7 @@ Import Qt.QMainWindow
 Import Qt.QMenu
 Import Qt.QLabel
 Import Qt.QVBoxLayout
+Import Qt.QMessageBox
 
 Global app:QApplication = New QApplication.Create()
 
@@ -314,7 +315,8 @@ Type TWindow Extends QMainWindow
 	End Method
 	
 	Method about()
-		' TODO
+		infoLabel.setText(tr("Invoked <b>Help|About</b>"))
+		QMessageBox.about(Self, tr("About Menu"), tr("The <b>Menu</b> example shows how to create menu-bar menus and context menus."))
 	End Method
 	
 	Method aboutQt()
