@@ -25,16 +25,25 @@
 
 #include "../core.mod/glue.h"
 #include "../qimage.mod/glue.h"
+#include "../qcolor.mod/glue.h"
 #include <QtCore>
 #include <QPixmap>
+#include <QBitmap>
 
 class MaxQPixmap;
+class MaxQBitmap;
 
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQPixmap * bmx_qt_qpixmap_create(int width, int height);
+	void bmx_qt_qpixmap_free(MaxQPixmap * pixmap);
+
 	MaxQPixmap * bmx_qt_qpixmap_fromimage(MaxQImage * image, int flags);
+
+	void bmx_qt_qpixmap_fill(MaxQPixmap * pixmap, int color);
+	void bmx_qt_qpixmap_fillcolor(MaxQPixmap * pixmap, MaxQColor * color);
 
 }
 
@@ -50,6 +59,18 @@ public:
 
 private:
 	QPixmap pixmap;
+};
+
+class MaxQBitmap
+{
+public:
+	MaxQBitmap(const QBitmap & b);
+	~MaxQBitmap();
+
+	QBitmap & Bitmap();
+
+private:
+	QBitmap bitmap;
 };
 
 #endif

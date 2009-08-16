@@ -491,3 +491,33 @@ Rem
 bbdoc: 
 End Rem
 Const Qt_BitmapCursor:Int = 24
+
+Rem
+bbdoc: a square line end that does not cover the end point of the line.
+end rem
+Const Qt_FlatCap:Int = $00
+Rem
+bbdoc: a square line end that covers the end point and extends beyond it by half the line width.
+end rem
+Const Qt_SquareCap:Int = $10
+Rem
+bbdoc: a rounded line end.
+end rem
+Const Qt_RoundCap:Int = $20
+Rem
+bbdoc: The outer edges of the lines are extended to meet at an angle, and this area is filled.
+end rem
+Const Qt_MiterJoin:Int = $00
+Rem
+bbdoc: The triangular notch between the two lines is filled.
+end rem
+Const Qt_BevelJoin:Int = $40
+Rem
+bbdoc: A circular arc between the two lines is filled.
+end rem
+Const Qt_RoundJoin:Int = $80
+Rem
+bbdoc: A miter join corresponding to the definition of a miter join in the SVG 1.2 Tiny specification.
+end rem
+Const Qt_SvgMiterJoin:Int = $100
+

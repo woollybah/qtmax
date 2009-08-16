@@ -24,10 +24,127 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQPen::MaxQPen(const QPen & p)
+	: pen(p)
+{
+}
+
+MaxQPen::~MaxQPen()
+{
+}
+
+QPen & MaxQPen::Pen() {
+	return pen;
+}
 
 
 // *********************************************
 
+MaxQPen * bmx_qt_qpen_create(int style) {
+	QPen p((Qt::PenStyle)style);
+	return new MaxQPen(p);
+}
+
+MaxQPen * bmx_qt_qpen_createwithattributes(MaxQBrush * brush, double width, int style, int cap, int join) {
+	QPen p(brush->Brush(), width, (Qt::PenStyle)style, (Qt::PenCapStyle)cap, (Qt::PenJoinStyle)join);
+	return new MaxQPen(p);
+}
+
+MaxQBrush * bmx_qt_qpen_brush(MaxQPen * pen) {
+	return new MaxQBrush(pen->Pen().brush());
+}
+
+int bmx_qt_qpen_capstyle(MaxQPen * pen) {
+	return pen->Pen().capStyle();
+}
+
+MaxQColor * bmx_qt_qpen_color(MaxQPen * pen) {
+	return new MaxQColor(pen->Pen().color());
+}
+
+double bmx_qt_qpen_dashoffset(MaxQPen * pen) {
+	return pen->Pen().dashOffset();
+}
+
+BBArray * bmx_qt_qpen_dashpattern(MaxQPen * pen) {
+	return bbDoubleArrayFromQRealVector(pen->Pen().dashPattern());
+}
+
+int bmx_qt_qpen_iscosmetic(MaxQPen * pen) {
+	return static_cast<int>(pen->Pen().isCosmetic());
+}
+
+int bmx_qt_qpen_issolid(MaxQPen * pen) {
+	return static_cast<int>(pen->Pen().isSolid());
+}
+
+int bmx_qt_qpen_joinstyle(MaxQPen * pen) {
+	return pen->Pen().joinStyle();
+}
+
+double bmx_qt_qpen_miterlimit(MaxQPen * pen) {
+	return pen->Pen().miterLimit();
+}
+
+void bmx_qt_qpen_setbrush(MaxQPen * pen, MaxQBrush * brush) {
+	pen->Pen().setBrush(brush->Brush());
+}
+
+void bmx_qt_qpen_setcapstyle(MaxQPen * pen, int style) {
+	pen->Pen().setCapStyle((Qt::PenCapStyle)style);
+}
+
+void bmx_qt_qpen_setcolor(MaxQPen * pen, MaxQColor * color) {
+	pen->Pen().setColor(color->Color());
+}
+
+void bmx_qt_qpen_setcosmetic(MaxQPen * pen, int cosmetic) {
+	pen->Pen().setCosmetic(static_cast<bool>(cosmetic));
+}
+
+void bmx_qt_qpen_setdashoffset(MaxQPen * pen, double offset) {
+	pen->Pen().setDashOffset(offset);
+}
+
+void bmx_qt_qpen_setdashpattern(MaxQPen * pen, BBArray * p) {
+	pen->Pen().setDashPattern(qRealVectorFromBBDoubleArray(p));
+}
+
+void bmx_qt_qpen_setjoinstyle(MaxQPen * pen, int style) {
+	pen->Pen().setJoinStyle((Qt::PenJoinStyle)style);
+}
+
+void bmx_qt_qpen_setmiterlimit(MaxQPen * pen, double limit) {
+	pen->Pen().setMiterLimit(limit);
+}
+
+void bmx_qt_qpen_setstyle(MaxQPen * pen, int style) {
+	pen->Pen().setStyle((Qt::PenStyle)style);
+}
+
+void bmx_qt_qpen_setwidth(MaxQPen * pen, int width) {
+	pen->Pen().setWidth(width);
+}
+
+void bmx_qt_qpen_setwidthf(MaxQPen * pen, double width) {
+	pen->Pen().setWidthF(width);
+}
+
+int bmx_qt_qpen_style(MaxQPen * pen) {
+	return pen->Pen().style();
+}
+
+int bmx_qt_qpen_width(MaxQPen * pen) {
+	return pen->Pen().width();
+}
+
+double bmx_qt_qpen_widthf(MaxQPen * pen) {
+	return pen->Pen().widthF();
+}
+
+void bmx_qt_qpen_free(MaxQPen * pen) {
+	delete pen;
+}
 
 
 // NOTES :

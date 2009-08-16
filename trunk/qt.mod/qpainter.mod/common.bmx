@@ -80,5 +80,9 @@ Extern
 	Function bmx_qt_qpainter_drawrectrect(handle:Byte Ptr, rectangle:Byte Ptr)
 	Function bmx_qt_qpainter_drawrect(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int)
 	Function bmx_qt_qpainter_drawtext(handle:Byte Ptr, x:Int, y:Int, text:String)
+	Function bmx_qt_qpainter_fillrectcolor(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, color:Byte Ptr)
+	Function bmx_qt_qpainter_drawtiledpixmaprectf(handle:Byte Ptr, rectangle:Byte Ptr, pixmap:Byte Ptr, posX:Double, posY:Double)
+	Function bmx_qt_qpainter_drawtiledpixmaprect(handle:Byte Ptr, rectangle:Byte Ptr, pixmap:Byte Ptr, posX:Int, posY:Int)
+	Function bmx_qt_qpainter_drawtiledpixmap(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, pixmap:Byte Ptr, sx:Int, sy:Int)
 
 End Extern

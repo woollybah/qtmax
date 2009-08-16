@@ -33,6 +33,8 @@
 
 class MaxQPainterPath;
 class MaxPathElement;
+class MaxQTransform;
+class MaxQMatrix;
 
 extern "C" {
 
@@ -94,6 +96,8 @@ private:
 	QPainterPath path;
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 class MaxPathElement
 {
 public:
@@ -104,6 +108,34 @@ public:
 
 private:
 	QPainterPath::Element element;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQTransform
+{
+public:
+	MaxQTransform(const QTransform & t);
+	~MaxQTransform();
+	
+	QTransform & Transform();
+
+private:
+	QTransform transform;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQMatrix
+{
+public:
+	MaxQMatrix(const QMatrix & m);
+	~MaxQMatrix();
+	
+	QMatrix & Matrix();
+
+private:
+	QMatrix matrix;
 };
 
 #endif

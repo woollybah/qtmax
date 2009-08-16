@@ -39,9 +39,45 @@ Type QPixmap Extends QPaintDevice
 			Return this
 		End If
 	End Function
+	
+	Method Create:QPixmap(width:Int, height:Int)
+		qObjectPtr = bmx_qt_qpixmap_create(width, height)
+		Return Self
+	End Method
 
 	Function FromImage:QPixmap(image:QImage, flags:Int = Qt_AutoColor)
 		Return QPixmap._create(bmx_qt_qpixmap_fromimage(image.qObjectPtr, flags))
+	End Function
+	
+	Method fill(color:Int = Qt_white)
+		bmx_qt_qpixmap_fill(qObjectPtr, color)
+	End Method
+	
+	Method fillColor(color:QColor)
+		bmx_qt_qpixmap_fillcolor(qObjectPtr, color.qObjectPtr)
+	End Method
+	
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qpixmap_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+
+End Type
+
+Type QBitmap Extends QPixmap
+
+	Function _create:QBitmap(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QBitmap = New QBitmap
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
 	End Function
 
 End Type

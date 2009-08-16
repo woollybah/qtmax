@@ -91,6 +91,11 @@ QMenu * bmx_qt_qmenu_create(BBObject * handle, QWidget * parent) {
 	return menu->Menu();
 }
 
+QMenu * bmx_qt_qmenu_createwithtitle(BBObject * handle, BBString * title, QWidget * parent) {
+	MaxQMenu * menu = new MaxQMenu(handle, new QMenu(qStringFromBBString(title), parent));
+	return menu->Menu();
+}
+
 void bmx_qt_qmenu_free(QMenu * menu) {
 	delete menu;
 }

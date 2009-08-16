@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QPixmap
 Import BRL.Blitz
 
 
@@ -47,5 +48,13 @@ Extern
 
 	Function bmx_qt_qcursor_create:Byte Ptr(shape:Int)
 	Function bmx_qt_qcursor_free(handle:Byte Ptr)
+	Function bmx_qt_qcursor_bitmap:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qcursor_hotspot(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qcursor_mask:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qcursor_pixmap:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qcursor_setshape(handle:Byte Ptr, shape:Int)
+	Function bmx_qt_qcursor_shape:Int(handle:Byte Ptr)
+	Function bmx_qt_qcursor_pos(x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qcursor_setpos(x:Int, y:Int)
 
 End Extern

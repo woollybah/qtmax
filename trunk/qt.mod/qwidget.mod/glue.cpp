@@ -635,6 +635,19 @@ MaxQRect * bmx_qt_qwidget_contentsrect(QWidget * widget) {
 	return new MaxQRect(widget->contentsRect());
 }
 
+QWidget * bmx_qt_qwidget_parentwidget(QWidget * widget) {
+	return widget->parentWidget();
+}
+
+void bmx_qt_qwidget_pos(QWidget * widget, int * x, int * y) {
+	QPoint p(widget->pos());
+	*x = p.x();
+	*y = p.y();
+}
+
+MaxQRect * bmx_qt_qwidget_rect(QWidget * widget) {
+	return new MaxQRect(widget->rect());
+}
 
 // *********************************************
 

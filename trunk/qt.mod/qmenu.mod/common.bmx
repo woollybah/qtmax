@@ -47,6 +47,7 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qmenu_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qmenu_createwithtitle:Byte Ptr(handle:Object, title:String, parent:Byte Ptr)
 	Function bmx_qt_qmenu_free(handle:Byte Ptr)
 
 	Function bmx_qt_qmenu_actionat:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)

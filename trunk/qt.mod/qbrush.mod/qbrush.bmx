@@ -37,6 +37,14 @@ Type QBrush
 
 	Field qObjectPtr:Byte Ptr
 	
+	Function _create:QBrush(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QBrush = New QBrush
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
 	Function CreateBrush:QBrush()
 	End Function
 	
@@ -63,6 +71,8 @@ Type QBrush
 	End Method
 	
 	Method CreateWithPixmap:QBrush(pixmap:QPixmap)
+		qObjectPtr = bmx_qt_qbrush_createwithpixmap(pixmap.qObjectPtr)
+		Return Self
 	End Method
 	
 	Method CreateWithGradient:QBrush(gradient:QGradient)
@@ -117,7 +127,7 @@ Type QBrush
 	End Method
 	
 	Method texture:QPixmap()
-	' TODO
+		Return QPixmap._create(bmx_qt_qbrush_texture(qObjectPtr))
 	End Method
 	
 	Method textureImage:QImage()
