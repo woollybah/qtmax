@@ -253,6 +253,122 @@ Type QGraphicsView Extends QAbstractScrollArea
 		bmx_qt_qgraphicsview_sizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
 
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qgraphicsview_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousepressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Rem
+	bbdoc: 
+	End Rem
+	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method actionEvent(event:QActionEvent)
+		bmx_qt_qgraphicsview_default_actionevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method changeEvent(event:QEvent)
+		bmx_qt_qgraphicsview_default_changeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method closeEvent(event:QCloseEvent)
+		bmx_qt_qgraphicsview_default_closeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method contextMenuEvent(event:QContextMenuEvent)
+		bmx_qt_qgraphicsview_default_contextmenuevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragEnterEvent(event:QDragEnterEvent)
+		bmx_qt_qgraphicsview_default_dragenterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragLeaveEvent(event:QDragLeaveEvent)
+		bmx_qt_qgraphicsview_default_dragleaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragMoveEvent(event:QDragMoveEvent)
+		bmx_qt_qgraphicsview_default_dragmoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dropEvent(event:QDropEvent)
+		bmx_qt_qgraphicsview_default_dropevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method enterEvent(event:QEvent)
+		bmx_qt_qgraphicsview_default_enterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusInEvent(event:QFocusEvent)
+		bmx_qt_qgraphicsview_default_focusinevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusOutEvent(event:QFocusEvent)
+		bmx_qt_qgraphicsview_default_focusoutevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method hideEvent(event:QHideEvent)
+		bmx_qt_qgraphicsview_default_hideevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method inputMethodEvent(event:QInputMethodEvent)
+		bmx_qt_qgraphicsview_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyPressEvent(event:QKeyEvent)
+		bmx_qt_qgraphicsview_default_keypressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyReleaseEvent(event:QKeyEvent)
+		bmx_qt_qgraphicsview_default_keyreleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method leaveEvent(event:QEvent)
+		bmx_qt_qgraphicsview_default_leaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method moveEvent(event:QMoveEvent)
+		bmx_qt_qgraphicsview_default_moveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method resizeEvent(event:QResizeEvent)
+		bmx_qt_qgraphicsview_default_resizeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method showEvent(event:QShowEvent)
+		bmx_qt_qgraphicsview_default_showevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method tabletEvent(event:QTabletEvent)
+		bmx_qt_qgraphicsview_default_tabletevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method wheelEvent(event:QWheelEvent)
+		bmx_qt_qgraphicsview_default_wheelevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 End Type
 
 Type QGraphicsScene Extends QObject
