@@ -130,7 +130,6 @@ Type SvgView Extends QGraphicsView
 	End Method
 	
 	Method paintEvent(event:QPaintEvent)
-DebugLog "paintEvent"
 Rem
 		If m_renderer = Renderer_Image Then
 			If (m_image.size() != viewport()->size()) {
