@@ -22,8 +22,6 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
-Import Qt.QLineEdit
-Import Qt.QCompleter
 Import BRL.Blitz
 
 
@@ -47,11 +45,5 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qcombobox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-	Function bmx_qt_qcombobox_addItem(handle:Byte Ptr, text:String, userData:Object)
-	Function bmx_qt_qcombobox_addItems(handle:Byte Ptr, texts:String[])
-	Function bmx_qt_qcombobox_count:Int(handle:Byte Ptr)
-	Function bmx_qt_qcombobox_currentindex:Int(handle:Byte Ptr)
 
 End Extern
