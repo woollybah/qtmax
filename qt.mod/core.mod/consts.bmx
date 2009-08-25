@@ -493,6 +493,117 @@ End Rem
 Const Qt_BitmapCursor:Int = 24
 
 Rem
+bbdoc: Performs QVariant-based matching.
+end rem
+Const Qt_MatchExactly:Int = 0
+Rem
+bbdoc: Performs string-based matching.
+about: String-based comparisons are case-insensitive unless the MatchCaseSensitive flag is also specified.
+end rem
+Const Qt_MatchFixedString:Int = 8
+Rem
+bbdoc: The search term is contained in the item.
+end rem
+Const Qt_MatchContains:Int = 1
+Rem
+bbdoc: The search term matches the start of the item.
+end rem
+Const Qt_MatchStartsWith:Int = 2
+Rem
+bbdoc: The search term matches the end of the item.
+end rem
+Const Qt_MatchEndsWith:Int = 3
+Rem
+bbdoc: The search is case sensitive.
+end rem
+Const Qt_MatchCaseSensitive:Int = 16
+Rem
+bbdoc: Performs string-based matching using a regular expression as the search term.
+end rem
+Const Qt_MatchRegExp:Int = 4
+Rem
+bbdoc: Performs string-based matching using a string with wildcards as the search term.
+end rem
+Const Qt_MatchWildcard:Int = 5
+Rem
+bbdoc: Perform a search that wraps around, so that when the search reaches the last item in the model, it begins again at the first item and continues until all items have been examined.
+end rem
+Const Qt_MatchWrap:Int = 32
+Rem
+bbdoc: Searches the entire hierarchy.
+end rem
+Const Qt_MatchRecursive:Int = 64
+
+Rem
+bbdoc: The key data to be rendered in the form of text.
+end rem
+Const Qt_DisplayRole:Int = 0
+Rem
+bbdoc: The data to be rendered as a decoration in the form of an icon.
+end rem
+Const Qt_DecorationRole:Int = 1
+Rem
+bbdoc: The data in a form suitable for editing in an editor.
+end rem
+Const Qt_EditRole:Int = 2
+Rem
+bbdoc: The data displayed in the item's tooltip.
+end rem
+Const Qt_ToolTipRole:Int = 3
+Rem
+bbdoc: The data displayed in the status bar.
+end rem
+Const Qt_StatusTipRole:Int = 4
+Rem
+bbdoc: The data displayed for the item in "What's This?" mode.
+end rem
+Const Qt_WhatsThisRole:Int = 5
+Rem
+bbdoc: The size hint for the item that will be supplied to views.
+end rem
+Const Qt_SizeHintRole:Int = 13
+Rem
+bbdoc: The font used for items rendered with the default delegate.
+end rem
+Const Qt_FontRole:Int = 6
+Rem
+bbdoc: The alignment of the text for items rendered with the default delegate.
+end rem
+Const Qt_TextAlignmentRole:Int = 7
+Rem
+bbdoc: The background brush used for items rendered with the default delegate.
+end rem
+Const Qt_BackgroundRole:Int = 8
+Rem
+bbdoc: This role is obsolete. Use BackgroundRole instead.
+end rem
+Const Qt_BackgroundColorRole:Int = 8
+Rem
+bbdoc: The foreground brush (text color, typically) used for items rendered with the default delegate.
+end rem
+Const Qt_ForegroundRole:Int = 9
+Rem
+bbdoc: This role is obsolete. Use ForegroundRole instead.
+end rem
+Const Qt_TextColorRole:Int = 9
+Rem
+bbdoc: This role is used to obtain the checked state of an item (see Qt_CheckState).
+end rem
+Const Qt_CheckStateRole:Int = 10
+Rem
+bbdoc: The text to be used by accessibility extensions and plugins, such as screen readers.
+end rem
+Const Qt_AccessibleTextRole:Int = 11
+Rem
+bbdoc: A description of the item for accessibility purposes.
+end rem
+Const Qt_AccessibleDescriptionRole:Int = 12
+Rem
+bbdoc: The first role that can be used for application-specific purposes.
+end rem
+Const Qt_UserRole:Int = 32
+
+Rem
 bbdoc: a square line end that does not cover the end point of the line.
 end rem
 Const Qt_FlatCap:Int = $00

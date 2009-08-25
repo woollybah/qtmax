@@ -20,38 +20,19 @@
 ' 
 SuperStrict
 
-Import Qt.Core
-Import Qt.QWidget
-Import Qt.QLineEdit
-Import Qt.QCompleter
-Import BRL.Blitz
+Module Qt.QProgressDialog
+
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 
-' headers :-)
-?win32
-Import "../lib/win32/include/*.h"
-?macos
-Import "../lib/macos/include/*.h"
-?Not linux
-Import "../src/include/*.h"
-Import "../src/include/Qt/*.h"
-Import "../src/include/QtCore/*.h"
-Import "../src/include/QtGui/*.h"
-?linux
-Import "/usr/include/qt4/*.h"
-Import "/usr/include/qt4/Qt/*.h"
-Import "/usr/include/qt4/QtCore/*.h"
-Import "/usr/include/qt4/QtGui/*.h"
-?
+Import "common.bmx"
 
-Import "glue.cpp"
 
-Extern
+Type QProgressDialog Extends QDialog
 
-	Function bmx_qt_qcombobox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-	Function bmx_qt_qcombobox_addItem(handle:Byte Ptr, text:String, userData:Object)
-	Function bmx_qt_qcombobox_addItems(handle:Byte Ptr, texts:String[])
-	Function bmx_qt_qcombobox_count:Int(handle:Byte Ptr)
-	Function bmx_qt_qcombobox_currentindex:Int(handle:Byte Ptr)
 
-End Extern
+End Type
+

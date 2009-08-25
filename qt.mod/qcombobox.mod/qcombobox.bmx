@@ -62,7 +62,207 @@ Type QComboBox Extends QWidget
 	Method currentIndex:Int()
 		Return bmx_qt_qcombobox_currentindex(qObjectPtr)
 	End Method
+
+	Method duplicatesEnabled:Int()
+	' TODO
+	End Method
 	
+	Method findText:Int(text:String, flags:Int = Qt_MatchExactly | Qt_MatchCaseSensitive)
+	' TODO
+	End Method
+
+	Method hasFrame:Int()
+	' TODO
+	End Method
+
+	Method hidePopup()
+	' TODO
+	End Method
+
+	Method iconSize(w:Int Var, h:Int Var)
+	' TODO
+	End Method
+	
+	Method insertItem(index:Int, text:String, userData:Object = Null)
+	' TODO
+	End Method
+	
+	Method insertItems(index:Int, texts:String[])
+	' TODO
+	End Method
+
+	Method insertPolicy()
+	' TODO
+	End Method
+
+	Method insertSeparator(index:Int)
+	' TODO
+	End Method
+
+	Method isEditable:Int()
+	' TODO
+	End Method
+
+	Method itemData:Object(index:Int, role:Int = Qt_UserRole)
+	' TODO
+	End Method
+	
+	'Method itemDelegate:QAbstractItemDelegate()
+	' TODO
+	'End Method
+	
+	Method itemIcon:QIcon(index:Int)
+	' TODO
+	End Method
+	
+	Method itemText:String(index:Int)
+	' TODO
+	End Method
+	
+	Method lineEdit:QLineEdit()
+	' TODO
+	End Method
+	
+	Method maxCount:Int()
+	' TODO
+	End Method
+	
+	Method maxVisibleItems:Int()
+	' TODO
+	End Method
+	
+	Method minimumContentsLength:Int()
+	' TODO
+	End Method
+
+	'Method model:QAbstractItemModel()
+	' TODO
+	'End Method
+
+	Method modelColumn:Int()
+	' TODO
+	End Method
+
+	Method removeItem(index:Int)
+	' TODO
+	End Method
+
+	'Method rootModelIndex:QModelIndex()
+	' TODO
+	'End Method
+
+	Method setCompleter(completer:QCompleter)
+	' TODO
+	End Method
+
+	Method setDuplicatesEnabled(enable:Int)
+	' TODO
+	End Method
+
+	Method setEditable(editable:Int)
+	' TODO
+	End Method
+
+	Method setFrame(value:Int)
+	' TODO
+	End Method
+
+	Method setIconSize(w:Int, h:Int)
+	' TODO
+	End Method
+
+	Method setInsertPolicy(policy:Int)
+	' TODO
+	End Method
+
+	Method setItemData(index:Int, value:Object, role:Int = Qt_UserRole)
+	' TODO
+	End Method
+
+	'Method setItemDelegate(delegate:QAbstractItemDelegate)
+	' TODO
+	'End Method
+
+	Method setItemIcon(index:Int, icon:QIcon)
+	' TODO
+	End Method
+
+	Method setItemText(index:Int, text:String)
+	' TODO
+	End Method
+
+	Method setLineEdit(edit:QLineEdit)
+	' TODO
+	End Method
+
+	Method setMaxCount(value:Int)
+	' TODO
+	End Method
+
+	Method setMaxVisibleItems(maxItems:Int)
+	' TODO
+	End Method
+
+	Method setMinimumContentsLength(characters:Int)
+	' TODO
+	End Method
+
+	'Method setModel(model:QAbstractItemModel)
+	' TODO
+	'End Method
+
+	Method setModelColumn(visibleColumn:Int )
+	' TODO
+	End Method
+
+	'Method setRootModelIndex(index:QModelIndex)
+	' TODO
+	'End Method
+
+	Method setSizeAdjustPolicy(policy:Int)
+	' TODO
+	End Method
+
+	Method setValidator(validator:QValidator)
+	' TODO
+	End Method
+
+	'Method setView(itemView:QAbstractItemView)
+	' TODO
+	'End Method
+
+	Method showPopup()
+	' TODO
+	End Method
+
+	Method sizeAdjustPolicy:Int()
+	' TODO
+	End Method
+
+	Method validator:QValidator()
+	' TODO
+	End Method
+
+	'Method view:QAbstractItemView()
+	' TODO
+	'End Method
+
+	Method clear()
+	' TODO
+	End Method
+
+	Method clearEditText()
+	' TODO
+	End Method
+
+	Method setCurrentIndex(index:Int)
+	' TODO
+	End Method
+
+	Method setEditText(text:String)
+	' TODO
+	End Method
+
 	' SIGNAL : activated
 	Function _OnActivated(obj:QComboBox, index:Int)
 		obj._InvokeSignals("activated", [String(index)])
