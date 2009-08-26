@@ -494,7 +494,7 @@ Const Qt_BitmapCursor:Int = 24
 
 Rem
 bbdoc: Performs QVariant-based matching.
-end rem
+End Rem
 Const Qt_MatchExactly:Int = 0
 Rem
 bbdoc: Performs string-based matching.
@@ -604,16 +604,16 @@ end rem
 Const Qt_UserRole:Int = 32
 
 Rem
-bbdoc: a square line end that does not cover the end point of the line.
-end rem
+bbdoc: A square line end that does not cover the end point of the line.
+End Rem
 Const Qt_FlatCap:Int = $00
 Rem
-bbdoc: a square line end that covers the end point and extends beyond it by half the line width.
-end rem
+bbdoc: A square line end that covers the end point and extends beyond it by half the line width.
+End Rem
 Const Qt_SquareCap:Int = $10
 Rem
-bbdoc: a rounded line end.
-end rem
+bbdoc: A rounded line end.
+End Rem
 Const Qt_RoundCap:Int = $20
 Rem
 bbdoc: The outer edges of the lines are extended to meet at an angle, and this area is filled.
@@ -632,3 +632,16 @@ bbdoc: A miter join corresponding to the definition of a miter join in the SVG 1
 end rem
 Const Qt_SvgMiterJoin:Int = $100
 
+Rem
+bbdoc: The size is scaled freely.
+about: The aspect ratio is not preserved.
+End Rem
+Const Qt_IgnoreAspectRatio:Int = 0
+Rem
+bbdoc: The size is scaled to a rectangle as large as possible inside a given rectangle, preserving the aspect ratio.
+end rem
+Const Qt_KeepAspectRatio:Int = 1
+Rem
+bbdoc: The size is scaled to a rectangle as small as possible outside a given rectangle, preserving the aspect ratio.
+end rem
+Const Qt_KeepAspectRatioByExpanding:Int = 2

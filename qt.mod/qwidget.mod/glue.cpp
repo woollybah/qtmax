@@ -48,8 +48,7 @@ QSize MaxQWidget::minimumSizeHint() const {
 }
 
 void MaxQWidget::paintEvent(QPaintEvent * event) {
-	QPainter p(this);
-	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event, _qt_qpainter_QPainter__create(&p));
+	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event);
 }
 
 void MaxQWidget::mouseDoubleClickEvent(QMouseEvent * event) {
@@ -318,6 +317,8 @@ MaxQActionGroup::MaxQActionGroup(BBObject * handle, QObject * parent)
 	: maxHandle(handle), QActionGroup(parent)
 {
 	qbind(this, handle);
+	connect(this, SIGNAL(hovered(QAction *)), SLOT(onHovered(QAction *)));
+	connect(this, SIGNAL(triggered(QAction *)), SLOT(onTriggered(QAction *)));
 }
 
 MaxQActionGroup::~MaxQActionGroup()
@@ -647,6 +648,18 @@ void bmx_qt_qwidget_pos(QWidget * widget, int * x, int * y) {
 
 MaxQRect * bmx_qt_qwidget_rect(QWidget * widget) {
 	return new MaxQRect(widget->rect());
+}
+
+void bmx_qt_qwidget_size(QWidget * widget, int * w, int * h) {
+	QSize s(widget->size());
+	*w = s.width();
+	*h = s.height();
+}
+
+void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h) {
+	QSize s(widget->sizeIncrement());
+	*w = s.width();
+	*h = s.height();
 }
 
 // *********************************************

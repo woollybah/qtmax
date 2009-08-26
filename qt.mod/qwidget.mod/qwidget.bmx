@@ -49,6 +49,10 @@ Import "common.bmx"
 
 Type QWidget Extends QObject
 
+	Method isWidget:Int()
+		Return True
+	End Method
+
 	Function CreateWidget:QWidget(parent:QWidget = Null, flags:Int = 0)
 		Return New QWidget._Create(parent, flags)
 	End Function
@@ -534,11 +538,11 @@ Type QWidget Extends QObject
 	End Method
 
 	Method size(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qwidget_size(qObjectPtr, Varptr w, Varptr h)
 	End Method
 
 	Method sizeIncrement(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qwidget_sizeincrement(qObjectPtr, Varptr w, Varptr h)
 	End Method
 
 	Method sizePolicy:QSizePolicy()
@@ -701,8 +705,7 @@ Type QWidget Extends QObject
 	Method paintEvent(event:QPaintEvent)
 	End Method
 	
-	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr, painter:Object)
-		obj._painter = painter
+	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
 		obj.paintEvent(QPaintEvent._create(event))
 	End Function
 	
@@ -943,12 +946,6 @@ Type QWidget Extends QObject
 		obj._InvokeSignals("customContextMenuRequested", [String(x), String(y)])
 	End Function
 
-	Field _painter:Object
-	
-	Method getPainter:Object()
-		Return _painter
-	End Method
-	
 End Type
 
 Type QLayout Extends QObject

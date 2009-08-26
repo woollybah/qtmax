@@ -41,7 +41,7 @@ Type AnalogClock Extends QWidget
 		Local size:Int = Min(width(), height())
 		Local time:QTime = QTime.CurrentTime()
 
-		Local painter:QPainter = QPainter(getPainter())
+		Local painter:QPainter = New QPainter.Create(Self)
 
 		painter.setRenderHint(QPainter.Antialiasing)
 		painter.translate(width() / 2, height() / 2)
@@ -79,6 +79,7 @@ Type AnalogClock Extends QWidget
 			painter.rotate(6.0)
 		Next
 
+		painter.DoEnd()
 	End Method
 
 End Type

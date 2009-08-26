@@ -48,6 +48,8 @@ Extern
 
 	Function bmx_qt_qimage_createwithdata:Byte Ptr(data:Byte Ptr, width:Int, height:Int, bytesPerLine:Int, format:Int)
 	Function bmx_qt_qimage_free(handle:Byte Ptr)
+	Function bmx_qt_qimage_create:Byte Ptr(width:Int, height:Int, format:Int)
 
+	Function bmx_qt_qimage_size(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 
 End Extern

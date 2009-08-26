@@ -35,6 +35,9 @@ extern "C" {
 
 	MaxQImage * bmx_qt_qimage_createwithdata(const uchar * data, int width, int height, int format);
 	void bmx_qt_qimage_free(MaxQImage * image);
+	MaxQImage * bmx_qt_qimage_create(int width, int height, int format);
+
+	void bmx_qt_qimage_size(MaxQImage * image, int * w, int * h);
 
 }
 

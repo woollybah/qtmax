@@ -30,7 +30,7 @@ Type RenderArea Extends QWidget
 	End Method
 
 	Method paintEvent(event:QPaintEvent)
-		Local painter:QPainter = QPainter(getPainter())
+		Local painter:QPainter = New QPainter.Create(Self)
 		
 		painter.setRenderHint(QPainter.Antialiasing)
 		painter.fillRectRectBrush(event.rect(), New QBrush.CreateWithGlobalColor(Qt_white))
@@ -46,6 +46,8 @@ Type RenderArea Extends QWidget
 		
 		transformPainter(painter)
 		drawCoordinates(painter)
+		
+		painter.DoEnd()
 	End Method
 	
 	Method setShape(shape:QPainterPath)

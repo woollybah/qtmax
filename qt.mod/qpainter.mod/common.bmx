@@ -24,6 +24,7 @@ Import Qt.Core
 Import Qt.QBrush
 Import Qt.QPen
 Import Qt.QFont
+Import Qt.QImage
 Import BRL.Blitz
 
 
@@ -49,6 +50,7 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qpainter_create:Byte Ptr(device:Byte Ptr)
+	Function bmx_qt_qpainter_createwithwidget:Byte Ptr(device:Byte Ptr)
 	Function bmx_qt_qpainter_free(handle:Byte Ptr)
 	Function bmx_qt_qpainter_begin:Int(handle:Byte Ptr, device:Byte Ptr)
 	Function bmx_qt_qpainter_end:Int(handle:Byte Ptr)
@@ -84,5 +86,6 @@ Extern
 	Function bmx_qt_qpainter_drawtiledpixmaprectf(handle:Byte Ptr, rectangle:Byte Ptr, pixmap:Byte Ptr, posX:Double, posY:Double)
 	Function bmx_qt_qpainter_drawtiledpixmaprect(handle:Byte Ptr, rectangle:Byte Ptr, pixmap:Byte Ptr, posX:Int, posY:Int)
 	Function bmx_qt_qpainter_drawtiledpixmap(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, pixmap:Byte Ptr, sx:Int, sy:Int)
+	Function bmx_qt_qpainter_drawimage(handle:Byte Ptr, x:Int, y:Int, image:Byte Ptr)
 
 End Extern

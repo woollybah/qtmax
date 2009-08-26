@@ -24,6 +24,7 @@ Import Qt.Core
 Import Qt.QAbstractScrollArea
 Import Qt.QBrush
 Import Qt.QGraphicsItem
+Import Qt.QPainter
 Import BRL.Blitz
 
 
@@ -77,6 +78,7 @@ Extern
 	Function bmx_qt_qgraphicsview_backgroundbrush:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsview_cachemode:Int(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsview_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qgraphicsview_render(handle:Byte Ptr, painter:Byte Ptr, target:Byte Ptr, source:Byte Ptr, aspectRatioMode:Int)
 
 	Function bmx_qt_qgraphicsview_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qgraphicsview_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)

@@ -46,7 +46,7 @@ extern "C" {
 	void _qt_qwidget_QActionGroup__OnTriggered(BBObject * handle, QAction * action);
 
 	void _qt_qwidget_QWidget__OnCustomContextMenuRequested(BBObject * handle, int x, int y);
-	void _qt_qwidget_QWidget__OnPaintEvent(BBObject * handle, QPaintEvent * event, BBObject * painter);
+	void _qt_qwidget_QWidget__OnPaintEvent(BBObject * handle, QPaintEvent * event);
 	void _qt_qwidget_QWidget__OnMouseDoubleClickEvent(BBObject * handle, QMouseEvent * event);
 	void _qt_qwidget_QWidget__OnMouseMoveEvent(BBObject * handle, QMouseEvent * event);
 	void _qt_qwidget_QWidget__OnMousePressEvent(BBObject * handle, QMouseEvent * event);
@@ -183,6 +183,8 @@ extern "C" {
 	QWidget * bmx_qt_qwidget_parentwidget(QWidget * widget);
 	void bmx_qt_qwidget_pos(QWidget * widget, int * x, int * y);
 	MaxQRect * bmx_qt_qwidget_rect(QWidget * widget);
+	void bmx_qt_qwidget_size(QWidget * widget, int * w, int * h);
+	void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

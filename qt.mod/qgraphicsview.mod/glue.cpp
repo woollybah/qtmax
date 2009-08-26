@@ -36,7 +36,7 @@ MaxQGraphicsView::~MaxQGraphicsView()
 }
 
 void MaxQGraphicsView::paintEvent(QPaintEvent * event) {
-	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event, &bbNullObject);
+	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event);
 }
 
 void MaxQGraphicsView::mouseDoubleClickEvent(QMouseEvent * event) {
@@ -387,6 +387,10 @@ void bmx_qt_qgraphicsview_sizehint(QGraphicsView * view, int * w, int * h) {
 	QSize s(view->sizeHint());
 	*w = s.width();
 	*h = s.height();
+}
+
+void bmx_qt_qgraphicsview_render(QGraphicsView * view, QPainter * painter, MaxQRectF * target, MaxQRect * source, int aspectRatioMode) {
+	view->render(painter, (target) ? target->Rect() : QRectF(), (target) ? source->Rect() : QRect(), (Qt::AspectRatioMode)aspectRatioMode);
 }
 
 // *********************************************

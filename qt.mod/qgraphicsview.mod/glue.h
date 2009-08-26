@@ -98,6 +98,7 @@ extern "C" {
 	MaxQBrush * bmx_qt_qgraphicsview_backgroundbrush(QGraphicsView * view);
 	int bmx_qt_qgraphicsview_cachemode(QGraphicsView * view);
 	void bmx_qt_qgraphicsview_sizehint(QGraphicsView * view, int * w, int * h);
+	void bmx_qt_qgraphicsview_render(QGraphicsView * view, QPainter * painter, MaxQRectF * target, MaxQRect * source, int aspectRatioMode);
 
 	QGraphicsScene * bmx_qt_qgraphicsscene_create(BBObject * handle, QObject * parent);
 	void bmx_qt_qgraphicsscene_setscenerect(QGraphicsScene * scene, MaxQRectF * rect);

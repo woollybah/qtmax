@@ -129,6 +129,14 @@ Type TWindow Extends QMainWindow
 		End If
 	End Method
 	
+	Method setRenderer(action:QAction)
+		If action = m_nativeAction Then
+			m_view.setRenderer(SvgView.Renderer_Native)
+		ElseIf action = m_imageAction Then
+			m_view.setRenderer(SvgView.Renderer_Image)
+		End If
+	End Method
+	
 End Type
 
 

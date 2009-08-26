@@ -218,14 +218,24 @@ Type QPainter
 		End If
 	End Function
 
-	Function CreatePainter:QPainter(device:Object)
+	Function CreatePainter:QPainter(device:Object = Null)
 		Return New QPainter.Create(device)
 	End Function
 	
-	Method Create:QPainter(device:Object)
-		Local obj:QCoreObjectPtr = QCoreObjectPtr(device)
-		If obj Then
-			qObjectPtr = bmx_qt_qpainter_create(obj.qObjectPtr)
+	Method Create:QPainter(device:Object = Null)
+		If device Then
+			Local obj:QCoreObjectPtr = QCoreObjectPtr(device)
+			If obj Then
+				If obj.isWidget() Then
+					qObjectPtr = bmx_qt_qpainter_createwithwidget(obj.qObjectPtr)
+				Else
+					qObjectPtr = bmx_qt_qpainter_create(obj.qObjectPtr)
+				End If
+				_owner = True
+				Return Self
+			End If
+		Else
+			qObjectPtr = bmx_qt_qpainter_create(Null)
 			_owner = True
 			Return Self
 		End If
@@ -252,7 +262,7 @@ Type QPainter
 		bmx_qt_qpainter_drawConvexPolygon(qObjectPtr, points)
 	End Method
 
-	Method drawConvexPolygonD(points:Double[])
+	Method drawConvexPolygonF(points:Double[])
 		bmx_qt_qpainter_drawConvexPolygond(qObjectPtr, points)
 	End Method
 	
@@ -267,8 +277,12 @@ Type QPainter
 		bmx_qt_qpainter_drawEllipsecenter(qObjectPtr, cx, cy, rx, ry)
 	End Method
 
-	Method drawEllipseCenterD(cx:Double, cy:Double, rx:Double, ry:Double)
+	Method drawEllipseCenterF(cx:Double, cy:Double, rx:Double, ry:Double)
 		bmx_qt_qpainter_drawEllipsecenterd(qObjectPtr, cx, cy, rx, ry)
+	End Method
+	
+	Method DrawImage(x:Int, y:Int, image:QImage)
+		bmx_qt_qpainter_drawimage(qObjectPtr, x, y, image.qObjectPtr)
 	End Method
 	
 	Method DrawLine(x1:Int, y1:Int, x2:Int, y2:Int)
