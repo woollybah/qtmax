@@ -105,8 +105,16 @@ Type QImage Extends QPaintDevice
 			Return this
 		End If
 	End Function
-
 	
+	Function CreateImage:QImage(width:Int, height:Int, format:Int)
+		Return New QImage.Create(width, height, format)
+	End Function
+	
+	Method Create:QImage(width:Int, height:Int, format:Int)
+		qObjectPtr = bmx_qt_qimage_create(width, height, format)
+		Return Self
+	End Method
+
 	Method CreateWithData:QImage(data:Byte Ptr, width:Int, height:Int, bytesPerLine:Int, format:Int)
 		qObjectPtr = bmx_qt_qimage_createwithdata(data, width, height, bytesPerLine, format)
 		Return Self
@@ -163,6 +171,10 @@ Type QImage Extends QPaintDevice
 	
 	Method dotsPerMeterY:Int()
 	' TODO
+	End Method
+	
+	Method size(w:Int Var, h:Int Var)
+		bmx_qt_qimage_size(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method Free()

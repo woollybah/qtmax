@@ -130,24 +130,27 @@ Type SvgView Extends QGraphicsView
 	End Method
 	
 	Method paintEvent(event:QPaintEvent)
-Rem
+
 		If m_renderer = Renderer_Image Then
-			If (m_image.size() != viewport()->size()) {
-				m_image = QImage(viewport()->size(), QImage::Format_ARGB32_Premultiplied);
-			}
-		
+			Local iw:Int, ih:Int, vw:Int, vh:Int
+			If m_image Then
+				m_image.size(iw, ih)
+			End If
+			viewport().size(vw, vh)
+			If iw <> vw And ih <> vh Then
+				m_image = New QImage.Create(vw, vh, QImage.Format_ARGB32_Premultiplied)
+			End If
+
 			Local imagePainter:QPainter = New QPainter.Create(m_image)
-			QGraphicsView.render(imagePainter)
+			Super.render(imagePainter)
 			imagePainter.DoEnd()
 			
-			QPainter p(viewport())
+			Local p:QPainter = New QPainter.Create(viewport())
 			p.DrawImage(0, 0, m_image)
-		
+			p.DoEnd()
 		Else
-			QGraphicsView.paintEvent(event)
+			Super.paintEvent(event)
 		End If
-End Rem
-		Super.paintEvent(event)
 	End Method
 
 End Type

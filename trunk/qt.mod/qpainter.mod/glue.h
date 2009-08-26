@@ -28,8 +28,10 @@
 #include "../qcolor.mod/glue.h"
 #include "../qgradient.mod/glue.h"
 #include "../qpainterpath.mod/glue.h"
+#include "../qimage.mod/glue.h"
 #include <QtCore>
 #include <QPainter>
+#include <QWidget>
 
 class MaxQPainter;
 
@@ -38,6 +40,7 @@ extern "C" {
 #include <blitz.h>
 
 	QPainter * bmx_qt_qpainter_create(QPaintDevice * device);
+	QPainter * bmx_qt_qpainter_createwithwidget(QWidget * widget);
 	void bmx_qt_qpainter_free(QPainter * painter);
 	int bmx_qt_qpainter_begin(QPainter * painter, QPaintDevice * device);
 	int bmx_qt_qpainter_end(QPainter * painter);
@@ -74,6 +77,7 @@ extern "C" {
 	void bmx_qt_qpainter_drawtiledpixmaprectf(QPainter * painter, MaxQRectF * rectangle, MaxQPixmap * pixmap, double posX, double posY);
 	void bmx_qt_qpainter_drawtiledpixmaprect(QPainter * painter, MaxQRect * rectangle, MaxQPixmap * pixmap, int posX, int posY);
 	void bmx_qt_qpainter_drawtiledpixmap(QPainter * painter, int x, int y, int width, int height, MaxQPixmap * pixmap, int sx, int sy);
+	void bmx_qt_qpainter_drawimage(QPainter * painter, int x, int y, MaxQImage * image);
 
 }
 
@@ -85,7 +89,7 @@ public:
 	MaxQPainter(QPaintDevice * device);
 	~MaxQPainter();
 
-	QPainter & Painter();
+	QPainter * Painter();
 	
 private:
 	QPainter painter;

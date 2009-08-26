@@ -212,7 +212,7 @@ Type TWindow Extends QMainWindow
 	End Method
 	
 	Method createMenus()
-		fileMenu = menuBar().addMenu(tr("&File"))
+		fileMenu = QMenu(menuBar().addMenu(tr("&File")))
 		fileMenu.addAction(newAct)
 		fileMenu.addAction(openAct)
 		fileMenu.addAction(saveAct)
@@ -220,7 +220,7 @@ Type TWindow Extends QMainWindow
 		fileMenu.addSeparator()
 		fileMenu.addAction(exitAct)
 		
-		editMenu = menuBar().addMenu(tr("&Edit"))
+		editMenu = QMenu(menuBar().addMenu(tr("&Edit")))
 		editMenu.addAction(undoAct)
 		editMenu.addAction(redoAct)
 		editMenu.addSeparator()
@@ -229,7 +229,7 @@ Type TWindow Extends QMainWindow
 		editMenu.addAction(pasteAct)
 		editMenu.addSeparator()
 		
-		helpMenu = menuBar().addMenu(tr("&Help"))
+		helpMenu = QMenu(menuBar().addMenu(tr("&Help")))
 		helpMenu.addAction(aboutAct)
 		helpMenu.addAction(aboutQtAct)
 		

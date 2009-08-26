@@ -61,7 +61,7 @@ Type TMainWindow Extends QMainWindow
 		toolBar.addAction(view.pageAction(QWebPage.WA_Stop))
 		toolBar.addWidget(locationEdit)
 		
-		Local effectMenu:QMenu = menuBar().addMenu(tr("&Effect"))
+		Local effectMenu:QMenu = QMenu(menuBar().addMenu(tr("&Effect")))
 		effectMenu.addActionConnect("Highlight all links", Self, "highlightAllLinks")
 		
 		Local rotateAction:QAction = New QAction.Create(tr("Turn images upside down"), Self)
@@ -70,7 +70,7 @@ Type TMainWindow Extends QMainWindow
 		connect(rotateAction, "toggled", Self, "rotateImages")
 		effectMenu.addAction(rotateAction)
 		
-		Local toolsMenu:QMenu = menuBar().addMenu(tr("&Tools"))
+		Local toolsMenu:QMenu = Qmenu(menuBar().addMenu(tr("&Tools")))
 		toolsMenu.addActionConnect(tr("Remove GIF images"), Self, "removeGifImages")
 		toolsMenu.addActionConnect(tr("Remove all inline frames"), Self, "removeInlineFrames")
 		toolsMenu.addActionConnect(tr("Remove all object elements"), Self, "removeObjectElements")

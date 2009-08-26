@@ -153,6 +153,22 @@ Type QGraphicsView Extends QAbstractScrollArea
 		Return bmx_qt_qgraphicsview_cachemode(qObjectPtr)
 	End Method
 	
+	Method render(painter:QPainter, target:QRectF = Null, source:QRect = Null, aspectRatioMode:Int = Qt_KeepAspectRatio)
+		If target Then
+			If source Then
+				bmx_qt_qgraphicsview_render(qObjectPtr, painter.qObjectPtr, target.qObjectPtr, source.qObjectPtr, aspectRatioMode)
+			Else
+				bmx_qt_qgraphicsview_render(qObjectPtr, painter.qObjectPtr, target.qObjectPtr, Null, aspectRatioMode)
+			End If
+		Else
+			If source Then
+				bmx_qt_qgraphicsview_render(qObjectPtr, painter.qObjectPtr, Null, source.qObjectPtr, aspectRatioMode)
+			Else
+				bmx_qt_qgraphicsview_render(qObjectPtr, painter.qObjectPtr, Null, Null, aspectRatioMode)
+			End If
+		End If
+	End Method
+	
 	Method resetCachedContent()
 		bmx_qt_qgraphicsview_resetcachedcontent(qObjectPtr)
 	End Method

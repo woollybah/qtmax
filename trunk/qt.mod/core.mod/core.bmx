@@ -53,6 +53,10 @@ Type QCoreObjectPtr
 
 	Field qObjectPtr:Byte Ptr
 
+	Method isWidget:Int()
+		Return False
+	End Method
+	
 End Type
 
 
