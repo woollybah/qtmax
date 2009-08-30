@@ -44,6 +44,7 @@ extern "C" {
 	int bmx_qt_qtimer_timerid(QTimer * timer);
 	void bmx_qt_qtimer_start(QTimer * timer, int msec);
 	void bmx_qt_qtimer_stop(QTimer * timer);
+	void bmx_qt_qtimer_free(QTimer * timer);
 
 }
 

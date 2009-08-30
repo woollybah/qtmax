@@ -25,7 +25,7 @@ Import Qt.QWidget
 Import Qt.QLineEdit
 Import Qt.QCompleter
 Import BRL.Blitz
-
+Import BRL.LinkedList
 
 ' headers :-)
 ?win32
@@ -49,9 +49,16 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qcombobox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-	Function bmx_qt_qcombobox_addItem(handle:Byte Ptr, text:String, userData:Object)
+	Function bmx_qt_qcombobox_addItem(handle:Byte Ptr, text:String, itemId:Long)
 	Function bmx_qt_qcombobox_addItems(handle:Byte Ptr, texts:String[])
 	Function bmx_qt_qcombobox_count:Int(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_currentindex:Int(handle:Byte Ptr)
+	Function bmx_qt_qcombobox_insertitem(handle:Byte Ptr, index:Int, text:String, itemId:Long)
+	Function bmx_qt_qcombobox_itemdata(handle:Byte Ptr, index:Int, id:Long Ptr)
+	Function bmx_qt_qcombobox_removeitem(handle:Byte Ptr, index:Int)
+	Function bmx_qt_qcombobox_setitemdata(handle:Byte Ptr, index:Int, id:Long)
+	Function bmx_qt_qcombobox_currenttext:String(handle:Byte Ptr)
+	Function bmx_qt_qcombobox_findtext:Int(handle:Byte Ptr, text:String, flags:Int)
+	Function bmx_qt_qcombobox_setcurrentindex(handle:Byte Ptr, index:Int)
 
 End Extern

@@ -56,6 +56,10 @@ void bmx_qt_qgridlayout_addlayout(QGridLayout * grid, QLayout * layout, int row,
 	grid->addLayout(layout, row, column, bmx_qt_getalignment(alignment));
 }
 
+void bmx_qt_qgridlayout_addlayoutspan(QGridLayout * grid, QLayout * layout, int row, int column, int rowSpan, int columnSpan, int alignment) {
+	grid->addLayout(layout, row, column, rowSpan, columnSpan, bmx_qt_getalignment(alignment));
+}
+
 void bmx_qt_qgridlayout_addwidget(QGridLayout * grid, QWidget * widget, int row, int column, int alignment) {
 	grid->addWidget(widget, row, column, bmx_qt_getalignment(alignment));
 }

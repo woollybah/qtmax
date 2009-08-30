@@ -79,9 +79,9 @@ Type QLabel Extends QFrame
 	' TODO
 	'End Method
 	
-	'Method pixmap:QPixmap()
-	' TODO
-	'End Method
+	Method pixmap:QPixmap()
+		Return QPixmap._create(bmx_qt_qlabel_pixmap(qObjectPtr))
+	End Method
 	
 	Method setAlignment(alignment:Int)
 		bmx_qt_qlabel_setalignment(qObjectPtr, alignment)
@@ -159,9 +159,9 @@ Type QLabel Extends QFrame
 	' TODO
 	'End Method
 
-	'Method setPixmap(pixmap:QPixmap)
-	' TODO
-	'End Method
+	Method setPixmap(pixmap:QPixmap)
+		bmx_qt_qlabel_setpixmap(qObjectPtr, pixmap.qObjectPtr)
+	End Method
 
 	Method setText(text:String)
 		bmx_qt_qlabel_settext(qObjectPtr, text)

@@ -53,5 +53,6 @@ Extern
 	Function bmx_qt_qtimer_timerid:Int(handle:Byte Ptr)
 	Function bmx_qt_qtimer_start(handle:Byte Ptr, msec:Int)
 	Function bmx_qt_qtimer_stop(handle:Byte Ptr)
+	Function bmx_qt_qtimer_free(handle:Byte Ptr)
 
 End Extern

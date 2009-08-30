@@ -57,6 +57,8 @@ Type QBrush
 	End Method
 	
 	Method CreateWithColor:QBrush(color:QColor, style:Int = Qt_SolidPattern)
+		qObjectPtr = bmx_qt_qbrush_createwithcolor(color.qObjectPtr, style)
+		Return Self
 	End Method
 	
 	Method CreateWithGlobalColor:QBrush(color:Int, style:Int = Qt_SolidPattern)

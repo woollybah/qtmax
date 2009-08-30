@@ -645,3 +645,21 @@ Rem
 bbdoc: The size is scaled to a rectangle as small as possible outside a given rectangle, preserving the aspect ratio.
 end rem
 Const Qt_KeepAspectRatioByExpanding:Int = 2
+
+Rem
+bbdoc: The transformation is performed quickly, with no smoothing.
+end rem
+Const Qt_FastTransformation:Int = 0
+Rem
+bbdoc: The resulting image is transformed using bilinear filtering.
+end rem
+Const Qt_SmoothTransformation:Int = 1
+
+Const Qt_Monday:Int = 1
+Const Qt_Tuesday:Int = 2
+Const Qt_Wednesday:Int = 3
+Const Qt_Thursday:Int = 4
+Const Qt_Friday:Int = 5
+Const Qt_Saturday:Int = 6
+Const Qt_Sunday:Int = 7
+

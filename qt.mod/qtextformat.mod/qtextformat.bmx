@@ -35,5 +35,8 @@ Type QTextFormat
 
 	Field qObjectPtr:Byte Ptr
 	
+	Method setForeground(brush:QBrush)
+		bmx_qt_qtextformat_setforeground(qObjectPtr, brush.qObjectPtr)
+	End Method
 
 End Type

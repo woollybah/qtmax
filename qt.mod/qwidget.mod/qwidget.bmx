@@ -274,7 +274,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method locale:QLocale()
-	' TODO
+		Return QLocale._create(bmx_qt_qwidget_locale(qObjectPtr))
 	End Method
 	
 	Method macCGHandle:Byte Ptr()
@@ -562,7 +562,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method winId:Int()
-	' TODO
+		Return bmx_qt_qwidget_winid(qObjectPtr)
 	End Method
 	
 	Method window:QWidget()
@@ -950,6 +950,36 @@ End Type
 
 Type QLayout Extends QObject
 
+	Rem
+	bbdoc: The main widget's minimum size is set to minimumSize(), unless the widget already has a minimum size.
+	end rem
+	Const SetDefaultConstraint:Int = 0
+	Rem
+	bbdoc: The main widget's size is set to sizeHint(); it cannot be resized at all.
+	end rem
+	Const SetFixedSize:Int = 3
+	Rem
+	bbdoc: The main widget's minimum size is set to minimumSize(); it cannot be smaller.
+	end rem
+	Const SetMinimumSize:Int = 2
+	Rem
+	bbdoc: The main widget's maximum size is set to maximumSize(); it cannot be larger.
+	end rem
+	Const SetMaximumSize:Int = 4
+	Rem
+	bbdoc: The main widget's minimum size is set to minimumSize() and its maximum size is set to maximumSize().
+	end rem
+	Const SetMinAndMaxSize:Int = 5
+	Rem
+	bbdoc: The widget is not constrained.
+	end rem
+	Const SetNoConstraint:Int = 1
+
+	
+	Method setSizeConstraint(constraint:Int)
+		bmx_qt_qlayout_setsizeconstraint(qObjectPtr, constraint)
+	End Method
+	
 End Type
 
 Type QLayoutItem

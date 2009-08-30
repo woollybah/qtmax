@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qpixmap.mod/glue.h"
+#include "../qcolor.mod/glue.h"
 #include <QtCore>
 #include <QBrush>
 
@@ -39,6 +40,7 @@ extern "C" {
 	void bmx_qt_qbrush_free(MaxQBrush * brush);
 	MaxQBrush * bmx_qt_qbrush_createwithpixmap(MaxQPixmap * pixmap);
 	MaxQPixmap * bmx_qt_qbrush_texture(MaxQBrush * brush);
+	MaxQBrush * bmx_qt_qbrush_createwithcolor(MaxQColor * color, int style);
 
 }
 

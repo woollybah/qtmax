@@ -40,10 +40,17 @@ extern "C" {
 	void _qt_qcombobox_QComboBox__OnHighlighted(BBObject * handle, int index);
 
 	QComboBox * bmx_qt_qcombobox_create(BBObject * handle, QWidget * parent);
-	void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBObject * userData);
+	void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBInt64 itemId);
 	void bmx_qt_qcombobox_addItems(QComboBox * cb, BBArray * texts);
 	int bmx_qt_qcombobox_count(QComboBox * cb);
 	int bmx_qt_qcombobox_currentindex(QComboBox * cb);
+	void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBInt64 itemId);
+	void bmx_qt_qcombobox_itemdata(QComboBox * cb, int index, BBInt64 * id);
+	void bmx_qt_qcombobox_removeitem(QComboBox * cb, int index);
+	void bmx_qt_qcombobox_setitemdata(QComboBox * cb, int index, BBInt64 id);
+	BBString * bmx_qt_qcombobox_currenttext(QComboBox * cb);
+	int bmx_qt_qcombobox_findtext(QComboBox * cb, BBString * text, int flags);
+	void bmx_qt_qcombobox_setcurrentindex(QComboBox * cb, int index);
 
 }
 

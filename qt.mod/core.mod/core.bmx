@@ -46,7 +46,7 @@ Import "qvariant.bmx"
 Import "qrect.bmx"
 Import "qrectf.bmx"
 Import "qevent.bmx"
-Import "qtime.bmx"
+Import "qdatetime.bmx"
 Import "common.bmx"
 
 Type QCoreObjectPtr
@@ -59,5 +59,48 @@ Type QCoreObjectPtr
 	
 End Type
 
+Type QSize
+
+	Function scale(w:Int Var, h:Int Var, scaleW:Int, scaleH:Int, _mode:Int)
+		bmx_qt_qsize_scale(Varptr w, Varptr h, scaleW, scaleH, _mode)
+	End Function
+
+End Type
 
 
+Type QItemList
+
+	Field list:TMap = New TMap
+	Field lastItemId:Long
+	
+	Method addItem:Long(data:Object)
+		Local id:Long = newItem()
+		list.Insert(String(id), data)
+		Return id
+	End Method
+	
+	Method itemData:Object(itemId:Long)
+		Return list.ValueForKey(String(itemId))
+	End Method
+	
+	Method setItem(id:Long Var, data:Object)
+		If Not id Then
+			id = newItem()
+		End If
+		list.Insert(String(id), data)
+	End Method
+	
+	Method removeItem(itemId:Long)
+		list.Remove(String(itemId))
+	End Method
+	
+	Method clear()
+		list.Clear()
+	End Method
+
+	Method newItem:Long()
+		lastItemId:+ 1
+		Return lastItemId
+	End Method
+
+End Type

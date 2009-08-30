@@ -40,5 +40,13 @@ Type QFileDialog Extends QDialog
 		End If
 	End Function
 
+	Function getSaveFileName:String(parent:QWidget = Null, caption:String = "", dir:String = "", filter:String = "", options:Int = 0)
+		If parent Then
+			Return bmx_qt_qfiledialog_getsavefilename(parent.qObjectPtr, caption, dir, filter, options)
+		Else
+			Return bmx_qt_qfiledialog_getsavefilename(Null, caption, dir, filter, options)
+		End If
+	End Function
+
 End Type
 

@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QBrush
 Import BRL.Blitz
 
 
@@ -33,14 +34,19 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
 
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qtextformat_setforeground(handle:Byte Ptr, brush:Byte Ptr)
+
 
 End Extern

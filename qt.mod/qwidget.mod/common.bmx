@@ -166,6 +166,8 @@ Extern
 	Function bmx_qt_qwidget_rect:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_size(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 	Function bmx_qt_qwidget_sizeincrement(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qwidget_winid:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_locale:Byte Ptr(handle:Byte Ptr)
 	
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)
@@ -229,6 +231,8 @@ Extern
 	Function bmx_qt_qactiongroup_setenabled(handle:Byte Ptr, value:Int)
 	Function bmx_qt_qactiongroup_setexclusive(handle:Byte Ptr, value:Int)
 	Function bmx_qt_qactiongroup_setvisible(handle:Byte Ptr, value:Int)
+
+	Function bmx_qt_qlayout_setsizeconstraint(handle:Byte Ptr, constraint:Int)
 
 End Extern
 

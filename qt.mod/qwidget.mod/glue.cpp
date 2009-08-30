@@ -662,6 +662,10 @@ void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h) {
 	*h = s.height();
 }
 
+MaxQLocale * bmx_qt_qwidget_locale(QWidget * widget) {
+	return new MaxQLocale(widget->locale());
+}
+
 // *********************************************
 
 void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event) {
@@ -762,6 +766,10 @@ void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * even
 
 void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event) {
 	widget->defaultWheelEvent(event);
+}
+
+int bmx_qt_qwidget_winid(QWidget * widget) {
+	return (int)widget->winId();
 }
 
 // *********************************************
@@ -1021,6 +1029,11 @@ void bmx_qt_qactiongroup_setvisible(QActionGroup * group, int value) {
 	group->setVisible(static_cast<bool>(value));
 }
 
+// *********************************************
+
+void bmx_qt_qlayout_setsizeconstraint(QLayout * layout, int constraint) {
+	layout->setSizeConstraint((QLayout::SizeConstraint)constraint);
+}
 
 // *********************************************
 

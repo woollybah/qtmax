@@ -71,5 +71,7 @@ Extern
 	Function bmx_qt_qlabel_setnum(handle:Byte Ptr, num:Int)
 	Function bmx_qt_qlabel_setnumdouble(handle:Byte Ptr, num:Double)
 	Function bmx_qt_qlabel_settext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qlabel_pixmap:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qlabel_setpixmap(handle:Byte Ptr, pixmap:Byte Ptr)
 
 End Extern

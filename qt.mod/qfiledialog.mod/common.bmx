@@ -47,5 +47,7 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_qt_qfiledialog_getopenfilename:String(parent:Byte Ptr, caption:String, dir:String, filter:String, options:Int)
+	Function bmx_qt_qfiledialog_getsavefilename:String(parent:Byte Ptr, caption:String, dir:String, filter:String, options:Int)
+
 
 End Extern

@@ -33,6 +33,19 @@ Import "common.bmx"
 
 Type QDateEdit Extends QDateTimeEdit
 
+	Function CreateDateEdit:QDateEdit(parent:QWidget = Null)
+		Return New QDateEdit.Create(parent)
+	End Function
+	
+	Method Create:QDateEdit(parent:QWidget = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qdateedit_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qdateedit_create(Self, Null)
+		End If
+		OnInit()
+		Return Self
+	End Method
 
 End Type
 
