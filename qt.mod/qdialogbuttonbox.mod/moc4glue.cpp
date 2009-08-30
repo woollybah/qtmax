@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQDateTimeEdit[] = {
+static const uint qt_meta_data_MaxQDialogButtonBox[] = {
 
  // content:
        2,       // revision
@@ -29,51 +29,51 @@ static const uint qt_meta_data_MaxQDateTimeEdit[] = {
        0,    0, // constructors
 
  // slots: signature, parameters, type, tag, flags
-      23,   18,   17,   17, 0x08,
-      53,   44,   17,   17, 0x08,
-      87,   82,   17,   17, 0x08,
-     108,   17,   17,   17, 0x08,
-     132,  128,   17,   17, 0x08,
+      21,   20,   20,   20, 0x08,
+      41,   34,   20,   20, 0x08,
+      69,   20,   20,   20, 0x08,
+      87,   20,   20,   20, 0x08,
+     104,  100,   20,   20, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQDateTimeEdit[] = {
-    "MaxQDateTimeEdit\0\0date\0onDateChanged(QDate)\0"
-    "datetime\0onDateTimeChanged(QDateTime)\0"
-    "time\0onTimeChanged(QTime)\0onEditingFinished()\0"
-    "pos\0onCustomContextMenuRequested(QPoint)\0"
+static const char qt_meta_stringdata_MaxQDialogButtonBox[] = {
+    "MaxQDialogButtonBox\0\0onAccepted()\0"
+    "button\0onClicked(QAbstractButton*)\0"
+    "onHelpRequested()\0onRejected()\0pos\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
-const QMetaObject MaxQDateTimeEdit::staticMetaObject = {
-    { &QDateTimeEdit::staticMetaObject, qt_meta_stringdata_MaxQDateTimeEdit,
-      qt_meta_data_MaxQDateTimeEdit, 0 }
+const QMetaObject MaxQDialogButtonBox::staticMetaObject = {
+    { &QDialogButtonBox::staticMetaObject, qt_meta_stringdata_MaxQDialogButtonBox,
+      qt_meta_data_MaxQDialogButtonBox, 0 }
 };
 
-const QMetaObject *MaxQDateTimeEdit::metaObject() const
+const QMetaObject *MaxQDialogButtonBox::metaObject() const
 {
     return &staticMetaObject;
 }
 
-void *MaxQDateTimeEdit::qt_metacast(const char *_clname)
+void *MaxQDialogButtonBox::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQDateTimeEdit))
-        return static_cast<void*>(const_cast< MaxQDateTimeEdit*>(this));
-    return QDateTimeEdit::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQDialogButtonBox))
+        return static_cast<void*>(const_cast< MaxQDialogButtonBox*>(this));
+    return QDialogButtonBox::qt_metacast(_clname);
 }
 
-int MaxQDateTimeEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQDialogButtonBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QDateTimeEdit::qt_metacall(_c, _id, _a);
+    _id = QDialogButtonBox::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onDateChanged((*reinterpret_cast< const QDate(*)>(_a[1]))); break;
-        case 1: onDateTimeChanged((*reinterpret_cast< const QDateTime(*)>(_a[1]))); break;
-        case 2: onTimeChanged((*reinterpret_cast< const QTime(*)>(_a[1]))); break;
-        case 3: onEditingFinished(); break;
+        case 0: onAccepted(); break;
+        case 1: onClicked((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 2: onHelpRequested(); break;
+        case 3: onRejected(); break;
         case 4: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }

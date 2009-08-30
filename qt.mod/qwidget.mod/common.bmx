@@ -145,6 +145,9 @@ Extern
 	Function bmx_qt_qwidget_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
 
+	Function bmx_qt_qwidget_default_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qwidget_default_minimumsizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+
 	Function bmx_qt_qwidget_height:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_width:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_acceptdrops:Int(handle:Byte Ptr)
@@ -233,6 +236,9 @@ Extern
 	Function bmx_qt_qactiongroup_setvisible(handle:Byte Ptr, value:Int)
 
 	Function bmx_qt_qlayout_setsizeconstraint(handle:Byte Ptr, constraint:Int)
+	Function bmx_qt_qlayout_setcontentsmargins(handle:Byte Ptr, _left:Int, _top:Int, _right:Int, _bottom:Int)
+	Function bmx_qt_qlayout_setenabled(handle:Byte Ptr, enable:Int)
+	Function bmx_qt_qlayout_setmenubar(handle:Byte Ptr, widget:Byte Ptr)
 
 End Extern
 

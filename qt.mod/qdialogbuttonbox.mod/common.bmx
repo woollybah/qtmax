@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QWidget
+Import Qt.QAbstractButton
 Import BRL.Blitz
 
 
@@ -46,16 +47,7 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qdialog_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
-	Function bmx_qt_qdialog_issizegripenabled:Int(handle:Byte Ptr)
-	Function bmx_qt_qdialog_result:Int(handle:Byte Ptr)
-	Function bmx_qt_qdialog_setmodal(handle:Byte Ptr, modal:Int)
-	Function bmx_qt_qdialog_setresult(handle:Byte Ptr, i:Int)
-	Function bmx_qt_qdialog_setsizegripenabled(handle:Byte Ptr, value:Int)
-	Function bmx_qt_qdialog_accept(handle:Byte Ptr)
-	Function bmx_qt_qdialog_done(handle:Byte Ptr, r:Int)
-	Function bmx_qt_qdialog_exec:Int(handle:Byte Ptr)
-	Function bmx_qt_qdialog_open(handle:Byte Ptr)
-	Function bmx_qt_qdialog_reject(handle:Byte Ptr)
+	Function bmx_qt_qdialogbuttonbox_create:Byte Ptr(handle:Object, orientation:Int, parent:Byte Ptr)
+	Function bmx_qt_qdialogbuttonbox_addbutton(handle:Byte Ptr, button:Byte Ptr, role:Int)
 
 End Extern

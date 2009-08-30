@@ -33,6 +33,74 @@ Import "common.bmx"
 
 Type QDialog Extends QWidget
 
+	Function CreateDialog:QDialog(parent:QWidget = Null, flags:Int = 0)
+		Return New QDialog.Create(parent, flags)
+	End Function
+	
+	Method Create:QDialog(parent:QWidget = Null, flags:Int = 0)
+		If parent Then
+			qObjectPtr = bmx_qt_qdialog_create(Self, parent.qObjectPtr, flags)
+		Else
+			qObjectPtr = bmx_qt_qdialog_create(Self, Null, flags)
+		End If
+		OnInit()
+		Return Self
+	End Method
+
+	Method isSizeGripEnabled:Int()
+		Return bmx_qt_qdialog_issizegripenabled(qObjectPtr)
+	End Method
+	
+	Method result:Int()
+		Return bmx_qt_qdialog_result(qObjectPtr)
+	End Method
+	
+	Method setModal(modal:Int)
+		bmx_qt_qdialog_setmodal(qObjectPtr, modal)
+	End Method
+	
+	Method setResult(i:Int)
+		bmx_qt_qdialog_setresult(qObjectPtr, i)
+	End Method
+	
+	Method setSizeGripEnabled(value:Int)
+		bmx_qt_qdialog_setsizegripenabled(qObjectPtr, value)
+	End Method
+	
+	Method accept()
+		bmx_qt_qdialog_accept(qObjectPtr)
+	End Method
+	
+	Method done(r:Int)
+		bmx_qt_qdialog_done(qObjectPtr, r)
+	End Method
+	
+	Method exec:Int()
+		Return bmx_qt_qdialog_exec(qObjectPtr)
+	End Method
+	
+	Method open()
+		bmx_qt_qdialog_open(qObjectPtr)
+	End Method
+	
+	Method reject() 
+		bmx_qt_qdialog_reject(qObjectPtr)
+	End Method
+
+	' SIGNAL : accepted
+	Function _OnAccepted(obj:QDialog)
+		obj._InvokeSignals("accepted", Null)
+	End Function
+
+	' SIGNAL : finished
+	Function _OnFinished(obj:QDialog, result:Int)
+		obj._InvokeSignals("finished", [String(result)])
+	End Function
+
+	' SIGNAL : rejected
+	Function _OnRejected(obj:QDialog)
+		obj._InvokeSignals("rejected", Null)
+	End Function
 
 End Type
 
