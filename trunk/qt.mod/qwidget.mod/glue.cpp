@@ -255,6 +255,18 @@ void MaxQWidget::defaultWheelEvent(QWheelEvent * event) {
 	QWidget::wheelEvent(event);
 }
 
+void MaxQWidget::defaultSizeHint(int * w, int * h) {
+	QSize s(QWidget::sizeHint());
+	*w = s.width();
+	*h = s.height();
+}
+
+void MaxQWidget::defaultMinimumSizeHint(int * w, int * h) {
+	QSize s(QWidget::minimumSizeHint());
+	*w = s.width();
+	*h = s.height();
+}
+
 // ---------------------------------------------------------------------------------------
 
 MaxQAction::MaxQAction(BBObject * handle, QAction * action)
@@ -772,6 +784,14 @@ int bmx_qt_qwidget_winid(QWidget * widget) {
 	return (int)widget->winId();
 }
 
+void bmx_qt_qwidget_default_sizehint(MaxQWidget * widget, int * w, int * h) {
+	widget->defaultSizeHint(w, h);
+}
+
+void bmx_qt_qwidget_default_minimumsizehint(MaxQWidget * widget, int * w, int * h) {
+	widget->defaultMinimumSizeHint(w, h);
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
@@ -1033,6 +1053,18 @@ void bmx_qt_qactiongroup_setvisible(QActionGroup * group, int value) {
 
 void bmx_qt_qlayout_setsizeconstraint(QLayout * layout, int constraint) {
 	layout->setSizeConstraint((QLayout::SizeConstraint)constraint);
+}
+
+void bmx_qt_qlayout_setcontentsmargins(QLayout * layout, int left, int top, int right, int bottom) {
+	layout->setContentsMargins(left, top, right, bottom);
+}
+
+void bmx_qt_qlayout_setenabled(QLayout * layout, int enable) {
+	layout->setEnabled(static_cast<bool>(enable));
+}
+
+void bmx_qt_qlayout_setmenubar(QLayout * layout, QWidget * widget) {
+	layout->setMenuBar(widget);
 }
 
 // *********************************************

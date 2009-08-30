@@ -710,6 +710,7 @@ Type QWidget Extends QObject
 	End Function
 	
 	Method sizeHint(w:Int Var, h:Int Var)
+		bmx_qt_qwidget_default_sizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Function _SizeHint(obj:QWidget, w:Int Ptr, h:Int Ptr)
@@ -720,6 +721,7 @@ Type QWidget Extends QObject
 	End Function
 
 	Method minimumSizeHint(w:Int Var, h:Int Var)
+		bmx_qt_qwidget_default_minimumsizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Function _MinimumSizeHint(obj:QWidget, w:Int Ptr, h:Int Ptr)
@@ -975,6 +977,18 @@ Type QLayout Extends QObject
 	end rem
 	Const SetNoConstraint:Int = 1
 
+	
+	Method SetContentsMargins(_left:Int, _top:Int, _right:Int, _bottom:Int)
+		bmx_qt_qlayout_setcontentsmargins(qObjectPtr, _left, _top, _right, _bottom)
+	End Method
+	
+	Method setEnabled(enable:Int)
+		bmx_qt_qlayout_setenabled(qObjectPtr, enable)
+	End Method
+	
+	Method setMenuBar(widget:QWidget)
+		bmx_qt_qlayout_setmenubar(qObjectPtr, widget.qObjectPtr)
+	End Method
 	
 	Method setSizeConstraint(constraint:Int)
 		bmx_qt_qlayout_setsizeconstraint(qObjectPtr, constraint)

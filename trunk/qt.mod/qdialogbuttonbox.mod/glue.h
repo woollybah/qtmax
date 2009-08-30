@@ -20,50 +20,41 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QDIALOG
-#define MAX_QT_QDIALOG
+#ifndef MAX_QT_QDIALOGBUTTONBOX
+#define MAX_QT_QDIALOGBUTTONBOX
 
 #include "../core.mod/glue.h"
-#include "../qdialog.mod/glue.h"
 #include <QtCore>
-#include <QDialog>
+#include <QDialogButtonBox>
 
-class MaxQDialog;
+class MaxQDialogButtonBox;
 
 extern "C" {
 
 #include <blitz.h>
 
-	QDialog * bmx_qt_qdialog_create(BBObject * handle, QWidget * parent, int flags);
-	int bmx_qt_qdialog_issizegripenabled(QDialog * dialog);
-	int bmx_qt_qdialog_result(QDialog * dialog);
-	void bmx_qt_qdialog_setmodal(QDialog * dialog, int modal);
-	void bmx_qt_qdialog_setresult(QDialog * dialog, int i);
-	void bmx_qt_qdialog_setsizegripenabled(QDialog * dialog, int value);
-	void bmx_qt_qdialog_accept(QDialog * dialog);
-	void bmx_qt_qdialog_done(QDialog * dialog, int r);
-	int bmx_qt_qdialog_exec(QDialog * dialog);
-	void bmx_qt_qdialog_open(QDialog * dialog);
-	void bmx_qt_qdialog_reject(QDialog * dialog);
+	QDialogButtonBox * bmx_qt_qdialogbuttonbox_create(BBObject * handle, int orientation, QWidget * parent);
+	void bmx_qt_qdialogbuttonbox_addbutton(QDialogButtonBox * bb, QAbstractButton * button, int role);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQDialog : public QDialog
+class MaxQDialogButtonBox : public QDialogButtonBox
 {
 	Q_OBJECT
-	
+
 public:
-	MaxQDialog(BBObject * handle, QWidget * parent, Qt::WindowFlags flags);
-	~MaxQDialog();
+	MaxQDialogButtonBox(BBObject * handle, Qt::Orientation orientation, QWidget * parent);
+	~MaxQDialogButtonBox();
 
 private:
 	BBObject * maxHandle;
 
 private slots:
 	void onAccepted();
-	void onFinished(int result);
+	void onClicked(QAbstractButton * button);
+	void onHelpRequested();
 	void onRejected();
 	void onCustomContextMenuRequested(const QPoint & pos);
 };

@@ -24,79 +24,46 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQDialog::MaxQDialog(BBObject * handle, QWidget * parent, Qt::WindowFlags flags)
-	: maxHandle(handle), QDialog(parent, flags)
+MaxQDialogButtonBox::MaxQDialogButtonBox(BBObject * handle, Qt::Orientation orientation, QWidget * parent)
+	: maxHandle(handle), QDialogButtonBox(orientation, parent)
 {
 	qbind(this, handle);
 }
 
-MaxQDialog::~MaxQDialog()
+MaxQDialogButtonBox::~MaxQDialogButtonBox()
 {
 	qunbind(this);
 }
 
-void MaxQDialog::onAccepted() {
+void MaxQDialogButtonBox::onAccepted() {
 
 }
 
-void MaxQDialog::onFinished(int result) {
+void MaxQDialogButtonBox::onClicked(QAbstractButton * button) {
 
 }
 
-void MaxQDialog::onRejected() {
+void MaxQDialogButtonBox::onHelpRequested() {
 
 }
 
-void MaxQDialog::onCustomContextMenuRequested(const QPoint & pos) {
+void MaxQDialogButtonBox::onRejected() {
+
+}
+
+void MaxQDialogButtonBox::onCustomContextMenuRequested(const QPoint & pos) {
 
 }
 
 // *********************************************
 
-QDialog * bmx_qt_qdialog_create(BBObject * handle, QWidget * parent, int flags) {
-	return new MaxQDialog(handle, parent, (Qt::WindowFlags)flags);
+QDialogButtonBox * bmx_qt_qdialogbuttonbox_create(BBObject * handle, int orientation, QWidget * parent) {
+	return new MaxQDialogButtonBox(handle, (Qt::Orientation)orientation, parent);
 }
 
-int bmx_qt_qdialog_issizegripenabled(QDialog * dialog) {
-	return dialog->isSizeGripEnabled();
+void bmx_qt_qdialogbuttonbox_addbutton(QDialogButtonBox * bb, QAbstractButton * button, int role) {
+	bb->addButton(button, (QDialogButtonBox::ButtonRole)role);
 }
-
-int bmx_qt_qdialog_result(QDialog * dialog) {
-	return dialog->result();
-}
-
-void bmx_qt_qdialog_setmodal(QDialog * dialog, int modal) {
-	dialog->setModal(static_cast<bool>(modal));
-}
-
-void bmx_qt_qdialog_setresult(QDialog * dialog, int i) {
-	dialog->setResult(i);
-}
-
-void bmx_qt_qdialog_setsizegripenabled(QDialog * dialog, int value) {
-	dialog->setSizeGripEnabled(static_cast<bool>(value));
-}
-
-void bmx_qt_qdialog_accept(QDialog * dialog) {
-	dialog->accept();
-}
-
-void bmx_qt_qdialog_done(QDialog * dialog, int r) {
-	dialog->done(r);
-}
-
-int bmx_qt_qdialog_exec(QDialog * dialog) {
-	return dialog->exec();
-}
-
-void bmx_qt_qdialog_open(QDialog * dialog) {
-	dialog->open();
-}
-
-void bmx_qt_qdialog_reject(QDialog * dialog) {
-	dialog->reject();
-}
-
 
 
 // NOTES :

@@ -167,6 +167,9 @@ extern "C" {
 	void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * event);
 	void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event);
 
+	void bmx_qt_qwidget_default_sizehint(MaxQWidget * widget, int * w, int * h);
+	void bmx_qt_qwidget_default_minimumsizehint(MaxQWidget * widget, int * w, int * h);
+
 	int bmx_qt_qwidget_height(QWidget * widget);
 	int bmx_qt_qwidget_width(QWidget * widget);
 	int bmx_qt_qwidget_acceptdrops(QWidget * widget);
@@ -256,6 +259,9 @@ extern "C" {
 	Qt::WidgetAttribute bmx_qt_inttowidgetattribute(int a);
 	
 	void bmx_qt_qlayout_setsizeconstraint(QLayout * layout, int constraint);
+	void bmx_qt_qlayout_setcontentsmargins(QLayout * layout, int left, int top, int right, int bottom);
+	void bmx_qt_qlayout_setenabled(QLayout * layout, int enable);
+	void bmx_qt_qlayout_setmenubar(QLayout * layout, QWidget * widget);
 
 }
 
@@ -271,6 +277,9 @@ public:
 
 	QSize sizeHint() const;
 	QSize minimumSizeHint() const;
+	
+	void defaultSizeHint(int * w, int * h);
+	void defaultMinimumSizeHint(int * w, int * h);
 
 	void defaultActionEvent(QActionEvent * event);
 	void defaultChangeEvent(QEvent * event);
