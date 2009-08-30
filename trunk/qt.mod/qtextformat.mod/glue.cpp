@@ -24,10 +24,21 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQTextFormat::MaxQTextFormat(const QTextFormat & t)
+	: textformat(t)
+{
+}
+
+QTextFormat & MaxQTextFormat::Format() {
+	return textformat;
+}
 
 
 // *********************************************
 
+void bmx_qt_qtextformat_setforeground(MaxQTextFormat * format, MaxQBrush * brush) {
+	format->Format().setForeground(brush->Brush());
+}
 
 
 // NOTES :

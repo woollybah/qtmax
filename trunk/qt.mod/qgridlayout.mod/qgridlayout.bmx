@@ -50,6 +50,10 @@ Type QGridLayout Extends QLayout
 		bmx_qt_qgridlayout_addlayout(qObjectPtr, layout.qObjectPtr, row, column, alignment)
 	End Method
 	
+	Method addLayoutSpan(layout:QLayout, row:Int, column:Int, rowSpan:Int, columnSpan:Int, alignment:Int = 0)
+		bmx_qt_qgridlayout_addlayoutspan(qObjectPtr, layout.qObjectPtr, row, column, rowSpan, columnSpan, alignment)
+	End Method
+	
 	Method addWidget(widget:QWidget, row:Int, column:Int, alignment:Int = 0)
 		bmx_qt_qgridlayout_addwidget(qObjectPtr, widget.qObjectPtr, row, column, alignment)
 	End Method

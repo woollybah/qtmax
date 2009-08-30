@@ -33,6 +33,15 @@ extern "C" {
 
 #include <blitz.h>
 
+	MaxQLocale * bmx_qt_qlocale_create(int language, int country);
+	void bmx_qt_qlocale_free(MaxQLocale * locale);
+	BBArray * bmx_qt_qlocale_countriesforlanguage(int language);
+	BBString * bmx_qt_qlocale_countrytostring(int country);
+	BBString * bmx_qt_qlocale_languagetostring(int language);
+	BBString * bmx_qt_qlocale_amtext(MaxQLocale * locale);
+	int bmx_qt_qlocale_country(MaxQLocale * locale);
+	int bmx_qt_qlocale_language(MaxQLocale * locale);
+	BBString * bmx_qt_qlocale_name(MaxQLocale * locale);
 
 }
 

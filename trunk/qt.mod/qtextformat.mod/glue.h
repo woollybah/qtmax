@@ -24,16 +24,31 @@
 #define MAX_QT_QTEXTFORMAT
 
 #include "../core.mod/glue.h"
+#include "../qbrush.mod/glue.h"
 #include <QtCore>
+#include <QTextFormat>
+
+class MaxQTextFormat;
 
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qtextformat_setforeground(MaxQTextFormat * format, MaxQBrush * brush);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+class MaxQTextFormat
+{
+public:
+	MaxQTextFormat(const QTextFormat & t);
+	QTextFormat & Format();
+
+private:
+	QTextFormat textformat;
+};
 
 #endif

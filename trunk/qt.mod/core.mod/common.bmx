@@ -21,7 +21,7 @@
 SuperStrict
 
 Import BRL.Blitz
-
+Import BRL.Map
 
 ' headers :-)
 ?win32
@@ -186,5 +186,29 @@ Extern
 	Function bmx_qt_qrectf_x:Double(handle:Byte Ptr)
 	Function bmx_qt_qrectf_y:Double(handle:Byte Ptr)
 
-	
+	Function bmx_qt_qsize_scale(w:Int Ptr, h:Int Ptr, scaleW:Int, scaleH:Int, _mode:Int)
+
+	Function bmx_qt_qdate_create:Byte Ptr(y:Int, m:Int, d:Int)
+	Function bmx_qt_qdate_free(handle:Byte Ptr)
+	Function bmx_qt_qdate_adddays:Byte Ptr(handle:Byte Ptr, ndays:Int)
+	Function bmx_qt_qdate_addmonths:Byte Ptr(handle:Byte Ptr, nmonths:Int)
+	Function bmx_qt_qdate_addYears:Byte Ptr(handle:Byte Ptr, nyears:Int)
+	Function bmx_qt_qdate_day:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_dayofweek:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_dayofyear:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_daysinmonth:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_daysinyear:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_daysto:Int(handle:Byte Ptr, d:Byte Ptr)
+	Function bmx_qt_qdate_getdate(handle:Byte Ptr, year:Int Ptr, _month:Int Ptr, day:Int Ptr)
+	Function bmx_qt_qdate_isnull:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_isvalid:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_month:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_setdate:Int(handle:Byte Ptr, year:Int, _month:Int, day:Int)
+	Function bmx_qt_qdate_tojulianday:Int(handle:Byte Ptr)
+	Function bmx_qt_qdate_toformatedstring:String(handle:Byte Ptr, format:String)
+	Function bmx_qt_qdate_tostring:String(handle:Byte Ptr)
+	Function bmx_qt_qdate_weeknumber:Int(handle:Byte Ptr, yearNumber:Int Ptr)
+	Function bmx_qt_qdate_year:Int(handle:Byte Ptr)
+
+
 End Extern

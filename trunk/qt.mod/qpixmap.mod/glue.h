@@ -44,6 +44,10 @@ extern "C" {
 
 	void bmx_qt_qpixmap_fill(MaxQPixmap * pixmap, int color);
 	void bmx_qt_qpixmap_fillcolor(MaxQPixmap * pixmap, MaxQColor * color);
+	void bmx_qt_qpixmap_size(MaxQPixmap * pixmap, int * w, int * h);
+	MaxQImage * bmx_qt_qpixmap_toimage(MaxQPixmap * pixmap);
+	MaxQPixmap * bmx_qt_qpixmap_grabwindow(int window, int x, int y, int width, int height);
+	MaxQPixmap * bmx_qt_qpixmap_scaled(MaxQPixmap * pixmap, int width, int height, int aspectRatioMode, int transformMode);
 
 }
 

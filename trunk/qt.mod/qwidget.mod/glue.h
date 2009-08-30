@@ -29,10 +29,12 @@
 #include "../qfontmetrics.mod/glue.h"
 #include "../qicon.mod/glue.h"
 #include "../qregion.mod/glue.h"
+#include "../qlocale.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
 #include <QActionGroup>
+#include <QLayout>
 
 class MaxQWidget;
 class MaxQAction;
@@ -137,6 +139,7 @@ extern "C" {
 	int bmx_qt_qwidget_windowtype(QWidget * widget);
 	int bmx_qt_qwidget_x(QWidget * widget);
 	int bmx_qt_qwidget_y(QWidget * widget);
+	MaxQLocale * bmx_qt_qwidget_locale(QWidget * widget);
 
 	void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event);
 	void bmx_qt_qwidget_default_mousemoveevent(MaxQWidget * widget, QMouseEvent * event);
@@ -185,6 +188,7 @@ extern "C" {
 	MaxQRect * bmx_qt_qwidget_rect(QWidget * widget);
 	void bmx_qt_qwidget_size(QWidget * widget, int * w, int * h);
 	void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h);
+	int bmx_qt_qwidget_winid(QWidget * widget);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
@@ -250,6 +254,9 @@ extern "C" {
 	void bmx_qt_qactiongroup_setvisible(QActionGroup * group, int value);
 
 	Qt::WidgetAttribute bmx_qt_inttowidgetattribute(int a);
+	
+	void bmx_qt_qlayout_setsizeconstraint(QLayout * layout, int constraint);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

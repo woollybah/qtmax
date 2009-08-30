@@ -46,4 +46,6 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qdateedit_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+
 End Extern

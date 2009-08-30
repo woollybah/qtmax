@@ -43,4 +43,14 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qlocale_create:Byte Ptr(language:Int, country:Int)
+	Function bmx_qt_qlocale_free(handle:Byte Ptr)
+	Function bmx_qt_qlocale_countriesforlanguage:Int[](language:Int)
+	Function bmx_qt_qlocale_countrytostring:String(country:Int)
+	Function bmx_qt_qlocale_languagetostring:String(language:Int)
+	Function bmx_qt_qlocale_amtext:String(handle:Byte Ptr)
+	Function bmx_qt_qlocale_country:Int(handle:Byte Ptr)
+	Function bmx_qt_qlocale_language:Int(handle:Byte Ptr)
+	Function bmx_qt_qlocale_name:String(handle:Byte Ptr)
+
 End Extern

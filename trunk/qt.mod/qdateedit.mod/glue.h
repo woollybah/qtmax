@@ -24,17 +24,42 @@
 #define MAX_QT_QDATEEDIT
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qabstractspinbox.mod/glue.h"
+#include "../qdatetimeedit.mod/glue.h"
 #include <QtCore>
 #include <QDateEdit>
+
+class MaxQDateEdit;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QDateEdit * bmx_qt_qdateedit_create(BBObject * handle, QWidget * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQDateEdit : public QDateEdit
+{
+	Q_OBJECT
+
+public:
+	MaxQDateEdit(BBObject * handle, QWidget * parent);
+	~MaxQDateEdit();
+
+private:
+	BBObject * maxHandle;
+	
+private slots:
+	void onDateChanged(const QDate & date);
+	void onDateTimeChanged(const QDateTime & datetime);
+	void onTimeChanged(const QTime & time);
+	void onEditingFinished();
+	void onCustomContextMenuRequested(const QPoint & pos);
+
+};
 
 #endif

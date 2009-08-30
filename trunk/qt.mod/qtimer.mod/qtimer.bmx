@@ -33,6 +33,8 @@ Import "common.bmx"
 
 Type QTimer Extends QObject
 
+	Field _terminateOnShot:Int
+
 	Function CreateTimer:QTimer(parent:QObject = Null)
 		Return New Qtimer.Create(parent)
 	End Function
@@ -77,10 +79,28 @@ Type QTimer Extends QObject
 	Method stop()
 		bmx_qt_qtimer_stop(qObjectPtr)
 	End Method
+	
+	Method Free()
+		Super.Free()
+		If qObjectPtr Then
+			bmx_qt_qtimer_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Function singleShot(msec:Int, receiver:QObject, member:String)
+		Local timer:QTimer = New QTimer.Create()
+		timer.setSingleShot(True)
+		connect(timer, "timeout", receiver, member)
+		timer.start(msec)
+	End Function
 
 	' SIGNAL : timeout
 	Function _OnTimeout(obj:QTimer)
 		obj._InvokeSignals("timeout", Null)
+		If obj._terminateOnShot Then
+			obj.Free()
+		End If
 	End Function
 
 End Type

@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qwidget.mod/glue.h"
+#include "../qpixmap.mod/glue.h"
 #include <QtCore>
 #include <QLabel>
 
@@ -62,6 +63,8 @@ extern "C" {
 	void bmx_qt_qlabel_setnum(QLabel * label, int num);
 	void bmx_qt_qlabel_setnumdouble(QLabel * label, double num);
 	void bmx_qt_qlabel_settext(QLabel * label, BBString * text);
+	MaxQPixmap * bmx_qt_qlabel_pixmap(QLabel * label);
+	void bmx_qt_qlabel_setpixmap(QLabel * label, MaxQPixmap * pixmap);
 
 }
 

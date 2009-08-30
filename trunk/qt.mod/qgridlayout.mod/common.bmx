@@ -49,6 +49,7 @@ Extern
 
 	Function bmx_qt_qgridlayout_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qgridlayout_addlayout(handle:Byte Ptr, layout:Byte Ptr, row:Int, column:Int, alignment:Int)
+	Function bmx_qt_qgridlayout_addlayoutspan(handle:Byte Ptr, layout:Byte Ptr, row:Int, column:Int, rowSpan:Int, columnSpan:Int, alignment:Int)
 	Function bmx_qt_qgridlayout_addwidget(handle:Byte Ptr, widget:Byte Ptr, row:Int, column:Int, alignment:Int)
 	Function bmx_qt_qgridlayout_addwidgetspan(handle:Byte Ptr, widget:Byte Ptr, fromRow:Int, fromColumn:Int, rowSpan:Int, columnSpan:Int, alignment:Int)
 	Function bmx_qt_qgridlayout_cellrect:Byte Ptr(handle:Byte Ptr, row:Int, column:Int)

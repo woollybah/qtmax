@@ -66,13 +66,8 @@ QComboBox * bmx_qt_qcombobox_create(BBObject * handle, QWidget * parent) {
 	return new MaxQComboBox(handle, parent);
 }
 
-void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBObject * userData) {
-	if (userData != &bbNullObject) {
-		BBRETAIN(userData);
-		cb->addItem(qStringFromBBString(text), QVariant(QMetaType::VoidStar, userData));
-	} else {
-		cb->addItem(qStringFromBBString(text));
-	}
+void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBInt64 itemId) {
+	cb->addItem(qStringFromBBString(text), QVariant(itemId));
 }
 
 void bmx_qt_qcombobox_addItems(QComboBox * cb, BBArray * texts) {
@@ -85,6 +80,37 @@ int bmx_qt_qcombobox_count(QComboBox * cb) {
 
 int bmx_qt_qcombobox_currentindex(QComboBox * cb) {
 	return cb->currentIndex();
+}
+
+void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBInt64 itemId) {
+	cb->insertItem(index, qStringFromBBString(text), itemId);
+}
+
+void bmx_qt_qcombobox_itemdata(QComboBox * cb, int index, BBInt64 * id) {
+	QVariant v = cb->itemData(index);
+	if (v.type() != QVariant::Invalid) {
+		*id = v.toLongLong();
+	}
+}
+
+void bmx_qt_qcombobox_removeitem(QComboBox * cb, int index) {
+	cb->removeItem(index);
+}
+
+void bmx_qt_qcombobox_setitemdata(QComboBox * cb, int index, BBInt64 id) {
+	cb->setItemData(index, QVariant(id));
+}
+
+BBString * bmx_qt_qcombobox_currenttext(QComboBox * cb) {
+	return bbStringFromQString(cb->currentText());
+}
+
+int bmx_qt_qcombobox_findtext(QComboBox * cb, BBString * text, int flags) {
+	return cb->findText(qStringFromBBString(text), (Qt::MatchFlags)flags);
+}
+
+void bmx_qt_qcombobox_setcurrentindex(QComboBox * cb, int index) {
+	cb->setCurrentIndex(index);
 }
 
 // NOTES :

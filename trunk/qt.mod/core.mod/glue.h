@@ -35,6 +35,8 @@ class MaxQUrl;
 class MaxQRect;
 class MaxQTime;
 class MaxQRectF;
+class MaxQDate;
+class MaxQDateTime;
 
 class MaxQObjectWrapper;
 
@@ -199,7 +201,31 @@ extern "C" {
 	double bmx_qt_qrectf_x(MaxQRectF * rect);
 	double bmx_qt_qrectf_y(MaxQRectF * rect);
 
+	void bmx_qt_qsize_scale(int * w, int * h, int scaleW, int scaleH, int _mode);
+
+	MaxQDate * bmx_qt_qdate_create(int y, int m, int d);
+	void bmx_qt_qdate_free(MaxQDate * date);
+	MaxQDate * bmx_qt_qdate_adddays(MaxQDate * date, int ndays);
+	MaxQDate * bmx_qt_qdate_addmonths(MaxQDate * date, int nmonths);
+	MaxQDate * bmx_qt_qdate_addYears(MaxQDate * date, int nyears);
+	int bmx_qt_qdate_day(MaxQDate * date);
+	int bmx_qt_qdate_dayofweek(MaxQDate * date);
+	int bmx_qt_qdate_dayofyear(MaxQDate * date);
+	int bmx_qt_qdate_daysinmonth(MaxQDate * date);
+	int bmx_qt_qdate_daysinyear(MaxQDate * date);
+	int bmx_qt_qdate_daysto(MaxQDate * date, MaxQDate * d);
+	void bmx_qt_qdate_getdate(MaxQDate * date, int * year, int * _month, int * day);
+	int bmx_qt_qdate_isnull(MaxQDate * date);
+	int bmx_qt_qdate_isvalid(MaxQDate * date);
+	int bmx_qt_qdate_month(MaxQDate * date);
+	int bmx_qt_qdate_setdate(MaxQDate * date, int year, int _month, int day);
+	int bmx_qt_qdate_tojulianday(MaxQDate * date);
+	BBString * bmx_qt_qdate_toformatedstring(MaxQDate * date, BBString * format);
+	BBString * bmx_qt_qdate_tostring(MaxQDate * date);
+	int bmx_qt_qdate_weeknumber(MaxQDate * date, int * yearNumber);
+	int bmx_qt_qdate_year(MaxQDate * date);
 	
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -272,6 +298,30 @@ private slots:
 
 protected:
 	BBObject * maxHandle;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQDate
+{
+public:
+	MaxQDate(const QDate & d);
+	QDate & Date();
+
+private:
+	QDate date;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQDateTime
+{
+public:
+	MaxQDateTime(const QDateTime & d);
+	QDateTime & DateTime();
+
+private:
+	QDateTime datetime;
 };
 
 #endif

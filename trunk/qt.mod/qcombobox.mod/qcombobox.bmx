@@ -33,6 +33,8 @@ Import "common.bmx"
 
 Type QComboBox Extends QWidget
 
+	Field data:QItemList = New QItemList
+
 	Function CreateComboBox:QComboBox(parent:QWidget = Null)
 		Return New QComboBox.Create(parent)
 	End Function
@@ -48,7 +50,11 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method addItem(text:String, userData:Object = Null)
-		bmx_qt_qcombobox_addItem(qObjectPtr, text, userData)
+		Local itemId:Long
+		If userData Then
+			itemId = data.addItem(userData)
+		End If
+		bmx_qt_qcombobox_addItem(qObjectPtr, text, itemId)
 	End Method
 	
 	Method addItems(texts:String[])
@@ -62,13 +68,17 @@ Type QComboBox Extends QWidget
 	Method currentIndex:Int()
 		Return bmx_qt_qcombobox_currentindex(qObjectPtr)
 	End Method
+	
+	Method currentText:String()
+		Return bmx_qt_qcombobox_currenttext(qObjectPtr)
+	End Method
 
 	Method duplicatesEnabled:Int()
 	' TODO
 	End Method
 	
 	Method findText:Int(text:String, flags:Int = Qt_MatchExactly | Qt_MatchCaseSensitive)
-	' TODO
+		Return bmx_qt_qcombobox_findtext(qObjectPtr, text, flags)
 	End Method
 
 	Method hasFrame:Int()
@@ -84,7 +94,11 @@ Type QComboBox Extends QWidget
 	End Method
 	
 	Method insertItem(index:Int, text:String, userData:Object = Null)
-	' TODO
+		Local itemId:Long
+		If userData Then
+			itemId = data.addItem(userData)
+		End If
+		bmx_qt_qcombobox_insertitem(qObjectPtr, index, text, itemId)
 	End Method
 	
 	Method insertItems(index:Int, texts:String[])
@@ -103,8 +117,12 @@ Type QComboBox Extends QWidget
 	' TODO
 	End Method
 
-	Method itemData:Object(index:Int, role:Int = Qt_UserRole)
-	' TODO
+	Method itemData:Object(index:Int)
+		Local id:Long
+		bmx_qt_qcombobox_itemdata(qObjectPtr, index, Varptr id)
+		If id Then
+			Return data.itemData(id)
+		End If
 	End Method
 	
 	'Method itemDelegate:QAbstractItemDelegate()
@@ -144,7 +162,12 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method removeItem(index:Int)
-	' TODO
+		Local id:Long
+		bmx_qt_qcombobox_itemdata(qObjectPtr, index, Varptr id)
+		If id Then
+			data.removeItem(id)
+		End If
+		bmx_qt_qcombobox_removeitem(qObjectPtr, index)
 	End Method
 
 	'Method rootModelIndex:QModelIndex()
@@ -175,8 +198,11 @@ Type QComboBox Extends QWidget
 	' TODO
 	End Method
 
-	Method setItemData(index:Int, value:Object, role:Int = Qt_UserRole)
-	' TODO
+	Method setItemData(index:Int, value:Object)
+		Local id:Long
+		bmx_qt_qcombobox_itemdata(qObjectPtr, index, Varptr id)
+		data.setItem(id, value)
+		bmx_qt_qcombobox_setitemdata(qObjectPtr, index, id)
 	End Method
 
 	'Method setItemDelegate(delegate:QAbstractItemDelegate)
@@ -248,7 +274,7 @@ Type QComboBox Extends QWidget
 	'End Method
 
 	Method clear()
-	' TODO
+		data.clear()
 	End Method
 
 	Method clearEditText()
@@ -256,7 +282,7 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method setCurrentIndex(index:Int)
-	' TODO
+		bmx_qt_qcombobox_setcurrentindex(qObjectPtr, index)
 	End Method
 
 	Method setEditText(text:String)

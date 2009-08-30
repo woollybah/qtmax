@@ -32,6 +32,64 @@ Import "common.bmx"
 
 Type QTextCharFormat Extends QTextFormat
 
+	Rem
+	bbdoc: Text is draw without any underlining decoration.
+	end rem
+	Const NoUnderline:Int = 0
+	Rem
+	bbdoc: A line is drawn using Qt::SolidLine.
+	end rem
+	Const SingleUnderline:Int = 1
+	Rem
+	bbdoc: Dashes are drawn using Qt::DashLine.
+	end rem
+	Const DashUnderline:Int = 2
+	Rem
+	bbdoc: Dots are drawn using Qt::DotLine;
+	end rem
+	Const DotLine:Int = 3
+	Rem
+	bbdoc: Dashs and dots are drawn using Qt::DashDotLine.
+	end rem
+	Const DashDotLine:Int = 4
+	Rem
+	bbdoc: Underlines draw drawn using Qt::DashDotDotLine.
+	end rem
+	Const DashDotDotLine:Int = 5
+	Rem
+	bbdoc: The text is underlined using a wave shaped line.
+	end rem
+	Const WaveUnderline:Int = 6
+	Rem
+	bbdoc: The underline is drawn depending on the QStyle::SH_SpellCeckUnderlineStyle style hint of the QApplication style. By default this is mapped to WaveUnderline, on Mac OS X it is mapped to DashDotLine.
+	end rem
+	Const SpellCheckUnderline:Int = 7
+	Rem
+	bbdoc: Adjacent characters are positioned in the standard way for text in the writing system in use.
+	end rem
+	Const AlignNormal:Int = 0
+	Rem
+	bbdoc: Characters are placed above the baseline for normal text.
+	end rem
+	Const AlignSuperScript:Int = 1
+	Rem
+	bbdoc: Characters are placed below the baseline for normal text.
+	end rem
+	Const AlignSubScript:Int = 2
+	Rem
+	bbdoc: The center of the object is vertically aligned with the base line. Currently, this is only implemented for inline objects.
+	end rem
+	Const AlignMiddle:Int = 3
+	Rem
+	bbdoc: The bottom edge of the object is vertically aligned with the base line.
+	end rem
+	Const AlignBottom:Int = 5
+	Rem
+	bbdoc: The top edge of the object is vertically aligned with the base line.
+	end rem
+	Const AlignTop:Int = 4
+
+	
 	Function _create:QTextCharFormat(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
 			Local this:QTextCharFormat = New QTextCharFormat
@@ -39,6 +97,218 @@ Type QTextCharFormat Extends QTextFormat
 			Return this
 		End If
 	End Function
+	
+	Function CreateTextCharFormat:QTextCharFormat()
+		Return New QTextCharFormat.Create()
+	End Function
+	
+	Method Create:QTextCharFormat()
+		qObjectPtr = bmx_qt_qtextcharformat_create()
+		Return Self
+	End Method
 
+	Method anchorHref:String()
+		Return bmx_qt_qtextcharformat_anchorhref(qObjectPtr)
+	End Method
+	
+	Method anchorNames:String[]()
+		Return bmx_qt_qtextcharformat_anchornames(qObjectPtr)
+	End Method
+	
+	Method font:QFont()
+		Return QFont._create(bmx_qt_qtextcharformat_font(qObjectPtr))
+	End Method
+	
+	Method fontCapitalization:Int()
+		Return bmx_qt_qtextcharformat_fontcapitalization(qObjectPtr)
+	End Method
+	
+	Method fontFamily:String()
+		Return bmx_qt_qtextcharformat_fontfamily(qObjectPtr)
+	End Method
+	
+	Method fontFixedPitch:Int()
+		Return bmx_qt_qtextcharformat_fontfixedpitch(qObjectPtr)
+	End Method
+	
+	Method fontItalic:Int()
+		Return bmx_qt_qtextcharformat_fontitalic(qObjectPtr)
+	End Method
+	
+	Method fontKerning:Int()
+		Return bmx_qt_qtextcharformat_fontkerning(qObjectPtr)
+	End Method
+	
+	Method fontLetterSpacing:Double()
+		Return bmx_qt_qtextcharformat_fontletterspacing(qObjectPtr)
+	End Method
+	
+	Method fontOverline:Int()
+		Return bmx_qt_qtextcharformat_fontoverline(qObjectPtr)
+	End Method
+	
+	Method fontPointSize:Double()
+		Return bmx_qt_qtextcharformat_fontpointsize(qObjectPtr)
+	End Method
+	
+	Method fontStrikeOut:Int()
+		Return bmx_qt_qtextcharformat_fontstrikeout(qObjectPtr)
+	End Method
+	
+	Method fontStyleHint:Int()
+		Return bmx_qt_qtextcharformat_fontstylehint(qObjectPtr)
+	End Method
+	
+	Method fontStyleStrategy:Int()
+		Return bmx_qt_qtextcharformat_fontstylestrategy(qObjectPtr)
+	End Method
+	
+	Method fontUnderline:Int()
+		Return bmx_qt_qtextcharformat_fontunderline(qObjectPtr)
+	End Method
+	
+	Method fontWeight:Int()
+		Return bmx_qt_qtextcharformat_fontweight(qObjectPtr)
+	End Method
+	
+	Method fontWordSpacing:Double()
+		Return bmx_qt_qtextcharformat_fontwordspacing(qObjectPtr)
+	End Method
+	
+	Method isAnchor:Int()
+		Return bmx_qt_qtextcharformat_isanchor(qObjectPtr)
+	End Method
+	
+	Method isValid:Int()
+		Return bmx_qt_qtextcharformat_isvalid(qObjectPtr)
+	End Method
+	
+	Method setAnchor(anchor:Int)
+		bmx_qt_qtextcharformat_setanchor(qObjectPtr, anchor)
+	End Method
+	
+	Method setAnchorHref(value:String)
+		bmx_qt_qtextcharformat_setanchorhref(qObjectPtr, value)
+	End Method
+	
+	Method setAnchorNames(names:String[])
+		bmx_qt_qtextcharformat_setanchornames(qObjectPtr, names)
+	End Method
+	
+	Method setFont(font:QFont)
+		bmx_qt_qtextcharformat_setfont(qObjectPtr, font.qObjectPtr)
+	End Method
+	
+	Method setFontCapitalization(capitalization:Int)
+		bmx_qt_qtextcharformat_setfontcapitalization(qObjectPtr, capitalization)
+	End Method
+	
+	Method setFontFamily(family:String)
+		bmx_qt_qtextcharformat_setfontfamily(qObjectPtr, family)
+	End Method
+	
+	Method setFontFixedPitch(fixedPitch:Int)
+		bmx_qt_qtextcharformat_setfontfixedpitch(qObjectPtr, fixedpitch)
+	End Method
+	
+	Method setFontItalic(italic:Int)
+		bmx_qt_qtextcharformat_setfontitalic(qObjectPtr, italic)
+	End Method
+	
+	Method setFontKerning(enable:Int)
+		bmx_qt_qtextcharformat_setfontkerning(qObjectPtr, enable)
+	End Method
+	
+	Method setFontLetterSpacing(spacing:Double)
+		bmx_qt_qtextcharformat_setfontletterspacing(qObjectPtr, spacing)
+	End Method
+	
+	Method setFontOverline(overline:Int)
+		bmx_qt_qtextcharformat_setfontoverline(qObjectPtr, overline)
+	End Method
+	
+	Method setFontPointSize(size:Double)
+		bmx_qt_qtextcharformat_setfontpointsize(qObjectPtr, size)
+	End Method
+	
+	Method setFontStrikeOut(strikeOut:Int)
+		bmx_qt_qtextcharformat_setfontstrikeout(qObjectPtr, strikeOut)
+	End Method
+	
+	Method setFontStyleHint(hint:Int, strategy:Int = QFont.Strategy_PreferDefault)
+		bmx_qt_qtextcharformat_setfontstylehint(qObjectPtr, hint, strategy)
+	End Method
+	
+	Method setFontStyleStrategy(strategy:Int)
+		bmx_qt_qtextcharformat_setfontstylestrategy(qObjectPtr, strategy)
+	End Method
+	
+	Method setFontUnderline(underline:Int)
+		bmx_qt_qtextcharformat_setfontunderline(qObjectPtr, underline)
+	End Method
+	
+	Method setFontWeight(weight:Int)
+		bmx_qt_qtextcharformat_setfontweight(qObjectPtr, weight)
+	End Method
+	
+	Method setFontWordSpacing(spacing:Double)
+		bmx_qt_qtextcharformat_setfontwordspacing(qObjectPtr, spacing)
+	End Method
+	
+	Method setTextOutline(pen:QPen)
+		bmx_qt_qtextcharformat_settextoutline(qObjectPtr, pen.qObjectPtr)
+	End Method
+	
+	Method setToolTip(text:String)
+		bmx_qt_qtextcharformat_settooltip(qObjectPtr, text)
+	End Method
+	
+	Method setUnderlineColor(color:QColor)
+		bmx_qt_qtextcharformat_setunderlinecolor(qObjectPtr, color.qObjectPtr)
+	End Method
+	
+	Method setUnderlineStyle(style:Int)
+		bmx_qt_qtextcharformat_setunderlinestyle(qObjectPtr, style)
+	End Method
+	
+	Method setVerticalAlignment(alignment:Int)
+		bmx_qt_qtextcharformat_setverticalalignment(qObjectPtr, alignment)
+	End Method
+	
+	Method textOutline:QPen()
+		Return QPen._create(bmx_qt_qtextcharformat_textoutline(qObjectPtr))
+	End Method
+	
+	Method toolTip:String()
+		Return bmx_qt_qtextcharformat_tooltip(qObjectPtr)
+	End Method
+	
+	Method underlineColor:QColor()
+		Return QColor._create(bmx_qt_qtextcharformat_underlinecolor(qObjectPtr))
+	End Method
+	
+	Method underlineStyle:Int()
+		Return bmx_qt_qtextcharformat_underlinestyle(qObjectPtr)
+	End Method
+	
+	Method verticalAlignment:Int()
+		Return bmx_qt_qtextcharformat_verticalalignment(qObjectPtr)
+	End Method
+
+	Method setForeground(brush:QBrush)
+		bmx_qt_qtextcharformat_setforeground(qObjectPtr, brush.qObjectPtr)
+	End Method
+
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qtextcharformat_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
 End Type
 

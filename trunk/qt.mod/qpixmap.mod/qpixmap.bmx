@@ -56,6 +56,50 @@ Type QPixmap Extends QPaintDevice
 	Method fillColor(color:QColor)
 		bmx_qt_qpixmap_fillcolor(qObjectPtr, color.qObjectPtr)
 	End Method
+
+	Method mask:QBitmap()
+	' TODO
+	End Method
+	
+	Method rect:QRect()
+	' TODO
+	End Method
+	
+	Method save:Int(fileName:String, format:String = Null, quality:Int = -1)
+	' TODO
+	End Method
+
+	Method scaled:QPixmap(width:Int, height:Int, aspectRatioMode:Int = Qt_IgnoreAspectRatio, transformMode:Int = Qt_FastTransformation)
+		Return QPixmap._create(bmx_qt_qpixmap_scaled(qObjectPtr, width, height, aspectRatioMode, transformMode))
+	End Method
+
+	Method scaledToHeight:QPixmap(height:Int, _mode:Int = Qt_FastTransformation)
+	' TODO
+	End Method
+	
+	Method scaledToWidth:QPixmap(width:Int, _mode:Int = Qt_FastTransformation)
+	' TODO
+	End Method
+
+	Method setAlphaChannel(alphaChannel:QPixmap)
+	' TODO
+	End Method
+	
+	Method setMask(mask:QBitmap)
+	' TODO
+	End Method
+	
+	Method size(w:Int Var, h:Int Var)
+		bmx_qt_qpixmap_size(qObjectPtr, Varptr w, Varptr h)
+	End Method
+	
+	Method toImage:QImage()
+		Return QImage._create(bmx_qt_qpixmap_toimage(qObjectPtr))
+	End Method
+	
+	Function grabWindow:QPixmap(window:Int, x:Int = 0, y:Int = 0, width:Int = -1, height:Int = -1)
+		Return QPixmap._create(bmx_qt_qpixmap_grabwindow(window, x, y, width, height))
+	End Function
 	
 	Method Free()
 		If qObjectPtr Then

@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QAbstractSpinBox
+Import Qt.QCalendarWidget
 Import BRL.Blitz
 
 
@@ -46,4 +47,50 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qdatetimeedit_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_calendarpopoup:Int(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_calendarwidget:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_clearmaximumdate(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_clearmaximumdatetime(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_clearmaximumtime(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_clearminimumdate(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_clearminimumdatetime(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_clearminimumtime(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_currentsection:Int(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_currentsectionindex:Int(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_date:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_datetime:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_displayformat:String(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_displayedsections:Int(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_maximumdate:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_maximumdatetime:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_maximumtime:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_minimumdate:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_minimumdatetime:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_minimumtime:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_sectionat:Int(handle:Byte Ptr, index:Int)
+	Function bmx_qt_qdatetimeedit_sectioncount:Int(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_sectiontext:String(handle:Byte Ptr, section:Int)
+	Function bmx_qt_qdatetimeedit_setcalendarpopup(handle:Byte Ptr, enable:Int)
+	Function bmx_qt_qdatetimeedit_setcalendarwidget(handle:Byte Ptr, calendarWidget:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setcurrentsection(handle:Byte Ptr, section:Int)
+	Function bmx_qt_qdatetimeedit_setcurrentsectionindex(handle:Byte Ptr, index:Int)
+	Function bmx_qt_qdatetimeedit_setdaterange(handle:Byte Ptr, _min:Byte Ptr, _max:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setdatetimerange(handle:Byte Ptr, _min:Byte Ptr, _max:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setdisplayformat(handle:Byte Ptr, format:String)
+	Function bmx_qt_qdatetimeedit_setmaximumdate(handle:Byte Ptr, _max:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setmaximumdatetime(handle:Byte Ptr, dt:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setmaximumtime(handle:Byte Ptr, _max:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setminimumdate(handle:Byte Ptr, _min:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setminimumdatetime(handle:Byte Ptr, dt:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setminimumtime(handle:Byte Ptr, _min:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setselectedsection(handle:Byte Ptr, section:Int)
+	Function bmx_qt_qdatetimeedit_settimerange(handle:Byte Ptr, _min:Byte Ptr, _max:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_settimespec(handle:Byte Ptr, spec:Int)
+	Function bmx_qt_qdatetimeedit_time:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_timespec:Int(handle:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setdate(handle:Byte Ptr, date:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_setdatetime(handle:Byte Ptr, dateTime:Byte Ptr)
+	Function bmx_qt_qdatetimeedit_settime(handle:Byte Ptr, time:Byte Ptr)
+	
 End Extern
