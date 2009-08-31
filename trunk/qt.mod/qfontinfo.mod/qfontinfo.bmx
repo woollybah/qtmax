@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QPalette
+Module Qt.QFontInfo
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,18 +30,10 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-
-Type QPalette
+Type QFontInfo
 
 	Field qObjectPtr:Byte Ptr
-	
-	Function _create:QPalette(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QPalette = New QPalette
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
-	End Function
+
 
 End Type
 

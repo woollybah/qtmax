@@ -25,6 +25,7 @@
 #include <QUrl>
 #include <QRect>
 #include <QTime>
+#include <QChar>
 
 #include <map>
 
@@ -225,6 +226,7 @@ extern "C" {
 	int bmx_qt_qdate_weeknumber(MaxQDate * date, int * yearNumber);
 	int bmx_qt_qdate_year(MaxQDate * date);
 	
+	int bmx_qt_qchar_category(int c);
 
 }
 

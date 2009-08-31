@@ -60,6 +60,84 @@ void bmx_qt_qfontmetrics_free(MaxQFontMetrics * fm) {
 	delete fm;
 }
 
+int bmx_qt_qfontmetrics_descent(MaxQFontMetrics * fm) {
+	return fm->Metrics().descent();
+}
+
+BBString * bmx_qt_qfontmetrics_elidedtext(MaxQFontMetrics * fm, BBString * text, int _mode, int width, int flags) {
+	return bbStringFromQString(fm->Metrics().elidedText(qStringFromBBString(text), (Qt::TextElideMode)_mode, width, flags));
+}
+
+int bmx_qt_qfontmetrics_height(MaxQFontMetrics * fm) {
+	return fm->Metrics().height();
+}
+
+int bmx_qt_qfontmetrics_infont(MaxQFontMetrics * fm, int ch) {
+	return static_cast<int>(fm->Metrics().inFont(ch));
+}
+
+int bmx_qt_qfontmetrics_leading(MaxQFontMetrics * fm) {
+	return fm->Metrics().leading();
+}
+
+int bmx_qt_qfontmetrics_leftbearing(MaxQFontMetrics * fm, int ch) {
+	return fm->Metrics().leftBearing(ch);
+}
+
+int bmx_qt_qfontmetrics_linespacing(MaxQFontMetrics * fm) {
+	return fm->Metrics().lineSpacing();
+}
+
+int bmx_qt_qfontmetrics_linewidth(MaxQFontMetrics * fm) {
+	return fm->Metrics().lineWidth();
+}
+
+int bmx_qt_qfontmetrics_maxwidth(MaxQFontMetrics * fm) {
+	return fm->Metrics().maxWidth();
+}
+
+int bmx_qt_qfontmetrics_minleftbearing(MaxQFontMetrics * fm) {
+	return fm->Metrics().minLeftBearing();
+}
+
+int bmx_qt_qfontmetrics_minrightbearing(MaxQFontMetrics * fm) {
+	return fm->Metrics().minRightBearing();
+}
+
+int bmx_qt_qfontmetrics_outlinepos(MaxQFontMetrics * fm) {
+	return fm->Metrics().overlinePos();
+}
+
+int bmx_qt_qfontmetrics_rightbearing(MaxQFontMetrics * fm, int ch) {
+	return fm->Metrics().rightBearing(ch);
+}
+
+
+void bmx_qt_qfontmetrics_size(MaxQFontMetrics * fm, int flags, BBString * text, BBArray * tabArray, int * w, int * h) {
+// TODO
+//	QSize s(fm->Metrics().size(flags, qStringFromBBString(text), )
+}
+
+int bmx_qt_qfontmetrics_strikeoutpos(MaxQFontMetrics * fm) {
+	return fm->Metrics().strikeOutPos();
+}
+
+MaxQRect * bmx_qt_qfontmetrics_tightboundingrect(MaxQFontMetrics * fm, BBString * text) {
+	return new MaxQRect(fm->Metrics().tightBoundingRect(qStringFromBBString(text)));
+}
+
+int bmx_qt_qfontmetrics_underlinepos(MaxQFontMetrics * fm) {
+	return fm->Metrics().underlinePos();
+}
+
+int bmx_qt_qfontmetrics_width(MaxQFontMetrics * fm, BBString * text, int length) {
+	return fm->Metrics().width(qStringFromBBString(text), length);
+}
+
+int bmx_qt_qfontmetrics_xheight(MaxQFontMetrics * fm) {
+	return fm->Metrics().xHeight();
+}
+
 
 
 // NOTES :

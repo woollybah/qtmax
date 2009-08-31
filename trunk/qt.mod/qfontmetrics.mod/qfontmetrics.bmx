@@ -63,6 +63,87 @@ Type QFontMetrics
 		Return QRect._create(bmx_qt_qfontmetrics_boundingrect(qObjectPtr, text))
 	End Method
 
+	Method descent:Int()
+		Return bmx_qt_qfontmetrics_descent(qObjectPtr)
+	End Method
+	
+	Method elidedText:String(text:String, _mode:Int, width:Int, flags:Int = 0)
+		Return bmx_qt_qfontmetrics_elidedtext(qObjectPtr, text, _mode, width, flags)
+	End Method
+	
+	Method height:Int()
+		Return bmx_qt_qfontmetrics_height(qObjectPtr)
+	End Method
+	
+	Method inFont:Int(ch:Int)
+		Return bmx_qt_qfontmetrics_infont(qObjectPtr, ch)
+	End Method
+	
+	Method leading:Int()
+		Return bmx_qt_qfontmetrics_leading(qObjectPtr)
+	End Method
+	
+	Method leftBearing:Int(ch:Int)
+		Return bmx_qt_qfontmetrics_leftbearing(qObjectPtr, ch)
+	End Method
+	
+	Method lineSpacing:Int()
+		Return bmx_qt_qfontmetrics_linespacing(qObjectPtr)
+	End Method
+	
+	Method lineWidth:Int()
+		Return bmx_qt_qfontmetrics_linewidth(qObjectPtr)
+	End Method
+	
+	Method maxWidth:Int()
+		Return bmx_qt_qfontmetrics_maxwidth(qObjectPtr)
+	End Method
+	
+	Method minLeftBearing:Int()
+		Return bmx_qt_qfontmetrics_minleftbearing(qObjectPtr)
+	End Method
+	
+	Method minRightBearing:Int()
+		Return bmx_qt_qfontmetrics_minrightbearing(qObjectPtr)
+	End Method
+	
+	Method overlinePos:Int()
+		Return bmx_qt_qfontmetrics_overlinepos(qObjectPtr)
+	End Method
+	
+	Method rightBearing:Int(ch:Int)
+		Return bmx_qt_qfontmetrics_rightbearing(qObjectPtr, ch)
+	End Method
+	
+	Method size(flags:Int, text:String, tabArray:Int[] = Null, w:Int Var, h:Int Var)
+		If tabArray Then
+			bmx_qt_qfontmetrics_size(qObjectPtr, flags, text, tabArray, Varptr w, Varptr h)
+		Else
+			bmx_qt_qfontmetrics_size(qObjectPtr, flags, text, Null, Varptr w, Varptr h)
+		End If
+	End Method
+	
+	Method strikeOutPos:Int()
+		Return bmx_qt_qfontmetrics_strikeoutpos(qObjectPtr)
+	End Method
+	
+	Method tightBoundingRect:QRect(text:String)
+		Return QRect._create(bmx_qt_qfontmetrics_tightboundingrect(qObjectPtr, text))
+	End Method
+	
+	Method underlinePos:Int()
+		Return bmx_qt_qfontmetrics_underlinepos(qObjectPtr)
+	End Method
+	
+	Method width:Int(text:String, length:Int = -1)
+		Return bmx_qt_qfontmetrics_width(qObjectPtr, text, length)
+	End Method
+	
+	Method xHeight:Int()
+		Return bmx_qt_qfontmetrics_xheight(qObjectPtr)
+	End Method
+	
+
 	Method Free()
 		If qObjectPtr Then
 			bmx_qt_qfontmetrics_free(qObjectPtr)
