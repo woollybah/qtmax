@@ -977,6 +977,11 @@ int bmx_qt_qdate_year(MaxQDate * date) {
 	return date->Date().year();
 }
 
+// *********************************************
+
+int bmx_qt_qchar_category(int c) {
+	return QChar(c).category();
+}
 
 // *********************************************
 

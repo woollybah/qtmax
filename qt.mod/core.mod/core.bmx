@@ -104,3 +104,12 @@ Type QItemList
 	End Method
 
 End Type
+
+Type QChar
+
+	Function category:Int(char:Int)
+		Return bmx_qt_qchar_category(char)
+	End Function
+
+End Type
+

@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QPalette
+Module Qt.QToolTip
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,17 +31,46 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QPalette
+Type QToolTip
 
-	Field qObjectPtr:Byte Ptr
-	
-	Function _create:QPalette(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QPalette = New QPalette
-			this.qObjectPtr = qObjectPtr
-			Return this
+	Function font:QFont()
+		Return QFont._create(bmx_qt_qtooltip_font())
+	End Function
+
+	Function hideText()
+		bmx_qt_qtooltip_hidetext()
+	End Function
+
+	Function isVisible:Int()
+		Return bmx_qt_qtooltip_isvisible()
+	End Function
+
+	Function palette:QPalette()
+		Return QPalette._create(bmx_qt_qtooltip_palette())
+	End Function
+
+	Function setFont(font:QFont)
+		bmx_qt_qtooltip_setfont(font.qObjectPtr)
+	End Function
+
+	Function setPalette(palette:QPalette)
+		bmx_qt_qtooltip_setpalette(palette.qObjectPtr)
+	End Function
+
+	Function showText(x:Int, y:Int, text:String, w:QWidget = Null, rect:QRect = Null)
+		If w Then
+			If rect Then
+				bmx_qt_qtooltip_showtext(x, y, text, w.qObjectPtr, rect.qObjectPtr)
+			Else
+				bmx_qt_qtooltip_showtext(x, y, text, w.qObjectPtr, Null)
+			End If
+		Else
+			If Not rect Then
+				bmx_qt_qtooltip_showtext(x, y, text, Null, Null)
+			Else
+				Assert True, "widget required with rect"
+			End If
 		End If
 	End Function
 
 End Type
-

@@ -20,28 +20,40 @@
 ' 
 SuperStrict
 
-Module Qt.QPalette
-
-ModuleInfo "Version: 1.00"
-ModuleInfo "License: MIT"
-ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
-
-
-Import "common.bmx"
+Import Qt.Core
+Import Qt.QFont
+Import Qt.QPalette
+Import Qt.QWidget
+Import BRL.Blitz
 
 
-Type QPalette
+' headers :-)
+?win32
+Import "../lib/win32/include/*.h"
+?macos
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+?linux
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+?
 
-	Field qObjectPtr:Byte Ptr
-	
-	Function _create:QPalette(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QPalette = New QPalette
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
-	End Function
+Import "glue.cpp"
 
-End Type
+Extern
 
+	Function bmx_qt_qtooltip_font:Byte Ptr()
+	Function bmx_qt_qtooltip_hidetext()
+	Function bmx_qt_qtooltip_isvisible:Int()
+	Function bmx_qt_qtooltip_palette:Byte Ptr()
+	Function bmx_qt_qtooltip_setfont(font:Byte Ptr)
+	Function bmx_qt_qtooltip_setpalette(palette:Byte Ptr)
+	Function bmx_qt_qtooltip_showtext(x:Int, y:Int, text:String, w:Byte Ptr, rect:Byte Ptr)
+
+End Extern

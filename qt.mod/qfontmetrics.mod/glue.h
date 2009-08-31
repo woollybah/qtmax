@@ -39,7 +39,26 @@ extern "C" {
 	int bmx_qt_qfontmetrics_averagecharwidth(MaxQFontMetrics * fm);
 	MaxQRect * bmx_qt_qfontmetrics_boundingrect(MaxQFontMetrics * fm, BBString * text);
 	void bmx_qt_qfontmetrics_free(MaxQFontMetrics * fm);
-
+	int bmx_qt_qfontmetrics_descent(MaxQFontMetrics * fm);
+	BBString * bmx_qt_qfontmetrics_elidedtext(MaxQFontMetrics * fm, BBString * text, int _mode, int width, int flags);
+	int bmx_qt_qfontmetrics_height(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_infont(MaxQFontMetrics * fm, int ch);
+	int bmx_qt_qfontmetrics_leading(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_leftbearing(MaxQFontMetrics * fm, int ch);
+	int bmx_qt_qfontmetrics_linespacing(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_linewidth(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_maxwidth(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_minleftbearing(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_minrightbearing(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_overlinepos(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_rightbearing(MaxQFontMetrics * fm, int ch);
+	void bmx_qt_qfontmetrics_size(MaxQFontMetrics * fm, int flags, BBString * text, BBArray * tabStops, int * w, int * h);
+	int bmx_qt_qfontmetrics_strikeoutpos(MaxQFontMetrics * fm);
+	MaxQRect * bmx_qt_qfontmetrics_tightboundingrect(MaxQFontMetrics * fm, BBString * text);
+	int bmx_qt_qfontmetrics_underlinepos(MaxQFontMetrics * fm);
+	int bmx_qt_qfontmetrics_width(MaxQFontMetrics * fm, BBString * text, int length);
+	int bmx_qt_qfontmetrics_xheight(MaxQFontMetrics * fm);
+	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

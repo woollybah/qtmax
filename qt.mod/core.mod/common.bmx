@@ -210,5 +210,6 @@ Extern
 	Function bmx_qt_qdate_weeknumber:Int(handle:Byte Ptr, yearNumber:Int Ptr)
 	Function bmx_qt_qdate_year:Int(handle:Byte Ptr)
 
+	Function bmx_qt_qchar_category:Int(char:Int)
 
 End Extern
