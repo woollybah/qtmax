@@ -40,6 +40,7 @@ extern "C" {
 	void bmx_qt_qtooltip_setfont(MaxQFont * font);
 	void bmx_qt_qtooltip_setpalette(MaxQPalette * palette);
 	void bmx_qt_qtooltip_showtext(int x, int y, BBString * text, QWidget * w, MaxQRect * rect);
+	BBString * bmx_qt_qtooltip_text();
 
 }
 
