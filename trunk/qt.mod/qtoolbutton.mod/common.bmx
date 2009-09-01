@@ -21,9 +21,8 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QFont
-Import Qt.QPalette
-Import Qt.QWidget
+Import Qt.QAbstractButton
+Import Qt.QMenu
 Import BRL.Blitz
 
 
@@ -48,13 +47,20 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qtooltip_font:Byte Ptr()
-	Function bmx_qt_qtooltip_hidetext()
-	Function bmx_qt_qtooltip_isvisible:Int()
-	Function bmx_qt_qtooltip_palette:Byte Ptr()
-	Function bmx_qt_qtooltip_setfont(font:Byte Ptr)
-	Function bmx_qt_qtooltip_setpalette(palette:Byte Ptr)
-	Function bmx_qt_qtooltip_showtext(x:Int, y:Int, text:String, w:Byte Ptr, rect:Byte Ptr)
-	Function bmx_qt_qtooltip_text:String()
+	Function bmx_qt_qtoolbutton_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qtoolbutton_arrowtype:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbutton_autoraise:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbutton_defaultaction:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtoolbutton_menu:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtoolbutton_popupmode:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbutton_setarrowtype(handle:Byte Ptr, arrow:Int)
+	Function bmx_qt_qtoolbutton_setautoraise(handle:Byte Ptr, enable:Int)
+	Function bmx_qt_qtoolbutton_setmenu(handle:Byte Ptr, menu:Byte Ptr)
+	Function bmx_qt_qtoolbutton_setpopupmode(handle:Byte Ptr, _mode:Int)
+	Function bmx_qt_qtoolbutton_toolbuttonstyle:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbutton_setdefaultaction(handle:Byte Ptr, action:Byte Ptr)
+	Function bmx_qt_qtoolbutton_settoolbuttonstyle(handle:Byte Ptr, style:Int)
+	Function bmx_qt_qtoolbutton_showmenu(handle:Byte Ptr)
+
 
 End Extern

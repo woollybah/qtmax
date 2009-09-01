@@ -73,4 +73,8 @@ Type QToolTip
 		End If
 	End Function
 
+	Function text:String()
+		Return bmx_qt_qtooltip_text()
+	End Function
+	
 End Type
