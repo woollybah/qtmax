@@ -24,6 +24,7 @@
 #define MAX_QT_QCOREAPPLICATION
 
 #include "../core.mod/glue.h"
+#include "../qobject.mod/glue.h"
 #include <QtCore>
 
 class MaxQCoreApplication;
@@ -64,7 +65,9 @@ private:
 	
 private slots:
 	void onAboutToQuit();
-	
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 

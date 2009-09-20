@@ -68,6 +68,9 @@ private slots:
 	void onClicked(bool checked);
 	void onToggled(bool on);
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

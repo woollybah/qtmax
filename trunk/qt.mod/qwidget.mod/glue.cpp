@@ -267,6 +267,10 @@ void MaxQWidget::defaultMinimumSizeHint(int * w, int * h) {
 	*h = s.height();
 }
 
+void MaxQWidget::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // ---------------------------------------------------------------------------------------
 
 MaxQAction::MaxQAction(BBObject * handle, QAction * action)
@@ -676,6 +680,10 @@ void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h) {
 
 MaxQLocale * bmx_qt_qwidget_locale(QWidget * widget) {
 	return new MaxQLocale(widget->locale());
+}
+
+void bmx_qt_qwidget_setparent(QWidget * widget, QWidget * parent) {
+	widget->setParent(parent);
 }
 
 // *********************************************

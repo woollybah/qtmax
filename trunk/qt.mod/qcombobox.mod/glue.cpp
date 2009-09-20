@@ -33,6 +33,7 @@ MaxQComboBox::MaxQComboBox(BBObject * handle, QWidget * parent)
 	connect(this, SIGNAL(currentIndexChanged(int)), SLOT(onCurrentIndexChanged(int)));
 	connect(this, SIGNAL(editTextChanged(QString)), SLOT(onEditTextChanged(QString)));
 	connect(this, SIGNAL(highlighted(int)), SLOT(onHighlighted(int)));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 MaxQComboBox::~MaxQComboBox()
@@ -56,8 +57,12 @@ void MaxQComboBox::onHighlighted(int index) {
 	_qt_qcombobox_QComboBox__OnHighlighted(maxHandle, index);
 }
 
-void MaxQComboBox::customContextMenuRequested(const QPoint & pos) {
+void MaxQComboBox::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
+}
+
+void MaxQComboBox::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
 }
 
 // *********************************************

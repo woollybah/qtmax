@@ -20,36 +20,29 @@
 ' 
 SuperStrict
 
-Import Qt.core
-Import Qt.QTimerEvent
-Import BRL.Blitz
-Import BRL.Map
-Import BRL.LinkedList
-Import BRL.Reflection
+Module Qt.QTimerEvent
 
-' headers :-)
-?win32
-Import "../lib/win32/include/*.h"
-?macos
-Import "../lib/macos/include/*.h"
-?Not linux
-Import "../src/include/*.h"
-Import "../src/include/Qt/*.h"
-Import "../src/include/QtCore/*.h"
-?linux
-Import "/usr/include/qt4/*.h"
-Import "/usr/include/qt4/Qt/*.h"
-Import "/usr/include/qt4/QtCore/*.h"
-?
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 
-Import "glue.cpp"
+Import "common.bmx"
 
-Extern
+Type QTimerEvent Extends QEvent
 
-	Function bmx_qt_qobject_tr:String(sourceText:String, disambiguation:String, n:Int)
-	Function bmx_qt_qobject_trarg:String(sourceText:String, args:String[])
-	Function bmx_qt_qobject_setobjectname(handle:Byte Ptr, name:String)
-	Function bmx_qt_qobject_setparent(handle:Byte Ptr, parent:Byte Ptr)
+	Function _create:QTimerEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTimerEvent = New QTimerEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
 
-End Extern
+	Method timerId:Int()
+		Return bmx_qt_qtimerevent_timerid(qObjectPtr)
+	End Method
+
+End Type
+

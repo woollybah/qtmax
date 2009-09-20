@@ -75,6 +75,9 @@ private slots:
 	void onValueChanged(double value);
 	void onEditingFinished();
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

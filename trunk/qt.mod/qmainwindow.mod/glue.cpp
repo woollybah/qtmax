@@ -149,6 +149,10 @@ void MaxQMainWindow::wheelEvent(QWheelEvent * event){
 	_qt_qwidget_QWidget__OnWheelEvent(maxHandle, event);
 }
 
+void MaxQMainWindow::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QMainWindow * bmx_qt_qmainwindow_create(BBObject * handle, QWidget * parent, int flags) {

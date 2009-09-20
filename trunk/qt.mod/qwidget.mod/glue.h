@@ -30,6 +30,7 @@
 #include "../qicon.mod/glue.h"
 #include "../qregion.mod/glue.h"
 #include "../qlocale.mod/glue.h"
+#include "../qobject.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -43,7 +44,7 @@ class MaxQActionGroup;
 extern "C" {
 
 #include <blitz.h>
-
+	
 	void _qt_qwidget_QActionGroup__OnHovered(BBObject * handle, QAction * action);
 	void _qt_qwidget_QActionGroup__OnTriggered(BBObject * handle, QAction * action);
 
@@ -192,6 +193,7 @@ extern "C" {
 	void bmx_qt_qwidget_size(QWidget * widget, int * w, int * h);
 	void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h);
 	int bmx_qt_qwidget_winid(QWidget * widget);
+	void bmx_qt_qwidget_setparent(QWidget * widget, QWidget * parent);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
@@ -335,6 +337,7 @@ protected:
 	void showEvent(QShowEvent * event);
 	void tabletEvent(QTabletEvent * event);
 	void wheelEvent(QWheelEvent * event);
+	void timerEvent(QTimerEvent * event);
 
 private:
 	BBObject * maxHandle;

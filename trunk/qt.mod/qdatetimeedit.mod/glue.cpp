@@ -61,6 +61,10 @@ void MaxQDateTimeEdit::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQDateTimeEdit::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QDateTimeEdit * bmx_qt_qdatetimeedit_create(BBObject * handle, QWidget * parent) {

@@ -41,6 +41,11 @@ void MaxQCoreApplication::onAboutToQuit() {
 	_qt_qcoreapplication_QCoreApplication__OnAboutToQuit(maxHandle);
 }
 
+void MaxQCoreApplication::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+
 // *********************************************
 
 QCoreApplication * bmx_qt_qcoreapplication_create(BBObject * handle) {

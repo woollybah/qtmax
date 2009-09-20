@@ -20,12 +20,9 @@
 ' 
 SuperStrict
 
-Import Qt.core
-Import Qt.QTimerEvent
+Import Qt.Core
 Import BRL.Blitz
-Import BRL.Map
-Import BRL.LinkedList
-Import BRL.Reflection
+
 
 ' headers :-)
 ?win32
@@ -42,14 +39,10 @@ Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
 ?
 
-
 Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qobject_tr:String(sourceText:String, disambiguation:String, n:Int)
-	Function bmx_qt_qobject_trarg:String(sourceText:String, args:String[])
-	Function bmx_qt_qobject_setobjectname(handle:Byte Ptr, name:String)
-	Function bmx_qt_qobject_setparent(handle:Byte Ptr, parent:Byte Ptr)
+	Function bmx_qt_qtimerevent_timerid:Int(handle:Byte Ptr)
 
 End Extern

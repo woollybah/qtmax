@@ -24,6 +24,7 @@
 #define MAX_QT_QCHECKBOX
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QCheckBox>
 
@@ -67,6 +68,10 @@ private slots:
 	void onReleased();
 	void onToggled(bool checked);
 	void onStateChanged(int state);
+	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

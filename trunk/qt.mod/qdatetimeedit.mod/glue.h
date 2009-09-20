@@ -106,6 +106,9 @@ private slots:
 	void onTimeChanged(const QTime & time);
 	void onEditingFinished();
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

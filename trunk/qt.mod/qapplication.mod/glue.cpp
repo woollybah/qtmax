@@ -59,6 +59,10 @@ void MaxQApplication::onAboutToQuit() {
 	_qt_qcoreapplication_QCoreApplication__OnAboutToQuit(maxHandle);
 }
 
+void MaxQApplication::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 
 // *********************************************
 

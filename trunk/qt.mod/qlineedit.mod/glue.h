@@ -121,6 +121,9 @@ private slots:
 	void onTextChanged(const QString & text);
 	void onTextEdited(const QString & text);
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 
