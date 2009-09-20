@@ -71,6 +71,10 @@ void MaxQLineEdit::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQLineEdit::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QLineEdit * bmx_qt_qlineedit_create(BBObject * handle, QWidget * parent) {

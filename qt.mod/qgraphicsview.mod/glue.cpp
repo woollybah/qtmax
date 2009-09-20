@@ -243,6 +243,10 @@ void MaxQGraphicsView::defaultWheelEvent(QWheelEvent * event) {
 	QGraphicsView::wheelEvent(event);
 }
 
+void MaxQGraphicsView::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // ---------------------------------------------------------------------------------------
 
 MaxQGraphicsScene::MaxQGraphicsScene(BBObject * handle, QObject * parent)
@@ -266,6 +270,10 @@ void MaxQGraphicsScene::onSceneRectChanged(const QRectF & rect) {
 
 void MaxQGraphicsScene::onSelectionChanged() {
 
+}
+
+void MaxQGraphicsScene::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
 }
 
 // *********************************************

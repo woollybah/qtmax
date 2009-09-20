@@ -71,6 +71,10 @@ void MaxQDial::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQDial::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QDial * bmx_qt_qdial_create(BBObject * handle, QWidget * parent) {

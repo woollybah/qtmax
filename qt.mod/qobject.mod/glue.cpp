@@ -56,9 +56,13 @@ BBString * bmx_qt_qobject_trarg(BBString * sourceText, BBArray * args) {
 	return bbStringFromQString(text);
 }
 
+void bmx_qt_qobject_setobjectname(QObject * obj, BBString * name) {
+	obj->setObjectName(qStringFromBBString(name));
+}
 
-
-
+void bmx_qt_qobject_setparent(QObject * obj, QObject * parent) {
+	obj->setParent(parent);
+}
 
 
 // NOTES :

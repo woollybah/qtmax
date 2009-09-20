@@ -61,6 +61,10 @@ void MaxQCalendarWidget::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQCalendarWidget::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QCalendarWidget * bmx_qt_qcalendarwidget_create(BBObject * handle, QWidget * parent) {

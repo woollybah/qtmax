@@ -73,7 +73,10 @@ private slots:
 	void onEditTextChanged(const QString & text);
 	void onHighlighted(int index);
 	
-	void customContextMenuRequested(const QPoint & pos);
+	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

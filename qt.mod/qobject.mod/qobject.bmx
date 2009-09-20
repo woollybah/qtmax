@@ -50,6 +50,34 @@ Type QObject Extends QCoreObjectPtr
 		Return sender.doConnect(signal, receiver, slot)
 	End Function
 	
+	Rem
+	bbdoc: Sets the name of this object.
+	about: By default, this property contains an empty string.
+	End Rem
+	Method setObjectName(name:String)
+		bmx_qt_qobject_setobjectname(qObjectPtr, name)
+	End Method
+	
+	Rem
+	bbdoc: Makes the object a child of @parent.
+	End Rem
+	Method setParent(parent:QObject)
+		bmx_qt_qobject_setparent(qObjectPtr, parent.qObjectPtr)
+	End Method
+	
+	Method startTimer:Int(interval:Int)
+	End Method
+	
+	Method killTimer(id:Int)
+	End Method
+	
+	Method timerEvent(event:QTimerEvent)
+	End Method
+	
+	Function _timerEvent(obj:QObject, event:Byte Ptr)
+		obj.timerEvent(QTimerEvent._create(event))
+	End Function
+	
 	' private
 	Method doConnect:Int(signal:String, receiver:QObject, slot:String)
 		Local list:TList = TList(_connections.ValueForKey(signal))

@@ -35,6 +35,9 @@ MaxQFrame::~MaxQFrame()
 	qunbind(this);
 }
 
+void MaxQFrame::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
 
 // *********************************************
 

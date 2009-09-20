@@ -68,6 +68,9 @@ private slots:
 	
 private:
 	BBObject * maxHandle;
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

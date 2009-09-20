@@ -51,6 +51,10 @@ void MaxQLabel::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQLabel::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QLabel * bmx_qt_qlabel_create(BBObject * handle, BBString * text, QWidget * parent, int f) {

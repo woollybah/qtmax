@@ -461,8 +461,10 @@ Type QWidget Extends QObject
 	' TODO
 	'End Method
 	
-	Method setParent(parent:QWidget)
-	' TODO
+	Method setParent(parent:QObject)
+		If QWidget(parent) Then
+			bmx_qt_qwidget_setparent(qObjectPtr, QWidget(parent).qObjectPtr)
+		End If
 	End Method
 	
 	Method setShortcutAutoRepeat(id:Int, enable:Int = True)

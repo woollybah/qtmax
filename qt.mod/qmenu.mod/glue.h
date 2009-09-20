@@ -100,6 +100,9 @@ private slots:
 	void onHovered(QAction * action);
 	void onTriggered(QAction * action);
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

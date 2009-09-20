@@ -104,7 +104,7 @@ int bmx_qt_qfontmetrics_minrightbearing(MaxQFontMetrics * fm) {
 	return fm->Metrics().minRightBearing();
 }
 
-int bmx_qt_qfontmetrics_outlinepos(MaxQFontMetrics * fm) {
+int bmx_qt_qfontmetrics_overlinepos(MaxQFontMetrics * fm) {
 	return fm->Metrics().overlinePos();
 }
 

@@ -171,6 +171,7 @@ Extern
 	Function bmx_qt_qwidget_sizeincrement(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 	Function bmx_qt_qwidget_winid:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_locale:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setparent(handle:Byte Ptr, parent:Byte Ptr)
 	
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)

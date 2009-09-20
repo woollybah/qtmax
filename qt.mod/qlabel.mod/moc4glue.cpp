@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sun Aug 30 22:56:32 2009
+** Created: Sun Sep 20 12:17:51 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!

@@ -102,7 +102,9 @@ private slots:
 	void onCurrentPageChanged(int year, int month);
 	void onSelectionChanged();
 	void onCustomContextMenuRequested(const QPoint & pos);
-	
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

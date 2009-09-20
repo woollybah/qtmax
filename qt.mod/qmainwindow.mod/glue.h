@@ -134,6 +134,7 @@ protected:
 	void showEvent(QShowEvent * event);
 	void tabletEvent(QTabletEvent * event);
 	void wheelEvent(QWheelEvent * event);
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

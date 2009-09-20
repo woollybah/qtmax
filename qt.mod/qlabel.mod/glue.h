@@ -85,6 +85,9 @@ private slots:
 	void onLinkActivated(const QString & link);
 	void onLinkHovered(const QString & link);
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 

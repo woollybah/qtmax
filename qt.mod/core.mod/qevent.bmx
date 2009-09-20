@@ -84,5 +84,3 @@ Type QEvent
 	End Method
 
 End Type
-
-

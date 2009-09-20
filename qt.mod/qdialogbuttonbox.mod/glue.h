@@ -24,6 +24,7 @@
 #define MAX_QT_QDIALOGBUTTONBOX
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QDialogButtonBox>
 
@@ -57,6 +58,9 @@ private slots:
 	void onHelpRequested();
 	void onRejected();
 	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

@@ -24,6 +24,7 @@
 #define MAX_QT_QFRAME
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QFrame>
 
@@ -61,6 +62,9 @@ public:
 
 private:
 	BBObject * maxHandle;
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

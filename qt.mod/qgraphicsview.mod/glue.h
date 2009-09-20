@@ -176,6 +176,9 @@ protected:
 
 private:
 	BBObject * maxHandle;
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 class MaxQGraphicsScene : public QGraphicsScene
@@ -193,6 +196,9 @@ private slots:
 	void onChanged(const QList<QRectF> & region);
 	void onSceneRectChanged(const QRectF & rect);
 	void onSelectionChanged();
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 #endif

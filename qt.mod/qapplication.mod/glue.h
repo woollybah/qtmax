@@ -31,6 +31,7 @@
 #include "../qpalette.mod/glue.h"
 #include "../qfont.mod/glue.h"
 #include "../qfontmetrics.mod/glue.h"
+#include "../qobject.mod/glue.h"
 #include <QtGui>
 
 class MaxQApplication;
@@ -121,6 +122,9 @@ private slots:
 	void onLastWindowClosed();
 	void onSaveStateRequest(QSessionManager & manager);
 	void onAboutToQuit(); // from QCoreApplication
+
+protected:
+	void timerEvent(QTimerEvent * event);
 };
 
 

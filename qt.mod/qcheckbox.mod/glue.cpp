@@ -34,6 +34,7 @@ MaxQCheckBox::MaxQCheckBox(BBObject * handle, const QString & text, QWidget * pa
 	connect(this, SIGNAL(released()), SLOT(onReleased()));
 	connect(this, SIGNAL(toggled(bool)), SLOT(onToggled(bool)));
 	connect(this, SIGNAL(stateChanged(int)), SLOT(onStateChanged(int)));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 MaxQCheckBox::~MaxQCheckBox()
@@ -61,6 +62,13 @@ void MaxQCheckBox::onStateChanged(int state) {
 	_qt_qcheckbox_QCheckBox__OnStateChanged(maxHandle, state);
 }
 
+void MaxQCheckBox::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+void MaxQCheckBox::onCustomContextMenuRequested(const QPoint & pos) {
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
+}
 
 // *********************************************
 

@@ -47,6 +47,10 @@ void MaxQGroupBox::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+void MaxQGroupBox::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QGroupBox * bmx_qt_qgroupbox_create(BBObject * handle, BBString * title, QWidget * parent) {

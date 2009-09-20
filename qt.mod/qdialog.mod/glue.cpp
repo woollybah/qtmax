@@ -51,6 +51,10 @@ void MaxQDialog::onCustomContextMenuRequested(const QPoint & pos) {
 
 }
 
+void MaxQDialog::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
 // *********************************************
 
 QDialog * bmx_qt_qdialog_create(BBObject * handle, QWidget * parent, int flags) {
