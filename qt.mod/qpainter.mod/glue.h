@@ -78,6 +78,7 @@ extern "C" {
 	void bmx_qt_qpainter_drawtiledpixmaprect(QPainter * painter, MaxQRect * rectangle, MaxQPixmap * pixmap, int posX, int posY);
 	void bmx_qt_qpainter_drawtiledpixmap(QPainter * painter, int x, int y, int width, int height, MaxQPixmap * pixmap, int sx, int sy);
 	void bmx_qt_qpainter_drawimage(QPainter * painter, int x, int y, MaxQImage * image);
+	void bmx_qt_qpainter_setcliprect(QPainter * painter, int x, int y, int width, int height, int operation);
 
 }
 

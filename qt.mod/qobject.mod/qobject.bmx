@@ -46,6 +46,14 @@ Type QObject Extends QCoreObjectPtr
 		Return bmx_qt_qobject_trarg(sourceText, args)
 	End Function
 	
+	Method blockSignals:Int(block:Int)
+		Return bmx_qt_qobject_blocksignals(qObjectPtr, block)
+	End Method
+	
+	Method signalsBlocked:Int()
+		Return bmx_qt_qobject_signalsblocked(qObjectPtr)
+	End Method
+	
 	Function connect:Int(sender:QObject, signal:String, receiver:QObject, slot:String)
 		Return sender.doConnect(signal, receiver, slot)
 	End Function

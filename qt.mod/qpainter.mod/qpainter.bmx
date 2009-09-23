@@ -389,6 +389,14 @@ Type QPainter
 	' TODO
 	End Method
 
+	Method setClipRect(x:Int, y:Int, width:Int, height:Int, operation:Int = Qt_ReplaceClip)
+		bmx_qt_qpainter_setcliprect(qObjectPtr, x, y, width, height, operation)
+	End Method
+	
+	Method setClipRectRect(rectangle:QRect, operation:Int = Qt_ReplaceClip)
+	' TODO
+	End Method
+
 	Method setClipping(enable:Int)
 	' TODO
 	End Method

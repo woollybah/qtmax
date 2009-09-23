@@ -107,6 +107,131 @@ End Type
 
 Type QChar
 
+	Rem
+	bbdoc: Unicode class name Mn
+	end rem
+	Const Mark_NonSpacing:Int = 1
+	Rem
+	bbdoc: Unicode class name Mc
+	end rem
+	Const Mark_SpacingCombining:Int = 2
+	Rem
+	bbdoc: Unicode class name Me
+	end rem
+	Const Mark_Enclosing:Int = 3
+	Rem
+	bbdoc: Unicode class name Nd
+	end rem
+	Const Number_DecimalDigit:Int = 4
+	Rem
+	bbdoc: Unicode class name Nl
+	end rem
+	Const Number_Letter:Int = 5
+	Rem
+	bbdoc: Unicode class name No
+	end rem
+	Const Number_Other:Int = 6
+	Rem
+	bbdoc: Unicode class name Zs
+	end rem
+	Const Separator_Space:Int = 7
+	Rem
+	bbdoc: Unicode class name Zl
+	end rem
+	Const Separator_Line:Int = 8
+	Rem
+	bbdoc: Unicode class name Zp
+	end rem
+	Const Separator_Paragraph:Int = 9
+	Rem
+	bbdoc: Unicode class name Cc
+	end rem
+	Const Other_Control:Int = 10
+	Rem
+	bbdoc: Unicode class name Cf
+	end rem
+	Const Other_Format:Int = 11
+	Rem
+	bbdoc: Unicode class name Cs
+	end rem
+	Const Other_Surrogate:Int = 12
+	Rem
+	bbdoc: Unicode class name Co
+	end rem
+	Const Other_PrivateUse:Int = 13
+	Rem
+	bbdoc: Unicode class name Cn
+	end rem
+	Const Other_NotAssigned:Int = 14
+	Rem
+	bbdoc: Unicode class name Lu
+	end rem
+	Const Letter_Uppercase:Int = 15
+	Rem
+	bbdoc: Unicode class name Ll
+	end rem
+	Const Letter_Lowercase:Int = 16
+	Rem
+	bbdoc: Unicode class name Lt
+	end rem
+	Const Letter_Titlecase:Int = 17
+	Rem
+	bbdoc: Unicode class name Lm
+	end rem
+	Const Letter_Modifier:Int = 18
+	Rem
+	bbdoc: Unicode class name Lo
+	end rem
+	Const Letter_Other:Int = 19
+	Rem
+	bbdoc: Unicode class name Pc
+	end rem
+	Const Punctuation_Connector:Int = 20
+	Rem
+	bbdoc: Unicode class name Pd
+	end rem
+	Const Punctuation_Dash:Int = 21
+	Rem
+	bbdoc: Unicode class name Ps
+	end rem
+	Const Punctuation_Open:Int = 22
+	Rem
+	bbdoc: Unicode class name Pe
+	end rem
+	Const Punctuation_Close:Int = 23
+	Rem
+	bbdoc: Unicode class name Pi
+	end rem
+	Const Punctuation_InitialQuote:Int = 24
+	Rem
+	bbdoc: Unicode class name Pf
+	end rem
+	Const Punctuation_FinalQuote:Int = 25
+	Rem
+	bbdoc: Unicode class name Po
+	end rem
+	Const Punctuation_Other:Int = 26
+	Rem
+	bbdoc: Unicode class name Sm
+	end rem
+	Const Symbol_Math:Int = 27
+	Rem
+	bbdoc: Unicode class name Sc
+	end rem
+	Const Symbol_Currency:Int = 28
+	Rem
+	bbdoc: Unicode class name Sk
+	end rem
+	Const Symbol_Modifier:Int = 29
+	Rem
+	bbdoc: Unicode class name So
+	end rem
+	Const Symbol_Other:Int = 30
+	Rem
+	bbdoc: Qt cannot find an appropriate category for the character.
+	end rem
+	Const NoCategory:Int = 0
+	
 	Function category:Int(char:Int)
 		Return bmx_qt_qchar_category(char)
 	End Function

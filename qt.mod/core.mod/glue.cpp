@@ -194,6 +194,27 @@ BBArray * bbDoubleArrayFromQRealVector(QVector<qreal> vec) {
 	return p;
 }
 
+BBArray * bbStringArrayFromQStringList(QStringList list) {
+	int n = list.count();
+	BBArray *p=bbArrayNew1D( "$",n );
+	BBString **s=(BBString**)BBARRAYDATA( p,p->dims );
+	for( int i=0;i<n;++i ){
+		s[i]=bbStringFromQString( list[i] );
+		BBRETAIN( s[i] );
+	}
+	return p;	
+}
+
+BBArray * bbIntArrayFromQIntList(QList<int> list) {
+	int n = list.count();
+	BBArray *p=bbArrayNew1D( "i",n );
+	int *s=(int*)BBARRAYDATA( p,p->dims );
+	for( int i=0;i<n;++i ){
+		s[i] = list[i];
+	}
+	return p;
+}
+
 // *********************************************
 
 MaxQUrl * bmx_qt_qurl_create(BBString * url) {

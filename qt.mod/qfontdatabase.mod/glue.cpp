@@ -78,11 +78,11 @@ int bmx_qt_qfontdatabase_italic(MaxQFontDatabase * db, BBString * family, BBStri
 }
 
 BBArray * bmx_qt_qfontdatabase_pointsizes(MaxQFontDatabase * db, BBString * family, BBString * style) {
-//
+	return bbIntArrayFromQIntList(db->Database().pointSizes(qStringFromBBString(family), qStringFromBBString(style)));
 }
 
 BBArray * bmx_qt_qfontdatabase_smoothsizes(MaxQFontDatabase * db, BBString * family, BBString * style) {
-//
+	return bbIntArrayFromQIntList(db->Database().smoothSizes(qStringFromBBString(family), qStringFromBBString(style)));
 }
 
 BBString * bmx_qt_qfontdatabase_stylestring(MaxQFontDatabase * db, MaxQFont * font) {
@@ -94,7 +94,7 @@ BBString * bmx_qt_qfontdatabase_stylestringinfo(MaxQFontDatabase * db, MaxQFontI
 }
 
 BBArray * bmx_qt_qfontdatabase_styles(MaxQFontDatabase * db, BBString * family) {
-//
+	return bbStringArrayFromQStringList(db->Database().styles(qStringFromBBString(family)));
 }
 
 int bmx_qt_qfontdatabase_weight(MaxQFontDatabase * db, BBString * family, BBString * style) {
@@ -103,6 +103,38 @@ int bmx_qt_qfontdatabase_weight(MaxQFontDatabase * db, BBString * family, BBStri
 
 BBArray * bmx_qt_qfontdatabase_writingsystems(MaxQFontDatabase * db, BBString * family) {
 //
+}
+
+int bmx_qt_qfontdatabase_addapplicationfont(BBString * fileName) {
+	return QFontDatabase::addApplicationFont(qStringFromBBString(fileName));
+}
+
+BBArray * bmx_qt_qfontdatabase_applicationfontfamilies(int id) {
+	return bbStringArrayFromQStringList(QFontDatabase::applicationFontFamilies(id));
+}
+
+int bmx_qt_qfontdatabase_removeallapplicationfonts() {
+	return static_cast<int>(QFontDatabase::removeAllApplicationFonts());
+}
+
+int bmx_qt_qfontdatabase_removeapplicationfont(int id) {
+	return static_cast<int>(QFontDatabase::removeApplicationFont(id));
+}
+
+BBArray * bmx_qt_qfontdatabase_standardsizes() {
+	return bbIntArrayFromQIntList(QFontDatabase::standardSizes());
+}
+
+int bmx_qt_qfontdatabase_supportsthreadedfontrendering() {
+	return static_cast<int>(QFontDatabase::supportsThreadedFontRendering());
+}
+
+BBString * bmx_qt_qfontdatabase_writingsystemname(int writingSystem) {
+	return bbStringFromQString(QFontDatabase::writingSystemName((QFontDatabase::WritingSystem)writingSystem));
+}
+
+BBString * bmx_qt_qfontdatabase_writingsystemsample(int writingSystem) {
+	return bbStringFromQString(QFontDatabase::writingSystemSample((QFontDatabase::WritingSystem)writingSystem));
 }
 
 

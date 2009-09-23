@@ -51,7 +51,15 @@ extern "C" {
 	BBArray * bmx_qt_qfontdatabase_styles(MaxQFontDatabase * db, BBString * family);
 	int bmx_qt_qfontdatabase_weight(MaxQFontDatabase * db, BBString * family, BBString * style);
 	BBArray * bmx_qt_qfontdatabase_writingsystems(MaxQFontDatabase * db, BBString * family);
-	
+	int bmx_qt_qfontdatabase_addapplicationfont(BBString * fileName);
+	BBArray * bmx_qt_qfontdatabase_applicationfontfamilies(int id);
+	int bmx_qt_qfontdatabase_removeallapplicationfonts();
+	int bmx_qt_qfontdatabase_removeapplicationfont(int id);
+	BBArray * bmx_qt_qfontdatabase_standardsizes();
+	int bmx_qt_qfontdatabase_supportsthreadedfontrendering();
+	BBString * bmx_qt_qfontdatabase_writingsystemname(int writingSystem);
+	BBString * bmx_qt_qfontdatabase_writingsystemsample(int writingSystem);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

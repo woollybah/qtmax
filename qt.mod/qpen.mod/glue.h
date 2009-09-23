@@ -37,6 +37,7 @@ extern "C" {
 
 	MaxQPen * bmx_qt_qpen_create(int style);
 	MaxQPen * bmx_qt_qpen_createwithattributes(MaxQBrush * brush, double width, int style, int cap, int join);
+	MaxQPen * bmx_qt_qpen_createwithglobalcolor(int color);
 	MaxQBrush * bmx_qt_qpen_brush(MaxQPen * pen);
 	int bmx_qt_qpen_capstyle(MaxQPen * pen);
 	MaxQColor * bmx_qt_qpen_color(MaxQPen * pen);

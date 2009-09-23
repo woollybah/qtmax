@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sun Sep 20 12:17:50 2009
+** Created: Wed 23. Sep 11:49:10 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MaxQCheckBox[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   12, // methods
+       6,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -34,6 +34,7 @@ static const uint qt_meta_data_MaxQCheckBox[] = {
       50,   13,   13,   13, 0x08,
       63,   14,   13,   13, 0x08,
       85,   79,   13,   13, 0x08,
+     109,  105,   13,   13, 0x08,
 
        0        // eod
 };
@@ -41,7 +42,8 @@ static const uint qt_meta_data_MaxQCheckBox[] = {
 static const char qt_meta_stringdata_MaxQCheckBox[] = {
     "MaxQCheckBox\0\0checked\0onClicked(bool)\0"
     "onPressed()\0onReleased()\0onToggled(bool)\0"
-    "state\0onStateChanged(int)\0"
+    "state\0onStateChanged(int)\0pos\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
 const QMetaObject MaxQCheckBox::staticMetaObject = {
@@ -74,9 +76,10 @@ int MaxQCheckBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 2: onReleased(); break;
         case 3: onToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 4: onStateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }

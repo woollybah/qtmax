@@ -50,6 +50,11 @@ MaxQPen * bmx_qt_qpen_createwithattributes(MaxQBrush * brush, double width, int 
 	return new MaxQPen(p);
 }
 
+MaxQPen * bmx_qt_qpen_createwithglobalcolor(int color) {
+	QPen p((Qt::GlobalColor)color);
+	return new MaxQPen(p);
+}
+
 MaxQBrush * bmx_qt_qpen_brush(MaxQPen * pen) {
 	return new MaxQBrush(pen->Pen().brush());
 }

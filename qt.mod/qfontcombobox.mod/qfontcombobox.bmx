@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QCheckBox
+Module Qt.QFontComboBox
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,61 +30,50 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-Type QCheckBox Extends QAbstractButton
 
-	Function CreateCheckBox:QCheckBox(text:String = "", parent:QWidget = Null)
-		Return New QCheckBox.Create(text, parent)
+Type QFontComboBox Extends QComboBox
+
+	Function CreateFontComboBox:QFontComboBox(parent:QWidget = Null)
+		Return New QFontComboBox.Create(parent)
 	End Function
 	
-	Method Create:QCheckBox(text:String = "", parent:QWidget = Null)
+	Method Create:QFontComboBox(parent:QWidget = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qcheckbox_create(Self, text, parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qfontcombobox_create(Self, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qcheckbox_create(Self, text, Null)
+			qObjectPtr = bmx_qt_qfontcombobox_create(Self, Null)
 		End If
 		OnInit()
 		Return Self
 	End Method
-	
-	Method checkState:Int()
-		Return bmx_qt_qcheckbox_checkstate(qObjectPtr)
+
+	Method currentFont:QFont()
+		Return QFont._create(bmx_qt_qfontcombobox_currentfont(qObjectPtr))
 	End Method
 	
-	Method isTristate:Int()
-		Return bmx_qt_qcheckbox_istristate(qObjectPtr)
+	Method fontFilters:Int()
+		Return bmx_qt_qfontcombobox_fontfilters(qObjectPtr)
 	End Method
 	
-	Method setCheckState(state:Int)
-		bmx_qt_qcheckbox_setcheckstate(qObjectPtr, state)
+	Method setFontFilters(filters:Int)
+		bmx_qt_qfontcombobox_setfontfilters(qObjectPtr, filters)
 	End Method
 	
-	Method setTristate(value:Int = True)
-		bmx_qt_qcheckbox_settristate(qObjectPtr, value)
+	Method setWritingSystem(script:Int)
+		bmx_qt_qfontcombobox_setwritingsystem(qObjectPtr, script)
 	End Method
 	
-	' SIGNAL : clicked
-	Function _OnClicked(obj:QCheckBox, checked:Int)
-		obj._InvokeSignals("clicked", [String(checked)])
-	End Function
+	Method writingSystem:Int()
+		Return bmx_qt_qfontcombobox_writingsystem(qObjectPtr)
+	End Method
 
-	' SIGNAL : pressed
-	Function _OnPressed(obj:QCheckBox, checked:Int)
-		obj._InvokeSignals("pressed", Null)
-	End Function
+	Method setCurrentFont(font:QFont)
+		bmx_qt_qfontcombobox_setcurrentfont(qObjectPtr, font.qObjectPtr)
+	End Method
 
-	' SIGNAL : released
-	Function _OnReleased(obj:QCheckBox)
-		obj._InvokeSignals("released", Null)
-	End Function
-
-	' SIGNAL : toggled
-	Function _OnToggled(obj:QCheckBox, checked:Int)
-		obj._InvokeSignals("toggled", [String(checked)])
-	End Function
-
-	' SIGNAL : stateChanged
-	Function _OnStateChanged(obj:QCheckBox, state:Int)
-		obj._InvokeSignals("stateChanged", [String(state)])
+	' SIGNAL : currentFontChanged
+	Function _OnCurrentFontChanged(obj:QFontComboBox, font:QFont)
+		obj._InvokeSignals("currentFontChanged", [font])
 	End Function
 
 End Type
