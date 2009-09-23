@@ -55,6 +55,8 @@ extern "C" {
 	QString qStringFromBBString(BBString * s);
 	QVector<qreal> qRealVectorFromBBDoubleArray(BBArray * p);
 	BBArray * bbDoubleArrayFromQRealVector(QVector<qreal> p);
+	BBArray * bbStringArrayFromQStringList(QStringList list);
+	BBArray * bbIntArrayFromQIntList(QList<int> list);
 
 	MaxQUrl * bmx_qt_qurl_create(BBString * url);
 	void bmx_qt_qurl_free(MaxQUrl * url);

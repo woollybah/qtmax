@@ -20,29 +20,56 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QOBJECT
-#define MAX_QT_QOBJECT
+#ifndef MAX_QT_QFONTCOMBOBOX
+#define MAX_QT_QFONTCOMBOBOX
 
 #include "../core.mod/glue.h"
+#include "../qcombobox.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
-#include <QObject>
+#include <QFontComboBox>
+
+class MaxQFontComboBox;
 
 extern "C" {
 
 #include <blitz.h>
 
-	void _qt_qobject_QObject__timerEvent(BBObject * handle, QTimerEvent * event);
+	void _qt_qfontcombobox_QFontComboBox__OnCurrentFontChanged(BBObject * handle, MaxQFont * font);
 
-	BBString * bmx_qt_qobject_tr(BBString * sourceText, BBString * disambiguation, int n);
-	BBString * bmx_qt_qobject_trarg(BBString * sourceText, BBArray * args);
-	void bmx_qt_qobject_setobjectname(QObject * obj, BBString * name);
-	void bmx_qt_qobject_setparent(QObject * obj, QObject * parent);
-	int bmx_qt_qobject_blocksignals(QObject * obj, int block);
-	int bmx_qt_qobject_signalsblocked(QObject * obj);
+	QFontComboBox * bmx_qt_qfontcombobox_create(BBObject * handle, QWidget * parent);
+	MaxQFont * bmx_qt_qfontcombobox_currentfont(QFontComboBox * cb);
+	int bmx_qt_qfontcombobox_fontfilters(QFontComboBox * cb);
+	void bmx_qt_qfontcombobox_setfontfilters(QFontComboBox * cb, int filters);
+	void bmx_qt_qfontcombobox_setwritingsystem(QFontComboBox * cb, int script);
+	int bmx_qt_qfontcombobox_writingsystem(QFontComboBox * cb);
+	void bmx_qt_qfontcombobox_setcurrentfont(QFontComboBox * cb, MaxQFont * font);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQFontComboBox : public QFontComboBox
+{
+	Q_OBJECT
+	
+public:
+	MaxQFontComboBox(BBObject * handle, QWidget * parent);
+	~MaxQFontComboBox();
+
+private:
+	BBObject * maxHandle;
+
+private slots:
+	void onCurrentFontChanged(const QFont & font);
+	void onActivated(int index);
+	void onCurrentIndexChanged(int index);
+	void onEditTextChanged(const QString & text);
+	void onHighlighted(int index);
+	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
+};
 
 #endif

@@ -7,10 +7,14 @@ Import Qt.QToolTip
 
 Type CharacterWidget Extends QWidget
 
-	Field displayFont:QFont
+	Field displayFont:QFont = New QFont.Create()
 	Field columns:Int
 	Field lastKey:Int
 	Field squareSize:Int
+	
+	Method Create:CharacterWidget()
+		Return CharacterWidget(_Create())
+	End Method
 
 	Method OnInit()
 		squareSize = 24
@@ -25,6 +29,7 @@ Type CharacterWidget Extends QWidget
 	End Method
 	
 	Method updateFont(font:QFont)
+DebugStop
 		displayFont.setFamily(font.family())
 		squareSize = Max(24, New QFontMetrics.Create(displayFont).xHeight() * 3)
 		adjustSize()
@@ -32,6 +37,7 @@ Type CharacterWidget Extends QWidget
 	End Method
 	
 	Method updateSize(FontSize:String)
+DebugStop
 		displayFont.setPointSize(FontSize.toInt())
 		squareSize = Max(24, New QFontMetrics.Create(displayFont).xHeight() * 3)
 		adjustSize()
@@ -39,6 +45,7 @@ Type CharacterWidget Extends QWidget
 	End Method
 	
 	Method updateStyle(FontStyle:String)
+DebugStop
 		Local fontDatabase:QFontDatabase = New QFontDatabase.Create()
 		Local oldStrategy:Int = displayFont.styleStrategy()
 		displayFont = fontDatabase.font(displayFont.family(), FontStyle, displayFont.pointSize())
@@ -49,6 +56,7 @@ Type CharacterWidget Extends QWidget
 	End Method
 	
 	Method updateFontMerging(enable:Int)
+DebugStop
 		If enable Then
 			displayFont.setStyleStrategy(QFont.Strategy_PreferDefault)
 		Else
@@ -87,7 +95,7 @@ Type CharacterWidget Extends QWidget
 	
 	Method paintEvent(event:QPaintEvent)
 		Local painter:QPainter = New QPainter.Create(Self)
-		painter.fillRect(event.rect(), QBrush(Qt_white))
+		painter.fillRectRectBrush(event.rect(), New QBrush.CreateWithGlobalColor(Qt_white))
 		painter.setFont(displayFont)
 		
 		Local redrawRect:QRect = event.rect()
@@ -96,7 +104,7 @@ Type CharacterWidget Extends QWidget
 		Local beginColumn:Int = redrawRect.Left() / squareSize
 		Local endColumn:Int = redrawRect.Right() / squareSize
 		
-		painter.setPen(QPen(Qt_gray))
+		painter.setPen(New QPen.CreateWithGlobalColor(Qt_gray))
 		For Local row:Int = beginRow To endRow
 			For Local column:Int = beginColumn To endColumn
 				painter.DrawRect(column * squareSize, row * squareSize, squareSize, squareSize)
@@ -104,7 +112,7 @@ Type CharacterWidget Extends QWidget
 		Next
 		
 		Local fontMetrics:QFontMetrics = New QFontMetrics.Create(displayFont)
-		painter.setPen(QPen(Qt_black))
+		painter.setPen(New QPen.CreateWithGlobalColor(Qt_black))
 		For Local row:Int = beginRow To endRow
 		
 			For Local column:Int = beginColumn To endColumn
@@ -113,15 +121,18 @@ Type CharacterWidget Extends QWidget
 				painter.setClipRect(column * squareSize, row * squareSize, squareSize, squareSize)
 		
 				If key = lastKey Then
-					painter.fillRect(column * squareSize + 1, row * squareSize + 1, squareSize, squareSize, QBrush(Qt_red))
+					painter.fillRectBrush(column * squareSize + 1, row * squareSize + 1, squareSize, squareSize, New QBrush.CreateWithGlobalColor(Qt_red))
 				End If
 		
-				painter.DrawText(column * squareSize + (squareSize / 2) - fontMetrics.width(QChar(key))/2, row * squareSize + 4 + fontMetrics.ascent(), QString(QChar(key)));
+				painter.DrawText(column * squareSize + (squareSize / 2) - fontMetrics.width(key)/2, row * squareSize + 4 + fontMetrics.ascent(), Chr(key))
 			Next
 		Next
+		
+		painter.DoEnd()
 	End Method
 	
 	Method characterSelected(character:String)
+		_InvokeSignals("characterSelected", [character])
 	End Method
 	
 End Type

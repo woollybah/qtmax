@@ -55,6 +55,11 @@ Type QPen
 		qObjectPtr = bmx_qt_qpen_createwithattributes(brush.qObjectPtr, width, style, cap, join)
 		Return Self
 	End Method
+	
+	Method CreateWithGlobalColor:QPen(color:Int)
+		qObjectPtr = bmx_qt_qpen_createwithglobalcolor(color)
+		Return Self
+	End Method
 
 	Method brush:QBrush()
 		Return QBrush._create(bmx_qt_qpen_brush(qObjectPtr))

@@ -63,6 +63,13 @@ Extern
 	Function bmx_qt_qfontdatabase_styles:String[](handle:Byte Ptr, family:String)
 	Function bmx_qt_qfontdatabase_weight:Int(handle:Byte Ptr, family:String, style:String)
 	Function bmx_qt_qfontdatabase_writingsystems:Int[](handle:Byte Ptr, family:String)
-
+	Function bmx_qt_qfontdatabase_addapplicationfont:Int(fileName:String)
+	Function bmx_qt_qfontdatabase_applicationfontfamilies:String[](id:Int)
+	Function bmx_qt_qfontdatabase_removeallapplicationfonts:Int()
+	Function bmx_qt_qfontdatabase_removeapplicationfont:Int(id:Int)
+	Function bmx_qt_qfontdatabase_standardsizes:Int[]()
+	Function bmx_qt_qfontdatabase_supportsthreadedfontrendering:Int()
+	Function bmx_qt_qfontdatabase_writingsystemname:String(writingSystem:Int)
+	Function bmx_qt_qfontdatabase_writingsystemsample:String(writingSystem:Int)
 
 End Extern

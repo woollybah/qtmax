@@ -104,4 +104,36 @@ Type QFontDatabase
 		Return bmx_qt_qfontdatabase_writingsystems(qObjectPtr, family)
 	End Method
 
+	Function addApplicationFont:Int(fileName:String)
+		Return bmx_qt_qfontdatabase_addapplicationfont(fileName)
+	End Function
+	
+	Function applicationFontFamilies:String[](id:Int)
+		Return bmx_qt_qfontdatabase_applicationfontfamilies(id)
+	End Function
+	
+	Function removeAllApplicationFonts:Int()
+		Return bmx_qt_qfontdatabase_removeallapplicationfonts()
+	End Function
+	
+	Function removeApplicationFont:Int(id:Int)
+		Return bmx_qt_qfontdatabase_removeapplicationfont(id)
+	End Function
+	
+	Function standardSizes:Int[]()
+		Return bmx_qt_qfontdatabase_standardsizes()
+	End Function
+	
+	Function supportsThreadedFontRendering:Int()
+		Return bmx_qt_qfontdatabase_supportsthreadedfontrendering()
+	End Function
+
+	Function writingSystemName:String(writingSystem:Int)
+		Return bmx_qt_qfontdatabase_writingsystemname(writingSystem)
+	End Function
+
+	Function writingSystemSample:String(writingSystem:Int)
+		Return bmx_qt_qfontdatabase_writingsystemsample(writingSystem)
+	End Function
+
 End Type

@@ -20,12 +20,10 @@
 ' 
 SuperStrict
 
-Import Qt.core
-Import Qt.QTimerEvent
+Import Qt.Core
+Import Qt.QComboBox
 Import BRL.Blitz
-Import BRL.Map
-Import BRL.LinkedList
-Import BRL.Reflection
+
 
 ' headers :-)
 ?win32
@@ -36,22 +34,24 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
-
 
 Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qobject_tr:String(sourceText:String, disambiguation:String, n:Int)
-	Function bmx_qt_qobject_trarg:String(sourceText:String, args:String[])
-	Function bmx_qt_qobject_setobjectname(handle:Byte Ptr, name:String)
-	Function bmx_qt_qobject_setparent(handle:Byte Ptr, parent:Byte Ptr)
-	Function bmx_qt_qobject_blocksignals:Int(handle:Byte Ptr, block:Int)
-	Function bmx_qt_qobject_signalsblocked:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontcombobox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qfontcombobox_currentfont:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qfontcombobox_fontfilters:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontcombobox_setfontfilters(handle:Byte Ptr, filters:Int)
+	Function bmx_qt_qfontcombobox_setwritingsystem(handle:Byte Ptr, script:Int)
+	Function bmx_qt_qfontcombobox_writingsystem:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontcombobox_setcurrentfont(handle:Byte Ptr, font:Byte Ptr)
 
 End Extern

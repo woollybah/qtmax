@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sun Sep 20 12:17:50 2009
+** Created: Wed 23. Sep 11:49:10 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -43,7 +43,7 @@ static const char qt_meta_stringdata_MaxQComboBox[] = {
     "onCurrentIndexChanged(int)\0text\0"
     "onEditTextChanged(QString)\0"
     "onHighlighted(int)\0pos\0"
-    "customContextMenuRequested(QPoint)\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
 const QMetaObject MaxQComboBox::staticMetaObject = {
@@ -75,7 +75,7 @@ int MaxQComboBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: onCurrentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 2: onEditTextChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 3: onHighlighted((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: customContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 4: onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 5;

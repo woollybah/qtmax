@@ -48,6 +48,7 @@ Extern
 
 	Function bmx_qt_qpen_create:Byte Ptr(style:Int)
 	Function bmx_qt_qpen_createwithattributes:Byte Ptr(brush:Byte Ptr, width:Double, style:Int, cap:Int, join:Int)
+	Function bmx_qt_qpen_createwithglobalcolor:Byte Ptr(color:Int)
 	Function bmx_qt_qpen_brush:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qpen_capstyle:Int(handle:Byte Ptr)
 	Function bmx_qt_qpen_color:Byte Ptr(handle:Byte Ptr)

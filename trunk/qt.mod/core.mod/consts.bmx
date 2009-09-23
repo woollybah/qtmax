@@ -663,3 +663,19 @@ Const Qt_Friday:Int = 5
 Const Qt_Saturday:Int = 6
 Const Qt_Sunday:Int = 7
 
+Rem
+bbdoc: This operation turns clipping off.
+end rem
+Const Qt_NoClip:Int = 0
+Rem
+bbdoc: Replaces the current clip path/rect/region with the one supplied in the function call.
+end rem
+Const Qt_ReplaceClip:Int = 1
+Rem
+bbdoc: Intersects the current clip path/rect/region with the one supplied in the function call.
+end rem
+Const Qt_IntersectClip:Int = 2
+Rem
+bbdoc: Unites the current clip path/rect/region with the one supplied in the function call.
+end rem
+Const Qt_UniteClip:Int = 3
