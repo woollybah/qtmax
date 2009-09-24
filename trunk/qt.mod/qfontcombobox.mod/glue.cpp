@@ -43,12 +43,10 @@ MaxQFontComboBox::~MaxQFontComboBox()
 }
 
 void MaxQFontComboBox::onCurrentFontChanged(const QFont & font){
-printf("onCurrentFontChanged\n");fflush(stdout);
 	_qt_qfontcombobox_QFontComboBox__OnCurrentFontChanged(maxHandle, new MaxQFont(font));
 }
 
 void MaxQFontComboBox::onActivated(int index) {
-printf("onActivated\n");fflush(stdout);
 	_qt_qcombobox_QComboBox__OnActivated(maxHandle, index);
 }
 

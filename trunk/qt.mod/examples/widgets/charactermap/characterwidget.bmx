@@ -29,7 +29,6 @@ Type CharacterWidget Extends QWidget
 	End Method
 	
 	Method updateFont(font:QFont)
-DebugStop
 		displayFont.setFamily(font.family())
 		squareSize = Max(24, New QFontMetrics.Create(displayFont).xHeight() * 3)
 		adjustSize()
@@ -37,7 +36,6 @@ DebugStop
 	End Method
 	
 	Method updateSize(FontSize:String)
-DebugStop
 		displayFont.setPointSize(FontSize.toInt())
 		squareSize = Max(24, New QFontMetrics.Create(displayFont).xHeight() * 3)
 		adjustSize()
@@ -45,7 +43,6 @@ DebugStop
 	End Method
 	
 	Method updateStyle(FontStyle:String)
-DebugStop
 		Local fontDatabase:QFontDatabase = New QFontDatabase.Create()
 		Local oldStrategy:Int = displayFont.styleStrategy()
 		displayFont = fontDatabase.font(displayFont.family(), FontStyle, displayFont.pointSize())
@@ -56,7 +53,6 @@ DebugStop
 	End Method
 	
 	Method updateFontMerging(enable:Int)
-DebugStop
 		If enable Then
 			displayFont.setStyleStrategy(QFont.Strategy_PreferDefault)
 		Else
