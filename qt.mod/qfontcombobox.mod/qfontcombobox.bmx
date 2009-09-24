@@ -72,8 +72,8 @@ Type QFontComboBox Extends QComboBox
 	End Method
 
 	' SIGNAL : currentFontChanged
-	Function _OnCurrentFontChanged(obj:QFontComboBox, font:QFont)
-		obj._InvokeSignals("currentFontChanged", [font])
+	Function _OnCurrentFontChanged(obj:QFontComboBox, font:Byte Ptr)
+		obj._InvokeSignals("currentFontChanged", [New QFont._create(font)])
 	End Function
 
 End Type
