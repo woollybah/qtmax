@@ -21,15 +21,6 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QWidget
-Import Qt.QMenu
-Import Qt.QNetwork
-Import Qt.QIcon
-Import Qt.QPalette
-Import Qt.QContextMenuEvent
-Import Qt.QUndoStack
-Import Qt.QPainter
-Import Qt.QWebDatabase
 Import BRL.Blitz
 
 
@@ -42,33 +33,16 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
-Import "../src/include/QtGui/*.h"
 Import "../src/include/QtWebKit/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
-Import "/usr/include/qt4/QtGui/*.h"
 Import "/usr/include/qt4/QtWebKit/*.h"
 ?
-
 
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qwebview_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
-	Function bmx_qt_qwebview_load(handle:Byte Ptr, url:Byte Ptr)
-	Function bmx_qt_qwebview_pageaction:Byte Ptr(handle:Byte Ptr, action:Int)
-	Function bmx_qt_qwebview_title:String(handle:Byte Ptr)
-	Function bmx_qt_qwebview_url:Byte Ptr(handle:Byte Ptr)
-	Function bmx_qt_qwebview_settings:Byte Ptr(handle:Byte Ptr)
-	Function bmx_qt_qwebview_page:Byte Ptr(handle:Byte Ptr)
-
-	Function bmx_qt_qwebsettings_setattribute(handle:Byte Ptr, attribute:Int, on:Int)
-
-	Function bmx_qt_qwebpage_mainframe:Byte Ptr(handle:Byte Ptr)
-
-	Function bmx_qt_qwebframe_evaluatejavascript:String(handle:Byte Ptr, scriptSource:String)
 
 End Extern
