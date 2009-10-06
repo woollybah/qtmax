@@ -821,9 +821,3 @@ Type QWebHitTestResult
 
 End Type
 
-Type QWebSecurityOrigin
-
-	Field qObjectPtr:Byte Ptr
-
-End Type
-

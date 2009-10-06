@@ -24,17 +24,61 @@
 #define MAX_QT_QDESKTOPWIDGET
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QDesktopWidget>
+
+class MaxQDesktopWidget;
 
 extern "C" {
 
 #include <blitz.h>
 
+	BBObject * _qt_qdesktopwidget_QDesktopWidget___create(QDesktopWidget * widget);
+
+	void _qt_qdesktopwidget_QDesktopWidget__OnResized(BBObject * handle, int screen);
+	void _qt_qdesktopwidget_QDesktopWidget__OnWorkAreaResized(BBObject * handle, int screen);
+
+	MaxQRect * bmx_qt_qdesktopwidget_availablegeometry(QDesktopWidget * dw, int screen);
+	MaxQRect * bmx_qt_qdesktopwidget_availablegeometrywidget(QDesktopWidget * dw, QWidget * widget);
+	MaxQRect * bmx_qt_qdesktopwidget_availablegeometryxy(QDesktopWidget * dw, int x, int y);
+	int bmx_qt_qdesktopwidget_isvirtualdesktop(QDesktopWidget * dw);
+	int bmx_qt_qdesktopwidget_numscreens(QDesktopWidget * dw);
+	int bmx_qt_qdesktopwidget_primaryscreen(QDesktopWidget * dw);
+	QWidget * bmx_qt_qdesktopwidget_screen(QDesktopWidget * dw, int screen);
+	MaxQRect * bmx_qt_qdesktopwidget_screengeometry(QDesktopWidget * dw, int screen);
+	MaxQRect * bmx_qt_qdesktopwidget_screengeometrywidget(QDesktopWidget * dw, QWidget * widget);
+	MaxQRect * bmx_qt_qdesktopwidget_screengeometryxy(QDesktopWidget * dw, int x, int y);
+	int bmx_qt_qdesktopwidget_screennumber(QDesktopWidget * dw, QWidget * widget);
+	int bmx_qt_qdesktopwidget_screennumberxy(QDesktopWidget * dw, int x, int y);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQDesktopWidget : public MaxQObjectWrapper
+{
+	Q_OBJECT
+
+public:
+	MaxQDesktopWidget(BBObject * handle, QDesktopWidget * w);
+	MaxQDesktopWidget(QDesktopWidget * w);
+	
+	QDesktopWidget * Widget();
+	
+	static void link(QDesktopWidget * a);
+	
+	~MaxQDesktopWidget();
+
+private:
+	void doConnections();
+	QDesktopWidget * widget;
+	
+private slots:
+	void onResized(int screen);
+	void onWorkAreaResized(int screen);
+	void onCustomContextMenuRequested(const QPoint & pos);
+
+};
 
 #endif

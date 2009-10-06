@@ -46,4 +46,17 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qdesktopwidget_availablegeometry:Byte Ptr(handle:Byte Ptr, screen:Int)
+	Function bmx_qt_qdesktopwidget_availablegeometrywidget:Byte Ptr(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qdesktopwidget_availablegeometryxy:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)
+	Function bmx_qt_qdesktopwidget_isvirtualdesktop:Int(handle:Byte Ptr)
+	Function bmx_qt_qdesktopwidget_numscreens:Int(handle:Byte Ptr)
+	Function bmx_qt_qdesktopwidget_primaryscreen:Int(handle:Byte Ptr)
+	Function bmx_qt_qdesktopwidget_screen:Byte Ptr(handle:Byte Ptr, screen:Int)
+	Function bmx_qt_qdesktopwidget_screengeometry:Byte Ptr(handle:Byte Ptr, screen:Int)
+	Function bmx_qt_qdesktopwidget_screengeometrywidget:Byte Ptr(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qdesktopwidget_screengeometryxy:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)
+	Function bmx_qt_qdesktopwidget_screennumber:Int(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qdesktopwidget_screennumberxy:Int(handle:Byte Ptr, x:Int, y:Int)
+
 End Extern

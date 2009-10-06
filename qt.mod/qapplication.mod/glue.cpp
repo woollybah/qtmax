@@ -133,7 +133,9 @@ int bmx_qt_qapplication_cursorflashtime() {
 }
 
 QDesktopWidget * bmx_qt_qapplication_desktop() {
-	return QApplication::desktop();
+	QDesktopWidget * widget = QApplication::desktop();
+	MaxQDesktopWidget::link(widget);
+	return widget;
 }
 
 int bmx_qt_qapplication_desktopsettingsaware() {

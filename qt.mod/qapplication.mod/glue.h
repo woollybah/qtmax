@@ -32,6 +32,7 @@
 #include "../qfont.mod/glue.h"
 #include "../qfontmetrics.mod/glue.h"
 #include "../qobject.mod/glue.h"
+#include "../qdesktopwidget.mod/glue.h"
 #include <QtGui>
 
 class MaxQApplication;
