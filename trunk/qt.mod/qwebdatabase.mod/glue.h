@@ -25,15 +25,60 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QWebSecurityOrigin>
+#include <QWebDatabase>
+
+class MaxQWebDatabase;
+class MaxQWebSecurityOrigin;
 
 extern "C" {
 
 #include <blitz.h>
 
+	BBString * bmx_qt_qwebdatabase_displayname(MaxQWebDatabase * db);
+	void bmx_qt_qwebdatabase_expectedsize(MaxQWebDatabase * db, BBInt64 * value);
+	BBString * bmx_qt_qwebdatabase_filename(MaxQWebDatabase * db);
+	BBString * bmx_qt_qwebdatabase_name(MaxQWebDatabase * db);
+	MaxQWebSecurityOrigin * bmx_qt_qwebdatabase_origin(MaxQWebDatabase * db);
+	void bmx_qt_qwebdatabase_size(MaxQWebDatabase * db, BBInt64 * value);
+	void bmx_qt_qwebdatabase_free(MaxQWebDatabase * db);
+
+	void bmx_qt_qwebsecurityorigin_databasequota(MaxQWebSecurityOrigin * origin, BBInt64 * value);
+	void bmx_qt_qwebsecurityorigin_databaseusage(MaxQWebSecurityOrigin * origin, BBInt64 * value);
+	BBString * bmx_qt_qwebsecurityorigin_host(MaxQWebSecurityOrigin * origin);
+	int bmx_qt_qwebsecurityorigin_port(MaxQWebSecurityOrigin * origin);
+	BBString * bmx_qt_qwebsecurityorigin_scheme(MaxQWebSecurityOrigin * origin);
+	void bmx_qt_qwebsecurityorigin_setdatabasequota(MaxQWebSecurityOrigin * origin, BBInt64 quota);
+	void bmx_qt_qwebsecurityorigin_free(MaxQWebSecurityOrigin * origin);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQWebDatabase
+{
+public:
+	MaxQWebDatabase(QWebDatabase & d);
+	~MaxQWebDatabase();
+	
+	QWebDatabase & Database();
+
+private:
+	QWebDatabase database;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQWebSecurityOrigin
+{
+public:
+	MaxQWebSecurityOrigin(const QWebSecurityOrigin & o);
+	~MaxQWebSecurityOrigin();
+	
+	QWebSecurityOrigin & Origin();
+
+private:
+	QWebSecurityOrigin origin;
+};
 
 #endif

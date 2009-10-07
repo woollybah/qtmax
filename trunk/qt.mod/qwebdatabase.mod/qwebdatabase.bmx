@@ -35,28 +35,47 @@ Type QWebDatabase
 
 	Field qObjectPtr:Byte Ptr
 
+	Function _create:QWebDatabase(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QWebDatabase = New QWebDatabase
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
 	Method displayName:String()
-	' TODO
+		Return bmx_qt_qwebdatabase_displayname(qObjectPtr)
 	End Method
 	
 	Method expectedSize:Long()
-	' TODO
+		Local value:Long
+		bmx_qt_qwebdatabase_expectedsize(qObjectPtr, Varptr value)
+		Return value
 	End Method
 	
 	Method fileName:String()
-	' TODO
+		Return bmx_qt_qwebdatabase_filename(qObjectPtr)
 	End Method
 	
 	Method name:String()
-	' TODO
+		Return bmx_qt_qwebdatabase_name(qObjectPtr)
 	End Method
 	
 	Method origin:QWebSecurityOrigin()
-	' TODO
+		Return QWebSecurityOrigin._create(bmx_qt_qwebdatabase_origin(qObjectPtr))
 	End Method
 	
 	Method size:Long()
-	' TODO
+		Local value:Long
+		bmx_qt_qwebdatabase_size(qObjectPtr, Varptr value)
+		Return value
+	End Method
+	
+	Method Delete()
+		If qObjectPtr Then
+			bmx_qt_qwebdatabase_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
 	End Method
 
 End Type
@@ -65,12 +84,24 @@ Type QWebSecurityOrigin
 
 	Field qObjectPtr:Byte Ptr
 
+	Function _create:QWebSecurityOrigin(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QWebSecurityOrigin = New QWebSecurityOrigin
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
 	Method databaseQuota:Long()
-	' TODO
+		Local value:Long
+		bmx_qt_qwebsecurityorigin_databasequota(qObjectPtr, Varptr value)
+		Return value
 	End Method
 	
 	Method databaseUsage:Long()
-	' TODO
+		Local value:Long
+		bmx_qt_qwebsecurityorigin_databaseusage(qObjectPtr, Varptr value)
+		Return value
 	End Method
 	
 	Method databases:QWebDatabase[]()
@@ -78,19 +109,26 @@ Type QWebSecurityOrigin
 	End Method
 	
 	Method host:String()
-	' TODO
+		Return bmx_qt_qwebsecurityorigin_host(qObjectPtr)
 	End Method
 	
 	Method port:Int()
-	' TODO
+		Return bmx_qt_qwebsecurityorigin_port(qObjectPtr)
 	End Method
 	
 	Method scheme:String()
-	' TODO
+		Return bmx_qt_qwebsecurityorigin_scheme(qObjectPtr)
 	End Method
 	
 	Method setDatabaseQuota(quota:Long)
-	' TODO
+		bmx_qt_qwebsecurityorigin_setdatabasequota(qObjectPtr, quota)
+	End Method
+	
+	Method Delete()
+		If qObjectPtr Then
+			bmx_qt_qwebsecurityorigin_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
 	End Method
 	
 End Type
