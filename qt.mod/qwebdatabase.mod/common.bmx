@@ -45,4 +45,20 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qwebdatabase_displayname:String(handle:Byte Ptr)
+	Function bmx_qt_qwebdatabase_expectedsize(handle:Byte Ptr, value:Long Ptr)
+	Function bmx_qt_qwebdatabase_filename:String(handle:Byte Ptr)
+	Function bmx_qt_qwebdatabase_name:String(handle:Byte Ptr)
+	Function bmx_qt_qwebdatabase_origin:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwebdatabase_size(handle:Byte Ptr, value:Long Ptr)
+	Function bmx_qt_qwebdatabase_free(handle:Byte Ptr)
+
+	Function bmx_qt_qwebsecurityorigin_databasequota(handle:Byte Ptr, value:Long Ptr)
+	Function bmx_qt_qwebsecurityorigin_databaseusage(handle:Byte Ptr, value:Long Ptr)
+	Function bmx_qt_qwebsecurityorigin_host:String(handle:Byte Ptr)
+	Function bmx_qt_qwebsecurityorigin_port:Int(handle:Byte Ptr)
+	Function bmx_qt_qwebsecurityorigin_scheme:String(handle:Byte Ptr)
+	Function bmx_qt_qwebsecurityorigin_setdatabasequota(handle:Byte Ptr, quota:Long)
+	Function bmx_qt_qwebsecurityorigin_free(handle:Byte Ptr)
+
 End Extern
