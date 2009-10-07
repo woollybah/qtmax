@@ -61,7 +61,7 @@ Type QWebView Extends QWidget
 	End Method
 
 	Method findText:Int(subString:String, options:Int = 0)
-	' TODO
+		Return bmx_qt_qwebview_findtext(qObjectPtr, subString, options)
 	End Method
 	
 	Method history:QWebHistory()
@@ -69,11 +69,11 @@ Type QWebView Extends QWidget
 	End Method
 	
 	Method icon:QIcon()
-	' TODO
+		Return QIcon._create(bmx_qt_qwebview_icon(qObjectPtr))
 	End Method
 	
 	Method isModified:Int()
-	' TODO
+		Return bmx_qt_qwebview_ismodified(qObjectPtr)
 	End Method
 	
 	Method Load(url:QUrl)
@@ -93,7 +93,7 @@ Type QWebView Extends QWidget
 	End Method
 	
 	Method selectedText:String()
-	' TODO
+		Return bmx_qt_qwebview_selectedtext(qObjectPtr)
 	End Method
 	
 	Method setContent(data:String, mimeType:String = Null, baseUrl:QUrl = Null)
@@ -101,23 +101,27 @@ Type QWebView Extends QWidget
 	End Method
 	
 	Method setHtml(html:String, baseUrl:QUrl = Null)
-	' TODO
+		If baseUrl Then
+			bmx_qt_qwebview_sethtml(qObjectPtr, html, baseUrl.qObjectPtr)
+		Else
+			bmx_qt_qwebview_sethtml(qObjectPtr, html, Null)
+		End If
 	End Method
 	
 	Method setPage(page:QWebPage)
-	' TODO
+		bmx_qt_qwebview_setpage(qObjectPtr, page.qObjectPtr)
 	End Method
 	
 	Method setTextSizeMultiplier(factor:Double)
-	' TODO
+		bmx_qt_qwebview_settextsizemultiplier(qObjectPtr, factor)
 	End Method
 	
 	Method setUrl(url:QUrl)
-	' TODO
+		bmx_qt_qwebview_seturl(qObjectPtr, url.qObjectPtr)
 	End Method
 	
 	Method setZoomFactor(factor:Double)
-	' TODO
+		bmx_qt_qwebview_setzoomfactor(qObjectPtr, factor)
 	End Method
 	
 	Method settings:QWebSettings()
@@ -572,6 +576,16 @@ Type QWebFrame Extends QObject
 		End If
 	End Function
 
+	Function _find:QWebFrame(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local frame:QWebFrame = QWebFrame(qfind(qObjectPtr))
+			If Not frame Then
+				Return QWebFrame._create(qObjectPtr)
+			End If
+			Return frame
+		End If
+	End Function
+
 	Method addToJavaScriptWindowObject(name:String, obj:QObject)
 	' TODO
 	End Method
@@ -597,7 +611,7 @@ Type QWebFrame Extends QObject
 	End Method
 	
 	Method hitTestContent:QWebHitTestResult(x:Int, y:Int)
-	' TODO
+		Return QWebHitTestResult._create(bmx_qt_qwebframe_hittestcontent(qObjectPtr, x, y))
 	End Method
 	
 	Method icon:QIcon()
@@ -819,5 +833,76 @@ Type QWebHitTestResult
 
 	Field qObjectPtr:Byte Ptr
 
+	Function _create:QWebHitTestResult(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QWebHitTestResult = New QWebHitTestResult
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+	Method alternateText:String()
+		Return bmx_qt_qwebhittestresult_alternatetext(qObjectPtr)
+	End Method
+	
+	Method boundingRect:QRect()
+		Return QRect._create(bmx_qt_qwebhittestresult_boundingrect(qObjectPtr))
+	End Method
+	
+	Method frame:QWebFrame()
+		Return QWebFrame._find(bmx_qt_qwebhittestresult_frame(qObjectPtr))
+	End Method
+	
+	Method imageUrl:QUrl()
+		Return QUrl._create(bmx_qt_qwebhittestresult_imageurl(qObjectPtr))
+	End Method
+	
+	Method isContentEditable:Int()
+		Return bmx_qt_qwebhittestresult_iscontenteditable(qObjectPtr)
+	End Method
+	
+	Method isContentSelected:Int()
+		Return bmx_qt_qwebhittestresult_iscontentselected(qObjectPtr)
+	End Method
+	
+	Method isNull:Int()
+		Return bmx_qt_qwebhittestresult_isnull(qObjectPtr)
+	End Method
+	
+	Method linkTargetFrame:QWebFrame()
+		Return QWebFrame._find(bmx_qt_qwebhittestresult_linktargetframe(qObjectPtr))
+	End Method
+	
+	Method linkText:String()
+		Return bmx_qt_qwebhittestresult_linktext(qObjectPtr)
+	End Method
+	
+	Method linkTitle:QUrl()
+		Return QUrl._create(bmx_qt_qwebhittestresult_linktitle(qObjectPtr))
+	End Method
+	
+	Method linkUrl:QUrl()
+		Return QUrl._create(bmx_qt_qwebhittestresult_linkurl(qObjectPtr))
+	End Method
+	
+	Method pixmap:QPixmap()
+		Return QPixmap._create(bmx_qt_qwebhittestresult_pixmap(qObjectPtr))
+	End Method
+	
+	Method pos(x:Int Var, y:Int Var)
+		bmx_qt_qwebhittestresult_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method title:String()
+		Return bmx_qt_qwebhittestresult_title(qObjectPtr)
+	End Method
+
+	Method Delete()
+		If qObjectPtr Then
+			bmx_qt_qwebhittestresult_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
 End Type
 
