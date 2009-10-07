@@ -29,8 +29,10 @@
 #include <QWebView>
 #include <QWebFrame>
 #include <QWebPage>
+#include <QWebHitTestResult>
 
 class MaxQWebView;
+class MaxQWebHitTestResult;
 
 extern "C" {
 
@@ -53,12 +55,38 @@ extern "C" {
 	MaxQUrl * bmx_qt_qwebview_url(QWebView * view);
 	QWebSettings * bmx_qt_qwebview_settings(QWebView * view);
 	QWebPage * bmx_qt_qwebview_page(QWebView * view);
+	int bmx_qt_qwebview_findtext(QWebView * view, BBString * subString, int options);
+	MaxQIcon * bmx_qt_qwebview_icon(QWebView * view);
+	int bmx_qt_qwebview_ismodified(QWebView * view);
+	BBString * bmx_qt_qwebview_selectedtext(QWebView * view);
+	void bmx_qt_qwebview_sethtml(QWebView * view, BBString * html, MaxQUrl * baseUrl);
+	void bmx_qt_qwebview_setpage(QWebView * view, QWebPage * page);
+	void bmx_qt_qwebview_settextsizemultiplier(QWebView * view, double factor);
+	void bmx_qt_qwebview_seturl(QWebView * view, MaxQUrl * url);
+	void bmx_qt_qwebview_setzoomfactor(QWebView * view, double factor);
 
 	void bmx_qt_qwebsettings_setattribute(QWebSettings * settings, int attribute, int on);
 
 	QWebFrame * bmx_qt_qwebpage_mainframe(QWebPage * page);
 
 	BBString * bmx_qt_qwebframe_evaluatejavascript(QWebFrame * frame, BBString * scriptSource);
+	MaxQWebHitTestResult * bmx_qt_qwebframe_hittestcontent(QWebFrame * frame, int x, int y);
+
+	BBString * bmx_qt_qwebhittestresult_alternatetext(MaxQWebHitTestResult * res);
+	MaxQRect * bmx_qt_qwebhittestresult_boundingrect(MaxQWebHitTestResult * res);
+	QWebFrame * bmx_qt_qwebhittestresult_frame(MaxQWebHitTestResult * res);
+	MaxQUrl * bmx_qt_qwebhittestresult_imageurl(MaxQWebHitTestResult * res);
+	int bmx_qt_qwebhittestresult_iscontenteditable(MaxQWebHitTestResult * res);
+	int bmx_qt_qwebhittestresult_iscontentselected(MaxQWebHitTestResult * res);
+	int bmx_qt_qwebhittestresult_isnull(MaxQWebHitTestResult * res);
+	QWebFrame * bmx_qt_qwebhittestresult_linktargetframe(MaxQWebHitTestResult * res);
+	BBString * bmx_qt_qwebhittestresult_linktext(MaxQWebHitTestResult * res);
+	MaxQUrl * bmx_qt_qwebhittestresult_linktitle(MaxQWebHitTestResult * res);
+	MaxQUrl * bmx_qt_qwebhittestresult_linkurl(MaxQWebHitTestResult * res);
+	MaxQPixmap * bmx_qt_qwebhittestresult_pixmap(MaxQWebHitTestResult * res);
+	void bmx_qt_qwebhittestresult_pos(MaxQWebHitTestResult * res, int * x, int * y);
+	BBString * bmx_qt_qwebhittestresult_title(MaxQWebHitTestResult * res);
+	void bmx_qt_qwebhittestresult_free(MaxQWebHitTestResult * res);
 
 }
 
@@ -85,6 +113,18 @@ private slots:
 	void onStatusBarMessage( const QString & text );
 	void onTitleChanged( const QString & title );
 	void onUrlChanged( const QUrl & url );
+};
+
+class MaxQWebHitTestResult
+{
+public:
+	MaxQWebHitTestResult(const QWebHitTestResult & r);
+	~MaxQWebHitTestResult();
+	
+	QWebHitTestResult & Result();
+
+private:
+	QWebHitTestResult result;
 };
 
 #endif
