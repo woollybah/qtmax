@@ -25,16 +25,15 @@
 
 #include "../core.mod/glue.h"
 #include "../qwidget.mod/glue.h"
+#include "../qwebhistory.mod/glue.h"
 #include <QtCore>
 #include <QWebView>
 #include <QWebFrame>
 #include <QWebPage>
 #include <QWebHitTestResult>
-#include <QWebHistory>
 
 class MaxQWebView;
 class MaxQWebHitTestResult;
-class MaxQWebHistory;
 
 extern "C" {
 
@@ -127,18 +126,6 @@ public:
 
 private:
 	QWebHitTestResult result;
-};
-
-class MaxQWebHistory
-{
-public:
-	MaxQWebHistory(QWebHistory h);
-	~MaxQWebHistory();
-	
-	QWebHistory & History();
-
-private:
-	QWebHistory & history;
 };
 
 #endif

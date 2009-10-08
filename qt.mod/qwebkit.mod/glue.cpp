@@ -96,21 +96,6 @@ QWebHitTestResult & MaxQWebHitTestResult::Result() {
 	return result;
 }
 
-// ---------------------------------------------------------------------------------------
-
-MaxQWebHistory::MaxQWebHistory(QWebHistory h)
-	: history(h)
-{
-}
-
-MaxQWebHistory::~MaxQWebHistory()
-{
-}
-
-QWebHistory & MaxQWebHistory::History() {
-	return history;
-}
-
 // *********************************************
 
 QWebView * bmx_qt_qwebview_create(BBObject * handle, QWidget * parent, int flags) {

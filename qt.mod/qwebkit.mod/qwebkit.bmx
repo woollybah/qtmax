@@ -745,12 +745,6 @@ Type QWebPluginFactory Extends QObject
 
 End Type
 
-Type QWebHistory
-
-	Field qObjectPtr:Byte Ptr
-
-End Type
-
 Type QWebSettings
 
 	Field qObjectPtr:Byte Ptr
