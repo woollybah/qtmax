@@ -30,6 +30,7 @@ Import Qt.QContextMenuEvent
 Import Qt.QUndoStack
 Import Qt.QPainter
 Import Qt.QWebDatabase
+Import Qt.QWebHistory
 Import BRL.Blitz
 
 
