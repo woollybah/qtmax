@@ -817,10 +817,108 @@ Type QWebSettings
 		End If
 	End Function
 	
+	Method fontFamily:String(which:Int)
+		Return bmx_qt_qwebsettings_fontfamily(qObjectPtr, which)
+	End Method
+	
+	Method FontSize:Int(sizeType:Int)
+		Return bmx_qt_qwebsettings_fontsize(qObjectPtr, sizeType)
+	End Method
+	
+	Method resetAttribute(attribute:Int)
+		bmx_qt_qwebsettings_resetattribute(qObjectPtr, attribute)
+	End Method
+	
+	Method resetFontFamily(which:Int)
+		bmx_qt_qwebsettings_resetfontfamily(qObjectPtr, which)
+	End Method
+	
+	Method resetFontSize(sizeType:Int)
+		bmx_qt_qwebsettings_resetfontsize(qObjectPtr, sizeType)
+	End Method
+	
 	Method setAttribute(attribute:Int, on:Int = True)
 		bmx_qt_qwebsettings_setattribute(qObjectPtr, attribute, on)
 	End Method
+
+	Method setFontFamily(which:Int, family:String)
+		bmx_qt_qwebsettings_setfontfamily(qObjectPtr, which, family)
+	End Method
 	
+	Method setFontSize(sizeType:Int, size:Int)
+		bmx_qt_qwebsettings_setfontsize(qObjectPtr, sizeType, size)
+	End Method
+	
+	Method setUserStyleSheetUrl(location:QUrl)
+		bmx_qt_qwebsettings_setuserstylesheeturl(qObjectPtr, location.qObjectPtr)
+	End Method
+	
+	Method testAttribute:Int(attribute:Int)
+		Return bmx_qt_qwebsettings_testattribute(qObjectPtr, attribute)
+	End Method
+	
+	Method userStyleSheetUrl:QUrl() 
+		Return QUrl._create(bmx_qt_qwebsettings_userstylesheeturl(qObjectPtr))
+	End Method
+	
+	Function clearIconDatabase()
+		bmx_qt_qwebsettings_clearicondatabase()
+	End Function
+	
+	Function globalSettings:QWebSettings()
+		Return QWebSettings._create(bmx_qt_qwebsettings_globalsettings())
+	End Function
+	
+	Function iconDatabasePath:String()
+		Return bmx_qt_qwebsettings_icondatabasepath()
+	End Function
+	
+	Function iconForUrl:QIcon(url:QUrl)
+		Return QIcon._create(bmx_qt_qwebsettings_iconforurl(url.qObjectPtr))
+	End Function
+	
+	Function maximumPagesInCache:Int()
+		Return bmx_qt_qwebsettings_maximumpagesincache()
+	End Function
+	
+	Function offlineStorageDefaultQuota:Long()
+		Local value:Long
+		bmx_qt_qwebsettings_offlinestoragedefaultquota(Varptr value)
+		Return value
+	End Function
+	
+	Function offlineStoragePath:String()
+		Return bmx_qt_qwebsettings_offlinestoragepath()
+	End Function
+	
+	Function setIconDatabasePath(path:String)
+		bmx_qt_qwebsettings_seticondatabasepath(path)
+	End Function
+	
+	Function setMaximumPagesInCache(pages:Int)
+		bmx_qt_qwebsettings_setmaximumpagesincache(pages)
+	End Function
+	
+	Function setObjectCacheCapacities(cacheMinDeadCapacity:Int, cacheMaxDead:Int, totalCapacity:Int)
+		bmx_qt_qwebsettings_setobjectcachecapacities(cacheMinDeadCapacity, cacheMaxDead, totalCapacity)
+	End Function
+	
+	Function setOfflineStorageDefaultQuota(maximumSize:Long)
+		bmx_qt_qwebsettings_setofflinestoragedefaultquota(maximumSize)
+	End Function
+	
+	Function setOfflineStoragePath(path:String)
+		bmx_qt_qwebsettings_setofflinestoragepath(path)
+	End Function
+	
+	Function setWebGraphic(graphicType:Int, graphic:QPixmap)
+		bmx_qt_qwebsettings_setwebgraphic(graphicType, graphic.qObjectPtr)
+	End Function
+	
+	Function webGraphic:QPixmap(graphicType:Int)
+		Return QPixmap._create(bmx_qt_qwebsettings_webgraphic(graphicType))
+	End Function
+
 End Type
 
 Type QWebHitTestResult

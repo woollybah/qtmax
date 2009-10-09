@@ -175,6 +175,102 @@ void bmx_qt_qwebsettings_setattribute(QWebSettings * settings, int attribute, in
 	settings->setAttribute((QWebSettings::WebAttribute)attribute, static_cast<bool>(on));
 }
 
+BBString * bmx_qt_qwebsettings_fontfamily(QWebSettings * settings, int which) {
+	return bbStringFromQString(settings->fontFamily((QWebSettings::FontFamily)which));
+}
+
+int bmx_qt_qwebsettings_fontsize(QWebSettings * settings, int sizeType) {
+	return settings->fontSize((QWebSettings::FontSize)sizeType);
+}
+
+void bmx_qt_qwebsettings_resetattribute(QWebSettings * settings, int attribute) {
+	settings->resetAttribute((QWebSettings::WebAttribute)attribute);
+}
+
+void bmx_qt_qwebsettings_resetfontfamily(QWebSettings * settings, int which) {
+	settings->resetFontFamily((QWebSettings::FontFamily)which);
+}
+
+void bmx_qt_qwebsettings_resetfontsize(QWebSettings * settings, int sizeType) {
+	settings->resetFontSize((QWebSettings::FontSize)sizeType);
+}
+
+void bmx_qt_qwebsettings_setfontfamily(QWebSettings * settings, int which, BBString * family) {
+	settings->setFontFamily((QWebSettings::FontFamily)which, qStringFromBBString(family));
+}
+
+void bmx_qt_qwebsettings_setfontsize(QWebSettings * settings, int sizeType, int size) {
+	settings->setFontSize((QWebSettings::FontSize)sizeType, size);
+}
+
+void bmx_qt_qwebsettings_setuserstylesheeturl(QWebSettings * settings, MaxQUrl * location) {
+	settings->setUserStyleSheetUrl(location->Url());
+}
+
+int bmx_qt_qwebsettings_testattribute(QWebSettings * settings, int attribute) {
+	return static_cast<int>(settings->testAttribute((QWebSettings::WebAttribute)attribute));
+}
+
+MaxQUrl * bmx_qt_qwebsettings_userstylesheeturl(QWebSettings * settings) {
+	return new MaxQUrl(settings->userStyleSheetUrl());
+}
+
+void bmx_qt_qwebsettings_clearicondatabase() {
+	QWebSettings::clearIconDatabase();
+}
+
+QWebSettings * bmx_qt_qwebsettings_globalsettings() {
+	return QWebSettings::globalSettings();
+}
+
+BBString * bmx_qt_qwebsettings_icondatabasepath() {
+	return bbStringFromQString(QWebSettings::iconDatabasePath());
+}
+
+MaxQIcon * bmx_qt_qwebsettings_iconforurl(MaxQUrl * url) {
+	return new MaxQIcon(QWebSettings::iconForUrl(url->Url()));
+}
+
+int bmx_qt_qwebsettings_maximumpagesincache() {
+	return QWebSettings::maximumPagesInCache();
+}
+
+void bmx_qt_qwebsettings_offlinestoragedefaultquota(BBInt64 * value) {
+	*value = QWebSettings::offlineStorageDefaultQuota();
+}
+
+BBString * bmx_qt_qwebsettings_offlinestoragepath() {
+	return bbStringFromQString(QWebSettings::offlineStoragePath());
+}
+
+void bmx_qt_qwebsettings_seticondatabasepath(BBString * path) {
+	QWebSettings::setIconDatabasePath(qStringFromBBString(path));
+}
+
+void bmx_qt_qwebsettings_setmaximumpagesincache(int pages) {
+	QWebSettings::setMaximumPagesInCache(pages);
+}
+
+void bmx_qt_qwebsettings_setobjectcachecapacities(int cacheMinDeadCapacity, int cacheMaxDead, int totalCapacity) {
+	QWebSettings::setObjectCacheCapacities(cacheMinDeadCapacity, cacheMaxDead, totalCapacity);
+}
+
+void bmx_qt_qwebsettings_setofflinestoragedefaultquota(BBInt64 maximumSize) {
+	QWebSettings::setOfflineStorageDefaultQuota(maximumSize);
+}
+
+void bmx_qt_qwebsettings_setofflinestoragepath(BBString * path) {
+	QWebSettings::setOfflineStoragePath(qStringFromBBString(path));
+}
+
+void bmx_qt_qwebsettings_setwebgraphic(int graphicType, MaxQPixmap * graphic) {
+	QWebSettings::setWebGraphic((QWebSettings::WebGraphic)graphicType, graphic->Pixmap());
+}
+
+MaxQPixmap * bmx_qt_qwebsettings_webgraphic(int graphicType) {
+	return new MaxQPixmap(QWebSettings::webGraphic((QWebSettings::WebGraphic)graphicType));
+}
+
 // *********************************************
 
 QWebFrame * bmx_qt_qwebpage_mainframe(QWebPage * page) {
