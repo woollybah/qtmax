@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QIcon
 Import BRL.Blitz
 
 
@@ -33,11 +34,13 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 Import "../src/include/QtWebKit/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 Import "/usr/include/qt4/QtWebKit/*.h"
 ?
 
@@ -62,5 +65,11 @@ Extern
 	Function bmx_qt_qwebhistory_free(handle:Byte Ptr)
 
 	Function bmx_qt_qwebhistoryitem_free(handle:Byte Ptr)
+	Function bmx_qt_qwebhistoryitem_icon:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwebhistoryitem_isvalid:Int(handle:Byte Ptr)
+	Function bmx_qt_qwebhistoryitem_lastvisited:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwebhistoryitem_originalurl:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwebhistoryitem_title:String(handle:Byte Ptr)
+	Function bmx_qt_qwebhistoryitem_url:Byte Ptr(handle:Byte Ptr)
 
 End Extern

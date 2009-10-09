@@ -67,6 +67,30 @@ extern "C" {
 	void bmx_qt_qwebview_setzoomfactor(QWebView * view, double factor);
 
 	void bmx_qt_qwebsettings_setattribute(QWebSettings * settings, int attribute, int on);
+	BBString * bmx_qt_qwebsettings_fontfamily(QWebSettings * settings, int which);
+	int bmx_qt_qwebsettings_fontsize(QWebSettings * settings, int sizeType);
+	void bmx_qt_qwebsettings_resetattribute(QWebSettings * settings, int attribute);
+	void bmx_qt_qwebsettings_resetfontfamily(QWebSettings * settings, int which);
+	void bmx_qt_qwebsettings_resetfontsize(QWebSettings * settings, int sizeType);
+	void bmx_qt_qwebsettings_setfontfamily(QWebSettings * settings, int which, BBString * family);
+	void bmx_qt_qwebsettings_setfontsize(QWebSettings * settings, int sizeType, int size);
+	void bmx_qt_qwebsettings_setuserstylesheeturl(QWebSettings * settings, MaxQUrl * location);
+	int bmx_qt_qwebsettings_testattribute(QWebSettings * settings, int attribute);
+	MaxQUrl * bmx_qt_qwebsettings_userstylesheeturl(QWebSettings * settings);
+	void bmx_qt_qwebsettings_clearicondatabase();
+	QWebSettings * bmx_qt_qwebsettings_globalsettings();
+	BBString * bmx_qt_qwebsettings_icondatabasepath();
+	MaxQIcon * bmx_qt_qwebsettings_iconforurl(MaxQUrl * url);
+	int bmx_qt_qwebsettings_maximumpagesincache();
+	void bmx_qt_qwebsettings_offlinestoragedefaultquota(BBInt64 * value);
+	BBString * bmx_qt_qwebsettings_offlinestoragepath();
+	void bmx_qt_qwebsettings_seticondatabasepath(BBString * path);
+	void bmx_qt_qwebsettings_setmaximumpagesincache(int pages);
+	void bmx_qt_qwebsettings_setobjectcachecapacities(int cacheMinDeadCapacity, int cacheMaxDead, int totalCapacity);
+	void bmx_qt_qwebsettings_setofflinestoragedefaultquota(BBInt64 maximumSize);
+	void bmx_qt_qwebsettings_setofflinestoragepath(BBString * path);
+	void bmx_qt_qwebsettings_setwebgraphic(int graphicType, MaxQPixmap * graphic);
+	MaxQPixmap * bmx_qt_qwebsettings_webgraphic(int graphicType);
 
 	QWebFrame * bmx_qt_qwebpage_mainframe(QWebPage * page);
 

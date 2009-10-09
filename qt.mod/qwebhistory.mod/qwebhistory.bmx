@@ -142,6 +142,30 @@ Type QWebHistoryItem
 		End If
 	End Function
 
+	Method icon:QIcon()
+		Return QIcon._create(bmx_qt_qwebhistoryitem_icon(qObjectPtr))
+	End Method
+	
+	Method isValid:Int()
+		Return bmx_qt_qwebhistoryitem_isvalid(qObjectPtr)
+	End Method
+	
+	Method lastVisited:QDateTime()
+		Return QDateTime._create(bmx_qt_qwebhistoryitem_lastvisited(qObjectPtr))
+	End Method
+	
+	Method originalUrl:QUrl()
+		Return QUrl._create(bmx_qt_qwebhistoryitem_originalurl(qObjectPtr))
+	End Method
+	
+	Method title:String()
+		Return bmx_qt_qwebhistoryitem_title(qObjectPtr)
+	End Method
+	
+	Method url:QUrl()
+		Return QUrl._create(bmx_qt_qwebhistoryitem_url(qObjectPtr))
+	End Method
+	
 	Method Delete()
 		If qObjectPtr Then
 			bmx_qt_qwebhistoryitem_free(qObjectPtr)

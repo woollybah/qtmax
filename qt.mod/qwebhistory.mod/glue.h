@@ -24,6 +24,7 @@
 #define MAX_QT_QWEBHISTORY
 
 #include "../core.mod/glue.h"
+#include "../qicon.mod/glue.h"
 #include <QtCore>
 #include <QWebHistory>
 
@@ -58,6 +59,12 @@ extern "C" {
 	BBArray * bmx_qt_qwebhistory_items(MaxQWebHistory * history);
 
 	void bmx_qt_qwebhistoryitem_free(MaxQWebHistoryItem * item);
+	MaxQIcon * bmx_qt_qwebhistoryitem_icon(MaxQWebHistoryItem * item);
+	int bmx_qt_qwebhistoryitem_isvalid(MaxQWebHistoryItem * item);
+	MaxQDateTime * bmx_qt_qwebhistoryitem_lastvisited(MaxQWebHistoryItem * item);
+	MaxQUrl * bmx_qt_qwebhistoryitem_originalurl(MaxQWebHistoryItem * item);
+	BBString * bmx_qt_qwebhistoryitem_title(MaxQWebHistoryItem * item);
+	MaxQUrl * bmx_qt_qwebhistoryitem_url(MaxQWebHistoryItem * item);
 
 }
 
