@@ -22,8 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QObject
-Import Qt.QUndoCommand
-Import Qt.QWidget
+Import Qt.QUndoStack
 Import BRL.Blitz
 
 
@@ -47,30 +46,5 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qundostack_beginmacro(handle:Byte Ptr, text:String)
-	Function bmx_qt_qundostack_canredo:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_canundo:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_cleanindex:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_clear(handle:Byte Ptr)
-	Function bmx_qt_qundostack_command:Byte Ptr(handle:Byte Ptr, index:Int)
-	Function bmx_qt_qundostack_count:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_createredoaction:Byte Ptr(handle:Byte Ptr, parent:Byte Ptr, prefix:String)
-	Function bmx_qt_qundostack_createundoaction:Byte Ptr(handle:Byte Ptr, parent:Byte Ptr, prefix:String)
-	Function bmx_qt_qundostack_endmacro(handle:Byte Ptr)
-	Function bmx_qt_qundostack_index:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_isactive:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_isclean:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_push(handle:Byte Ptr, cmd:Byte Ptr)
-	Function bmx_qt_qundostack_redotext:String(handle:Byte Ptr)
-	Function bmx_qt_qundostack_setundolimit(handle:Byte Ptr, limit:Int)
-	Function bmx_qt_qundostack_text:String(handle:Byte Ptr, idx:Int)
-	Function bmx_qt_qundostack_undolimit:Int(handle:Byte Ptr)
-	Function bmx_qt_qundostack_undotext:String(handle:Byte Ptr)
-	Function bmx_qt_qundostack_redo(handle:Byte Ptr)
-	Function bmx_qt_qundostack_setactive(handle:Byte Ptr, active:Int)
-	Function bmx_qt_qundostack_setclean(handle:Byte Ptr)
-	Function bmx_qt_qundostack_setindex(handle:Byte Ptr, idx:Int)
-	Function bmx_qt_qundostack_undo(handle:Byte Ptr)
 
 End Extern

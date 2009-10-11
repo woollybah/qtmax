@@ -33,6 +33,101 @@ Import "common.bmx"
 
 Type QUndoStack Extends QObject
 
+	Method beginMacro(text:String)
+		bmx_qt_qundostack_beginmacro(qObjectPtr, text)
+	End Method
+	
+	Method canRedo:Int()
+		Return bmx_qt_qundostack_canredo(qObjectPtr)
+	End Method
+	
+	Method canUndo:Int()
+		Return bmx_qt_qundostack_canundo(qObjectPtr)
+	End Method
+	
+	Method cleanIndex:Int()
+		Return bmx_qt_qundostack_cleanindex(qObjectPtr)
+	End Method
+	
+	Method clear()
+		bmx_qt_qundostack_clear(qObjectPtr)
+	End Method
+	
+	Method command:QUndoCommand(index:Int)
+		Return QUndoCommand._create(bmx_qt_qundostack_command(qObjectPtr, index))
+	End Method
+	
+	Method count:Int()
+		Return bmx_qt_qundostack_count(qObjectPtr)
+	End Method
+	
+	Method createRedoAction:QAction(parent:QObject, prefix:String = "")
+		Return QAction._find(bmx_qt_qundostack_createredoaction(qObjectPtr, parent.qObjectPtr, prefix))
+	End Method
+	
+	Method createUndoAction:QAction(parent:QObject, prefix:String = "")
+		Return QAction._find(bmx_qt_qundostack_createundoaction(qObjectPtr, parent.qObjectPtr, prefix))
+	End Method
+	
+	Method endMacro()
+		bmx_qt_qundostack_endmacro(qObjectPtr)
+	End Method
+	
+	Method index:Int()
+		Return bmx_qt_qundostack_index(qObjectPtr)
+	End Method
+	
+	Method isActive:Int()
+		Return bmx_qt_qundostack_isactive(qObjectPtr)
+	End Method
+	
+	Method isClean:Int()
+		Return bmx_qt_qundostack_isclean(qObjectPtr)
+	End Method
+	
+	Method push(cmd:QUndoCommand)
+		bmx_qt_qundostack_push(qObjectPtr, cmd.qObjectPtr)
+	End Method
+	
+	Method redoText:String()
+		Return bmx_qt_qundostack_redotext(qObjectPtr)
+	End Method
+	
+	Method setUndoLimit(limit:Int)
+		bmx_qt_qundostack_setundolimit(qObjectPtr, limit)
+	End Method
+	
+	Method text:String(idx:Int)
+		Return bmx_qt_qundostack_text(qObjectPtr, idx)
+	End Method
+	
+	Method undoLimit:Int()
+		Return bmx_qt_qundostack_undolimit(qObjectPtr)
+	End Method
+	
+	Method undoText:String()
+		Return bmx_qt_qundostack_undotext(qObjectPtr)
+	End Method
 
+	Method redo()
+		bmx_qt_qundostack_redo(qObjectPtr)
+	End Method
+
+	Method setActive(active:Int = True)
+		bmx_qt_qundostack_setactive(qObjectPtr, active)
+	End Method
+
+	Method setClean()
+		bmx_qt_qundostack_setclean(qObjectPtr)
+	End Method
+
+	Method setIndex(idx:Int)
+		bmx_qt_qundostack_setindex(qObjectPtr, idx)
+	End Method
+
+	Method undo()
+		bmx_qt_qundostack_undo(qObjectPtr)
+	End Method
+	
 End Type
 
