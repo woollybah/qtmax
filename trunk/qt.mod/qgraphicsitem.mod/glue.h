@@ -30,9 +30,17 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 
+#include <map>
+
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qgraphicsitem_QGraphicsItem__Free(BBObject * handle);
+
+	void qgibind( QGraphicsItem *obj, BBObject *peer );
+	void qgiunbind(QGraphicsItem *obj);
+	BBObject *qgifind( QGraphicsItem *obj );
 
 	int bmx_qt_qgraphicsitem_isselected(QGraphicsItem * item);
 	int bmx_qt_qgraphicsitem_isundermouse(QGraphicsItem * item);

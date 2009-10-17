@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
+Module Qt.QMimeData
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,33 +31,26 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Type QMimeData Extends QObject
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
+	Function _create:QMimeData(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QMimeData = New QMimeData
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
 	End Function
 	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
+	Function _find:QMimeData(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local data:QMimeData = QMimeData(qfind(qObjectPtr))
+			If Not data Then
+				Return QMimeData._create(qObjectPtr)
+			End If
+			Return data
 		End If
-		OnInit()
-		Return Self
-	End Method
-	
-	Method rect:QRectF()
-	' TODO
-	End Method
-	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
-	End Method
-	
-	Method setRectRect(rect:QRectF)
-	' TODO
-	End Method
+	End Function
+
 
 End Type
 

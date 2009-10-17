@@ -47,8 +47,8 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qgraphicspolygonitem_create:Byte Ptr(parent:Byte Ptr)
-	Function bmx_qt_qgraphicspolygonitem_createwithpoly:Byte Ptr(polygon:Byte Ptr, parent:Byte Ptr)
+	Function bmx_qt_qgraphicspolygonitem_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qgraphicspolygonitem_createwithpoly:Byte Ptr(handle:Object, polygon:Byte Ptr, parent:Byte Ptr)
 	Function bmx_qt_qgraphicspolygonitem_fillrule:Int(handle:Byte Ptr)
 	Function bmx_qt_qgraphicspolygonitem_polygon:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicspolygonitem_setfillrule(handle:Byte Ptr, rule:Int)

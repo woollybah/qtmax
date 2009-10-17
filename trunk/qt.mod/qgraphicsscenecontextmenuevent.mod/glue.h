@@ -20,34 +20,26 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QGRAPHICSSCENECONTEXTMENUEVENT
+#define MAX_QT_QGRAPHICSSCENECONTEXTMENUEVENT
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsitem.mod/glue.h"
 #include <QtCore>
-#include <QGraphicsRectItem>
-
-class MaxQGraphicsRectItem;
+#include <QGraphicsSceneContextMenuEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(BBObject * handle, MaxQRectF * rect, QGraphicsItem * parent);
+	int bmx_qt_qgraphicsscenecontextmenuevent_modifiers(QGraphicsSceneContextMenuEvent * event);
+	void bmx_qt_qgraphicsscenecontextmenuevent_pos(QGraphicsSceneContextMenuEvent * event, float * x, float * y);
+	int bmx_qt_qgraphicsscenecontextmenuevent_reason(QGraphicsSceneContextMenuEvent * event);
+	void bmx_qt_qgraphicsscenecontextmenuevent_scenepos(QGraphicsSceneContextMenuEvent * event, float * x, float * y);
+	void bmx_qt_qgraphicsscenecontextmenuevent_screenpos(QGraphicsSceneContextMenuEvent * event, int * x, int * y);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsRectItem : public QGraphicsRectItem
-{
-public:
-	MaxQGraphicsRectItem(BBObject * handle, const QRectF & rect, QGraphicsItem * parent);
-	~MaxQGraphicsRectItem();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif

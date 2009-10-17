@@ -24,12 +24,22 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQGraphicsRectItem::MaxQGraphicsRectItem(BBObject * handle, const QRectF & rect, QGraphicsItem * parent)
+	: maxHandle(handle), QGraphicsRectItem(rect, parent)
+{
+	qgibind(this, handle);
+}
+
+MaxQGraphicsRectItem::~MaxQGraphicsRectItem()
+{
+	qgiunbind(this);
+}
 
 
 // *********************************************
 
-QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(MaxQRectF * rect, QGraphicsItem * parent) {
-	return new QGraphicsRectItem(rect->Rect(), parent);
+QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(BBObject * handle, MaxQRectF * rect, QGraphicsItem * parent) {
+	return new MaxQGraphicsRectItem(handle, rect->Rect(), parent);
 }
 
 

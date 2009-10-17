@@ -20,34 +20,28 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QGRAPHICSSCENEHOVEREVENT
+#define MAX_QT_QGRAPHICSSCENEHOVEREVENT
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsitem.mod/glue.h"
 #include <QtCore>
-#include <QGraphicsRectItem>
-
-class MaxQGraphicsRectItem;
+#include <QGraphicsSceneHoverEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(BBObject * handle, MaxQRectF * rect, QGraphicsItem * parent);
+	void bmx_qt_qgraphicsscenehoverevent_lastpos(QGraphicsSceneHoverEvent * event, float * x, float * y);
+	void bmx_qt_qgraphicsscenehoverevent_lastscenepos(QGraphicsSceneHoverEvent * event, float * x, float * y);
+	void bmx_qt_qgraphicsscenehoverevent_lastscreenpos(QGraphicsSceneHoverEvent * event, int * x, int * y);
+	int bmx_qt_qgraphicsscenehoverevent_modifiers(QGraphicsSceneHoverEvent * event);
+	void bmx_qt_qgraphicsscenehoverevent_pos(QGraphicsSceneHoverEvent * event, float * x, float * y);
+	void bmx_qt_qgraphicsscenehoverevent_scenepos(QGraphicsSceneHoverEvent * event, float * x, float * y);
+	void bmx_qt_qgraphicsscenehoverevent_screenpos(QGraphicsSceneHoverEvent * event, int * x, int * y);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsRectItem : public QGraphicsRectItem
-{
-public:
-	MaxQGraphicsRectItem(BBObject * handle, const QRectF & rect, QGraphicsItem * parent);
-	~MaxQGraphicsRectItem();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif

@@ -24,48 +24,42 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(polygon->Polygon(), parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::~MaxQGraphicsPolygonItem()
-{
-	qgiunbind(this);
-}
 
 
 // *********************************************
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_create(BBObject * handle, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, parent);
+int bmx_qt_qgraphicsscenewheelevent_buttons(QGraphicsSceneWheelEvent * event) {
+	return event->buttons();
 }
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_createwithpoly(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, polygon, parent);
+int bmx_qt_qgraphicsscenewheelevent_delta(QGraphicsSceneWheelEvent * event) {
+	return event->delta();
 }
 
-int bmx_qt_qgraphicspolygonitem_fillrule(QGraphicsPolygonItem * item) {
-	return item->fillRule();
+int bmx_qt_qgraphicsscenewheelevent_modifiers(QGraphicsSceneWheelEvent * event) {
+	return event->modifiers();
 }
 
-MaxQPolygonF * bmx_qt_qgraphicspolygonitem_polygon(QGraphicsPolygonItem * item) {
-	return new MaxQPolygonF(item->polygon());
+int bmx_qt_qgraphicsscenewheelevent_orientation(QGraphicsSceneWheelEvent * event) {
+	return event->orientation();
 }
 
-void bmx_qt_qgraphicspolygonitem_setfillrule(QGraphicsPolygonItem * item, int rule) {
-	item->setFillRule((Qt::FillRule)rule);
+void bmx_qt_qgraphicsscenewheelevent_pos(QGraphicsSceneWheelEvent * event, float * x, float * y) {
+	QPointF p(event->pos());
+	*x = p.x();
+	*y = p.y();
 }
 
-void bmx_qt_qgraphicspolygonitem_setpolygon(QGraphicsPolygonItem * item, MaxQPolygonF * polygon) {
-	item->setPolygon(polygon->Polygon());
+void bmx_qt_qgraphicsscenewheelevent_scenepos(QGraphicsSceneWheelEvent * event, float * x, float * y) {
+	QPointF p(event->scenePos());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qgraphicsscenewheelevent_screenpos(QGraphicsSceneWheelEvent * event, int * x, int * y) {
+	QPoint p(event->screenPos());
+	*x = p.x();
+	*y = p.y();
 }
 
 

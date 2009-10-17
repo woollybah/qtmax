@@ -25,6 +25,33 @@
 // ---------------------------------------------------------------------------------------
 
 
+// *********************************************
+
+typedef std::map<QGraphicsItem*, BBObject*> QGraphicsItemPeerMap;
+
+static QGraphicsItemPeerMap qGraphicsItemPeerMap;
+
+void qgibind( QGraphicsItem *obj, BBObject *peer ) {
+	if( !obj || peer==&bbNullObject ) return;
+	qGraphicsItemPeerMap.insert( std::make_pair( obj,peer ) );
+	BBRETAIN( peer );
+}
+
+BBObject *qgifind( QGraphicsItem *obj ){
+	if( !obj ) return &bbNullObject;
+	QGraphicsItemPeerMap::iterator it = qGraphicsItemPeerMap.find( obj );
+	if( it != qGraphicsItemPeerMap.end() ) return it->second;
+	return &bbNullObject;
+}
+
+void qgiunbind(QGraphicsItem *obj) {
+	BBObject * peer = qgifind(obj);
+	if (peer != &bbNullObject) {
+		qGraphicsItemPeerMap.erase(obj);
+		_qt_qgraphicsitem_QGraphicsItem__Free(peer);
+		BBRELEASE(peer);
+	}
+}
 
 // *********************************************
 

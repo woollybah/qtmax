@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
+Module Qt.QGraphicsSceneResizeEvent
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,32 +31,22 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Type QGraphicsSceneResizeEvent Extends QGraphicsSceneEvent
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
-	End Function
-	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
+	Function _create:QGraphicsSceneResizeEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QGraphicsSceneResizeEvent = New QGraphicsSceneResizeEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
 		End If
-		OnInit()
-		Return Self
+	End Function
+
+	Method newSize(w:Float Var, h:Float Var)
+		bmx_qt_qgraphicssceneresizeevent_newsize(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
-	Method rect:QRectF()
-	' TODO
-	End Method
-	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
-	End Method
-	
-	Method setRectRect(rect:QRectF)
-	' TODO
+	Method oldSize(w:Float Var, h:Float Var)
+		bmx_qt_qgraphicssceneresizeevent_oldsize(qObjectPtr, Varptr w, Varptr h)
 	End Method
 
 End Type

@@ -24,50 +24,49 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(polygon->Polygon(), parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::~MaxQGraphicsPolygonItem()
-{
-	qgiunbind(this);
-}
 
 
 // *********************************************
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_create(BBObject * handle, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, parent);
+void bmx_qt_qgraphicsscenehoverevent_lastpos(QGraphicsSceneHoverEvent * event, float * x, float * y) {
+	QPointF p(event->lastPos());
+	*x = p.x();
+	*y = p.y();
 }
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_createwithpoly(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, polygon, parent);
+void bmx_qt_qgraphicsscenehoverevent_lastscenepos(QGraphicsSceneHoverEvent * event, float * x, float * y) {
+	QPointF p(event->lastScenePos());
+	*x = p.x();
+	*y = p.y();
 }
 
-int bmx_qt_qgraphicspolygonitem_fillrule(QGraphicsPolygonItem * item) {
-	return item->fillRule();
+void bmx_qt_qgraphicsscenehoverevent_lastscreenpos(QGraphicsSceneHoverEvent * event, int * x, int * y) {
+	QPoint p(event->lastScreenPos());
+	*x = p.x();
+	*y = p.y();
 }
 
-MaxQPolygonF * bmx_qt_qgraphicspolygonitem_polygon(QGraphicsPolygonItem * item) {
-	return new MaxQPolygonF(item->polygon());
+int bmx_qt_qgraphicsscenehoverevent_modifiers(QGraphicsSceneHoverEvent * event) {
+	return event->modifiers();
 }
 
-void bmx_qt_qgraphicspolygonitem_setfillrule(QGraphicsPolygonItem * item, int rule) {
-	item->setFillRule((Qt::FillRule)rule);
+void bmx_qt_qgraphicsscenehoverevent_pos(QGraphicsSceneHoverEvent * event, float * x, float * y) {
+	QPointF p(event->pos());
+	*x = p.x();
+	*y = p.y();
 }
 
-void bmx_qt_qgraphicspolygonitem_setpolygon(QGraphicsPolygonItem * item, MaxQPolygonF * polygon) {
-	item->setPolygon(polygon->Polygon());
+void bmx_qt_qgraphicsscenehoverevent_scenepos(QGraphicsSceneHoverEvent * event, float * x, float * y) {
+	QPointF p(event->scenePos());
+	*x = p.x();
+	*y = p.y();
 }
 
+void bmx_qt_qgraphicsscenehoverevent_screenpos(QGraphicsSceneHoverEvent * event, int * x, int * y) {
+	QPoint p(event->screenPos());
+	*x = p.x();
+	*y = p.y();
+}
 
 
 // NOTES :

@@ -21,7 +21,8 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QAbstractGraphicsShapeItem
+Import Qt.QGraphicsSceneEvent
+Import Qt.QMimeData
 Import BRL.Blitz
 
 
@@ -46,6 +47,18 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qgraphicsrectitem_create:Byte Ptr(handle:Object, rect:Byte Ptr, parent:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_acceptproposedaction(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_buttons:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_dropaction:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_mimedata:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_modifiers:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_pos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_possibleactions:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_proposedaction:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_scenepos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_screenpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qgraphicsscenedragdropevent_setdropaction(handle:Byte Ptr, action:Int)
+	Function bmx_qt_qgraphicsscenedragdropevent_source:Byte Ptr(handle:Byte Ptr)
+
 
 End Extern

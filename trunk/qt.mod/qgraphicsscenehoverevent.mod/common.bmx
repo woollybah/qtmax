@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QAbstractGraphicsShapeItem
+Import Qt.QGraphicsSceneEvent
 Import BRL.Blitz
 
 
@@ -46,6 +46,12 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qgraphicsrectitem_create:Byte Ptr(handle:Object, rect:Byte Ptr, parent:Byte Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_lastpos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_lastscenepos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_lastscreenpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_modifiers:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_pos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_scenepos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenehoverevent_screenpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
 
 End Extern

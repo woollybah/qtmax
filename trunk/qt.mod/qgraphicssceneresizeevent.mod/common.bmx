@@ -20,44 +20,33 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
-
-ModuleInfo "Version: 1.00"
-ModuleInfo "License: MIT"
-ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
+Import Qt.Core
+Import Qt.QGraphicsSceneEvent
+Import BRL.Blitz
 
 
-Import "common.bmx"
+' headers :-)
+?win32
+Import "../lib/win32/include/*.h"
+?macos
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+?linux
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+?
 
+Import "glue.cpp"
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Extern
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
-	End Function
-	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
-		End If
-		OnInit()
-		Return Self
-	End Method
-	
-	Method rect:QRectF()
-	' TODO
-	End Method
-	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
-	End Method
-	
-	Method setRectRect(rect:QRectF)
-	' TODO
-	End Method
+	Function bmx_qt_qgraphicssceneresizeevent_newsize(handle:Byte Ptr, w:Float Ptr, h:Float Ptr)
+	Function bmx_qt_qgraphicssceneresizeevent_oldsize(handle:Byte Ptr, w:Float Ptr, h:Float Ptr)
 
-End Type
-
+End Extern

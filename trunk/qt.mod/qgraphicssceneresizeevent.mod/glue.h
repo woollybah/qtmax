@@ -20,34 +20,23 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QGRAPHICSSCENERESIZEEVENT
+#define MAX_QT_QGRAPHICSSCENERESIZEEVENT
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsitem.mod/glue.h"
 #include <QtCore>
-#include <QGraphicsRectItem>
-
-class MaxQGraphicsRectItem;
+#include <QGraphicsSceneResizeEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(BBObject * handle, MaxQRectF * rect, QGraphicsItem * parent);
+	void bmx_qt_qgraphicssceneresizeevent_newsize(QGraphicsSceneResizeEvent * event, float * w, float * h);
+	void bmx_qt_qgraphicssceneresizeevent_oldsize(QGraphicsSceneResizeEvent * event, float * w, float * h);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsRectItem : public QGraphicsRectItem
-{
-public:
-	MaxQGraphicsRectItem(BBObject * handle, const QRectF & rect, QGraphicsItem * parent);
-	~MaxQGraphicsRectItem();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif

@@ -20,34 +20,21 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QMIMEDATA
+#define MAX_QT_QMIMEDATA
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsitem.mod/glue.h"
 #include <QtCore>
-#include <QGraphicsRectItem>
-
-class MaxQGraphicsRectItem;
+#include <QMimeData>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(BBObject * handle, MaxQRectF * rect, QGraphicsItem * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsRectItem : public QGraphicsRectItem
-{
-public:
-	MaxQGraphicsRectItem(BBObject * handle, const QRectF & rect, QGraphicsItem * parent);
-	~MaxQGraphicsRectItem();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif

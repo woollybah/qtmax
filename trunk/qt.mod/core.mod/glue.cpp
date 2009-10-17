@@ -129,29 +129,27 @@ QDateTime & MaxQDateTime::DateTime() {
 
 // *********************************************
 
-typedef std::map<QObject*, BBObject*> PeerMap;
+typedef std::map<QObject*, BBObject*> QObjectPeerMap;
 
-static PeerMap peerMap;
+static QObjectPeerMap qObjectPeerMap;
 
 void qbind( QObject *obj, BBObject *peer ) {
 	if( !obj || peer==&bbNullObject ) return;
-//printf("qbind(%s)\n", obj->metaObject()->className());fflush(stdout);
-	peerMap.insert( std::make_pair( obj,peer ) );
+	qObjectPeerMap.insert( std::make_pair( obj,peer ) );
 	BBRETAIN( peer );
 }
 
 BBObject *qfind( QObject *obj ){
 	if( !obj ) return &bbNullObject;
-	PeerMap::iterator it = peerMap.find( obj );
-	if( it != peerMap.end() ) return it->second;
+	QObjectPeerMap::iterator it = qObjectPeerMap.find( obj );
+	if( it != qObjectPeerMap.end() ) return it->second;
 	return &bbNullObject;
 }
 
 void qunbind(QObject *obj) {
-//printf("qunbind(%s)\n", obj->metaObject()->className());fflush(stdout);
 	BBObject * peer = qfind(obj);
 	if (peer != &bbNullObject) {
-		peerMap.erase(obj);
+		qObjectPeerMap.erase(obj);
 		_qt_qobject_QObject__Free(peer);
 		BBRELEASE(peer);
 	}

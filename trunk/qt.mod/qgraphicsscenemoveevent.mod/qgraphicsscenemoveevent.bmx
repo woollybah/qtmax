@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
+Module Qt.QGraphicsSceneMoveEvent
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,33 +31,22 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Type QGraphicsSceneMoveEvent Extends QGraphicsSceneEvent
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
-	End Function
-	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
+	Function _create:QGraphicsSceneMoveEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QGraphicsSceneMoveEvent = New QGraphicsSceneMoveEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
 		End If
-		OnInit()
-		Return Self
-	End Method
-	
-	Method rect:QRectF()
-	' TODO
-	End Method
-	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
-	End Method
-	
-	Method setRectRect(rect:QRectF)
-	' TODO
-	End Method
+	End Function
 
+	Method newPos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenemoveevent_newpos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method oldPos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenemoveevent_oldpos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
 End Type
-

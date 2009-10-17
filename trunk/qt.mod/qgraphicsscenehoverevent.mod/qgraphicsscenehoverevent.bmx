@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
+Module Qt.QGraphicsSceneHoverEvent
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,33 +31,42 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Type QGraphicsSceneHoverEvent Extends QGraphicsSceneEvent
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
-	End Function
-	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
+	Function _create:QGraphicsSceneHoverEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QGraphicsSceneHoverEvent = New QGraphicsSceneHoverEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
 		End If
-		OnInit()
-		Return Self
+	End Function
+
+	Method lastPos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenehoverevent_lastpos(qObjectPtr, Varptr x, Varptr y)
 	End Method
 	
-	Method rect:QRectF()
-	' TODO
+	Method lastScenePos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenehoverevent_lastscenepos(qObjectPtr, Varptr x, Varptr y)
 	End Method
 	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
+	Method lastScreenPos(x:Int Var, y:Int Var)
+		bmx_qt_qgraphicsscenehoverevent_lastscreenpos(qObjectPtr, Varptr x, Varptr y)
 	End Method
 	
-	Method setRectRect(rect:QRectF)
-	' TODO
+	Method modifiers:Int()
+		Return bmx_qt_qgraphicsscenehoverevent_modifiers(qObjectPtr)
+	End Method
+	
+	Method pos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenehoverevent_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method scenePos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenehoverevent_scenepos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method screenPos(x:Int Var, y:Int Var)
+		bmx_qt_qgraphicsscenehoverevent_screenpos(qObjectPtr, Varptr x, Varptr y)
 	End Method
 
 End Type
-
