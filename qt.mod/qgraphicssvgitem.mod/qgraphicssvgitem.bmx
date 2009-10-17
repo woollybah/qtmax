@@ -43,6 +43,7 @@ Type QGraphicsSvgItem Extends QGraphicsObjectItem
 		Else
 			qObjectPtr = bmx_qt_qgraphicssvgitem_create(Self, filename, Null)
 		End If
+		OnInit()
 		Return Self
 	End Method
 

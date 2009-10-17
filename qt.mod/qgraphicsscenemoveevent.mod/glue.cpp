@@ -24,50 +24,21 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(polygon->Polygon(), parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::~MaxQGraphicsPolygonItem()
-{
-	qgiunbind(this);
-}
 
 
 // *********************************************
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_create(BBObject * handle, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, parent);
+void bmx_qt_qgraphicsscenemoveevent_newpos(QGraphicsSceneMoveEvent * event, float * x, float * y) {
+	QPointF p(event->newPos());
+	*x = p.x();
+	*y = p.y();
 }
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_createwithpoly(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, polygon, parent);
+void bmx_qt_qgraphicsscenemoveevent_oldpos(QGraphicsSceneMoveEvent * event, float * x, float * y) {
+	QPointF p(event->oldPos());
+	*x = p.x();
+	*y = p.y();
 }
-
-int bmx_qt_qgraphicspolygonitem_fillrule(QGraphicsPolygonItem * item) {
-	return item->fillRule();
-}
-
-MaxQPolygonF * bmx_qt_qgraphicspolygonitem_polygon(QGraphicsPolygonItem * item) {
-	return new MaxQPolygonF(item->polygon());
-}
-
-void bmx_qt_qgraphicspolygonitem_setfillrule(QGraphicsPolygonItem * item, int rule) {
-	item->setFillRule((Qt::FillRule)rule);
-}
-
-void bmx_qt_qgraphicspolygonitem_setpolygon(QGraphicsPolygonItem * item, MaxQPolygonF * polygon) {
-	item->setPolygon(polygon->Polygon());
-}
-
 
 
 // NOTES :

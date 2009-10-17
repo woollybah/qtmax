@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QAbstractGraphicsShapeItem
+Import Qt.QGraphicsSceneEvent
 Import BRL.Blitz
 
 
@@ -46,6 +46,17 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qgraphicsrectitem_create:Byte Ptr(handle:Object, rect:Byte Ptr, parent:Byte Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_button:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_buttondownpos(handle:Byte Ptr, button:Int, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_buttondownscenepos(handle:Byte Ptr, button:Int, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_buttondownscreenpos(handle:Byte Ptr, button:Int, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_buttons:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_lastpos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_lastscenepos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_lastscreenpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_modifiers:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_pos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_scenepos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsscenemouseevent_screenpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
 
 End Extern

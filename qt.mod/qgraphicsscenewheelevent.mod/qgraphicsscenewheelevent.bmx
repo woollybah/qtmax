@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
+Module Qt.QGraphicsSceneWheelEvent
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,33 +31,43 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Type QGraphicsSceneWheelEvent Extends QGraphicsSceneEvent
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
-	End Function
-	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
+	Function _create:QGraphicsSceneWheelEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QGraphicsSceneWheelEvent = New QGraphicsSceneWheelEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
 		End If
-		OnInit()
-		Return Self
-	End Method
-	
-	Method rect:QRectF()
-	' TODO
-	End Method
-	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
-	End Method
-	
-	Method setRectRect(rect:QRectF)
-	' TODO
-	End Method
+	End Function
 
+	Method buttons:Int()
+		Return bmx_qt_qgraphicsscenewheelevent_buttons(qObjectPtr)
+	End Method
+	
+	Method delta:Int()
+		Return bmx_qt_qgraphicsscenewheelevent_delta(qObjectPtr)
+	End Method
+	
+	Method modifiers:Int()
+		Return bmx_qt_qgraphicsscenewheelevent_modifiers(qObjectPtr)
+	End Method
+	
+	Method orientation:Int()
+		Return bmx_qt_qgraphicsscenewheelevent_orientation(qObjectPtr)
+	End Method
+	
+	Method pos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenewheelevent_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method scenePos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenewheelevent_scenepos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method screenPos(x:Int Var, y:Int Var)
+		bmx_qt_qgraphicsscenewheelevent_screenpos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
 End Type
 

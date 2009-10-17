@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QGraphicsRectItem
+Module Qt.QGraphicsSceneContextMenuEvent
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,33 +31,47 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QGraphicsRectItem Extends QAbstractGraphicsShapeItem
+Type QGraphicsSceneContextMenuEvent Extends QGraphicsSceneEvent
 
-	Function CreateRectItem:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		Return New QGraphicsRectItem.Create(rect, parent)
-	End Function
+	Rem
+	bbdoc: The mouse caused the event to be sent. On most platforms, this means the right mouse button was clicked.
+	End Rem
+	Const Mouse:Int = 0
+	Rem
+	bbdoc: The keyboard caused this event to be sent. On Windows and Mac OS X, this means the menu button was pressed.
+	End Rem
+	Const Keyboard:Int = 1
+	Rem
+	bbdoc: The event was sent by some other means (i.e. not by the mouse or keyboard).
+	End Rem
+	Const Other:Int = 2
 	
-	Method Create:QGraphicsRectItem(rect:QRectF, parent:QGraphicsItem = Null)
-		If parent Then
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, parent.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qgraphicsrectitem_create(Self, rect.qObjectPtr, Null)
+	Function _create:QGraphicsSceneContextMenuEvent(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QGraphicsSceneContextMenuEvent = New QGraphicsSceneContextMenuEvent
+			this.qObjectPtr = qObjectPtr
+			Return this
 		End If
-		OnInit()
-		Return Self
-	End Method
-	
-	Method rect:QRectF()
-	' TODO
-	End Method
-	
-	Method setRect(x:Double, y:Double, width:Double, height:Double)
-	' TODO
-	End Method
-	
-	Method setRectRect(rect:QRectF)
-	' TODO
-	End Method
+	End Function
 
+	Method modifiers:Int()
+		Return bmx_qt_qgraphicsscenecontextmenuevent_modifiers(qObjectPtr)
+	End Method
+	
+	Method pos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenecontextmenuevent_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method reason:Int()
+		Return bmx_qt_qgraphicsscenecontextmenuevent_reason(qObjectPtr)
+	End Method
+	
+	Method scenePos(x:Float Var, y:Float Var)
+		bmx_qt_qgraphicsscenecontextmenuevent_scenepos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method screenPos(x:Int Var, y:Int Var)
+		bmx_qt_qgraphicsscenecontextmenuevent_screenpos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
 End Type
-

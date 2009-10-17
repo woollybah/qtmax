@@ -39,19 +39,21 @@ Type QGraphicsPolygonItem Extends QAbstractGraphicsShapeItem
 
 	Method Create:QGraphicsPolygonItem(parent:QGraphicsItem = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qgraphicspolygonitem_create(parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qgraphicspolygonitem_create(Self, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qgraphicspolygonitem_create(Null)
+			qObjectPtr = bmx_qt_qgraphicspolygonitem_create(Self, Null)
 		End If
+		OnInit()
 		Return Self
 	End Method
 	
 	Method CreateWithPolygon:QGraphicsPolygonItem(polygon:QPolygonF, parent:QGraphicsItem = Null)
 		If parent Then
-			qObjectPtr = bmx_qt_qgraphicspolygonitem_createwithpoly(polygon.qObjectPtr, parent.qObjectPtr)
+			qObjectPtr = bmx_qt_qgraphicspolygonitem_createwithpoly(Self, polygon.qObjectPtr, parent.qObjectPtr)
 		Else
-			qObjectPtr = bmx_qt_qgraphicspolygonitem_createwithpoly(polygon.qObjectPtr, Null)
+			qObjectPtr = bmx_qt_qgraphicspolygonitem_createwithpoly(Self, polygon.qObjectPtr, Null)
 		End If
+		OnInit()
 		Return Self
 	End Method
 	

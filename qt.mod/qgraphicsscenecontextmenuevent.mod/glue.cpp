@@ -24,48 +24,34 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::MaxQGraphicsPolygonItem(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent)
-	: maxHandle(handle), QGraphicsPolygonItem(polygon->Polygon(), parent)
-{
-	qgibind(this, handle);
-}
-
-MaxQGraphicsPolygonItem::~MaxQGraphicsPolygonItem()
-{
-	qgiunbind(this);
-}
 
 
 // *********************************************
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_create(BBObject * handle, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, parent);
+int bmx_qt_qgraphicsscenecontextmenuevent_modifiers(QGraphicsSceneContextMenuEvent * event) {
+	return event->modifiers();
 }
 
-QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_createwithpoly(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent) {
-	return new MaxQGraphicsPolygonItem(handle, polygon, parent);
+void bmx_qt_qgraphicsscenecontextmenuevent_pos(QGraphicsSceneContextMenuEvent * event, float * x, float * y) {
+	QPointF p(event->pos());
+	*x = p.x();
+	*y = p.y();
 }
 
-int bmx_qt_qgraphicspolygonitem_fillrule(QGraphicsPolygonItem * item) {
-	return item->fillRule();
+int bmx_qt_qgraphicsscenecontextmenuevent_reason(QGraphicsSceneContextMenuEvent * event) {
+	return event->reason();
 }
 
-MaxQPolygonF * bmx_qt_qgraphicspolygonitem_polygon(QGraphicsPolygonItem * item) {
-	return new MaxQPolygonF(item->polygon());
+void bmx_qt_qgraphicsscenecontextmenuevent_scenepos(QGraphicsSceneContextMenuEvent * event, float * x, float * y) {
+	QPointF p(event->scenePos());
+	*x = p.x();
+	*y = p.y();
 }
 
-void bmx_qt_qgraphicspolygonitem_setfillrule(QGraphicsPolygonItem * item, int rule) {
-	item->setFillRule((Qt::FillRule)rule);
-}
-
-void bmx_qt_qgraphicspolygonitem_setpolygon(QGraphicsPolygonItem * item, MaxQPolygonF * polygon) {
-	item->setPolygon(polygon->Polygon());
+void bmx_qt_qgraphicsscenecontextmenuevent_screenpos(QGraphicsSceneContextMenuEvent * event, int * x, int * y) {
+	QPoint p(event->screenPos());
+	*x = p.x();
+	*y = p.y();
 }
 
 

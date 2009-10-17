@@ -285,6 +285,9 @@ Type QGraphicsItem
 	This flag is useful for drop shadow effects and for decoration objects that follow the parent item's geometry without drawing on top of it.
 	End Rem
 	Const ItemStacksBehindParent:Int = $100
+	
+	Method OnInit()
+	End Method
 
 	Method boundingRect:QRectF()
 		Return QRectF._create(bmx_qt_qgraphicsitem_boundingrect(qObjectPtr))
@@ -401,6 +404,9 @@ Type QGraphicsItem
 	Method _addToScene(scene:Byte Ptr)
 		bmx_qt_qgraphicsitem_addtoscene(qObjectPtr, scene)
 	End Method
+	
+	Function _Free()
+	End Function
 	
 End Type
 

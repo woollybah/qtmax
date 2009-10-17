@@ -20,34 +20,34 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_ template
-#define MAX_QT_ template
+#ifndef MAX_QT_QGRAPHICSSCENEDRAGDROPEVENT
+#define MAX_QT_QGRAPHICSSCENEDRAGDROPEVENT
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsitem.mod/glue.h"
 #include <QtCore>
-#include <QGraphicsRectItem>
-
-class MaxQGraphicsRectItem;
+#include <QGraphicsSceneDragDropEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QGraphicsRectItem * bmx_qt_qgraphicsrectitem_create(BBObject * handle, MaxQRectF * rect, QGraphicsItem * parent);
+	void bmx_qt_qgraphicsscenedragdropevent_acceptproposedaction(QGraphicsSceneDragDropEvent * event);
+	int bmx_qt_qgraphicsscenedragdropevent_buttons(QGraphicsSceneDragDropEvent * event);
+	int bmx_qt_qgraphicsscenedragdropevent_dropaction(QGraphicsSceneDragDropEvent * event);
+	const QMimeData * bmx_qt_qgraphicsscenedragdropevent_mimedata(QGraphicsSceneDragDropEvent * event);
+	int bmx_qt_qgraphicsscenedragdropevent_modifiers(QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsscenedragdropevent_pos(QGraphicsSceneDragDropEvent * event, float * x, float * y);
+	int bmx_qt_qgraphicsscenedragdropevent_possibleactions(QGraphicsSceneDragDropEvent * event);
+	int bmx_qt_qgraphicsscenedragdropevent_proposedaction(QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsscenedragdropevent_scenepos(QGraphicsSceneDragDropEvent * event, float * x, float * y);
+	void bmx_qt_qgraphicsscenedragdropevent_screenpos(QGraphicsSceneDragDropEvent * event, int * x, int * y);
+	void bmx_qt_qgraphicsscenedragdropevent_setdropaction(QGraphicsSceneDragDropEvent * event, int action);
+	QWidget * bmx_qt_qgraphicsscenedragdropevent_source(QGraphicsSceneDragDropEvent * event);
 
+	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsRectItem : public QGraphicsRectItem
-{
-public:
-	MaxQGraphicsRectItem(BBObject * handle, const QRectF & rect, QGraphicsItem * parent);
-	~MaxQGraphicsRectItem();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif
