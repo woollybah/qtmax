@@ -67,6 +67,11 @@ MaxQPixmap * bmx_qt_qpixmap_fromimage(MaxQImage * image, int flags) {
 	return new MaxQPixmap(QPixmap::fromImage(image->Image(), (Qt::ImageConversionFlags)flags));
 }
 
+MaxQPixmap * bmx_qt_qpixmap_fromfile(BBString * filename, BBString * format, int flags) {
+	QPixmap p(qStringFromBBString(filename), (format==&bbEmptyString) ? (char*)0 : (char*)qStringFromBBString(format).data(), (Qt::ImageConversionFlags)flags);
+	return new MaxQPixmap(p);
+}
+
 void bmx_qt_qpixmap_fill(MaxQPixmap * pixmap, int color) {
 	pixmap->Pixmap().fill((Qt::GlobalColor)color);
 }

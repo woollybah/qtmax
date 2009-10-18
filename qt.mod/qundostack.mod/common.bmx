@@ -48,6 +48,7 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qundostack_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qundostack_beginmacro(handle:Byte Ptr, text:String)
 	Function bmx_qt_qundostack_canredo:Int(handle:Byte Ptr)
 	Function bmx_qt_qundostack_canundo:Int(handle:Byte Ptr)

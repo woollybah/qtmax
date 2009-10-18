@@ -365,8 +365,8 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_resize(qObjectPtr, w, h)
 	End Method
 	
-	Method setAttribute(attribute:Int)
-		bmx_qt_qwidget_setattribute(qObjectPtr, attribute)
+	Method setAttribute(attribute:Int, on:Int = True)
+		bmx_qt_qwidget_setattribute(qObjectPtr, attribute, on)
 	End Method
 	
 	Method setContextMenuPolicy(policy:Int)

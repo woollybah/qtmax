@@ -62,6 +62,10 @@ void MaxQUndoStack::onUndoTextChanged(const QString & undoText) {
 
 // *********************************************
 
+QUndoStack * bmx_qt_qundostack_create(BBObject * handle, QObject * parent) {
+	return new MaxQUndoStack(handle, parent);
+}
+
 void bmx_qt_qundostack_beginmacro(QUndoStack * us, BBString * text) {
 	us->beginMacro(qStringFromBBString(text));
 }

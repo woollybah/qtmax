@@ -33,7 +33,7 @@ extern "C" {
 
 #include <blitz.h>
 
-	MaxQImage * bmx_qt_qimage_createwithdata(const uchar * data, int width, int height, int format);
+	MaxQImage * bmx_qt_qimage_createwithdata(const uchar * data, int width, int height, int bytesPerLine, int format);
 	void bmx_qt_qimage_free(MaxQImage * image);
 	MaxQImage * bmx_qt_qimage_create(int width, int height, int format);
 

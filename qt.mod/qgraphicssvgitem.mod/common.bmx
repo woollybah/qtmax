@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QGraphicsItem
+Import Qt.QGraphicsView
 Import BRL.Blitz
 
 

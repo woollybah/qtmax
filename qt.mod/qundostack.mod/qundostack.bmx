@@ -33,6 +33,19 @@ Import "common.bmx"
 
 Type QUndoStack Extends QObject
 
+	Function CreateUndoStack:QUndoStack(parent:QObject = Null)
+		Return New QUndoStack.Create(parent)
+	End Function
+	
+	Method Create:QUndoStack(parent:QObject = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qundostack_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qundostack_create(Self, Null)
+		End If
+		Return Self
+	End Method
+
 	Method beginMacro(text:String)
 		bmx_qt_qundostack_beginmacro(qObjectPtr, text)
 	End Method

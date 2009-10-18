@@ -34,10 +34,10 @@ extern "C" {
 
 #include <blitz.h>
 
-	void _bah_qundocommand_QUndoCommand__redo(BBObject * handle);
-	void _bah_qundocommand_QUndoCommand__undo(BBObject * handle);
-	int _bah_qundocommand_QUndoCommand__mergeWith(BBObject * handle, const QUndoCommand *command);
-	int _bah_qundocommand_QUndoCommand__id(BBObject * handle);
+	void _qt_qundocommand_QUndoCommand__redo(BBObject * handle);
+	void _qt_qundocommand_QUndoCommand__undo(BBObject * handle);
+	int _qt_qundocommand_QUndoCommand__mergeWith(BBObject * handle, const QUndoCommand *command);
+	int _qt_qundocommand_QUndoCommand__id(BBObject * handle);
 
 	QUndoCommand * bmx_qt_qundocommand_new(BBObject * handle, QUndoCommand * parent);
 	BBObject * bmx_qt_qundocommand_obj(QUndoCommand * handle);

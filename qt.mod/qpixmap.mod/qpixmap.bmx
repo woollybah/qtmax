@@ -49,6 +49,15 @@ Type QPixmap Extends QPaintDevice
 		Return QPixmap._create(bmx_qt_qpixmap_fromimage(image.qObjectPtr, flags))
 	End Function
 	
+	Function FromFile:QPixmap(filename:String, format:String = "", flags:Int = Qt_AutoColor)
+		Return QPixmap._create(bmx_qt_qpixmap_fromfile(filename, format, flags))
+	End Function
+	
+	Function FromPixmap:QPixmap(pixmap:TPixmap)
+		Local image:QImage = New QImage.CreateWithPixmap(pixmap)
+		Return FromImage(image)
+	End Function
+	
 	Method fill(color:Int = Qt_white)
 		bmx_qt_qpixmap_fill(qObjectPtr, color)
 	End Method

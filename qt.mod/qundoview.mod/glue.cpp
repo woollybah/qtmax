@@ -24,10 +24,43 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQUndoView::MaxQUndoView(BBObject * handle, QWidget * parent)
+	: maxHandle(handle), QUndoView(parent)
+{
+	qbind(this, handle);
+}
+
+MaxQUndoView::MaxQUndoView(BBObject * handle, QUndoStack * stack, QWidget * parent)
+	: maxHandle(handle), QUndoView(stack, parent)
+{
+	qbind(this, handle);
+}
+
+MaxQUndoView::MaxQUndoView(BBObject * handle, QUndoGroup * group, QWidget * parent)
+	: maxHandle(handle), QUndoView(group, parent)
+{
+	qbind(this, handle);
+}
+
+MaxQUndoView::~MaxQUndoView()
+{
+	qunbind(this);
+}
 
 
 // *********************************************
 
+QUndoView * bmx_qt_qundoview_create(BBObject * handle, QWidget * parent) {
+	return new MaxQUndoView(handle, parent);
+}
+
+QUndoView * bmx_qt_qundoview_createwithstack(BBObject * handle, QUndoStack * stack, QWidget * parent) {
+	return new MaxQUndoView(handle, stack, parent);
+}
+
+QUndoView * bmx_qt_qundoview_createwithgroup(BBObject * handle, QUndoGroup * group, QWidget * parent) {
+	return new MaxQUndoView(handle, group, parent);
+}
 
 
 // NOTES :

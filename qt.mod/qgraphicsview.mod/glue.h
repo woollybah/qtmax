@@ -27,6 +27,8 @@
 #include "../qpainterpath.mod/glue.h"
 #include "../qbrush.mod/glue.h"
 #include "../qwidget.mod/glue.h"
+#include "../qpalette.mod/glue.h"
+#include "../qcursor.mod/glue.h"
 #include <QtCore>
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -41,7 +43,33 @@ extern "C" {
 
 	BBObject * _qt_qpainter_QPainter__create(QPainter * painter);
 
+	void _qt_qgraphicsview_QGraphicsScene__contextMenuEvent(BBObject * handle, QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	void _qt_qgraphicsview_QGraphicsScene__dragEnterEvent(BBObject * handle, QGraphicsSceneDragDropEvent * event);
+	void _qt_qgraphicsview_QGraphicsScene__dragLeaveEvent(BBObject * handle, QGraphicsSceneDragDropEvent * event);
+	void _qt_qgraphicsview_QGraphicsScene__dragMoveEvent(BBObject * handle, QGraphicsSceneDragDropEvent * event);
+	void _qt_qgraphicsview_QGraphicsScene__drawBackground(BBObject * handle, QPainter * painter, MaxQRectF * rect);
+	void _qt_qgraphicsview_QGraphicsScene__drawForeground(BBObject * handle, QPainter * painter, MaxQRectF * rect);
+	void _qt_qgraphicsview_QGraphicsScene__dropEvent(BBObject * handle, QGraphicsSceneDragDropEvent * event);
+	void _qt_qgraphicsview_QGraphicsScene__focusInEvent(BBObject * handle, QFocusEvent * focusEvent);
+	void _qt_qgraphicsview_QGraphicsScene__focusOutEvent(BBObject * handle, QFocusEvent * focusEvent);
+	void _qt_qgraphicsview_QGraphicsScene__helpEvent(BBObject * handle, QGraphicsSceneHelpEvent * helpEvent);
+	void _qt_qgraphicsview_QGraphicsScene__inputMethodEvent(BBObject * handle, QInputMethodEvent * event);
+	void _qt_qgraphicsview_QGraphicsScene__keyPressEvent(BBObject * handle, QKeyEvent * keyEvent);
+	void _qt_qgraphicsview_QGraphicsScene__keyReleaseEvent(BBObject * handle, QKeyEvent * keyEvent);
+	void _qt_qgraphicsview_QGraphicsScene__mouseDoubleClickEvent(BBObject * handle, QGraphicsSceneMouseEvent * mouseEvent);
+	void _qt_qgraphicsview_QGraphicsScene__mouseMoveEvent(BBObject * handle, QGraphicsSceneMouseEvent * mouseEvent);
+	void _qt_qgraphicsview_QGraphicsScene__mousePressEvent(BBObject * handle, QGraphicsSceneMouseEvent * mouseEvent);
+	void _qt_qgraphicsview_QGraphicsScene__mouseReleaseEvent(BBObject * handle, QGraphicsSceneMouseEvent * mouseEvent);
+	void _qt_qgraphicsview_QGraphicsScene__wheelEvent(BBObject * handle, QGraphicsSceneWheelEvent * wheelEvent);
+
+	BBArray * _qt_qgraphicsview_QGraphicsScene__newItems(int size);
+	void _qt_qgraphicsview_QGraphicsScene__setItem(BBArray * arr, int index, QGraphicsItem * item);
+
+	void _qt_qgraphicsview_QGraphicsItem__Free(BBObject * handle);
+
+	
 	QGraphicsView * bmx_qt_qgraphicsview_create(BBObject * handle, QWidget * parent);
+	QGraphicsView * bmx_qt_qgraphicsview_createwithscene(BBObject * handle, QGraphicsScene * scene, QWidget * parent);
 	void bmx_qt_qgraphicsview_setalignment(QGraphicsView * view, int alignment);
 	void bmx_qt_qgraphicsview_setbackgroundbrush(QGraphicsView * view, MaxQBrush * brush);
 	void bmx_qt_qgraphicsview_setcachemode(QGraphicsView * view, int _mode);
@@ -106,6 +134,80 @@ extern "C" {
 	void bmx_qt_qgraphicsscene_clear(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_clearselection(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_additem(QGraphicsScene * scene, void * item);
+	void bmx_qt_qgraphicsscene_setbackgroundbrush(QGraphicsScene * scene, MaxQBrush * brush);
+	void bmx_qt_qgraphicsscene_setbsptreedepth(QGraphicsScene * scene, int depth);
+	void bmx_qt_qgraphicsscene_setfocus(QGraphicsScene * scene, int focusReason);
+	void bmx_qt_qgraphicsscene_setfocusitem(QGraphicsScene * scene, QGraphicsItem * item, int focusReason);
+	void bmx_qt_qgraphicsscene_setfont(QGraphicsScene * scene, MaxQFont * font);
+	void bmx_qt_qgraphicsscene_setforegroundbrush(QGraphicsScene * scene, MaxQBrush * brush);
+	void bmx_qt_qgraphicsscene_setitemindexmethod(QGraphicsScene * scene, int _method);
+	void bmx_qt_qgraphicsscene_setpalette(QGraphicsScene * scene, MaxQPalette * palette);
+	void bmx_qt_qgraphicsscene_setselectionarea(QGraphicsScene * scene, MaxQPainterPath * path, int _mode);
+	void bmx_qt_qgraphicsscene_setsortcacheenabled(QGraphicsScene * scene, int enabled);
+	void bmx_qt_qgraphicsscene_setstickyfocus(QGraphicsScene * scene, int enabled);
+	void bmx_qt_qgraphicsscene_setstyle(QGraphicsScene * scene, QStyle * style);
+	MaxQRectF * bmx_qt_qgraphicsscene_scenerect(QGraphicsScene * scene);
+	BBArray * bmx_qt_qgraphicsscene_selecteditems(QGraphicsScene * scene);
+	MaxQPainterPath * bmx_qt_qgraphicsscene_selectionarea(QGraphicsScene * scene);
+	void bmx_qt_qgraphicsscene_setactivewindow(QGraphicsScene * scene, QGraphicsWidget * widget);
+	float bmx_qt_qgraphicsscene_width(QGraphicsScene * scene);
+	float bmx_qt_qgraphicsscene_height(QGraphicsScene * scene);
+	void bmx_qt_qgraphicsscene_udpate(QGraphicsScene * scene, MaxQRectF * rect);
+	int bmx_qt_qgraphicsscene_hasfocus(QGraphicsScene * scene);
+	QGraphicsItem * bmx_qt_qgraphicsscene_itemat(QGraphicsScene * scene, float x, float y);
+	int bmx_qt_qgraphicsscene_itemindexmethod(QGraphicsScene * scene);
+	MaxQRectF * bmx_qt_qgraphicsscene_itemsboundingrect(QGraphicsScene * scene);
+	QGraphicsItem * bmx_qt_qgraphicsscene_mousegrabberitem(QGraphicsScene * scene);
+	MaxQPalette * bmx_qt_qgraphicsscene_palette(QGraphicsScene * scene);
+	void bmx_qt_qgraphicsscene_removeitem(QGraphicsScene * scene, QGraphicsItem * item);
+
+	void bmx_qt_qgraphicsscene_defaultdrawbackground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect);
+	void bmx_qt_qgraphicsscene_defaultdrawforeground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect);
+
+
+	void qgibind( QGraphicsItem *obj, BBObject *peer );
+	void qgiunbind(QGraphicsItem *obj);
+	BBObject *qgifind( QGraphicsItem *obj );
+
+	int bmx_qt_qgraphicsitem_isselected(QGraphicsItem * item);
+	int bmx_qt_qgraphicsitem_isundermouse(QGraphicsItem * item);
+	int bmx_qt_qgraphicsitem_isvisible(QGraphicsItem * item);
+	int bmx_qt_qgraphicsitem_isvisibleto(QGraphicsItem * item, QGraphicsItem * parent);
+	int bmx_qt_qgraphicsitem_iswidget(QGraphicsItem * item);
+	int bmx_qt_qgraphicsitem_iswindow(QGraphicsItem * item);
+	void bmx_qt_qgraphicsitem_setacceptdrops(QGraphicsItem * item, int on);
+	void bmx_qt_qgraphicsitem_setaccepthoverevents(QGraphicsItem * item, int enabled);
+	void bmx_qt_qgraphicsitem_setacceptedmousebuttons(QGraphicsItem * item, int buttons);
+	void bmx_qt_qgraphicsitem_setboundingregiongranularity(QGraphicsItem * item, double granularity);
+	void bmx_qt_qgraphicsitem_setcachemode(QGraphicsItem * item, int mode, int w, int h);
+	void bmx_qt_qgraphicsitem_setcursor(QGraphicsItem * item, MaxQCursor * cursor);
+	void bmx_qt_qgraphicsitem_setdata(QGraphicsItem * item, int key, BBObject * value);
+	void bmx_qt_qgraphicsitem_setenabled(QGraphicsItem * item, int enabled);
+	void bmx_qt_qgraphicsitem_setflag(QGraphicsItem * item, int flag, int enabled);
+	void bmx_qt_qgraphicsitem_setflags(QGraphicsItem * item, int flags);
+	void bmx_qt_qgraphicsitem_setfocus(QGraphicsItem * item, int focusReason);
+	void bmx_qt_qgraphicsitem_setgroup(QGraphicsItem * item, QGraphicsItemGroup * group);
+	void bmx_qt_qgraphicsitem_sethandleschildevents(QGraphicsItem * item, int enabled);
+	void bmx_qt_qgraphicsitem_setopacity(QGraphicsItem * item, double opacity);
+	void bmx_qt_qgraphicsitem_setparentitem(QGraphicsItem * item, QGraphicsItem * parent);
+	void bmx_qt_qgraphicsitem_setpos(QGraphicsItem * item, double x, double y);
+	void bmx_qt_qgraphicsitem_setselected(QGraphicsItem * item, int selected);
+	void bmx_qt_qgraphicsitem_settooltip(QGraphicsItem * item, BBString * toolTip);
+	void bmx_qt_qgraphicsitem_settransform(QGraphicsItem * item, MaxQTransform * matrix, int combine);
+	void bmx_qt_qgraphicsitem_setvisible(QGraphicsItem * item, int visible);
+	void bmx_qt_qgraphicsitem_setzvalue(QGraphicsItem * item, double z);
+	MaxQRectF * bmx_qt_qgraphicsitem_boundingrect(QGraphicsItem * item);
+	void bmx_qt_qgraphicsitem_addtoscene(QGraphicsItem * item, QGraphicsScene * scene);
+	void bmx_qt_qgraphicsitem_pos(QGraphicsItem * item, float * x, float * y);
+	void bmx_qt_qgraphicsitem_removesceneeventfilter(QGraphicsItem * item, QGraphicsItem * filterItem);
+	void bmx_qt_qgraphicsitem_resettransform(QGraphicsItem * item);
+	void bmx_qt_qgraphicsitem_rotate(QGraphicsItem * item, float angle);
+	void bmx_qt_qgraphicsitem_scale(QGraphicsItem * item, float sx, float sy);
+	QGraphicsScene * bmx_qt_qgraphicsitem_scene(QGraphicsItem * item);
+	MaxQRectF * bmx_qt_qgraphicsitem_sceneboundingrect(QGraphicsItem * item);
+	void bmx_qt_qgraphicsitem_scenepos(QGraphicsItem * item, float * x, float * y);
+	MaxQTransform * bmx_qt_qgraphicsitem_scenetransform(QGraphicsItem * item);
+	void bmx_qt_qgraphicsitem_scroll(QGraphicsItem * item, float dx, float dy, MaxQRectF * rect);
 
 }
 
@@ -117,6 +219,7 @@ class MaxQGraphicsView : public QGraphicsView
 
 public:
 	MaxQGraphicsView(BBObject * handle, QWidget * parent);
+	MaxQGraphicsView(BBObject * handle, QGraphicsScene * scene, QWidget * parent);
 	~MaxQGraphicsView();
 
 	void defaultActionEvent(QActionEvent * event);
@@ -181,6 +284,8 @@ protected:
 	void timerEvent(QTimerEvent * event);
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 class MaxQGraphicsScene : public QGraphicsScene
 {
 	Q_OBJECT
@@ -189,6 +294,27 @@ public:
 	MaxQGraphicsScene(BBObject * handle, QObject * parent);
 	~MaxQGraphicsScene();
 
+	void defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	void defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event);
+	void defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+	void defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event);
+	void defaultDrawBackground(QPainter * painter, const QRectF & rect);
+	void defaultDrawForeground(QPainter * painter, const QRectF & rect);
+	void defaultDrawItems(QPainter * painter, int numItems, QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget);
+	void defaultDropEvent(QGraphicsSceneDragDropEvent * event);
+	void defaultFocusInEvent(QFocusEvent * focusEvent);
+	void defaultFocusOutEvent(QFocusEvent * focusEvent);
+	void defaultHelpEvent(QGraphicsSceneHelpEvent * helpEvent);
+	void defaultInputMethodEvent(QInputMethodEvent * event);
+	void defaultKeyPressEvent(QKeyEvent * keyEvent);
+	void defaultKeyReleaseEvent(QKeyEvent * keyEvent);
+	void defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent);
+
+	
 private:
 	BBObject * maxHandle;
 	
@@ -199,6 +325,25 @@ private slots:
 
 protected:
 	void timerEvent(QTimerEvent * event);
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
+	void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+	void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
+	void drawBackground(QPainter * painter, const QRectF & rect);
+	void drawForeground(QPainter * painter, const QRectF & rect);
+	void drawItems(QPainter * painter, int numItems, QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget = 0);
+	void dropEvent(QGraphicsSceneDragDropEvent * event);
+	void focusInEvent(QFocusEvent * focusEvent);
+	void focusOutEvent(QFocusEvent * focusEvent);
+	void helpEvent(QGraphicsSceneHelpEvent * helpEvent);
+	void inputMethodEvent(QInputMethodEvent * event);
+	void keyPressEvent(QKeyEvent * keyEvent);
+	void keyReleaseEvent(QKeyEvent * keyEvent);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	void wheelEvent(QGraphicsSceneWheelEvent * wheelEvent);
 };
 
 #endif
