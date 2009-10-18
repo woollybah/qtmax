@@ -41,6 +41,7 @@ extern "C" {
 	void bmx_qt_qpixmap_free(MaxQPixmap * pixmap);
 
 	MaxQPixmap * bmx_qt_qpixmap_fromimage(MaxQImage * image, int flags);
+	MaxQPixmap * bmx_qt_qpixmap_fromfile(BBString * filename, BBString * format, int flags);
 
 	void bmx_qt_qpixmap_fill(MaxQPixmap * pixmap, int color);
 	void bmx_qt_qpixmap_fillcolor(MaxQPixmap * pixmap, MaxQColor * color);

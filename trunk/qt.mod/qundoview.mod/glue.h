@@ -25,15 +25,33 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QUndoView>
+
+
+class MaxQUndoView;
 
 extern "C" {
 
 #include <blitz.h>
 
+	QUndoView * bmx_qt_qundoview_create(BBObject * handle, QWidget * parent);
+	QUndoView * bmx_qt_qundoview_createwithstack(BBObject * handle, QUndoStack * stack, QWidget * parent);
+	QUndoView * bmx_qt_qundoview_createwithgroup(BBObject * handle, QUndoGroup * group, QWidget * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQUndoView : public QUndoView
+{
+public:
+	MaxQUndoView(BBObject * handle, QWidget * parent);
+	MaxQUndoView(BBObject * handle, QUndoStack * stack, QWidget * parent);
+	MaxQUndoView(BBObject * handle, QUndoGroup * group, QWidget * parent);
+	~MaxQUndoView();
+
+private:
+	BBObject * maxHandle;
+};
 
 #endif

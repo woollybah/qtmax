@@ -20,41 +20,21 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QGRAPHICSPOLYGONITEM
-#define MAX_QT_QGRAPHICSPOLYGONITEM
+#ifndef MAX_QT_QStyle
+#define MAX_QT_QStyle
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsview.mod/glue.h"
-#include "../qpolygonf.mod/glue.h"
 #include <QtCore>
-#include <QGraphicsPolygonItem>
-
-class MaxQGraphicsPolygonItem;
+#include <QStyle>
 
 extern "C" {
 
 #include <blitz.h>
 
-	QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_create(BBObject * handle, QGraphicsItem * parent);
-	QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_createwithpoly(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent);
-	int bmx_qt_qgraphicspolygonitem_fillrule(QGraphicsPolygonItem * item);
-	MaxQPolygonF * bmx_qt_qgraphicspolygonitem_polygon(QGraphicsPolygonItem * item);
-	void bmx_qt_qgraphicspolygonitem_setfillrule(QGraphicsPolygonItem * item, int rule);
-	void bmx_qt_qgraphicspolygonitem_setpolygon(QGraphicsPolygonItem * item, MaxQPolygonF * polygon);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsPolygonItem : public QGraphicsPolygonItem
-{
-public:
-	MaxQGraphicsPolygonItem(BBObject * handle, QGraphicsItem * parent);
-	MaxQGraphicsPolygonItem(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent);
-	~MaxQGraphicsPolygonItem();
-
-private:
-	BBObject * maxHandle;
-};
 
 #endif

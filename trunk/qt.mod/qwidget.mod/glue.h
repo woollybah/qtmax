@@ -119,7 +119,7 @@ extern "C" {
 	MaxQRect * bmx_qt_qwidget_framegeometry(QWidget * widget);
 	void bmx_qt_qwidget_framesize(QWidget * widget, int * w, int * h);
 	MaxQRect * bmx_qt_qwidget_geometry(QWidget * widget);
-	void bmx_qt_qwidget_setattribute(QWidget * widget, int attribute);
+	void bmx_qt_qwidget_setattribute(QWidget * widget, int attribute, int on);
 	void bmx_qt_qwidget_move(QWidget * widget, int x, int y);
 	void bmx_qt_qwidget_settooltip(QWidget * widget, BBString * text);
 	MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget);

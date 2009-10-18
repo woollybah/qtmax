@@ -21,9 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QPaintDevice
-Import Qt.QImage
-Import Qt.QColor
+Import Qt.QObject
 Import BRL.Blitz
 
 
@@ -47,18 +45,5 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
-
-	Function bmx_qt_qpixmap_create:Byte Ptr(width:Int, height:Int)
-	Function bmx_qt_qpixmap_free(handle:Byte Ptr)
-
-	Function bmx_qt_qpixmap_fromimage:Byte Ptr(image:Byte Ptr, flags:Int)
-	Function bmx_qt_qpixmap_fromfile:Byte Ptr(filename:String, format:String, flags:Int)
-
-	Function bmx_qt_qpixmap_fill(handle:Byte Ptr, color:Int)
-	Function bmx_qt_qpixmap_fillcolor(handle:Byte Ptr, color:Byte Ptr)
-	Function bmx_qt_qpixmap_size(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
-	Function bmx_qt_qpixmap_toimage:Byte Ptr(handle:Byte Ptr)
-	Function bmx_qt_qpixmap_grabwindow:Byte Ptr(window:Int, x:Int, y:Int, width:Int, height:Int)
-	Function bmx_qt_qpixmap_scaled:Byte Ptr(handle:Byte Ptr, width:Int, height:Int, aspectRatioMode:Int, transformMode:Int)
 
 End Extern

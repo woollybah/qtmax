@@ -24,7 +24,7 @@
 #define MAX_QT_ template
 
 #include "../core.mod/glue.h"
-#include "../qgraphicsitem.mod/glue.h"
+#include "../qgraphicsview.mod/glue.h"
 #include <QtCore>
 #include <QGraphicsRectItem>
 

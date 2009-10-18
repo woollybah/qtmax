@@ -30,6 +30,12 @@ MaxQGraphicsView::MaxQGraphicsView(BBObject * handle, QWidget * parent)
 	qbind(this, handle);
 }
 
+MaxQGraphicsView::MaxQGraphicsView(BBObject * handle, QGraphicsScene * scene, QWidget * parent)
+	: maxHandle(handle), QGraphicsView(scene, parent)
+{
+	qbind(this, handle);
+}
+
 MaxQGraphicsView::~MaxQGraphicsView()
 {
 	qunbind(this);
@@ -276,10 +282,169 @@ void MaxQGraphicsScene::timerEvent(QTimerEvent * event) {
 	_qt_qobject_QObject__timerEvent(maxHandle, event);
 }
 
+void MaxQGraphicsScene::defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent) {
+	QGraphicsScene::contextMenuEvent(contextMenuEvent);
+}
+
+void MaxQGraphicsScene::defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsScene::dragEnterEvent(event);
+}
+
+void MaxQGraphicsScene::defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsScene::dragLeaveEvent(event);
+}
+
+void MaxQGraphicsScene::defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsScene::dragMoveEvent(event);
+}
+
+void MaxQGraphicsScene::defaultDrawBackground(QPainter * painter, const QRectF & rect) {
+	QGraphicsScene::drawBackground(painter, rect);
+}
+
+void MaxQGraphicsScene::defaultDrawForeground(QPainter * painter, const QRectF & rect) {
+	QGraphicsScene::drawForeground(painter, rect);
+}
+
+void MaxQGraphicsScene::defaultDrawItems(QPainter * painter, int numItems, QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget) {
+	QGraphicsScene::drawItems(painter, numItems, items, options, widget);
+}
+
+void MaxQGraphicsScene::defaultDropEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsScene::dropEvent(event);
+}
+
+void MaxQGraphicsScene::defaultFocusInEvent(QFocusEvent * focusEvent) {
+	QGraphicsScene::focusInEvent(focusEvent);
+}
+
+void MaxQGraphicsScene::defaultFocusOutEvent(QFocusEvent * focusEvent) {
+	QGraphicsScene::focusOutEvent(focusEvent);
+}
+
+void MaxQGraphicsScene::defaultHelpEvent(QGraphicsSceneHelpEvent * helpEvent) {
+	QGraphicsScene::helpEvent(helpEvent);
+}
+
+void MaxQGraphicsScene::defaultInputMethodEvent(QInputMethodEvent * event) {
+	QGraphicsScene::inputMethodEvent(event);
+}
+
+void MaxQGraphicsScene::defaultKeyPressEvent(QKeyEvent * keyEvent) {
+	QGraphicsScene::keyPressEvent(keyEvent);
+}
+
+void MaxQGraphicsScene::defaultKeyReleaseEvent(QKeyEvent * keyEvent) {
+	QGraphicsScene::keyReleaseEvent(keyEvent);
+}
+
+void MaxQGraphicsScene::defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsScene::mouseDoubleClickEvent(mouseEvent);
+}
+
+void MaxQGraphicsScene::defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsScene::mouseMoveEvent(mouseEvent);
+}
+
+void MaxQGraphicsScene::defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsScene::mousePressEvent(mouseEvent);
+}
+
+void MaxQGraphicsScene::defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsScene::mouseReleaseEvent(mouseEvent);
+}
+
+void MaxQGraphicsScene::defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent) {
+	QGraphicsScene::wheelEvent(wheelEvent);
+}
+
+
+void MaxQGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent) {
+	_qt_qgraphicsview_QGraphicsScene__contextMenuEvent(maxHandle, contextMenuEvent);
+}
+
+void MaxQGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent * event) {
+	_qt_qgraphicsview_QGraphicsScene__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQGraphicsScene::dragLeaveEvent(QGraphicsSceneDragDropEvent * event) {
+	_qt_qgraphicsview_QGraphicsScene__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent * event) {
+	_qt_qgraphicsview_QGraphicsScene__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsScene::drawBackground(QPainter * painter, const QRectF & rect) {
+	_qt_qgraphicsview_QGraphicsScene__drawBackground(maxHandle, painter, new MaxQRectF(rect));
+}
+
+void MaxQGraphicsScene::drawForeground(QPainter * painter, const QRectF & rect) {
+	_qt_qgraphicsview_QGraphicsScene__drawForeground(maxHandle, painter, new MaxQRectF(rect));
+}
+
+void MaxQGraphicsScene::drawItems(QPainter * painter, int numItems, QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget) {
+	// TODO - implement in max code.
+	QGraphicsScene::drawItems(painter, numItems, items, options, widget);
+}
+
+void MaxQGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent * event) {
+	_qt_qgraphicsview_QGraphicsScene__dropEvent(maxHandle, event);
+}
+
+void MaxQGraphicsScene::focusInEvent(QFocusEvent * focusEvent) {
+	_qt_qgraphicsview_QGraphicsScene__focusInEvent(maxHandle, focusEvent);
+}
+
+void MaxQGraphicsScene::focusOutEvent(QFocusEvent * focusEvent) {
+	_qt_qgraphicsview_QGraphicsScene__focusOutEvent(maxHandle, focusEvent);
+}
+
+void MaxQGraphicsScene::helpEvent(QGraphicsSceneHelpEvent * helpEvent) {
+	_qt_qgraphicsview_QGraphicsScene__helpEvent(maxHandle, helpEvent);
+}
+
+void MaxQGraphicsScene::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qgraphicsview_QGraphicsScene__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQGraphicsScene::keyPressEvent(QKeyEvent * keyEvent) {
+	_qt_qgraphicsview_QGraphicsScene__keyPressEvent(maxHandle, keyEvent);
+}
+
+void MaxQGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent) {
+	_qt_qgraphicsview_QGraphicsScene__keyReleaseEvent(maxHandle, keyEvent);
+}
+
+void MaxQGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	_qt_qgraphicsview_QGraphicsScene__mouseDoubleClickEvent(maxHandle, mouseEvent);
+}
+
+void MaxQGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	_qt_qgraphicsview_QGraphicsScene__mouseMoveEvent(maxHandle, mouseEvent);
+}
+
+void MaxQGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	_qt_qgraphicsview_QGraphicsScene__mousePressEvent(maxHandle, mouseEvent);
+}
+
+void MaxQGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	_qt_qgraphicsview_QGraphicsScene__mouseReleaseEvent(maxHandle, mouseEvent);
+}
+
+void MaxQGraphicsScene::wheelEvent(QGraphicsSceneWheelEvent * wheelEvent) {
+	_qt_qgraphicsview_QGraphicsScene__wheelEvent(maxHandle, wheelEvent);
+}
+
+
 // *********************************************
 
 QGraphicsView * bmx_qt_qgraphicsview_create(BBObject * handle, QWidget * parent) {
 	return new MaxQGraphicsView(handle, parent);
+}
+
+QGraphicsView * bmx_qt_qgraphicsview_createwithscene(BBObject * handle, QGraphicsScene * scene, QWidget * parent) {
+	return new MaxQGraphicsView(handle, scene, parent);
 }
 
 void bmx_qt_qgraphicsview_setalignment(QGraphicsView * view, int alignment) {
@@ -531,6 +696,335 @@ void bmx_qt_qgraphicsscene_clearselection(QGraphicsScene * scene) {
 
 void bmx_qt_qgraphicsscene_additem(QGraphicsScene * scene, void * item) {
 	scene->addItem((QGraphicsItem*)item);
+}
+
+void bmx_qt_qgraphicsscene_setbackgroundbrush(QGraphicsScene * scene, MaxQBrush * brush) {
+	scene->setBackgroundBrush(brush->Brush());
+}
+
+void bmx_qt_qgraphicsscene_setbsptreedepth(QGraphicsScene * scene, int depth) {
+	scene->setBspTreeDepth(depth);
+}
+
+void bmx_qt_qgraphicsscene_setfocus(QGraphicsScene * scene, int focusReason) {
+	scene->setFocus((Qt::FocusReason)focusReason);
+}
+
+void bmx_qt_qgraphicsscene_setfocusitem(QGraphicsScene * scene, QGraphicsItem * item, int focusReason) {
+	scene->setFocusItem(item, (Qt::FocusReason)focusReason);
+}
+
+void bmx_qt_qgraphicsscene_setfont(QGraphicsScene * scene, MaxQFont * font) {
+	scene->setFont(font->Font());
+}
+
+void bmx_qt_qgraphicsscene_setforegroundbrush(QGraphicsScene * scene, MaxQBrush * brush) {
+	scene->setForegroundBrush(brush->Brush());
+}
+
+void bmx_qt_qgraphicsscene_setitemindexmethod(QGraphicsScene * scene, int _method) {
+	scene->setItemIndexMethod((QGraphicsScene::ItemIndexMethod)_method);
+}
+
+void bmx_qt_qgraphicsscene_setpalette(QGraphicsScene * scene, MaxQPalette * palette) {
+	scene->setPalette(palette->Palette());
+}
+
+void bmx_qt_qgraphicsscene_setselectionarea(QGraphicsScene * scene, MaxQPainterPath * path, int _mode) {
+	scene->setSelectionArea(path->Path(), (Qt::ItemSelectionMode)_mode);
+}
+
+void bmx_qt_qgraphicsscene_setsortcacheenabled(QGraphicsScene * scene, int enabled) {
+	scene->setSortCacheEnabled(static_cast<bool>(enabled));
+}
+
+void bmx_qt_qgraphicsscene_setstickyfocus(QGraphicsScene * scene, int enabled) {
+	scene->setStickyFocus(static_cast<bool>(enabled));
+}
+
+void bmx_qt_qgraphicsscene_setstyle(QGraphicsScene * scene, QStyle * style) {
+	scene->setStyle(style);
+}
+
+MaxQRectF * bmx_qt_qgraphicsscene_scenerect(QGraphicsScene * scene) {
+	return new MaxQRectF(scene->sceneRect());
+}
+
+BBArray * bmx_qt_qgraphicsscene_selecteditems(QGraphicsScene * scene) {
+	QList<QGraphicsItem *> list = scene->selectedItems();
+	int n = list.size();
+	
+	BBArray * arr = _qt_qgraphicsview_QGraphicsScene__newItems(n);
+	
+	if (n > 0) {
+		for (int i = 0; i < n; i++) {
+			_qt_qgraphicsview_QGraphicsScene__setItem(arr, i, list[i]);
+		}
+	}
+	
+	return arr;
+}
+
+MaxQPainterPath * bmx_qt_qgraphicsscene_selectionarea(QGraphicsScene * scene) {
+	return new MaxQPainterPath(scene->selectionArea());
+}
+
+void bmx_qt_qgraphicsscene_setactivewindow(QGraphicsScene * scene, QGraphicsWidget * widget) {
+	scene->setActiveWindow(widget);
+}
+
+float bmx_qt_qgraphicsscene_width(QGraphicsScene * scene) {
+	return scene->width();
+}
+
+float bmx_qt_qgraphicsscene_height(QGraphicsScene * scene) {
+	return scene->height();
+}
+
+void bmx_qt_qgraphicsscene_udpate(QGraphicsScene * scene, MaxQRectF * rect) {
+	if (rect) {
+		scene->update(rect->Rect());
+	} else {
+		scene->update();
+	}
+}
+
+int bmx_qt_qgraphicsscene_hasfocus(QGraphicsScene * scene) {
+	return static_cast<int>(scene->hasFocus());
+}
+
+QGraphicsItem * bmx_qt_qgraphicsscene_itemat(QGraphicsScene * scene, float x, float y) {
+	return scene->itemAt(x, y);
+}
+
+int bmx_qt_qgraphicsscene_itemindexmethod(QGraphicsScene * scene) {
+	return scene->itemIndexMethod();
+}
+
+MaxQRectF * bmx_qt_qgraphicsscene_itemsboundingrect(QGraphicsScene * scene) {
+	return new MaxQRectF(scene->itemsBoundingRect());
+}
+
+QGraphicsItem * bmx_qt_qgraphicsscene_mousegrabberitem(QGraphicsScene * scene) {
+	return scene->mouseGrabberItem();
+}
+
+MaxQPalette * bmx_qt_qgraphicsscene_palette(QGraphicsScene * scene) {
+	return new MaxQPalette(scene->palette());
+}
+
+void bmx_qt_qgraphicsscene_removeitem(QGraphicsScene * scene, QGraphicsItem * item) {
+	scene->removeItem(item);
+}
+
+// *********************************************
+
+void bmx_qt_qgraphicsscene_defaultdrawbackground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect) {
+	scene->defaultDrawBackground(painter, rect->Rect());
+}
+
+void bmx_qt_qgraphicsscene_defaultdrawforeground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect) {
+	scene->defaultDrawForeground(painter, rect->Rect());
+}
+
+// *********************************************
+
+
+typedef std::map<QGraphicsItem*, BBObject*> QGraphicsItemPeerMap;
+
+static QGraphicsItemPeerMap qGraphicsItemPeerMap;
+
+void qgibind( QGraphicsItem *obj, BBObject *peer ) {
+	if( !obj || peer==&bbNullObject ) return;
+	qGraphicsItemPeerMap.insert( std::make_pair( obj,peer ) );
+	BBRETAIN( peer );
+}
+
+BBObject *qgifind( QGraphicsItem *obj ){
+	if( !obj ) return &bbNullObject;
+	QGraphicsItemPeerMap::iterator it = qGraphicsItemPeerMap.find( obj );
+	if( it != qGraphicsItemPeerMap.end() ) return it->second;
+	return &bbNullObject;
+}
+
+void qgiunbind(QGraphicsItem *obj) {
+	BBObject * peer = qgifind(obj);
+	if (peer != &bbNullObject) {
+		qGraphicsItemPeerMap.erase(obj);
+		_qt_qgraphicsview_QGraphicsItem__Free(peer);
+		BBRELEASE(peer);
+	}
+}
+
+// *********************************************
+
+int bmx_qt_qgraphicsitem_isselected(QGraphicsItem * item) {
+	return static_cast<int>(item->isSelected());
+}
+
+int bmx_qt_qgraphicsitem_isundermouse(QGraphicsItem * item) {
+	return static_cast<int>(item->isUnderMouse());
+}
+
+int bmx_qt_qgraphicsitem_isvisible(QGraphicsItem * item) {
+	return static_cast<int>(item->isVisible());
+}
+
+int bmx_qt_qgraphicsitem_isvisibleto(QGraphicsItem * item, QGraphicsItem * parent) {
+	return static_cast<int>(item->isVisibleTo(parent));
+}
+
+int bmx_qt_qgraphicsitem_iswidget(QGraphicsItem * item) {
+	return static_cast<int>(item->isWidget());
+}
+
+int bmx_qt_qgraphicsitem_iswindow(QGraphicsItem * item) {
+	return static_cast<int>(item->isWindow());
+}
+
+void bmx_qt_qgraphicsitem_setacceptdrops(QGraphicsItem * item, int on) {
+	item->setAcceptDrops(static_cast<bool>(on));
+}
+
+void bmx_qt_qgraphicsitem_setaccepthoverevents(QGraphicsItem * item, int enabled) {
+	item->setAcceptHoverEvents(static_cast<bool>(enabled));
+}
+
+void bmx_qt_qgraphicsitem_setacceptedmousebuttons(QGraphicsItem * item, int buttons) {
+	item->setAcceptedMouseButtons((Qt::MouseButtons)buttons);
+}
+
+void bmx_qt_qgraphicsitem_setboundingregiongranularity(QGraphicsItem * item, double granularity) {
+	item->setBoundingRegionGranularity(granularity);
+}
+
+void bmx_qt_qgraphicsitem_setcachemode(QGraphicsItem * item, int mode, int w, int h) {
+	if (w!=0 && h!=0) {
+		item->setCacheMode((QGraphicsItem::CacheMode)mode, QSize(w, h)); 
+	} else {
+		item->setCacheMode((QGraphicsItem::CacheMode)mode); 
+	}
+}
+
+void bmx_qt_qgraphicsitem_setcursor(QGraphicsItem * item, MaxQCursor * cursor) {
+	item->setCursor(cursor->Cursor());
+}
+
+void bmx_qt_qgraphicsitem_setdata(QGraphicsItem * item, int key, BBObject * value) {
+	// TODO
+//	item->setData
+}
+
+void bmx_qt_qgraphicsitem_setenabled(QGraphicsItem * item, int enabled) {
+	item->setEnabled(static_cast<bool>(enabled));
+}
+
+void bmx_qt_qgraphicsitem_setflag(QGraphicsItem * item, int flag, int enabled) {
+	item->setFlag((QGraphicsItem::GraphicsItemFlag)flag, static_cast<bool>(enabled));
+}
+
+void bmx_qt_qgraphicsitem_setflags(QGraphicsItem * item, int flags) {
+	item->setFlags((QGraphicsItem::GraphicsItemFlags)flags);
+}
+
+void bmx_qt_qgraphicsitem_setfocus(QGraphicsItem * item, int focusReason) {
+	item->setFocus((Qt::FocusReason)focusReason);
+}
+
+void bmx_qt_qgraphicsitem_setgroup(QGraphicsItem * item, QGraphicsItemGroup * group) {
+	item->setGroup(group);
+}
+
+void bmx_qt_qgraphicsitem_sethandleschildevents(QGraphicsItem * item, int enabled) {
+	item->setHandlesChildEvents(static_cast<bool>(enabled));
+}
+
+void bmx_qt_qgraphicsitem_setopacity(QGraphicsItem * item, double opacity) {
+	item->setOpacity(opacity);
+}
+
+void bmx_qt_qgraphicsitem_setparentitem(QGraphicsItem * item, QGraphicsItem * parent) {
+	item->setParentItem(parent);
+}
+
+void bmx_qt_qgraphicsitem_setpos(QGraphicsItem * item, double x, double y) {
+	item->setPos(x, y);
+}
+
+void bmx_qt_qgraphicsitem_setselected(QGraphicsItem * item, int selected) {
+	item->setSelected(static_cast<bool>(selected));
+}
+
+void bmx_qt_qgraphicsitem_settooltip(QGraphicsItem * item, BBString * toolTip) {
+	item->setToolTip(qStringFromBBString(toolTip));
+}
+
+void bmx_qt_qgraphicsitem_settransform(QGraphicsItem * item, MaxQTransform * matrix, int combine) {
+	item->setTransform(matrix->Transform(), static_cast<bool>(combine));
+}
+
+void bmx_qt_qgraphicsitem_setvisible(QGraphicsItem * item, int visible) {
+	item->setVisible(static_cast<bool>(visible));
+}
+
+void bmx_qt_qgraphicsitem_setzvalue(QGraphicsItem * item, double z) {
+	item->setZValue(z);
+}
+
+MaxQRectF * bmx_qt_qgraphicsitem_boundingrect(QGraphicsItem * item) {
+	return new MaxQRectF(item->boundingRect());
+}
+
+void bmx_qt_qgraphicsitem_addtoscene(QGraphicsItem * item, QGraphicsScene * scene) {
+	scene->addItem(item);
+}
+
+void bmx_qt_qgraphicsitem_pos(QGraphicsItem * item, float * x, float * y) {
+	QPointF p(item->pos());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qgraphicsitem_removesceneeventfilter(QGraphicsItem * item, QGraphicsItem * filterItem) {
+	item->removeSceneEventFilter(filterItem);
+}
+
+void bmx_qt_qgraphicsitem_resettransform(QGraphicsItem * item) {
+	item->resetTransform();
+}
+
+void bmx_qt_qgraphicsitem_rotate(QGraphicsItem * item, float angle) {
+	item->rotate(angle);
+}
+
+void bmx_qt_qgraphicsitem_scale(QGraphicsItem * item, float sx, float sy) {
+	item->scale(sx, sy);
+}
+
+QGraphicsScene * bmx_qt_qgraphicsitem_scene(QGraphicsItem * item) {
+	return item->scene();
+}
+
+MaxQRectF * bmx_qt_qgraphicsitem_sceneboundingrect(QGraphicsItem * item) {
+	return new MaxQRectF(item->sceneBoundingRect());
+}
+
+void bmx_qt_qgraphicsitem_scenepos(QGraphicsItem * item, float * x, float * y) {
+	QPointF p(item->scenePos());
+	*x = p.x();
+	*y = p.y();
+}
+
+MaxQTransform * bmx_qt_qgraphicsitem_scenetransform(QGraphicsItem * item) {
+	return new MaxQTransform(item->sceneTransform());
+}
+
+void bmx_qt_qgraphicsitem_scroll(QGraphicsItem * item, float dx, float dy, MaxQRectF * rect) {
+	if (rect) {
+		item->scroll(dx, dy, rect->Rect());
+	} else {
+		item->scroll(dx, dy);
+	}
 }
 
 

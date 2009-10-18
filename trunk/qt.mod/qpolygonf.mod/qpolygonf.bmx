@@ -52,8 +52,9 @@ Type QPolygonF
 		Return Self
 	End Method
 	
-	Method append(x:Float, y:Float)
+	Method append:QPolygonF(x:Float, y:Float)
 		bmx_qt_qpolygonf_append(qObjectPtr, x, y)
+		Return Self
 	End Method
 	
 	Method at(index:Int, x:Float Var, y:Float Var)

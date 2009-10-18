@@ -510,8 +510,8 @@ MaxQRect * bmx_qt_qwidget_geometry(QWidget * widget) {
 	return new MaxQRect(widget->geometry());
 }
 
-void bmx_qt_qwidget_setattribute(QWidget * widget, int attribute) {
-	widget->setAttribute(bmx_qt_inttowidgetattribute(attribute));
+void bmx_qt_qwidget_setattribute(QWidget * widget, int attribute, int on) {
+	widget->setAttribute(bmx_qt_inttowidgetattribute(attribute), static_cast<bool>(on));
 }
 
 void bmx_qt_qwidget_move(QWidget * widget, int x, int y) {

@@ -34,6 +34,7 @@ extern "C" {
 
 #include <blitz.h>
 
+	QUndoStack * bmx_qt_qundostack_create(BBObject * handle, QObject * parent);
 	void bmx_qt_qundostack_beginmacro(QUndoStack * us, BBString * text);
 	int bmx_qt_qundostack_canredo(QUndoStack * us);
 	int bmx_qt_qundostack_canundo(QUndoStack * us);

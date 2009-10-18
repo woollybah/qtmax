@@ -21,7 +21,7 @@
 SuperStrict
 
 Import Qt.Core
-Import Qt.QGraphicsItem
+Import Qt.QGraphicsView
 Import Qt.QBrush
 Import Qt.QPen
 Import BRL.Blitz

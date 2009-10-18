@@ -40,19 +40,19 @@ BBObject * MaxQUndoCommand::Handle() {
 }
 
 void MaxQUndoCommand::redo() {
-	_bah_qundocommand_QUndoCommand__redo(maxHandle);
+	_qt_qundocommand_QUndoCommand__redo(maxHandle);
 }
 
 void MaxQUndoCommand::undo() {
-	_bah_qundocommand_QUndoCommand__undo(maxHandle);
+	_qt_qundocommand_QUndoCommand__undo(maxHandle);
 }
 
 bool MaxQUndoCommand::mergeWith(const QUndoCommand * command) {
-	return static_cast<bool>(_bah_qundocommand_QUndoCommand__mergeWith(maxHandle, command));
+	return static_cast<bool>(_qt_qundocommand_QUndoCommand__mergeWith(maxHandle, command));
 }
 
 int MaxQUndoCommand::id() const {
-	return _bah_qundocommand_QUndoCommand__id(maxHandle);
+	return _qt_qundocommand_QUndoCommand__id(maxHandle);
 }
 
 bool MaxQUndoCommand::mergeWithDefault(const QUndoCommand * command) {

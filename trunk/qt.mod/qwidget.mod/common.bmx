@@ -97,7 +97,7 @@ Extern
 	Function bmx_qt_qwidget_framegeometry:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_framesize(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 	Function bmx_qt_qwidget_geometry:Byte Ptr(handle:Byte Ptr)
-	Function bmx_qt_qwidget_setattribute(handle:Byte Ptr, attribute:Int)
+	Function bmx_qt_qwidget_setattribute(handle:Byte Ptr, attribute:Int, on:Int)
 	Function bmx_qt_qwidget_move(handle:Byte Ptr, x:Int, y:Int)
 	Function bmx_qt_qwidget_settooltip(handle:Byte Ptr, text:String)
 	Function bmx_qt_qwidget_sizepolicy:Byte Ptr(handle:Byte Ptr)
