@@ -16,6 +16,15 @@ Type TMoveCommand Extends QUndoCommand
 	Field newPosX:Float
 	Field newPosY:Float
 
+	Method CreateWithPos:TMoveCommand(item:TDiagramItem, x:Float, y:Float, parent:QUndoCommand = Null)
+		Super.Create(parent)
+		myDiagramItem = item
+		item.pos(newPosX, newPosY)
+		myOldPosX = x
+		myOldPosY = y
+		Return Self
+	End Method
+
 	Method undo()
 		myDiagramItem.setPos(myOldPosX, myOldPosY)
 		myDiagramItem.scene().update()

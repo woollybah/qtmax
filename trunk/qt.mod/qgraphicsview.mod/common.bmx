@@ -149,7 +149,24 @@ Extern
 
 	Function bmx_qt_qgraphicsscene_defaultdrawbackground(handle:Byte Ptr, painter:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_defaultdrawforeground(handle:Byte Ptr, painter:Byte Ptr, rect:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultcontextmenuevent(handle:Byte Ptr, contextMenuEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultdragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultdragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultdragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultdropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultfocusinevent(handle:Byte Ptr, focusEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultfocusoutevent(handle:Byte Ptr, focusEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaulthelpevent(handle:Byte Ptr, helpEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultinputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultkeypressevent(handle:Byte Ptr, keyEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultkeyreleaseevent(handle:Byte Ptr, keyEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultmousedoubleclickevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultmousemoveevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultmousepressevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultmousereleaseevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_defaultwheelevent(handle:Byte Ptr, wheelEvent:Byte Ptr)
 
+	
 	Function qgifind:Object(item:Byte Ptr)
 
 	Function bmx_qt_qgraphicsitem_isselected:Int(handle:Byte Ptr)

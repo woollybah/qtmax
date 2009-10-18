@@ -19,6 +19,16 @@ Type TDiagramScene Extends QGraphicsScene
 	End Method
 
 	Method mousePressEvent(event:QGraphicsSceneMouseEvent)
+		Local mousePosX:Float, mousePosY:Float
+		event.buttonDownScenePos(Qt_LeftButton, mousePosX, mousePosY)
+		movingItem = itemAt(mousePosX, mousePosY)
+
+		If movingItem And event.button() = Qt_LeftButton Then
+			movingItem.pos(oldPosX, oldPosY)
+		End If
+
+		clearSelection()
+		Super.mousePressEvent(event)
 	End Method
 	
 	Method mouseReleaseEvent(event:QGraphicsSceneMouseEvent)

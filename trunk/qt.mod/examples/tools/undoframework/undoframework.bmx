@@ -158,8 +158,9 @@ Type TWindow Extends QMainWindow
 		deleteAction.setEnabled(True)
 	End Method
 
-	Method itemMoved(movedDiagram:TDiagramItem, moveStartPositionX:Float, moveStartPositionY:Float)
-	End Method
+	Method itemMoved(movedItem:TDiagramItem, moveStartPositionX:Float, moveStartPositionY:Float)
+		undoStack.push(New TMoveCommand.CreateWithPos(movedItem, moveStartPositionX, moveStartPositionY))
+ 	End Method
 	
 End Type
 

@@ -163,6 +163,22 @@ extern "C" {
 
 	void bmx_qt_qgraphicsscene_defaultdrawbackground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect);
 	void bmx_qt_qgraphicsscene_defaultdrawforeground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect);
+	void bmx_qt_qgraphicsscene_defaultcontextmenuevent(MaxQGraphicsScene * scene, QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	void bmx_qt_qgraphicsscene_defaultdragenterevent(MaxQGraphicsScene * scene, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsscene_defaultdragleaveevent(MaxQGraphicsScene * scene, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsscene_defaultdragmoveevent(MaxQGraphicsScene * scene, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsscene_defaultdropevent(MaxQGraphicsScene * scene, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsscene_defaultfocusinevent(MaxQGraphicsScene * scene, QFocusEvent * focusEvent);
+	void bmx_qt_qgraphicsscene_defaultfocusoutevent(MaxQGraphicsScene * scene, QFocusEvent * focusEvent);
+	void bmx_qt_qgraphicsscene_defaulthelpevent(MaxQGraphicsScene * scene, QGraphicsSceneHelpEvent * helpEvent);
+	void bmx_qt_qgraphicsscene_defaultinputmethodevent(MaxQGraphicsScene * scene, QInputMethodEvent * event);
+	void bmx_qt_qgraphicsscene_defaultkeypressevent(MaxQGraphicsScene * scene, QKeyEvent * keyEvent);
+	void bmx_qt_qgraphicsscene_defaultkeyreleaseevent(MaxQGraphicsScene * scene, QKeyEvent * keyEvent);
+	void bmx_qt_qgraphicsscene_defaultmousedoubleclickevent(MaxQGraphicsScene * scene, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsscene_defaultmousemoveevent(MaxQGraphicsScene * scene, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsscene_defaultmousepressevent(MaxQGraphicsScene * scene, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsscene_defaultmousereleaseevent(MaxQGraphicsScene * scene, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsscene_defaultwheelevent(MaxQGraphicsScene * scene, QGraphicsSceneWheelEvent * wheelEvent);
 
 
 	void qgibind( QGraphicsItem *obj, BBObject *peer );

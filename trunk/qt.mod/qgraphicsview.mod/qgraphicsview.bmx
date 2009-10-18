@@ -614,7 +614,7 @@ Type QGraphicsScene Extends QObject
 	End Method
 
 	Method contextMenuEvent(contextMenuEvent:QGraphicsSceneContextMenuEvent)
-		
+		bmx_qt_qgraphicsscene_defaultcontextmenuevent(qObjectPtr, contextMenuEvent.qObjectPtr)
 	End Method
 	
 	Function _contextMenuEvent(scene:QGraphicsScene, contextMenuEvent:Byte Ptr)
@@ -622,7 +622,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method dragEnterEvent(event:QGraphicsSceneDragDropEvent)
-		
+		bmx_qt_qgraphicsscene_defaultdragenterevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _dragEnterEvent(scene:QGraphicsScene, event:Byte Ptr)
@@ -630,7 +630,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method dragLeaveEvent(event:QGraphicsSceneDragDropEvent)
-		
+		bmx_qt_qgraphicsscene_defaultdragleaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _dragLeaveEvent(scene:QGraphicsScene, event:Byte Ptr)
@@ -638,7 +638,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method dragMoveEvent(event:QGraphicsSceneDragDropEvent)
-		
+		bmx_qt_qgraphicsscene_defaultdragmoveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _dragMoveEvent(scene:QGraphicsScene, event:Byte Ptr)
@@ -662,7 +662,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method dropEvent(event:QGraphicsSceneDragDropEvent)
-		
+		bmx_qt_qgraphicsscene_defaultdropevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _dropEvent(scene:QGraphicsScene, event:Byte Ptr)
@@ -670,7 +670,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method focusInEvent(focusEvent:QFocusEvent)
-		
+		bmx_qt_qgraphicsscene_defaultfocusinevent(qObjectPtr, focusEvent.qObjectPtr)
 	End Method
 	
 	Function _focusInEvent(scene:QGraphicsScene, focusEvent:Byte Ptr)
@@ -678,7 +678,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method focusOutEvent(focusEvent:QFocusEvent)
-		
+		bmx_qt_qgraphicsscene_defaultfocusoutevent(qObjectPtr, focusEvent.qObjectPtr)
 	End Method
 	
 	Function _focusOutEvent(scene:QGraphicsScene, focusEvent:Byte Ptr)
@@ -686,7 +686,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method helpEvent(helpEvent:QGraphicsSceneHelpEvent)
-		
+		bmx_qt_qgraphicsscene_defaulthelpevent(qObjectPtr, helpEvent.qObjectPtr)
 	End Method
 	
 	Function _helpEvent(scene:QGraphicsScene, helpEvent:Byte Ptr)
@@ -694,7 +694,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method inputMethodEvent(event:QInputMethodEvent)
-		
+		bmx_qt_qgraphicsscene_defaultinputmethodevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _inputMethodEvent(scene:QGraphicsScene, event:Byte Ptr)
@@ -702,7 +702,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method keyPressEvent(keyEvent:QKeyEvent)
-		
+		bmx_qt_qgraphicsscene_defaultkeypressevent(qObjectPtr, keyEvent.qObjectPtr)
 	End Method
 	
 	Function _keyPressEvent(scene:QGraphicsScene, keyEvent:Byte Ptr)
@@ -710,7 +710,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method keyReleaseEvent(keyEvent:QKeyEvent)
-		
+		bmx_qt_qgraphicsscene_defaultkeyreleaseevent(qObjectPtr, keyEvent.qObjectPtr)
 	End Method
 	
 	Function _keyReleaseEvent(scene:QGraphicsScene, keyEvent:Byte Ptr)
@@ -718,7 +718,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method mouseDoubleClickEvent(mouseEvent:QGraphicsSceneMouseEvent)
-		
+		bmx_qt_qgraphicsscene_defaultmousedoubleclickevent(qObjectPtr, mouseEvent.qObjectPtr)
 	End Method
 	
 	Function _mouseDoubleClickEvent(scene:QGraphicsScene, mouseEvent:Byte Ptr)
@@ -726,7 +726,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method mouseMoveEvent(mouseEvent:QGraphicsSceneMouseEvent)
-		
+		bmx_qt_qgraphicsscene_defaultmousemoveevent(qObjectPtr, mouseEvent.qObjectPtr)
 	End Method
 	
 	Function _mouseMoveEvent(scene:QGraphicsScene, mouseEvent:Byte Ptr)
@@ -734,7 +734,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method mousePressEvent(mouseEvent:QGraphicsSceneMouseEvent)
-		
+		bmx_qt_qgraphicsscene_defaultmousepressevent(qObjectPtr, mouseEvent.qObjectPtr)
 	End Method
 	
 	Function _mousePressEvent(scene:QGraphicsScene, mouseEvent:Byte Ptr)
@@ -742,7 +742,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method mouseReleaseEvent(mouseEvent:QGraphicsSceneMouseEvent)
-		
+		bmx_qt_qgraphicsscene_defaultmousereleaseevent(qObjectPtr, mouseEvent.qObjectPtr)
 	End Method
 	
 	Function _mouseReleaseEvent(scene:QGraphicsScene, mouseEvent:Byte Ptr)
@@ -750,7 +750,7 @@ Type QGraphicsScene Extends QObject
 	End Function
 	
 	Method wheelEvent(wheelEvent:QGraphicsSceneWheelEvent)
-		
+		bmx_qt_qgraphicsscene_defaultwheelevent(qObjectPtr, wheelEvent.qObjectPtr)
 	End Method
 	
 	Function _wheelEvent(scene:QGraphicsScene, wheelEvent:Byte Ptr)
