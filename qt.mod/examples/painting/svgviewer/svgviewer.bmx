@@ -44,7 +44,7 @@ Type TWindow Extends QMainWindow
 		Local quitAction:QAction = fileMenu.addAction(tr("E&xit"))
 		quitAction.setShortcut(tr("Ctrl+Q"))
 		
-		menuBar().addMenu(fileMenu)
+		menuBar().addMenuAction(fileMenu)
 		
 		Local viewMenu:QMenu = New QMenu.CreateWithTitle(tr("&View"), Self)
 		m_backgroundAction = viewMenu.addAction(tr("&Background"))
@@ -59,7 +59,7 @@ Type TWindow Extends QMainWindow
 		m_outlineAction.setChecked(True)
 		connect(m_outlineAction, "toggled", m_view, "setViewOutline")
 		
-		menuBar().addMenu(viewMenu)
+		menuBar().addMenuAction(viewMenu)
 		
 		Local rendererMenu:QMenu = New QMenu.CreateWithTitle(tr("&Renderer"), Self)
 		m_nativeAction = rendererMenu.addAction(tr("&Native"))
@@ -82,7 +82,7 @@ Type TWindow Extends QMainWindow
 		'rendererGroup.addAction(m_glAction)
 		rendererGroup.addAction(m_imageAction)
 		
-		menuBar().addMenu(rendererMenu)
+		menuBar().addMenuAction(rendererMenu)
 		
 		connect(openAction, "triggered", Self, "OpenFile")
 		connect(quitAction, "triggered", app, "quit")
