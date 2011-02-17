@@ -1,7 +1,7 @@
 #
 # Remove all files inside the include directory... ignoring svn stuff
 #
-SOURCE=/Volumes/MiscData/programming/qt-everywhere-opensource-src-4.6.1
+SOURCE=/Volumes/MiscData/programming/qt-everywhere-opensource-src-4.7.1
 
 for i in `find include -type f | awk '{ if (!index($0, "svn")) print $0 }'`
 do
