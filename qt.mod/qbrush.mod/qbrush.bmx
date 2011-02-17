@@ -78,6 +78,8 @@ Type QBrush
 	End Method
 	
 	Method CreateWithGradient:QBrush(gradient:QGradient)
+		qObjectPtr = bmx_qt_qbrush_createwithgradient(gradient.qObjectPtr)
+		Return Self
 	End Method
 
 	Method color:QColor()
