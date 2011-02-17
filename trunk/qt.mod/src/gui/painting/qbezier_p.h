@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -59,6 +59,7 @@
 #include "QtCore/qvector.h"
 #include "QtCore/qlist.h"
 #include "QtCore/qpair.h"
+#include "QtGui/qtransform.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -78,10 +79,9 @@ public:
     inline QPointF derivedAt(qreal t) const;
     inline QPointF secondDerivedAt(qreal t) const;
 
-    QPolygonF toPolygon() const;
-    void addToPolygon(QPolygonF *p) const;
-    void addToPolygonIterative(QPolygonF *p) const;
-    void addToPolygonMixed(QPolygonF *p) const;
+    QPolygonF toPolygon(qreal bezier_flattening_threshold = 0.5) const;
+    void addToPolygon(QPolygonF *p, qreal bezier_flattening_threshold = 0.5) const;
+
     QRectF bounds() const;
     qreal length(qreal error = 0.01) const;
     void addIfClose(qreal *length, qreal error) const;
@@ -96,6 +96,8 @@ public:
     QPointF pt3() const { return QPointF(x3, y3); }
     QPointF pt4() const { return QPointF(x4, y4); }
 
+    QBezier mapBy(const QTransform &transform) const;
+
     inline QPointF midPoint() const;
     inline QLineF midTangent() const;
 
@@ -104,18 +106,12 @@ public:
 
     inline void parameterSplitLeft(qreal t, QBezier *left);
     inline void split(QBezier *firstHalf, QBezier *secondHalf) const;
+
     int shifted(QBezier *curveSegments, int maxSegmets,
                 qreal offset, float threshold) const;
 
-    QVector< QList<QBezier> > splitAtIntersections(QBezier &a);
-
     QBezier bezierOnInterval(qreal t0, qreal t1) const;
-
-    static QVector< QPair<qreal, qreal> > findIntersections(const QBezier &a,
-                                                     const QBezier &b);
-
-    static bool findIntersections(const QBezier &a, const QBezier &b,
-                                  QVector<QPair<qreal, qreal> > *t);
+    QBezier getSubRange(qreal t0, qreal t1) const;
 
     qreal x1, y1, x2, y2, x3, y3, x4, y4;
 };
@@ -166,8 +162,6 @@ inline void QBezier::coefficients(qreal t, qreal &a, qreal &b, qreal &c, qreal &
 
 inline QPointF QBezier::pointAt(qreal t) const
 {
-    Q_ASSERT(t >= 0);
-    Q_ASSERT(t <= 1);
 #if 1
     qreal a, b, c, d;
     coefficients(t, a, b, c, d);

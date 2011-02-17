@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -60,6 +60,14 @@
 
 #include <private/qfontengineglyphcache_p.h>
 
+#if defined(Q_OS_VXWORKS) && defined(m_type)
+#  undef m_type
+#endif
+
+#ifndef QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH
+#define QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH 256
+#endif
+
 struct glyph_metrics_t;
 typedef unsigned int glyph_t;
 
@@ -72,7 +80,9 @@ class Q_GUI_EXPORT QTextureGlyphCache : public QFontEngineGlyphCache
 {
 public:
     QTextureGlyphCache(QFontEngineGlyphCache::Type type, const QTransform &matrix)
-        : QFontEngineGlyphCache(matrix), m_w(0), m_h(0), m_cx(0), m_cy(0), m_type(type) { }
+        : QFontEngineGlyphCache(matrix, type), m_current_fontengine(0),
+                                               m_w(0), m_h(0), m_cx(0), m_cy(0), m_currentRowHeight(0)
+        { }
 
     virtual ~QTextureGlyphCache() { }
 
@@ -86,15 +96,13 @@ public:
         int baseLineY;
     };
 
-    void populate(const QTextItemInt &ti,
-                  const QVarLengthArray<glyph_t> &glyphs,
-                  const QVarLengthArray<QFixedPoint> &positions);
+    void populate(QFontEngine *fontEngine, int numGlyphs, const glyph_t *glyphs,
+                  const QFixedPoint *positions);
 
     virtual void createTextureData(int width, int height) = 0;
     virtual void resizeTextureData(int width, int height) = 0;
     virtual int glyphMargin() const { return 0; }
-
-    QFontEngineGlyphCache::Type cacheType() const { return m_type; }
+    virtual int glyphPadding() const { return 0; }
 
     virtual void fillTexture(const Coord &coord, glyph_t glyph) = 0;
 
@@ -108,15 +116,18 @@ public:
 
     QHash<glyph_t, Coord> coords;
 
+    QImage textureMapForGlyph(glyph_t g) const;
+    virtual int maxTextureWidth() const { return QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH; }
+    virtual int maxTextureHeight() const { return 32768; }
+
 protected:
-    const QTextItemInt *m_current_textitem;
+    QFontEngine *m_current_fontengine;
 
     int m_w; // image width
     int m_h; // image height
     int m_cx; // current x
     int m_cy; // current y
-    QFontEngineGlyphCache::Type m_type;
-
+    int m_currentRowHeight; // Height of last row
 };
 
 

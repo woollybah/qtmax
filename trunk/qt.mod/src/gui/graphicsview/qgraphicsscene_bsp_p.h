@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -92,8 +92,7 @@ public:
     void removeItem(QGraphicsItem *item, const QRectF &rect);
     void removeItems(const QSet<QGraphicsItem *> &items);
 
-    QList<QGraphicsItem *> items(const QRectF &rect);
-    QList<QGraphicsItem *> items(const QPointF &pos);
+    QList<QGraphicsItem *> items(const QRectF &rect, bool onlyTopLevelItems = false) const;
     int leafCount() const;
 
     inline int firstChildIndex(int index) const
@@ -106,11 +105,7 @@ public:
 
 private:
     void initialize(const QRectF &rect, int depth, int index);
-    void climbTree(QGraphicsSceneBspTreeVisitor *visitor, const QPointF &pos, int index = 0);
-    void climbTree(QGraphicsSceneBspTreeVisitor *visitor, const QRectF &rect, int index = 0);
-
-    void findItems(QList<QGraphicsItem *> *foundItems, const QRectF &rect, int index);
-    void findItems(QList<QGraphicsItem *> *foundItems, const QPointF &pos, int index);
+    void climbTree(QGraphicsSceneBspTreeVisitor *visitor, const QRectF &rect, int index = 0) const;
     QRectF rectForIndex(int index) const;
 
     QVector<Node> nodes;

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,9 +61,20 @@
 #include "QtCore/qbasictimer.h"
 #include "private/qwidget_p.h"
 
+#ifdef Q_WS_S60
+class CEikMenuPane;
+#define QT_SYMBIAN_FIRST_MENU_ITEM 32000
+#define QT_SYMBIAN_LAST_MENU_ITEM 41999 // 10000 items ought to be enough for anybody...
+#endif
 QT_BEGIN_NAMESPACE
 
 #ifndef QT_NO_MENU
+
+#ifdef Q_WS_S60
+void qt_symbian_next_menu_from_action(QWidget* actionContainer);
+void qt_symbian_show_toplevel(CEikMenuPane* menuPane);
+void qt_symbian_show_submenu(CEikMenuPane* menuPane, int id);
+#endif // Q_WS_S60
 
 class QTornOffMenu;
 class QEventLoop;
@@ -77,7 +88,7 @@ QT_BEGIN_NAMESPACE
 typedef void NSMenuItem;
 #  endif //__OBJC__
 struct QMacMenuAction {
-    QMacMenuAction() 
+    QMacMenuAction()
 #ifndef QT_MAC_USE_COCOA
        : command(0)
 #else
@@ -112,12 +123,21 @@ struct QMenuMergeItem
 typedef QList<QMenuMergeItem> QMenuMergeList;
 #endif
 
-#ifdef Q_OS_WINCE
+#ifdef Q_WS_WINCE
 struct QWceMenuAction {
-    uint command;    
+    uint command;
     QPointer<QAction> action;
     HMENU menuHandle;
     QWceMenuAction() : menuHandle(0), command(0) {}
+};
+#endif
+#ifdef Q_WS_S60
+struct QSymbianMenuAction {
+    uint command;
+    int parent;
+    CEikMenuPane* menuPane;
+    QPointer<QAction> action;
+    QSymbianMenuAction() : command(0) {}
 };
 #endif
 
@@ -126,14 +146,22 @@ class QMenuPrivate : public QWidgetPrivate
     Q_DECLARE_PUBLIC(QMenu)
 public:
     QMenuPrivate() : itemsDirty(0), maxIconWidth(0), tabWidth(0), ncols(0),
-                      collapsibleSeparators(true), hasHadMouse(0), aboutToHide(0), motions(0),
-                      currentAction(0), scroll(0), eventLoop(0), tearoff(0), tornoff(0), tearoffHighlighted(0),
-                      hasCheckableItems(0), sloppyAction(0)
+                      collapsibleSeparators(true), activationRecursionGuard(false), hasHadMouse(0), aboutToHide(0), motions(0),
+                      currentAction(0),
+#ifdef QT_KEYPAD_NAVIGATION
+                      selectAction(0),
+                      cancelAction(0),
+#endif
+                      scroll(0), eventLoop(0), tearoff(0), tornoff(0), tearoffHighlighted(0),
+                      hasCheckableItems(0), sloppyAction(0), doChildEffects(false)
 #ifdef Q_WS_MAC
                       ,mac_menu(0)
 #endif
-#if defined(Q_OS_WINCE) && !defined(QT_NO_MENUBAR)
+#if defined(Q_WS_WINCE) && !defined(QT_NO_MENUBAR)
                       ,wce_menu(0)
+#endif
+#ifdef Q_WS_S60
+                      ,symbian_menu(0)
 #endif
 #ifdef QT3_SUPPORT
                       ,emitHighlighted(false)
@@ -145,40 +173,51 @@ public:
 #ifdef Q_WS_MAC
         delete mac_menu;
 #endif
-#if defined(Q_OS_WINCE) && !defined(QT_NO_MENUBAR)
+#if defined(Q_WS_WINCE) && !defined(QT_NO_MENUBAR)
         delete wce_menu;
 #endif
+#ifdef Q_WS_S60
+        delete symbian_menu;
+#endif
+
     }
     void init();
+
+    static QMenuPrivate *get(QMenu *m) { return m->d_func(); }
+    int scrollerHeight() const;
 
     //item calculations
     mutable uint itemsDirty : 1;
     mutable uint maxIconWidth, tabWidth;
     QRect actionRect(QAction *) const;
-    mutable QMap<QAction*, QRect> actionRects;
-    mutable QList<QAction*> actionList;
+
+    mutable QVector<QRect> actionRects;
     mutable QHash<QAction *, QWidget *> widgetItems;
-    void calcActionRects(QMap<QAction*, QRect> &actionRects, QList<QAction*> &actionList) const;
-    void updateActions();
-    QRect popupGeometry(int screen=-1) const;
-    QList<QAction *> filterActions(const QList<QAction *> &actions) const;
-    uint ncols : 4; //4 bits is probably plenty
+    void updateActionRects() const;
+    QRect popupGeometry(const QWidget *widget) const;
+    QRect popupGeometry(int screen = -1) const;
+    mutable uint ncols : 4; //4 bits is probably plenty
     uint collapsibleSeparators : 1;
 
-    uint activationRecursionGuard : 1;
+    bool activationRecursionGuard;
 
     //selection
-    static QPointer<QMenu> mouseDown;
+    static QMenu *mouseDown;
     QPoint mousePopupPos;
     uint hasHadMouse : 1;
     uint aboutToHide : 1;
     int motions;
     QAction *currentAction;
-    static QBasicTimer menuDelayTimer;
+#ifdef QT_KEYPAD_NAVIGATION
+    QAction *selectAction;
+    QAction *cancelAction;
+#endif
+    QBasicTimer menuDelayTimer;
     enum SelectionReason {
         SelectedFromKeyboard,
         SelectedFromElsewhere
     };
+    QWidget *topCausedWidget() const;
     QAction *actionAt(QPoint p) const;
     void setFirstActionActive();
     void setCurrentAction(QAction *, int popup = -1, SelectionReason reason = SelectedFromElsewhere, bool activateFirst = false);
@@ -191,10 +230,10 @@ public:
         enum ScrollDirection { ScrollNone=0, ScrollUp=0x01, ScrollDown=0x02 };
         uint scrollFlags : 2, scrollDirection : 2;
         int scrollOffset;
-        QBasicTimer *scrollTimer;
+        QBasicTimer scrollTimer;
 
-        QMenuScroller() : scrollFlags(ScrollNone), scrollDirection(ScrollNone), scrollOffset(0), scrollTimer(0) { }
-        ~QMenuScroller() { delete scrollTimer; }
+        QMenuScroller() : scrollFlags(ScrollNone), scrollDirection(ScrollNone), scrollOffset(0) { }
+        ~QMenuScroller() { }
     } *scroll;
     void scrollMenu(QMenuScroller::ScrollLocation location, bool active=false);
     void scrollMenu(QMenuScroller::ScrollDirection direction, bool page=false, bool active=false);
@@ -220,7 +259,7 @@ public:
     virtual QList<QPointer<QWidget> > calcCausedStack() const;
     QMenuCaused causedPopup;
     void hideUpToMenuBar();
-    void hideMenu(QMenu *menu);
+    void hideMenu(QMenu *menu, bool justRegister = false);
 
     //index mappings
     inline QAction *actionAt(int i) const { return q_func()->actions().at(i); }
@@ -233,8 +272,8 @@ public:
     mutable bool hasCheckableItems;
 
     //sloppy selection
-    static QBasicTimer sloppyDelayTimer;
-    QAction *sloppyAction;
+    static int sloppyDelayTimer;
+    mutable QAction *sloppyAction;
     QRegion sloppyRegion;
 
     //default action
@@ -254,6 +293,9 @@ public:
     void _q_actionHovered();
 
     bool hasMouseMoved(const QPoint &globalPos);
+
+    void updateLayoutDirection();
+
 
     //menu fading/scrolling effects
     bool doChildEffects;
@@ -284,6 +326,7 @@ public:
     } *mac_menu;
     OSMenuRef macMenu(OSMenuRef merge);
     void setMacMenuEnabled(bool enable = true);
+    void syncSeparatorsCollapsible(bool collapsible);
     static QHash<OSMenuRef, OSMenuRef> mergeMenuHash;
     static QHash<OSMenuRef, QMenuMergeList*> mergeMenuItemsHash;
 #endif
@@ -293,18 +336,18 @@ public:
     bool emitHighlighted;
 #endif
 
-#if defined(Q_OS_WINCE) && !defined(QT_NO_MENUBAR)
+#if defined(Q_WS_WINCE) && !defined(QT_NO_MENUBAR)
     struct QWceMenuPrivate {
         QList<QWceMenuAction*> actionItems;
         HMENU menuHandle;
         QWceMenuPrivate();
-        ~QWceMenuPrivate();        
+        ~QWceMenuPrivate();
         void addAction(QAction *, QWceMenuAction* =0);
         void addAction(QWceMenuAction *, QWceMenuAction* =0);
         void syncAction(QWceMenuAction *);
         inline void syncAction(QAction *a) { syncAction(findAction(a)); }
         void removeAction(QWceMenuAction *);
-        void rebuild(bool reCreate = false);
+        void rebuild();
         inline void removeAction(QAction *a) { removeAction(findAction(a)); }
         inline QWceMenuAction *findAction(QAction *a) {
             for(int i = 0; i < actionItems.size(); i++) {
@@ -315,10 +358,31 @@ public:
             return 0;
         }
     } *wce_menu;
-    HMENU wceMenu(bool create = false);
+    HMENU wceMenu();
     QAction* wceCommands(uint command);
 #endif
-
+#if defined(Q_WS_S60)
+    struct QSymbianMenuPrivate {
+        QList<QSymbianMenuAction*> actionItems;
+        QSymbianMenuPrivate();
+        ~QSymbianMenuPrivate();
+        void addAction(QAction *, QSymbianMenuAction* =0);
+        void addAction(QSymbianMenuAction *, QSymbianMenuAction* =0);
+        void syncAction(QSymbianMenuAction *);
+        inline void syncAction(QAction *a) { syncAction(findAction(a)); }
+        void removeAction(QSymbianMenuAction *);
+        void rebuild(bool reCreate = false);
+        inline void removeAction(QAction *a) { removeAction(findAction(a)); }
+        inline QSymbianMenuAction *findAction(QAction *a) {
+            for(int i = 0; i < actionItems.size(); i++) {
+                QSymbianMenuAction *act = actionItems[i];
+                if(a == act->action)
+                    return act;
+            }
+            return 0;
+        }
+    } *symbian_menu;
+#endif
     QPointer<QWidget> noReplayFor;
 };
 

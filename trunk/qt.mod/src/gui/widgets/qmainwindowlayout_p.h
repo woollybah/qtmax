@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,7 +61,9 @@
 #include "QtGui/qtabbar.h"
 #include "QtCore/qvector.h"
 #include "QtCore/qset.h"
+#include "QtCore/qbasictimer.h"
 #include "private/qlayoutengine_p.h"
+#include "private/qwidgetanimator_p.h"
 
 #include "qdockarealayout_p.h"
 #include "qtoolbararealayout_p.h"
@@ -88,7 +90,6 @@ typedef const struct __CFString * CFStringRef;
 QT_BEGIN_NAMESPACE
 
 class QToolBar;
-class QWidgetAnimator;
 class QRubberBand;
 
 /* This data structure represents the state of all the tool-bars and dock-widgets. It's value based
@@ -127,9 +128,9 @@ public:
     QLayoutItem *itemAt(int index, int *x) const;
     QLayoutItem *takeAt(int index, int *x);
     QList<int> indexOf(QWidget *widget) const;
-    QLayoutItem *item(QList<int> path);
-    QRect itemRect(QList<int> path) const;
-    QRect gapRect(QList<int> path) const; // ### get rid of this, use itemRect() instead
+    QLayoutItem *item(const QList<int> &path);
+    QRect itemRect(const QList<int> &path) const;
+    QRect gapRect(const QList<int> &path) const; // ### get rid of this, use itemRect() instead
 
     bool contains(QWidget *widget) const;
 
@@ -137,14 +138,14 @@ public:
     QWidget *centralWidget() const;
 
     QList<int> gapIndex(QWidget *widget, const QPoint &pos) const;
-    bool insertGap(QList<int> path, QLayoutItem *item);
-    void remove(QList<int> path);
+    bool insertGap(const QList<int> &path, QLayoutItem *item);
+    void remove(const QList<int> &path);
     void remove(QLayoutItem *item);
     void clear();
     bool isValid() const;
 
-    QLayoutItem *plug(QList<int> path);
-    QLayoutItem *unplug(QList<int> path, QMainWindowLayoutState *savedState = 0);
+    QLayoutItem *plug(const QList<int> &path);
+    QLayoutItem *unplug(const QList<int> &path, QMainWindowLayoutState *savedState = 0);
 
     void saveState(QDataStream &stream) const;
     bool checkFormat(QDataStream &stream, bool pre43);
@@ -158,12 +159,14 @@ class Q_AUTOTEST_EXPORT QMainWindowLayout : public QLayout
 public:
     QMainWindowLayoutState layoutState, savedState;
 
-    explicit QMainWindowLayout(QMainWindow *mainwindow);
+    QMainWindowLayout(QMainWindow *mainwindow, QLayout *parentLayout);
     ~QMainWindowLayout();
 
     QMainWindow::DockOptions dockOptions;
     void setDockOptions(QMainWindow::DockOptions opts);
     bool usesHIToolBar(QToolBar *toolbar) const;
+
+    void timerEvent(QTimerEvent *e);
 
     // status bar
 
@@ -243,8 +246,7 @@ public:
 
     QList<int> movingSeparator;
     QPoint movingSeparatorOrigin, movingSeparatorPos;
-    QTimer *separatorMoveTimer;
-    QVector<QLayoutStruct> separatorMoveCache;
+    QBasicTimer separatorMoveTimer;
 
     bool startSeparatorMove(const QPoint &pos);
     bool separatorMove(const QPoint &pos);
@@ -276,7 +278,7 @@ public:
 
     // animations
 
-    QWidgetAnimator *widgetAnimator;
+    QWidgetAnimator widgetAnimator;
     QList<int> currentGapPos;
     QRect currentGapRect;
     QWidget *pluggingWidget;
@@ -293,12 +295,10 @@ public:
     void applyState(QMainWindowLayoutState &newState, bool animate = true);
     void restore(bool keepSavedState = false);
     void updateHIToolBarStatus();
-
-private slots:
     void animationFinished(QWidget *widget);
-    void allAnimationsFinished();
+
+private Q_SLOTS:
 #ifndef QT_NO_DOCKWIDGET
-    void doSeparatorMove();
 #ifndef QT_NO_TABBAR
     void tabChanged();
 #endif
@@ -335,40 +335,12 @@ public:
     void cleanUpMacToolbarItems();
     void fixSizeInUnifiedToolbar(QToolBar *tb) const;
     bool useHIToolBar;
+    void syncUnifiedToolbarVisibility();
+    bool blockVisiblityCheck;
 #endif
 };
 QT_END_NAMESPACE
 
 #endif // QT_NO_MAINWINDOW
-
-QT_BEGIN_NAMESPACE
-static inline int pick(Qt::Orientation o, const QPoint &pos)
-{ return o == Qt::Horizontal ? pos.x() : pos.y(); }
-
-static inline int pick(Qt::Orientation o, const QSize &size)
-{ return o == Qt::Horizontal ? size.width() : size.height(); }
-
-static inline int &rpick(Qt::Orientation o, QPoint &pos)
-{ return o == Qt::Horizontal ? pos.rx() : pos.ry(); }
-
-static inline int &rpick(Qt::Orientation o, QSize &size)
-{ return o == Qt::Horizontal ? size.rwidth() : size.rheight(); }
-
-static inline QSizePolicy::Policy pick(Qt::Orientation o, const QSizePolicy &policy)
-{ return o == Qt::Horizontal ? policy.horizontalPolicy() : policy.verticalPolicy(); }
-
-static inline int perp(Qt::Orientation o, const QPoint &pos)
-{ return o == Qt::Vertical ? pos.x() : pos.y(); }
-
-static inline int perp(Qt::Orientation o, const QSize &size)
-{ return o == Qt::Vertical ? size.width() : size.height(); }
-
-static inline int &rperp(Qt::Orientation o, QPoint &pos)
-{ return o == Qt::Vertical ? pos.rx() : pos.ry(); }
-
-static inline int &rperp(Qt::Orientation o, QSize &size)
-{ return o == Qt::Vertical ? size.rwidth() : size.rheight(); }
-
-QT_END_NAMESPACE
 
 #endif // QDYNAMICMAINWINDOWLAYOUT_P_H

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -56,16 +56,15 @@
 #include "private/qabstractscrollarea_p.h"
 #include "private/qabstractitemmodel_p.h"
 #include "QtGui/qapplication.h"
-#include "QtCore/qdatetime.h"
 #include "QtGui/qevent.h"
 #include "QtGui/qmime.h"
 #include "QtGui/qpainter.h"
 #include "QtCore/qpair.h"
-#include "QtCore/qtimer.h"
-#include "QtCore/qtimeline.h"
 #include "QtGui/qregion.h"
 #include "QtCore/qdebug.h"
 #include "QtGui/qpainter.h"
+#include "QtCore/qbasictimer.h"
+#include "QtCore/qelapsedtimer.h"
 
 #ifndef QT_NO_ITEMVIEWS
 
@@ -87,6 +86,9 @@ struct QEditorInfo
 
 };
 
+typedef QPair<QRect, QModelIndex> QItemViewPaintPair;
+typedef QList<QItemViewPaintPair> QItemViewPaintPairs;
+
 class QEmptyModel : public QAbstractItemModel
 {
 public:
@@ -99,7 +101,7 @@ public:
     QVariant data(const QModelIndex &, int) const { return QVariant(); }
 };
 
-class Q_GUI_EXPORT QAbstractItemViewPrivate : public QAbstractScrollAreaPrivate
+class Q_AUTOTEST_EXPORT QAbstractItemViewPrivate : public QAbstractScrollAreaPrivate
 {
     Q_DECLARE_PUBLIC(QAbstractItemView)
 
@@ -109,19 +111,30 @@ public:
 
     void init();
 
-    void _q_rowsRemoved(const QModelIndex &parent, int start, int end);
-    void _q_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-    void _q_columnsRemoved(const QModelIndex &parent, int start, int end);
-    void _q_columnsInserted(const QModelIndex &parent, int start, int end);
-    void _q_modelDestroyed();
-    void _q_layoutChanged();
-    void _q_fetchMore();
+    virtual void _q_rowsRemoved(const QModelIndex &parent, int start, int end);
+    virtual void _q_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    virtual void _q_columnsRemoved(const QModelIndex &parent, int start, int end);
+    virtual void _q_columnsInserted(const QModelIndex &parent, int start, int end);
+    virtual void _q_modelDestroyed();
+    virtual void _q_layoutChanged();
+    void _q_headerDataChanged() { doDelayedItemsLayout(); }
+
+    void fetchMore();
 
     bool shouldEdit(QAbstractItemView::EditTrigger trigger, const QModelIndex &index) const;
     bool shouldForwardEvent(QAbstractItemView::EditTrigger trigger, const QEvent *event) const;
     bool shouldAutoScroll(const QPoint &pos) const;
     void doDelayedItemsLayout(int delay = 0);
     void interruptDelayedItemsLayout() const;
+
+    void startAutoScroll()
+    {   // ### it would be nice to make this into a style hint one day
+        int scrollInterval = (verticalScrollMode == QAbstractItemView::ScrollPerItem) ? 150 : 50;
+        autoScrollTimer.start(scrollInterval, q_func());
+        autoScrollCount = 0;
+    }
+    void stopAutoScroll() { autoScrollTimer.stop(); autoScrollCount = 0;}
+
 
     bool dropOn(QDropEvent *event, int *row, int *col, QModelIndex *index);
     bool droppingOnItself(QDropEvent *event, const QModelIndex &index);
@@ -139,6 +152,11 @@ public:
                                                                    const QEvent *event) const;
     virtual void selectAll(QItemSelectionModel::SelectionFlags command);
 
+    void setHoverIndex(const QPersistentModelIndex &index);
+
+    void checkMouseMove(const QPersistentModelIndex &index);
+    inline void checkMouseMove(const QPoint &pos) { checkMouseMove(q_func()->indexAt(pos)); }
+
     inline QItemSelectionModel::SelectionFlags selectionBehaviorFlags() const
     {
         switch (selectionBehavior) {
@@ -149,7 +167,8 @@ public:
     }
 
 #ifndef QT_NO_DRAGANDDROP
-    QAbstractItemView::DropIndicatorPosition position(const QPoint &pos, const QRect &rect, const QModelIndex &idx) const;
+    virtual QAbstractItemView::DropIndicatorPosition position(const QPoint &pos, const QRect &rect, const QModelIndex &idx) const;
+
     inline bool canDecode(QDropEvent *e) const {
         QStringList modelTypes = model->mimeTypes();
         const QMimeData *mime = e->mimeData();
@@ -173,7 +192,9 @@ public:
             q_func()->style()->drawPrimitive(QStyle::PE_IndicatorItemViewItemDrop, &opt, painter, q_func());
         }
     }
+
 #endif
+    virtual QItemViewPaintPairs draggablePaintPairs(const QModelIndexList &indexes, QRect *r) const;
 
     inline void releaseEditor(QWidget *editor) const {
         if (editor) {
@@ -218,7 +239,7 @@ public:
     void clearOrRemove();
     void checkPersistentEditorFocus();
 
-    QPixmap renderToPixmap(const QModelIndexList &indexes, QRect *r = 0) const;
+    QPixmap renderToPixmap(const QModelIndexList &indexes, QRect *r) const;
 
     inline QPoint offset() const {
         const Q_Q(QAbstractItemView);
@@ -298,24 +319,35 @@ public:
         }
         return ref;
     }
-    
+
     /**
      * return true if the index is registered as a QPersistentModelIndex
      */
     inline bool isPersistent(const QModelIndex &index) const
     {
-        return static_cast<QAbstractItemModelPrivate *>(model->d_ptr)->persistent.indexes.contains(index);
+        return static_cast<QAbstractItemModelPrivate *>(model->d_ptr.data())->persistent.indexes.contains(index);
     }
 
     QModelIndexList selectedDraggableIndexes() const;
 
     QStyleOptionViewItemV4 viewOptionsV4() const;
 
+    void doDelayedReset()
+    {
+        //we delay the reset of the timer because some views (QTableView)
+        //with headers can't handle the fact that the model has been destroyed
+        //all _q_modelDestroyed slots must have been called
+        if (!delayedReset.isActive())
+            delayedReset.start(0, q_func());
+    }
+
     QAbstractItemModel *model;
     QPointer<QAbstractItemDelegate> itemDelegate;
     QMap<int, QPointer<QAbstractItemDelegate> > rowDelegates;
     QMap<int, QPointer<QAbstractItemDelegate> > columnDelegates;
     QPointer<QItemSelectionModel> selectionModel;
+    QItemSelectionModel::SelectionFlag ctrlDragSelectionFlag;
+    bool noSelectionOnMousePress;
 
     QAbstractItemView::SelectionMode selectionMode;
     QAbstractItemView::SelectionBehavior selectionBehavior;
@@ -329,8 +361,8 @@ public:
     Qt::KeyboardModifiers pressedModifiers;
     QPoint pressedPosition;
     bool pressedAlreadySelected;
-    
-    //forces the next mouseMoveEvent to send the viewportEntered signal 
+
+    //forces the next mouseMoveEvent to send the viewportEntered signal
     //if the mouse is over the viewport and not over an item
     bool viewportEnteredNeeded;
 
@@ -350,16 +382,22 @@ public:
     QAbstractItemView::DragDropMode dragDropMode;
     bool overwrite;
     QAbstractItemView::DropIndicatorPosition dropIndicatorPosition;
+    Qt::DropAction defaultDropAction;
+#endif
+
+#ifdef QT_SOFTKEYS_ENABLED
+    QAction *doneSoftKey;
 #endif
 
     QString keyboardInput;
-    QTime keyboardInputTime;
+    QElapsedTimer keyboardInputTime;
 
     bool autoScroll;
     QBasicTimer autoScrollTimer;
     int autoScrollMargin;
     int autoScrollCount;
     bool shouldScrollToCurrentOnShow; //used to know if we should scroll to current on show event
+    bool shouldClearStatusTip; //if there is a statustip currently shown that need to be cleared when leaving.
 
     bool alternatingColors;
 
@@ -372,7 +410,7 @@ public:
     QBasicTimer updateTimer;
     QBasicTimer delayedEditing;
     QBasicTimer delayedAutoScroll; //used when an item is clicked
-    QTimeLine timeline;
+    QBasicTimer delayedReset;
 
     QAbstractItemView::ScrollMode verticalScrollMode;
     QAbstractItemView::ScrollMode horizontalScrollMode;
@@ -381,9 +419,11 @@ public:
 
     bool wrapItemText;
     mutable bool delayedPendingLayout;
+    bool moveCursorUpdatedView;
 
 private:
     mutable QBasicTimer delayedLayout;
+    mutable QBasicTimer fetchMoreTimer;
 };
 
 QT_BEGIN_INCLUDE_NAMESPACE

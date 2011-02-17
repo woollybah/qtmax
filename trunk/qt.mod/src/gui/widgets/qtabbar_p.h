@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -58,9 +58,8 @@
 
 #include <qicon.h>
 #include <qtoolbutton.h>
-#include <qtimeline.h>
-#include <qhash.h>
 #include <qdebug.h>
+#include <qvariantanimation.h>
 
 #ifndef QT_NO_TABBAR
 
@@ -75,9 +74,14 @@ class QTabBarPrivate  : public QWidgetPrivate
     Q_DECLARE_PUBLIC(QTabBar)
 public:
     QTabBarPrivate()
-        :currentIndex(-1), pressedIndex(-1),
-         shape(QTabBar::RoundedNorth),
-         layoutDirty(false), drawBase(true), scrollOffset(0), expanding(true), closeButtonOnTabs(false), selectionBehaviorOnRemove(QTabBar::SelectRightTab), paintWithOffsets(true), movable(false), dragInProgress(false), documentMode(false), movingTab(0) {}
+        :currentIndex(-1), pressedIndex(-1), shape(QTabBar::RoundedNorth), layoutDirty(false),
+        drawBase(true), scrollOffset(0), elideModeSetByUser(false), useScrollButtonsSetByUser(false), expanding(true), closeButtonOnTabs(false),
+        selectionBehaviorOnRemove(QTabBar::SelectRightTab), paintWithOffsets(true), movable(false),
+        dragInProgress(false), documentMode(false), movingTab(0)
+#ifdef Q_WS_MAC
+        , previousPressedIndex(-1)
+#endif
+        {}
 
     int currentIndex;
     int pressedIndex;
@@ -88,16 +92,13 @@ public:
 
     struct Tab {
         inline Tab(const QIcon &ico, const QString &txt)
-            : enabled(true)
-            , shortcutId(0)
-            , text(txt)
-            , icon(ico)
-            , leftWidget(0)
-            , rightWidget(0)
-            , lastTab(-1)
-            , timeLine(0)
-            , dragOffset(0)
+            : enabled(true) , shortcutId(0), text(txt), icon(ico),
+            leftWidget(0), rightWidget(0), lastTab(-1), dragOffset(0)
+#ifndef QT_NO_ANIMATION
+            , animation(0)
+#endif //QT_NO_ANIMATION
         {}
+        bool operator==(const Tab &other) const { return &other == this; }
         bool enabled;
         int shortcutId;
         QString text;
@@ -117,21 +118,39 @@ public:
         QWidget *leftWidget;
         QWidget *rightWidget;
         int lastTab;
-
-        QTimeLine *timeLine;
         int dragOffset;
 
-        void makeTimeLine(QWidget *q) {
-            if (timeLine)
-                return;
-            timeLine = new QTimeLine(ANIMATION_DURATION, q);
-            q->connect(timeLine, SIGNAL(frameChanged(int)), q, SLOT(_q_moveTab(int)));
-            q->connect(timeLine, SIGNAL(finished()), q, SLOT(_q_moveTabFinished()));
-        }
+#ifndef QT_NO_ANIMATION
+        ~Tab() { delete animation; }
+        struct TabBarAnimation : public QVariantAnimation {
+            TabBarAnimation(Tab *t, QTabBarPrivate *_priv) : tab(t), priv(_priv)
+            { setEasingCurve(QEasingCurve::InOutQuad); }
 
+            void updateCurrentValue(const QVariant &current)
+            { priv->moveTab(priv->tabList.indexOf(*tab), current.toInt()); }
+
+            void updateState(State, State newState)
+            { if (newState == Stopped) priv->moveTabFinished(priv->tabList.indexOf(*tab)); }
+        private:
+            //these are needed for the callbacks
+            Tab *tab;
+            QTabBarPrivate *priv;
+        } *animation;
+
+        void startAnimation(QTabBarPrivate *priv, int duration) {
+            if (!animation)
+                animation = new TabBarAnimation(this, priv);
+            animation->setStartValue(dragOffset);
+            animation->setEndValue(0);
+            animation->setDuration(duration);
+            animation->start();
+        }
+#else
+        void startAnimation(QTabBarPrivate *priv, int duration)
+        { Q_UNUSED(duration); priv->moveTabFinished(priv->tabList.indexOf(*this)); }
+#endif //QT_NO_ANIMATION
     };
     QList<Tab> tabList;
-    QHash<QTimeLine*, int> animations;
 
     int calculateNewPosition(int from, int to, int index) const;
     void slide(int from, int to);
@@ -144,6 +163,7 @@ public:
     int indexAtPos(const QPoint &p) const;
 
     inline bool validIndex(int index) const { return index >= 0 && index < tabList.count(); }
+    void setCurrentNextEnabledIndex(int offset);
 
     QSize minimumTabSizeHint(int index);
 
@@ -152,14 +172,13 @@ public:
 
     void _q_scrollTabs();
     void _q_closeTab();
-    void _q_moveTab(int);
-    void _q_moveTabFinished();
-    void _q_moveTabFinished(int offset);
+    void moveTab(int index, int offset);
+    void moveTabFinished(int index);
     QRect hoverRect;
 
     void refresh();
     void layoutTabs();
-    void layoutWidgets(int index = -1);
+    void layoutWidgets(int start = 0);
     void layoutTab(int index);
     void updateMacBorderMetrics();
     void setupMovableTab();
@@ -167,7 +186,9 @@ public:
     void makeVisible(int index);
     QSize iconSize;
     Qt::TextElideMode elideMode;
+    bool elideModeSetByUser;
     bool useScrollButtons;
+    bool useScrollButtonsSetByUser;
 
     bool expanding;
     bool closeButtonOnTabs;
@@ -180,7 +201,9 @@ public:
     bool documentMode;
 
     QWidget *movingTab;
-
+#ifdef Q_WS_MAC
+    int previousPressedIndex;
+#endif
     // shared by tabwidget and qtabbar
     static void initStyleBaseOption(QStyleOptionTabBarBaseV2 *optTabBase, QTabBar *tabbar, QSize size)
     {

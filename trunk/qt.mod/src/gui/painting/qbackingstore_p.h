@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -91,11 +91,18 @@ public:
     inline bool isDirty() const
     {
         return !(dirtyWidgets.isEmpty() && dirty.isEmpty() && !hasDirtyFromPreviousSync
+                 && !fullUpdatePending
 #if defined(Q_WS_QWS) && !defined(QT_NO_QWS_MANAGER)
                  && !hasDirtyWindowDecoration()
 #endif
                 );
     }
+
+    // ### Qt 4.6: Merge into a template function (after MSVC isn't supported anymore).
+    void markDirty(const QRegion &rgn, QWidget *widget, bool updateImmediately = false,
+                   bool invalidateBuffer = false);
+    void markDirty(const QRect &rect, QWidget *widget, bool updateImmediately = false,
+                   bool invalidateBuffer = false);
 
 private:
     QWidget *tlw;
@@ -109,7 +116,8 @@ private:
 #ifdef Q_BACKINGSTORE_SUBSURFACES
     QList<QWindowSurface*> subSurfaces;
 #endif
-    bool hasDirtyFromPreviousSync;
+    uint hasDirtyFromPreviousSync : 1;
+    uint fullUpdatePending : 1;
 
     QPoint tlwOffset;
 
@@ -126,11 +134,6 @@ private:
     QRegion dirtyRegion(QWidget *widget = 0) const;
     QRegion staticContents(QWidget *widget = 0, const QRect &withinClipRect = QRect()) const;
 
-    // ### Qt 4.6: Merge into a template function (after MSVC isn't supported anymore).
-    void markDirty(const QRegion &rgn, QWidget *widget, bool updateImmediately = false,
-                   bool invalidateBuffer = false);
-    void markDirty(const QRect &rect, QWidget *widget, bool updateImmediately = false,
-                   bool invalidateBuffer = false);
     void markDirtyOnScreen(const QRegion &dirtyOnScreen, QWidget *widget, const QPoint &topLevelOffset);
 
     void removeDirtyWidget(QWidget *w);
@@ -144,9 +147,15 @@ private:
     inline void addDirtyWidget(QWidget *widget, const QRegion &rgn)
     {
         if (widget && !widget->d_func()->inDirtyList && !widget->data->in_destructor) {
-            widget->d_func()->dirty = rgn;
+            QWidgetPrivate *widgetPrivate = widget->d_func();
+#ifndef QT_NO_GRAPHICSEFFECT
+            if (widgetPrivate->graphicsEffect)
+                widgetPrivate->dirty = widgetPrivate->effectiveRectFor(rgn.boundingRect());
+            else
+#endif //QT_NO_GRAPHICSEFFECT
+                widgetPrivate->dirty = rgn;
             dirtyWidgets.append(widget);
-            widget->d_func()->inDirtyList = true;
+            widgetPrivate->inDirtyList = true;
         }
     }
 

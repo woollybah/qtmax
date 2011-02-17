@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -81,8 +81,8 @@ class QVectorPathConverter;
 class QVectorPathConverter
 {
 public:
-    QVectorPathConverter(const QVector<QPainterPath::Element> &path, uint fillRule)
-        : pathData(path, fillRule),
+    QVectorPathConverter(const QVector<QPainterPath::Element> &path, uint fillRule, bool convex)
+        : pathData(path, fillRule, convex),
           path(pathData.points.data(), path.size(),
                pathData.elements.data(), pathData.flags) {}
 
@@ -91,25 +91,39 @@ public:
     }
 
     struct QVectorPathData {
-        QVectorPathData(const QVector<QPainterPath::Element> &path, uint fillRule)
+        QVectorPathData(const QVector<QPainterPath::Element> &path, uint fillRule, bool convex)
             : elements(path.size()),
               points(path.size() * 2),
               flags(0)
         {
             int ptsPos = 0;
+            bool isLines = true;
             for (int i=0; i<path.size(); ++i) {
                 const QPainterPath::Element &e = path.at(i);
                 elements[i] = e.type;
                 points[ptsPos++] = e.x;
                 points[ptsPos++] = e.y;
                 if (e.type == QPainterPath::CurveToElement)
-                    flags |= QVectorPath::CurvedShapeHint;
+                    flags |= QVectorPath::CurvedShapeMask;
+
+                // This is to check if the path contains only alternating lineTo/moveTo,
+                // in which case we can set the LinesHint in the path. MoveTo is 0 and
+                // LineTo is 1 so the i%2 gets us what we want cheaply.
+                isLines = isLines && e.type == (QPainterPath::ElementType) (i%2);
             }
 
             if (fillRule == Qt::WindingFill)
                 flags |= QVectorPath::WindingFill;
             else
                 flags |= QVectorPath::OddEvenFill;
+
+            if (isLines)
+                flags |= QVectorPath::LinesShapeMask;
+            else {
+                flags |= QVectorPath::AreaShapeMask;
+                if (!convex)
+                    flags |= QVectorPath::NonConvexShapeMask;
+            }
 
         }
         QVarLengthArray<QPainterPath::ElementType> elements;
@@ -124,23 +138,28 @@ private:
     Q_DISABLE_COPY(QVectorPathConverter)
 };
 
-class Q_GUI_EXPORT QPainterPathData : public QPainterPathPrivate
+class QPainterPathData : public QPainterPathPrivate
 {
 public:
     QPainterPathData() :
-        cStart(0), fillRule(Qt::OddEvenFill),
-        dirtyBounds(false), dirtyControlBounds(false),
+        cStart(0),
+        fillRule(Qt::OddEvenFill),
+        dirtyBounds(false),
+        dirtyControlBounds(false),
         pathConverter(0)
     {
         ref = 1;
         require_moveTo = false;
+        convex = false;
     }
 
     QPainterPathData(const QPainterPathData &other) :
         QPainterPathPrivate(), cStart(other.cStart), fillRule(other.fillRule),
-        dirtyBounds(other.dirtyBounds), bounds(other.bounds),
-        dirtyControlBounds(other.dirtyControlBounds),
+        bounds(other.bounds),
         controlBounds(other.controlBounds),
+        dirtyBounds(other.dirtyBounds),
+        dirtyControlBounds(other.dirtyControlBounds),
+        convex(other.convex),
         pathConverter(0)
     {
         ref = 1;
@@ -158,24 +177,61 @@ public:
 
     const QVectorPath &vectorPath() {
         if (!pathConverter)
-            pathConverter = new QVectorPathConverter(elements, fillRule);
+            pathConverter = new QVectorPathConverter(elements, fillRule, convex);
         return pathConverter->path;
     }
 
     int cStart;
     Qt::FillRule fillRule;
 
-    bool require_moveTo;
-
-    bool   dirtyBounds;
     QRectF bounds;
-    bool   dirtyControlBounds;
     QRectF controlBounds;
+
+    uint require_moveTo : 1;
+    uint dirtyBounds : 1;
+    uint dirtyControlBounds : 1;
+    uint convex : 1;
 
     QVectorPathConverter *pathConverter;
 };
 
 
+inline const QPainterPath QVectorPath::convertToPainterPath() const
+{
+        QPainterPath path;
+        path.ensureData();
+        QPainterPathData *data = path.d_func();
+        data->elements.reserve(m_count);
+        int index = 0;
+        data->elements[0].x = m_points[index++];
+        data->elements[0].y = m_points[index++];
+
+        if (m_elements) {
+            data->elements[0].type = m_elements[0];
+            for (int i=1; i<m_count; ++i) {
+                QPainterPath::Element element;
+                element.x = m_points[index++];
+                element.y = m_points[index++];
+                element.type = m_elements[i];
+                data->elements << element;
+            }
+        } else {
+            data->elements[0].type = QPainterPath::MoveToElement;
+            for (int i=1; i<m_count; ++i) {
+                QPainterPath::Element element;
+                element.x = m_points[index++];
+                element.y = m_points[index++];
+                element.type = QPainterPath::LineToElement;
+                data->elements << element;
+            }
+        }
+
+        if (m_hints & OddEvenFill)
+            data->fillRule = Qt::OddEvenFill;
+        else
+            data->fillRule = Qt::WindingFill;
+        return path;
+}
 
 void Q_GUI_EXPORT qt_find_ellipse_coords(const QRectF &r, qreal angle, qreal length,
                                          QPointF* startPoint, QPointF *endPoint);

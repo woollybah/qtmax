@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -54,6 +54,8 @@
 //
 
 #include "private/qabstractitemview_p.h"
+#include <QtCore/qvariantanimation.h>
+#include <QtCore/qabstractitemmodel.h>
 
 #ifndef QT_NO_TREEVIEW
 
@@ -61,14 +63,20 @@ QT_BEGIN_NAMESPACE
 
 struct QTreeViewItem
 {
-    QTreeViewItem() : expanded(false), spanning(false), total(0), level(0), height(0) {}
+    QTreeViewItem() : parentItem(-1), expanded(false), spanning(false), hasChildren(false),
+                      hasMoreSiblings(false), total(0), level(0), height(0) {}
     QModelIndex index; // we remove items whenever the indexes are invalidated
+    int parentItem; // parent item index in viewItems
     uint expanded : 1;
     uint spanning : 1;
-    uint total : 30; // total number of children visible
+    uint hasChildren : 1; // if the item has visible children (even if collapsed)
+    uint hasMoreSiblings : 1;
+    uint total : 28; // total number of children visible
     uint level : 16; // indentation
     int height : 16; // row height
 };
+
+Q_DECLARE_TYPEINFO(QTreeViewItem, Q_MOVABLE_TYPE);
 
 class QTreeViewPrivate : public QAbstractItemViewPrivate
 {
@@ -81,46 +89,45 @@ public:
           uniformRowHeights(false), rootDecoration(true),
           itemsExpandable(true), sortingEnabled(false),
           expandsOnDoubleClick(true),
-          allColumnsShowFocus(false),
+          allColumnsShowFocus(false), current(0), spanning(false),
           animationsEnabled(false), columnResizeTimerID(0),
-          autoExpandDelay(-1), hoverBranch(-1), geometryRecursionBlock(false) {}
+          autoExpandDelay(-1), hoverBranch(-1), geometryRecursionBlock(false), hasRemovedItems(false) {}
 
     ~QTreeViewPrivate() {}
     void initialize();
 
-    struct AnimatedOperation
+    QItemViewPaintPairs draggablePaintPairs(const QModelIndexList &indexes, QRect *r) const;
+
+#ifndef QT_NO_ANIMATION
+    struct AnimatedOperation : public QVariantAnimation
     {
-        enum Type { Expand, Collapse };
         int item;
-        int top;
-        int duration;
-        Type type;
         QPixmap before;
         QPixmap after;
-    };
+        QWidget *viewport;
+        AnimatedOperation() : item(0) { setEasingCurve(QEasingCurve::InOutQuad); }
+        int top() const { return startValue().toInt(); }
+        QRect rect() const { QRect rect = viewport->rect(); rect.moveTop(top()); return rect; }
+        void updateCurrentValue(const QVariant &) { viewport->update(rect()); }
+        void updateState(State state, State) { if (state == Stopped) before = after = QPixmap(); }
+    } animatedOperation;
+    void prepareAnimatedOperation(int item, QVariantAnimation::Direction d);
+    void beginAnimatedOperation();
+    void drawAnimatedOperation(QPainter *painter) const;
+    QPixmap renderTreeToPixmapForAnimation(const QRect &rect) const;
+    void _q_endAnimatedOperation();
+#endif //QT_NO_ANIMATION
 
     void expand(int item, bool emitSignal);
     void collapse(int item, bool emitSignal);
 
-    void prepareAnimatedOperation(int item, AnimatedOperation::Type type);
-    void beginAnimatedOperation();
-    void _q_endAnimatedOperation();
-    void drawAnimatedOperation(QPainter *painter) const;
-    QPixmap renderTreeToPixmapForAnimation(const QRect &rect) const;
-
-    inline QRect animationRect() const
-        { return QRect(0, animatedOperation.top, viewport->width(),
-                       viewport->height() - animatedOperation.top); }
-
-    void _q_currentChanged(const QModelIndex&, const QModelIndex&);
     void _q_columnsAboutToBeRemoved(const QModelIndex &, int, int);
     void _q_columnsRemoved(const QModelIndex &, int, int);
     void _q_modelAboutToBeReset();
-    void _q_animate();
     void _q_sortIndicatorChanged(int column, Qt::SortOrder order);
     void _q_modelDestroyed();
 
-    void layout(int item);
+    void layout(int item, bool recusiveExpanding = false, bool afterIsUninitialized = false);
 
     int pageUp(int item) const;
     int pageDown(int item) const;
@@ -133,11 +140,16 @@ public:
     int viewIndex(const QModelIndex &index) const;
     QModelIndex modelIndex(int i, int column = 0) const;
 
+    void insertViewItems(int pos, int count, const QTreeViewItem &viewItem);
+    void removeViewItems(int pos, int count);
+#if 0
+    bool checkViewItems() const;
+#endif
+
     int firstVisibleItem(int *offset = 0) const;
     int columnAt(int x) const;
     bool hasVisibleChildren( const QModelIndex& parent) const;
 
-    void relayout(const QModelIndex &parent);
     bool expandOrCollapseItemAtPos(const QPoint &pos);
 
     void updateScrollBars();
@@ -152,8 +164,6 @@ public:
     QPair<int,int> startAndEndColumns(const QRect &rect) const;
 
     void updateChildCount(const int parentItem, const int delta);
-    void rowsRemoved(const QModelIndex &parent,
-                     int start, int end, bool before);
 
     void paintAlternatingRowColors(QPainter *painter, QStyleOptionViewItemV4 *option, int y, int bottom) const;
 
@@ -177,8 +187,6 @@ public:
 
     // used when expanding and collapsing items
     QSet<QPersistentModelIndex> expandedIndexes;
-    QStack<bool> expandParent;
-    AnimatedOperation animatedOperation;
     bool animationsEnabled;
 
     inline bool storeExpanded(const QPersistentModelIndex &idx) {
@@ -231,6 +239,9 @@ public:
 
     // used for blocking recursion when calling setViewportMargins from updateGeometries
     bool geometryRecursionBlock;
+
+    // If we should clean the set
+    bool hasRemovedItems;
 };
 
 QT_END_NAMESPACE

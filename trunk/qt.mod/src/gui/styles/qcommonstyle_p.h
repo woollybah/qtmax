@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,25 +61,6 @@ QT_BEGIN_NAMESPACE
 //
 
 class QStringList;
-
-#ifdef Q_WS_X11
-class QIconTheme
-{
-public:
-    QIconTheme(QHash <int, QString> dirList, QStringList parents) :
-          _dirList(dirList), _parents(parents), _valid(true){ }
-    QIconTheme() : _valid(false){ }
-
-    QHash <int, QString> dirList() {return _dirList;}
-    QStringList parents() {return _parents;}
-    bool isValid() {return _valid;}
-
-private:
-    QHash <int, QString> _dirList;
-    QStringList _parents;
-    bool _valid;
-};
-#endif
 
 // Private class
 class QCommonStylePrivate : public QStylePrivate
@@ -122,19 +103,9 @@ public:
     }
 #endif
     mutable QIcon tabBarcloseButtonIcon;
-
-//icon detection on X11
-#ifdef Q_WS_X11
-    void lookupIconTheme() const;
-    QIcon createIcon(const QString &) const;
-    QPixmap findIcon(int size, const QString &) const;
-    QPixmap findIconHelper(int size, const QString &, const QString &, QStringList &visited) const;
-    QIconTheme parseIndexFile(const QString &themeName) const;
-    mutable QString themeName;
-    mutable QStringList iconDirs;
-    mutable QHash <QString, QIconTheme> themeList;
+#ifndef QT_NO_TABBAR
+    void tabLayout(const QStyleOptionTabV3 *opt, const QWidget *widget, QRect *textRect, QRect *pixmapRect) const;
 #endif
-
 };
 
 QT_END_NAMESPACE

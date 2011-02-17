@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,6 +61,7 @@ class QVariant;
 class Q_GUI_EXPORT QMatrix // 2D transform matrix
 {
 public:
+    inline explicit QMatrix(Qt::Initialization) {}
     QMatrix();
     QMatrix(qreal m11, qreal m12, qreal m21, qreal m22,
             qreal dx, qreal dy);
@@ -99,8 +100,11 @@ public:
     QMatrix &shear(qreal sh, qreal sv);
     QMatrix &rotate(qreal a);
 
-    bool isInvertible() const { return !qFuzzyCompare(_m11*_m22 - _m12*_m21 + 1, 1); }
-    qreal det() const { return _m11*_m22 - _m12*_m21; }
+    bool isInvertible() const { return !qFuzzyIsNull(_m11*_m22 - _m12*_m21); }
+    qreal determinant() const { return _m11*_m22 - _m12*_m21; }
+#ifdef QT_DEPRECATED
+    QT_DEPRECATED qreal det() const { return _m11*_m22 - _m12*_m21; }
+#endif
 
     QMatrix inverted(bool *invertible = 0) const;
 
@@ -121,6 +125,20 @@ public:
 #endif
 
 private:
+    inline QMatrix(bool)
+            : _m11(1.)
+            , _m12(0.)
+            , _m21(0.)
+            , _m22(1.)
+            , _dx(0.)
+            , _dy(0.) {}
+    inline QMatrix(qreal am11, qreal am12, qreal am21, qreal am22, qreal adx, qreal ady, bool)
+            : _m11(am11)
+            , _m12(am12)
+            , _m21(am21)
+            , _m22(am22)
+            , _dx(adx)
+            , _dy(ady) {}
     friend class QTransform;
     qreal _m11, _m12;
     qreal _m21, _m22;
@@ -147,16 +165,29 @@ Q_GUI_EXPORT QPainterPath operator *(const QPainterPath &p, const QMatrix &m);
 
 inline bool QMatrix::isIdentity() const
 {
-    return qFuzzyCompare(_m11, 1) && qFuzzyCompare(_m22, 1) && qFuzzyCompare(_m12 + 1, 1)
-           && qFuzzyCompare(_m21 + 1, 1) && qFuzzyCompare(_dx + 1, 1) && qFuzzyCompare(_dy + 1, 1);
+    return qFuzzyIsNull(_m11 - 1) && qFuzzyIsNull(_m22 - 1) && qFuzzyIsNull(_m12)
+           && qFuzzyIsNull(_m21) && qFuzzyIsNull(_dx) && qFuzzyIsNull(_dy);
 }
+
+inline bool qFuzzyCompare(const QMatrix& m1, const QMatrix& m2)
+{
+    return qFuzzyCompare(m1.m11(), m2.m11())
+        && qFuzzyCompare(m1.m12(), m2.m12())
+        && qFuzzyCompare(m1.m21(), m2.m21())
+        && qFuzzyCompare(m1.m22(), m2.m22())
+        && qFuzzyCompare(m1.dx(), m2.dx())
+        && qFuzzyCompare(m1.dy(), m2.dy());
+}
+
 
 /*****************************************************************************
  QMatrix stream functions
  *****************************************************************************/
 
+#ifndef QT_NO_DATASTREAM
 Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QMatrix &);
 Q_GUI_EXPORT QDataStream &operator>>(QDataStream &, QMatrix &);
+#endif
 
 #ifndef QT_NO_DEBUG_STREAM
 Q_GUI_EXPORT QDebug operator<<(QDebug, const QMatrix &);

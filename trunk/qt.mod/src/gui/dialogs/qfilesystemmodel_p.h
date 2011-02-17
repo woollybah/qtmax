@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -84,7 +84,7 @@ public:
     {
     public:
         QFileSystemNode(const QString &filename = QString(), QFileSystemNode *p = 0)
-            : fileName(filename), populatedChildren(false), isVisible(false), parent(p), info(0) {}
+            : fileName(filename), populatedChildren(false), isVisible(false), dirtyChildrenIndex(-1), parent(p), info(0) {}
         ~QFileSystemNode() {
             QHash<QString, QFileSystemNode*>::const_iterator i = children.constBegin();
             while (i != children.constEnd()) {
@@ -97,6 +97,9 @@ public:
         }
 
         QString fileName;
+#if defined(Q_OS_WIN) && !defined(Q_OS_WINCE)
+        QString volumeName;
+#endif
 
         inline qint64 size() const { if (info && !info->isDir()) return info->size(); return 0; }
         inline QString type() const { if (info) return info->displayType; return QLatin1String(""); }
@@ -194,6 +197,7 @@ public:
         bool isVisible;
         QHash<QString,QFileSystemNode *> children;
         QList<QString> visibleChildren;
+        int dirtyChildrenIndex;
         QFileSystemNode *parent;
 
 
@@ -237,7 +241,15 @@ public:
     void sortChildren(int column, const QModelIndex &parent);
 
     inline int translateVisibleLocation(QFileSystemNode *parent, int row) const {
-        return (sortOrder == Qt::AscendingOrder) ? row : parent->visibleChildren.count() - row - 1;
+        if (sortOrder != Qt::AscendingOrder) {
+            if (parent->dirtyChildrenIndex == -1)
+                return parent->visibleChildren.count() - row - 1;
+
+            if (row < parent->dirtyChildrenIndex)
+                return parent->dirtyChildrenIndex - row - 1;
+        }
+
+        return row;
     }
 
     inline static QString myComputer() {
@@ -269,6 +281,7 @@ public:
 
     QIcon icon(const QModelIndex &index) const;
     QString name(const QModelIndex &index) const;
+    QString displayName(const QModelIndex &index) const;
     QString filePath(const QModelIndex &index) const;
     QString size(const QModelIndex &index) const;
     static QString size(qint64 bytes);

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -47,6 +47,7 @@
 #include <QtCore/qrect.h>
 #include <QtCore/qline.h>
 #include <QtCore/qvector.h>
+#include <QtCore/qscopedpointer.h>
 
 QT_BEGIN_HEADER
 
@@ -56,6 +57,7 @@ QT_MODULE(Gui)
 
 class QFont;
 class QPainterPathPrivate;
+struct QPainterPathPrivateDeleter;
 class QPainterPathData;
 class QPainterPathStrokerPrivate;
 class QPolygonF;
@@ -147,6 +149,12 @@ public:
     bool contains(const QRectF &rect) const;
     bool intersects(const QRectF &rect) const;
 
+    void translate(qreal dx, qreal dy);
+    inline void translate(const QPointF &offset);
+
+    QPainterPath translated(qreal dx, qreal dy) const;
+    inline QPainterPath translated(const QPointF &offset) const;
+
     QRectF boundingRect() const;
     QRectF controlPointRect() const;
 
@@ -195,7 +203,7 @@ public:
     QPainterPath &operator-=(const QPainterPath &other);
 
 private:
-    QPainterPathPrivate *d_ptr;
+    QScopedPointer<QPainterPathPrivate, QPainterPathPrivateDeleter> d_ptr;
 
     inline void ensureData() { if (!d_ptr) ensureData_helper(); }
     void ensureData_helper();
@@ -205,13 +213,14 @@ private:
     void computeBoundingRect() const;
     void computeControlPointRect() const;
 
-    QPainterPathData *d_func() const { return reinterpret_cast<QPainterPathData *>(d_ptr); }
+    QPainterPathData *d_func() const { return reinterpret_cast<QPainterPathData *>(d_ptr.data()); }
 
     friend class QPainterPathData;
     friend class QPainterPathStroker;
     friend class QPainterPathStrokerPrivate;
     friend class QMatrix;
     friend class QTransform;
+    friend class QVectorPath;
     friend Q_GUI_EXPORT const QVectorPath &qtVectorPathForPath(const QPainterPath &);
 
 #ifndef QT_NO_DATASTREAM
@@ -229,6 +238,8 @@ public:
     friend class QPainterPathStrokerPrivate;
     friend class QMatrix;
     friend class QTransform;
+    friend class QVectorPath;
+    friend struct QPainterPathPrivateDeleter;
 #ifndef QT_NO_DATASTREAM
     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPainterPath &);
     friend Q_GUI_EXPORT QDataStream &operator>>(QDataStream &, QPainterPath &);
@@ -277,9 +288,11 @@ public:
     QPainterPath createStroke(const QPainterPath &path) const;
 
 private:
+    Q_DISABLE_COPY(QPainterPathStroker)
+
     friend class QX11PaintEngine;
 
-    QPainterPathStrokerPrivate *d_ptr;
+    QScopedPointer<QPainterPathStrokerPrivate> d_ptr;
 };
 
 inline void QPainterPath::moveTo(qreal x, qreal y)
@@ -292,9 +305,9 @@ inline void QPainterPath::lineTo(qreal x, qreal y)
     lineTo(QPointF(x, y));
 }
 
-inline void QPainterPath::arcTo(qreal x, qreal y, qreal w, qreal h, qreal startAngle, qreal arcLenght)
+inline void QPainterPath::arcTo(qreal x, qreal y, qreal w, qreal h, qreal startAngle, qreal arcLength)
 {
-    arcTo(QRectF(x, y, w, h), startAngle, arcLenght);
+    arcTo(QRectF(x, y, w, h), startAngle, arcLength);
 }
 
 inline void QPainterPath::arcMoveTo(qreal x, qreal y, qreal w, qreal h, qreal angle)
@@ -364,6 +377,12 @@ inline void QPainterPath::addText(qreal x, qreal y, const QFont &f, const QStrin
 {
     addText(QPointF(x, y), f, text);
 }
+
+inline void QPainterPath::translate(const QPointF &offset)
+{ translate(offset.x(), offset.y()); }
+
+inline QPainterPath QPainterPath::translated(const QPointF &offset) const
+{ return translated(offset.x(), offset.y()); }
 
 inline bool QPainterPath::isEmpty() const
 {

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -58,9 +58,6 @@
 #include "private/qpaintengine_p.h"
 #include "private/qpolygonclipper_p.h"
 #include "QtCore/qhash.h"
-#ifndef QT_MAC_NO_QUICKDRAW
-#include <private/qwidget_p.h>
-#endif
 
 typedef struct CGColorSpace *CGColorSpaceRef;
 QT_BEGIN_NAMESPACE
@@ -68,108 +65,6 @@ QT_BEGIN_NAMESPACE
 extern int qt_defaultDpi();
 extern int qt_defaultDpiX();
 extern int qt_defaultDpiY();
-
-#ifndef QT_MAC_NO_QUICKDRAW
-class QMacSavedPortInfo
-{
-    RgnHandle clip;
-    GWorldPtr world;
-    GDHandle handle;
-    PenState pen; //go pennstate
-    RGBColor back, fore;
-    bool valid_gworld;
-    void init();
-
-public:
-    inline QMacSavedPortInfo() { init(); }
-    inline QMacSavedPortInfo(QPaintDevice *pd) { init(); setPaintDevice(pd); }
-    inline QMacSavedPortInfo(QPaintDevice *pd, const QRect &r)
-        { init(); setPaintDevice(pd); setClipRegion(r); }
-    inline QMacSavedPortInfo(QPaintDevice *pd, const QRegion &r)
-        { init(); setPaintDevice(pd); setClipRegion(r); }
-    ~QMacSavedPortInfo();
-    static inline bool setClipRegion(const QRect &r);
-    static inline bool setClipRegion(const QRegion &r);
-    static inline bool setPaintDevice(QPaintDevice *);
-};
-
-inline bool
-QMacSavedPortInfo::setClipRegion(const QRect &rect)
-{
-    Rect r;
-    SetRect(&r, rect.x(), rect.y(), rect.right()+1, rect.bottom()+1);
-    ClipRect(&r);
-    return true;
-}
-
-inline bool
-QMacSavedPortInfo::setClipRegion(const QRegion &r)
-{
-    if(r.isEmpty())
-        return setClipRegion(QRect());
-    QMacSmartQuickDrawRegion rgn(r.toQDRgn());
-    SetClip(rgn);
-    return true;
-}
-
-inline bool
-QMacSavedPortInfo::setPaintDevice(QPaintDevice *pd)
-{
-    if(!pd)
-        return false;
-    bool ret = true;
-    extern GrafPtr qt_mac_qd_context(const QPaintDevice *); // qpaintdevice_mac.cpp
-    if(pd->devType() == QInternal::Widget)
-        SetPortWindowPort(qt_mac_window_for(static_cast<QWidget*>(pd)));
-    else if(pd->devType() == QInternal::Pixmap || pd->devType() == QInternal::Printer)
-        SetGWorld((GrafPtr)qt_mac_qd_context(pd), 0); //set the gworld
-    return ret;
-}
-
-inline void
-QMacSavedPortInfo::init()
-{
-    GetBackColor(&back);
-    GetForeColor(&fore);
-    GetGWorld(&world, &handle);
-    valid_gworld = true;
-    clip = NewRgn();
-    GetClip(clip);
-    GetPenState(&pen);
-}
-
-inline QMacSavedPortInfo::~QMacSavedPortInfo()
-{
-    bool set_state = false;
-    if(valid_gworld) {
-        set_state = IsValidPort(world);
-        if(set_state)
-            SetGWorld(world,handle); //always do this one first
-    } else {
-        setPaintDevice(qt_mac_safe_pdev);
-    }
-    if(set_state) {
-        SetClip(clip);
-        SetPenState(&pen);
-        RGBForeColor(&fore);
-        RGBBackColor(&back);
-    }
-    DisposeRgn(clip);
-}
-#else
-class QMacSavedPortInfo
-{
-public:
-    inline QMacSavedPortInfo() { }
-    inline QMacSavedPortInfo(QPaintDevice *) { }
-    inline QMacSavedPortInfo(QPaintDevice *, const QRect &) { }
-    inline QMacSavedPortInfo(QPaintDevice *, const QRegion &) { }
-    ~QMacSavedPortInfo() { }
-    static inline bool setClipRegion(const QRect &) { return false; }
-    static inline bool setClipRegion(const QRegion &) { return false; }
-    static inline bool setPaintDevice(QPaintDevice *) { return false; }
-};
-#endif
 
 class QCoreGraphicsPaintEnginePrivate;
 class QCoreGraphicsPaintEngine : public QPaintEngine
@@ -233,6 +128,8 @@ protected:
     friend class QMacPrintEngine;
     friend class QMacPrintEnginePrivate;
     friend void qt_mac_display_change_callbk(CGDirectDisplayID, CGDisplayChangeSummaryFlags, void *);
+    friend void qt_color_profile_changed(CFNotificationCenterRef center, void *,
+                                         CFStringRef , const void *, CFDictionaryRef);
     QCoreGraphicsPaintEngine(QPaintEnginePrivate &dptr);
 
 private:
@@ -251,7 +148,7 @@ class QCoreGraphicsPaintEnginePrivate : public QPaintEnginePrivate
     Q_DECLARE_PUBLIC(QCoreGraphicsPaintEngine)
 public:
     QCoreGraphicsPaintEnginePrivate()
-        : hd(0), shading(0), stackCount(0), complexXForm(false)
+        : hd(0), shading(0), stackCount(0), complexXForm(false), disabledSmoothFonts(false)
     {
     }
 
@@ -271,6 +168,7 @@ public:
     CGShadingRef shading;
     int stackCount;
     bool complexXForm;
+    bool disabledSmoothFonts;
     enum { CosmeticNone, CosmeticTransformPath, CosmeticSetPenWidth } cosmeticPen;
 
     // pixel and cosmetic pen size in user coordinates.

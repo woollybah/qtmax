@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -67,28 +67,37 @@ class Q_GUI_EXPORT QAction : public QObject
     Q_DECLARE_PRIVATE(QAction)
 
     Q_ENUMS(MenuRole)
-    Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable)
+    Q_ENUMS(SoftKeyRole)
+    Q_ENUMS(Priority)
+    Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY changed)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled)
-    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled)
-    Q_PROPERTY(QIcon icon READ icon WRITE setIcon)
-    Q_PROPERTY(QString text READ text WRITE setText)
-    Q_PROPERTY(QString iconText READ iconText WRITE setIconText)
-    Q_PROPERTY(QString toolTip READ toolTip WRITE setToolTip)
-    Q_PROPERTY(QString statusTip READ statusTip WRITE setStatusTip)
-    Q_PROPERTY(QString whatsThis READ whatsThis WRITE setWhatsThis)
-    Q_PROPERTY(QFont font READ font WRITE setFont)
+    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY changed)
+    Q_PROPERTY(QIcon icon READ icon WRITE setIcon NOTIFY changed)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY changed)
+    Q_PROPERTY(QString iconText READ iconText WRITE setIconText NOTIFY changed)
+    Q_PROPERTY(QString toolTip READ toolTip WRITE setToolTip NOTIFY changed)
+    Q_PROPERTY(QString statusTip READ statusTip WRITE setStatusTip NOTIFY changed)
+    Q_PROPERTY(QString whatsThis READ whatsThis WRITE setWhatsThis NOTIFY changed)
+    Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY changed)
 #ifndef QT_NO_SHORTCUT
-    Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
-    Q_PROPERTY(Qt::ShortcutContext shortcutContext READ shortcutContext WRITE setShortcutContext)
-    Q_PROPERTY(bool autoRepeat READ autoRepeat WRITE setAutoRepeat)
+    Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut NOTIFY changed)
+    Q_PROPERTY(Qt::ShortcutContext shortcutContext READ shortcutContext WRITE setShortcutContext NOTIFY changed)
+    Q_PROPERTY(bool autoRepeat READ autoRepeat WRITE setAutoRepeat NOTIFY changed)
 #endif
-    Q_PROPERTY(bool visible READ isVisible WRITE setVisible)
-    Q_PROPERTY(MenuRole menuRole READ menuRole WRITE setMenuRole)
-    Q_PROPERTY(bool iconVisibleInMenu READ isIconVisibleInMenu WRITE setIconVisibleInMenu)
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY changed)
+    Q_PROPERTY(MenuRole menuRole READ menuRole WRITE setMenuRole NOTIFY changed)
+    Q_PROPERTY(SoftKeyRole softKeyRole READ softKeyRole WRITE setSoftKeyRole NOTIFY changed)
+    Q_PROPERTY(bool iconVisibleInMenu READ isIconVisibleInMenu WRITE setIconVisibleInMenu NOTIFY changed)
+    Q_PROPERTY(Priority priority READ priority WRITE setPriority)
 
 public:
     enum MenuRole { NoRole, TextHeuristicRole, ApplicationSpecificRole, AboutQtRole,
                     AboutRole, PreferencesRole, QuitRole };
+    enum SoftKeyRole {
+                    NoSoftKey, PositiveSoftKey, NegativeSoftKey, SelectSoftKey };
+    enum Priority { LowPriority = 0,
+                    NormalPriority = 128,
+                    HighPriority = 256};
     explicit QAction(QObject* parent);
     QAction(const QString &text, QObject* parent);
     QAction(const QIcon &icon, const QString &text, QObject* parent);
@@ -122,6 +131,9 @@ public:
 
     void setWhatsThis(const QString &what);
     QString whatsThis() const;
+
+    void setPriority(Priority priority);
+    Priority priority() const;
 
 #ifndef QT_NO_MENU
     QMenu *menu() const;
@@ -167,6 +179,9 @@ public:
 
     void setMenuRole(MenuRole menuRole);
     MenuRole menuRole() const;
+
+    void setSoftKeyRole(SoftKeyRole softKeyRole);
+    SoftKeyRole softKeyRole() const;
 
     void setIconVisibleInMenu(bool visible);
     bool isIconVisibleInMenu() const;
@@ -231,6 +246,9 @@ private:
     friend class QMenuBar;
     friend class QShortcutMap;
     friend class QToolButton;
+#ifdef Q_WS_MAC
+    friend void qt_mac_clear_status_text(QAction *action);
+#endif
 };
 
 QT_BEGIN_INCLUDE_NAMESPACE

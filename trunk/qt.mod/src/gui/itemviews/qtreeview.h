@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -144,19 +144,20 @@ public:
 
     void sortByColumn(int column, Qt::SortOrder order);
 
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void selectAll();
+
 Q_SIGNALS:
     void expanded(const QModelIndex &index);
     void collapsed(const QModelIndex &index);
 
 public Q_SLOTS:
-    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
     void hideColumn(int column);
     void showColumn(int column);
     void expand(const QModelIndex &index);
     void collapse(const QModelIndex &index);
     void resizeColumnToContents(int column);
     void sortByColumn(int column);
-    void selectAll();
     void expandAll();
     void collapseAll();
     void expandToDepth(int depth);
@@ -222,14 +223,11 @@ private:
 
     Q_DECLARE_PRIVATE(QTreeView)
     Q_DISABLE_COPY(QTreeView)
+#ifndef QT_NO_ANIMATION
     Q_PRIVATE_SLOT(d_func(), void _q_endAnimatedOperation())
-    Q_PRIVATE_SLOT(d_func(), void _q_animate())
-    Q_PRIVATE_SLOT(d_func(), void _q_currentChanged(const QModelIndex&, const QModelIndex &))
-    Q_PRIVATE_SLOT(d_func(), void _q_columnsAboutToBeRemoved(const QModelIndex &, int, int))
-    Q_PRIVATE_SLOT(d_func(), void _q_columnsRemoved(const QModelIndex &, int, int))
+#endif //QT_NO_ANIMATION
     Q_PRIVATE_SLOT(d_func(), void _q_modelAboutToBeReset())
     Q_PRIVATE_SLOT(d_func(), void _q_sortIndicatorChanged(int column, Qt::SortOrder order))
-    Q_PRIVATE_SLOT(d_func(), void _q_modelDestroyed())
 };
 
 #endif // QT_NO_TREEVIEW

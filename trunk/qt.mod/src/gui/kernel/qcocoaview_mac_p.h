@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -59,6 +59,7 @@ QT_FORWARD_DECLARE_CLASS(QWidgetPrivate);
 QT_FORWARD_DECLARE_CLASS(QWidget);
 QT_FORWARD_DECLARE_CLASS(QEvent);
 QT_FORWARD_DECLARE_CLASS(QCocoaDropData);
+QT_FORWARD_DECLARE_CLASS(QString);
 QT_FORWARD_DECLARE_CLASS(QStringList);
 
 QT_BEGIN_NAMESPACE
@@ -68,6 +69,7 @@ struct DnDParams
     NSEvent *theEvent;
     NSPoint localPoint;
     NSDragOperation performedAction;
+    NSPoint activeDragEnterPos;
 };
 
 QT_END_NAMESPACE
@@ -84,7 +86,8 @@ Q_GUI_EXPORT
     bool composing;
     int composingLength;
     bool sendKeyEvents;
-    QStringList *currentCustomTypes;
+    QString *composingText;
+    NSInteger dragEnterSequence;
 }
 - (id)initWithQWidget:(QWidget *)widget widgetPrivate:(QWidgetPrivate *)widgetprivate;
 - (void) finishInitWithQWidget:(QWidget *)widget widgetPrivate:(QWidgetPrivate *)widgetprivate;
@@ -93,7 +96,6 @@ Q_GUI_EXPORT
 - (NSDragOperation)draggingUpdated:(id < NSDraggingInfo >)sender;
 - (void)draggingExited:(id < NSDraggingInfo >)sender;
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
-- (void)registerDragTypes;
 - (void)removeDropData;
 - (void)addDropData:(id <NSDraggingInfo>)sender;
 - (void)setSupportedActions:(NSDragOperation)actions;
@@ -101,10 +103,10 @@ Q_GUI_EXPORT
 - (void)draggedImage:(NSImage *)anImage endedAt:(NSPoint)aPoint operation:(NSDragOperation)operation;
 - (BOOL)isComposing;
 - (QWidget *)qt_qwidget;
+- (void) qt_clearQWidget;
 - (BOOL)qt_leftButtonIsRightButton;
 - (void)qt_setLeftButtonIsRightButton:(BOOL)isSwapped;
-- (NSView *)viewUnderTransparentForMouseView:(NSView *)mouseView widget:(QWidget *)widgetToGetMouse
-                             withWindowPoint:(NSPoint)windowPoint;
+- (void)changeDraggingCursor:(NSDragOperation)newOperation;
 + (DnDParams*)currentMouseEvent;
 
 @end

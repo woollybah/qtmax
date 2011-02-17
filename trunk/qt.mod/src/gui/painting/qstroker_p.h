@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -124,6 +124,9 @@ typedef void (*qStrokerCubicToHook)(qfixed c1x, qfixed c1y,
                                     qfixed ex, qfixed ey,
                                     void *data);
 
+// qtransform.cpp
+Q_GUI_EXPORT bool qt_scaleForTransform(const QTransform &transform, qreal *scale);
+
 class Q_GUI_EXPORT QStrokerOps
 {
 public:
@@ -161,6 +164,16 @@ public:
     QRectF clipRect() const { return m_clip_rect; }
     void setClipRect(const QRectF &clip) { m_clip_rect = clip; }
 
+    void setCurveThresholdFromTransform(const QTransform &transform)
+    {
+        qreal scale;
+        qt_scaleForTransform(transform, &scale);
+        m_dashThreshold = scale == 0 ? qreal(0.5) : (qreal(0.5) / scale);
+    }
+
+    void setCurveThreshold(qfixed threshold) { m_curveThreshold = threshold; }
+    qfixed curveThreshold() const { return m_curveThreshold; }
+
 protected:
     inline void emitMoveTo(qfixed x, qfixed y);
     inline void emitLineTo(qfixed x, qfixed y);
@@ -170,8 +183,9 @@ protected:
     QDataBuffer<Element> m_elements;
 
     QRectF m_clip_rect;
+    qfixed m_curveThreshold;
+    qfixed m_dashThreshold;
 
-private:
     void *m_customData;
     qStrokerMoveToHook m_moveTo;
     qStrokerLineToHook m_lineTo;
@@ -209,9 +223,6 @@ public:
     void setMiterLimit(qfixed length) { m_miterLimit = length; }
     qfixed miterLimit() const { return m_miterLimit; }
 
-    void setCurveThreshold(qfixed threshold) { m_curveThreshold = threshold; }
-    qfixed curveThreshold() const { return m_curveThreshold; }
-
     void joinPoints(qfixed x, qfixed y, const QLineF &nextLine, LineJoinMode join);
     inline void emitMoveTo(qfixed x, qfixed y);
     inline void emitLineTo(qfixed x, qfixed y);
@@ -228,7 +239,6 @@ protected:
 
     qfixed m_strokeWidth;
     qfixed m_miterLimit;
-    qfixed m_curveThreshold;
 
     LineJoinMode m_capStyle;
     LineJoinMode m_joinStyle;
@@ -258,12 +268,18 @@ public:
     virtual void begin(void *data);
     virtual void end();
 
+    inline void setStrokeWidth(qreal width) { m_stroke_width = width; }
+    inline void setMiterLimit(qreal limit) { m_miter_limit = limit; }
+
 protected:
     virtual void processCurrentSubpath();
 
     QStroker *m_stroker;
     QVector<qfixed> m_dashPattern;
     qreal m_dashOffset;
+
+    qreal m_stroke_width;
+    qreal m_miter_limit;
 };
 
 
@@ -361,16 +377,16 @@ inline void QStroker::emitCubicTo(qfixed c1x, qfixed c1y,
  */
 inline void QDashStroker::begin(void *data)
 {
-    Q_ASSERT(m_stroker);
-    m_stroker->begin(data);
+    if (m_stroker)
+        m_stroker->begin(data);
     QStrokerOps::begin(data);
 }
 
 inline void QDashStroker::end()
 {
-    Q_ASSERT(m_stroker);
     QStrokerOps::end();
-    m_stroker->end();
+    if (m_stroker)
+        m_stroker->end();
 }
 
 QT_END_NAMESPACE

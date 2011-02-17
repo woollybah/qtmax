@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -59,7 +59,7 @@
 #include "qmap.h"
 #include "qpair.h"
 #include "qvector.h"
-
+#include "qgraphicslayout_p.h"
 #include <float.h>
 
 QT_BEGIN_NAMESPACE
@@ -126,29 +126,6 @@ class QStretchParameter : public QLayoutParameter<int>
 public:
     QStretchParameter() : QLayoutParameter<int>(-1) {}
 
-};
-
-class QLayoutStyleInfo
-{
-public:
-    inline QLayoutStyleInfo() { invalidate(); }
-    inline QLayoutStyleInfo(QStyle *style, QWidget *widget)
-        : q_valid(true), q_style(style), q_widget(widget) {}
-
-    inline void invalidate() { q_valid = false; q_style = 0; q_widget = 0; }
-
-    inline QStyle *style() const { return q_style; }
-    inline QWidget *widget() const { return q_widget; }
-
-    inline bool operator==(const QLayoutStyleInfo &other)
-        { return q_style == other.q_style && q_widget == other.q_widget; }
-    inline bool operator!=(const QLayoutStyleInfo &other)
-        { return !(*this == other); }
-
-private:
-    bool q_valid;
-    QStyle *q_style;
-    QWidget *q_widget;
 };
 
 class QGridLayoutBox
@@ -267,7 +244,8 @@ class QGridLayoutItem
 {
 public:
     QGridLayoutItem(QGridLayoutEngine *engine, QGraphicsLayoutItem *layoutItem, int row, int column,
-                    int rowSpan = 1, int columnSpan = 1, Qt::Alignment alignment = 0);
+                    int rowSpan = 1, int columnSpan = 1, Qt::Alignment alignment = 0,
+                    int itemAtIndex = -1);
 
     inline int firstRow() const { return q_firstRows[Ver]; }
     inline int firstColumn() const { return q_firstRows[Hor]; }
@@ -378,14 +356,15 @@ public:
     Qt::Alignment effectiveAlignment(const QGridLayoutItem *layoutItem) const;
 
 
+    void insertItem(QGridLayoutItem *item, int index);
     void addItem(QGridLayoutItem *item);
     void removeItem(QGridLayoutItem *item);
     QGridLayoutItem *findLayoutItem(QGraphicsLayoutItem *layoutItem) const;
     QGridLayoutItem *itemAt(int row, int column, Qt::Orientation orientation = Qt::Vertical) const;
     inline void insertRow(int row, Qt::Orientation orientation = Qt::Vertical)
         { insertOrRemoveRows(row, +1, orientation); }
-    inline void removeRow(int row, Qt::Orientation orientation = Qt::Vertical)
-        { insertOrRemoveRows(row, -1, orientation); }
+    inline void removeRows(int row, int count, Qt::Orientation orientation)
+        { insertOrRemoveRows(row, -count, orientation); }
 
     void invalidate();
     void setGeometries(const QLayoutStyleInfo &styleInfo, const QRectF &contentsGeometry);

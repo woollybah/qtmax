@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -56,6 +56,7 @@
 #include "QtCore/qglobal.h"
 #include "QtCore/qatomic.h"
 #include <QtCore/qvarlengtharray.h>
+#include <QtCore/QLinkedList>
 #include "private/qtextengine_p.h"
 #include "private/qfont_p.h"
 
@@ -70,7 +71,7 @@
 #   include "private/qcore_mac_p.h"
 #endif
 
-#include "qfontengineglyphcache_p.h"
+#include <private/qfontengineglyphcache_p.h>
 
 struct glyph_metrics_t;
 typedef unsigned int glyph_t;
@@ -93,7 +94,6 @@ struct QGlyphLayout;
 
 class Q_GUI_EXPORT QFontEngine : public QObject
 {
-    Q_OBJECT
 public:
     enum Type {
         Box,
@@ -108,11 +108,15 @@ public:
         // Apple Mac OS types
         Mac,
 
-        // Trolltech QWS types
+        // QWS types
         Freetype,
         QPF1,
         QPF2,
         Proxy,
+
+        // S60 types
+        S60FontEngine, // Cannot be simply called "S60". Reason is qt_s60Data.h
+
         TestFontEngine = 0x1000
     };
 
@@ -164,7 +168,7 @@ public:
     virtual void recalcAdvances(QGlyphLayout *, QTextEngine::ShaperFlags) const {}
     virtual void doKerning(QGlyphLayout *, QTextEngine::ShaperFlags) const;
 
-#if !defined(Q_WS_X11) && !defined(Q_WS_WIN) && !defined(Q_WS_MAC)
+#if !defined(Q_WS_X11) && !defined(Q_WS_WIN) && !defined(Q_WS_MAC) && !defined(Q_OS_SYMBIAN)
     virtual void draw(QPaintEngine *p, qreal x, qreal y, const QTextItemInt &si) = 0;
 #endif
     virtual void addGlyphsToPath(glyph_t *glyphs, QFixedPoint *positions, int nglyphs,
@@ -202,6 +206,8 @@ public:
     virtual qreal minLeftBearing() const { return qreal(); }
     virtual qreal minRightBearing() const { return qreal(); }
 
+    virtual void getGlyphBearings(glyph_t glyph, qreal *leftBearing = 0, qreal *rightBearing = 0);
+
     virtual const char *name() const = 0;
 
     virtual bool canRender(const QChar *string, int len) = 0;
@@ -216,9 +222,7 @@ public:
     virtual HB_Error getPointInOutline(HB_Glyph glyph, int flags, hb_uint32 point, HB_Fixed *xpos, HB_Fixed *ypos, hb_uint32 *nPoints);
 
     void setGlyphCache(void *key, QFontEngineGlyphCache *data);
-    void setGlyphCache(QFontEngineGlyphCache::Type key, QFontEngineGlyphCache *data);
-    QFontEngineGlyphCache *glyphCache(void *key, const QTransform &transform) const;
-    QFontEngineGlyphCache *glyphCache(QFontEngineGlyphCache::Type key, const QTransform &transform) const;
+    QFontEngineGlyphCache *glyphCache(void *key, QFontEngineGlyphCache::Type type, const QTransform &transform) const;
 
     static const uchar *getCMap(const uchar *table, uint tableSize, bool *isSymbolFont, int *cmapSize);
     static quint32 getTrueTypeGlyphIndex(const uchar *cmap, uint unicode);
@@ -231,7 +235,7 @@ public:
     bool symbol;
     mutable HB_FontRec hbFont;
     mutable HB_Face hbFace;
-#if defined(Q_WS_WIN) || defined(Q_WS_X11) || defined(Q_WS_QWS)
+#if defined(Q_WS_WIN) || defined(Q_WS_X11) || defined(Q_WS_QWS) || defined(Q_OS_SYMBIAN)
     struct KernPair {
         uint left_right;
         QFixed adjust;
@@ -247,13 +251,18 @@ public:
 
     int glyphFormat;
 
-private:
-    /// remove old entries from the glyph cache. Helper method for the setGlyphCache ones.
-    void expireGlyphCache();
+protected:
+    static const QVector<QRgb> &grayPalette();
+    QFixed lastRightBearing(const QGlyphLayout &glyphs, bool round = false);
 
-    GlyphPointerHash m_glyphPointerHash;
-    GlyphIntHash m_glyphIntHash;
-    mutable QList<QFontEngineGlyphCache*> m_glyphCacheQueue;
+private:
+    struct GlyphCacheEntry {
+        void *context;
+        QFontEngineGlyphCache *cache;
+        bool operator==(const GlyphCacheEntry &other) { return context == other.context && cache == other.cache; }
+    };
+
+    mutable QLinkedList<GlyphCacheEntry> m_glyphCaches;
 };
 
 inline bool operator ==(const QFontEngine::FaceId &f1, const QFontEngine::FaceId &f2)
@@ -322,7 +331,7 @@ public:
     virtual bool stringToCMap(const QChar *str, int len, QGlyphLayout *glyphs, int *nglyphs, QTextEngine::ShaperFlags flags) const;
     virtual void recalcAdvances(QGlyphLayout *, QTextEngine::ShaperFlags) const;
 
-#if !defined(Q_WS_X11) && !defined(Q_WS_WIN) && !defined(Q_WS_MAC)
+#if !defined(Q_WS_X11) && !defined(Q_WS_WIN) && !defined(Q_WS_MAC) && !defined(Q_OS_SYMBIAN)
     void draw(QPaintEngine *p, qreal x, qreal y, const QTextItemInt &si);
 #endif
     virtual void addOutlineToPath(qreal x, qreal y, const QGlyphLayout &glyphs, QPainterPath *path, QTextItem::RenderFlags flags);
@@ -353,7 +362,7 @@ private:
     int _size;
 };
 
-class Q_GUI_EXPORT QFontEngineMulti : public QFontEngine
+class QFontEngineMulti : public QFontEngine
 {
 public:
     explicit QFontEngineMulti(int engineCount);
@@ -368,6 +377,7 @@ public:
     virtual void recalcAdvances(QGlyphLayout *, QTextEngine::ShaperFlags) const;
     virtual void doKerning(QGlyphLayout *, QTextEngine::ShaperFlags) const;
     virtual void addOutlineToPath(qreal, qreal, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags flags);
+    virtual void getGlyphBearings(glyph_t glyph, qreal *leftBearing = 0, qreal *rightBearing = 0);
 
     virtual QFixed ascent() const;
     virtual QFixed descent() const;
@@ -389,7 +399,9 @@ public:
     inline virtual const char *name() const
     { return "Multi"; }
 
-    QFontEngine *engine(int at) const;
+    QFontEngine *engine(int at) const
+    {Q_ASSERT(at < engines.size()); return engines.at(at); }
+
 
 protected:
     friend class QPSPrintEnginePrivate;
@@ -440,16 +452,18 @@ public:
     virtual bool getSfntTableData(uint /*tag*/, uchar * /*buffer*/, uint * /*length*/) const;
     virtual void getUnscaledGlyph(glyph_t glyph, QPainterPath *path, glyph_metrics_t *metrics);
     virtual QImage alphaMapForGlyph(glyph_t);
+    virtual QImage alphaRGBMapForGlyph(glyph_t, int margin, const QTransform &t);
     virtual qreal minRightBearing() const;
     virtual qreal minLeftBearing() const;
 
 
-
 private:
+    QImage imageForGlyph(glyph_t glyph, int margin, bool colorful);
     CTFontRef ctfont;
     CGFontRef cgFont;
     QCoreTextFontEngineMulti *parentEngine;
     int synthesisFlags;
+    CGAffineTransform transform;
     friend class QCoreTextFontEngineMulti;
 };
 
@@ -481,7 +495,7 @@ private:
     uint fontIndexForFont(CTFontRef id) const;
     CTFontRef ctfont;
     mutable QCFType<CFMutableDictionaryRef> attributeDict;
-
+    CGAffineTransform transform;
     friend class QFontDialogPrivate;
 };
 #  endif //MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
@@ -525,8 +539,11 @@ public:
     virtual Properties properties() const;
     virtual void getUnscaledGlyph(glyph_t glyph, QPainterPath *path, glyph_metrics_t *metrics);
     virtual QImage alphaMapForGlyph(glyph_t);
+    virtual QImage alphaRGBMapForGlyph(glyph_t, int margin, const QTransform &t);
 
 private:
+    QImage imageForGlyph(glyph_t glyph, int margin, bool colorful);
+
     ATSUFontID fontID;
     QCFType<CGFontRef> cgFont;
     ATSUStyle style;
@@ -612,6 +629,10 @@ QT_END_NAMESPACE
 
 #ifdef Q_WS_WIN
 #   include "private/qfontengine_win_p.h"
+#endif
+
+#if defined(Q_OS_SYMBIAN) && !defined(QT_NO_FREETYPE)
+#   include "private/qfontengine_ft_p.h"
 #endif
 
 #endif // QFONTENGINE_P_H

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -46,20 +46,26 @@
 #include <QtGui/qcolor.h>
 #include <QtCore/qnamespace.h>
 #include <QtCore/qstring.h> // char*->QString conversion
+#include <QtCore/qsharedpointer.h>
 #include <QtGui/qimage.h>
 #include <QtGui/qtransform.h>
 
 QT_BEGIN_HEADER
+
+#if defined(Q_OS_SYMBIAN)
+class CFbsBitmap;
+class RSgImage;
+#endif
 
 QT_BEGIN_NAMESPACE
 
 QT_MODULE(Gui)
 
 class QImageWriter;
+class QImageReader;
 class QColor;
 class QVariant;
 class QX11Info;
-
 class QPixmapData;
 
 class Q_GUI_EXPORT QPixmap : public QPaintDevice
@@ -79,11 +85,11 @@ public:
     QPixmap &operator=(const QPixmap &);
     operator QVariant() const;
 
-    bool isNull() const;
+    bool isNull() const; // ### Qt 5: make inline
     int devType() const;
 
-    int width() const;
-    int height() const;
+    int width() const; // ### Qt 5: make inline
+    int height() const; // ### Qt 5: make inline
     QSize size() const;
     QRect rect() const;
     int depth() const;
@@ -129,12 +135,15 @@ public:
 
     QImage toImage() const;
     static QPixmap fromImage(const QImage &image, Qt::ImageConversionFlags flags = Qt::AutoColor);
+    static QPixmap fromImageReader(QImageReader *imageReader, Qt::ImageConversionFlags flags = Qt::AutoColor);
 
     bool load(const QString& fileName, const char *format = 0, Qt::ImageConversionFlags flags = Qt::AutoColor);
     bool loadFromData(const uchar *buf, uint len, const char* format = 0, Qt::ImageConversionFlags flags = Qt::AutoColor);
     inline bool loadFromData(const QByteArray &data, const char* format = 0, Qt::ImageConversionFlags flags = Qt::AutoColor);
     bool save(const QString& fileName, const char* format = 0, int quality = -1) const;
     bool save(QIODevice* device, const char* format = 0, int quality = -1) const;
+
+    bool convertFromImage(const QImage &img, Qt::ImageConversionFlags flags = Qt::AutoColor);
 
 #if defined(Q_WS_WIN)
     enum HBitmapFormat {
@@ -144,7 +153,10 @@ public:
     };
 
     HBITMAP toWinHBITMAP(HBitmapFormat format = NoAlpha) const;
+    HICON toWinHICON() const;
+
     static QPixmap fromWinHBITMAP(HBITMAP hbitmap, HBitmapFormat format = NoAlpha);
+    static QPixmap fromWinHICON(HICON hicon);
 #endif
 
 #if defined(Q_WS_MAC)
@@ -152,8 +164,18 @@ public:
     static QPixmap fromMacCGImageRef(CGImageRef image);
 #endif
 
+#if defined(Q_OS_SYMBIAN)
+    CFbsBitmap *toSymbianCFbsBitmap() const;
+    static QPixmap fromSymbianCFbsBitmap(CFbsBitmap *bitmap);
+    RSgImage* toSymbianRSgImage() const;
+    static QPixmap fromSymbianRSgImage(RSgImage *sgImage);
+#endif
+
     inline QPixmap copy(int x, int y, int width, int height) const;
     QPixmap copy(const QRect &rect = QRect()) const;
+
+    inline void scroll(int dx, int dy, int x, int y, int width, int height, QRegion *exposed = 0);
+    void scroll(int dx, int dy, const QRect &rect, QRegion *exposed = 0);
 
     int serialNumber() const;
     qint64 cacheKey() const;
@@ -167,7 +189,10 @@ public:
     const uchar *qwsBits() const;
     int qwsBytesPerLine() const;
     QRgb *clut() const;
-    int numCols() const;
+#ifdef QT_DEPRECATED
+    QT_DEPRECATED int numCols() const;
+#endif
+    int colorCount() const;
 #elif defined(Q_WS_MAC)
     Qt::HANDLE macQDHandle() const;
     Qt::HANDLE macQDAlphaHandle() const;
@@ -203,8 +228,6 @@ public:
     QT3_SUPPORT QPixmap &operator=(const QImage &);
     inline QT3_SUPPORT QImage convertToImage() const { return toImage(); }
     QT3_SUPPORT bool convertFromImage(const QImage &, ColorMode mode);
-    QT3_SUPPORT bool convertFromImage(const QImage &img, Qt::ImageConversionFlags flags = Qt::AutoColor)
-        { (*this) = fromImage(img, flags); return !isNull(); }
     inline QT3_SUPPORT operator QImage() const { return toImage(); }
     inline QT3_SUPPORT QPixmap xForm(const QMatrix &matrix) const { return transformed(QTransform(matrix)); }
     inline QT3_SUPPORT bool selfMask() const { return false; }
@@ -216,7 +239,7 @@ public:
 #endif
 
 private:
-    QPixmapData *data;
+    QExplicitlySharedDataPointer<QPixmapData> data;
 
     bool doImageIO(QImageWriter *io, int quality) const;
 
@@ -242,6 +265,7 @@ private:
     friend class QPixmapData;
     friend class QX11PixmapData;
     friend class QMacPixmapData;
+    friend class QS60PixmapData;
     friend class QBitmap;
     friend class QPaintDevice;
     friend class QPainter;
@@ -249,11 +273,7 @@ private:
     friend class QX11PaintEngine;
     friend class QCoreGraphicsPaintEngine;
     friend class QWidgetPrivate;
-    friend class QRasterPaintEngine;
     friend class QRasterBuffer;
-    friend class QDirect3DPaintEngine;
-    friend class QDirect3DPaintEnginePrivate;
-    friend class QDetachedPixmap;
 #if !defined(QT_NO_DATASTREAM)
     friend Q_GUI_EXPORT QDataStream &operator>>(QDataStream &, QPixmap &);
 #endif
@@ -263,7 +283,7 @@ public:
     QPixmapData* pixmapData() const;
 
 public:
-    typedef QPixmapData * DataPtr;
+    typedef QExplicitlySharedDataPointer<QPixmapData> DataPtr;
     inline DataPtr &data_ptr() { return data; }
 };
 
@@ -272,6 +292,11 @@ Q_DECLARE_SHARED(QPixmap)
 inline QPixmap QPixmap::copy(int ax, int ay, int awidth, int aheight) const
 {
     return copy(QRect(ax, ay, awidth, aheight));
+}
+
+inline void QPixmap::scroll(int dx, int dy, int ax, int ay, int awidth, int aheight, QRegion *exposed)
+{
+    scroll(dx, dy, QRect(ax, ay, awidth, aheight), exposed);
 }
 
 inline bool QPixmap::loadFromData(const QByteArray &buf, const char *format,

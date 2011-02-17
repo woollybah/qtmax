@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -60,6 +60,10 @@ QT_BEGIN_NAMESPACE
 
 #ifndef QT_NO_STYLE_WINDOWSMOBILE
 
+class QStyleOptionTab;
+class QStyleOptionSlider;
+class QStyleOptionViewItemV4;
+
 class QWindowsMobileStylePrivate : public QWindowsStylePrivate
 {
     Q_DECLARE_PUBLIC(QWindowsMobileStyle)
@@ -67,6 +71,9 @@ public:
     QWindowsMobileStylePrivate();
     bool doubleControls;
     bool smartphone;
+#ifdef Q_WS_WINCE_WM
+    bool wm65;
+#endif
 
     QImage imageRadioButton;
     QImage imageRadioButtonChecked;
@@ -85,6 +92,42 @@ public:
     QImage imageMaximize;
     QImage imageNormalize;
     QImage imageMinimize;
+
+    void setupWindowsMobileStyle65();
+
+#ifdef Q_WS_WINCE_WM
+    //Windows Mobile 6.5 images
+    QImage imageScrollbarHandleUp;
+    QImage imageScrollbarHandleDown;
+    QImage imageScrollbarHandleUpHigh;
+    QImage imageScrollbarHandleDownHigh;
+    QImage imageScrollbarGripUp;
+    QImage imageScrollbarGripDown;
+    QImage imageScrollbarGripMiddle;
+    QImage imageListViewHighlightCornerLeft;
+    QImage imageListViewHighlightCornerRight;
+    QImage imageListViewHighlightMiddle;
+    QImage imageTabEnd;
+    QImage imageTabSelectedEnd;
+    QImage imageTabSelectedBegin;
+    QImage imageTabMiddle;
+
+    QColor currentTintHigh;
+    QColor currentTintButton;
+
+    void tintImagesHigh(QColor color);
+    void tintImagesButton(QColor color);
+    void tintListViewHighlight(QColor color);
+
+#endif //Q_WS_WINCE_WM
+
+    void drawScrollbarHandleUp(QPainter *p, QStyleOptionSlider *opt, bool completeFrame = false, bool secondScrollBar = false);
+    void drawScrollbarHandleDown(QPainter *p, QStyleOptionSlider *opt, bool completeFrame = false, bool secondScrollBar = false);
+    void drawScrollbarGroove(QPainter *p, const QStyleOptionSlider *opt);
+    void drawScrollbarGrip(QPainter *p, QStyleOptionSlider *newScrollbar, const QStyleOptionComplex *option, bool drawCompleteFrame);
+    void drawTabBarTab(QPainter *p, const QStyleOptionTab *tab);
+    void drawPanelItemViewSelected(QPainter *painter, const QStyleOptionViewItemV4 *option, QRect rect = QRect());
+
 };
 
 QT_END_NAMESPACE

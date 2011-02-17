@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -66,6 +66,11 @@
 
 
 #ifndef QT_NO_CSSPARSER
+
+// VxWorks defines NONE as (-1) "for times when NULL won't do"
+#if defined(Q_OS_VXWORKS) && defined(NONE)
+#  undef NONE
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -223,6 +228,8 @@ enum KnownValue {
     Value_Decimal,
     Value_LowerAlpha,
     Value_UpperAlpha,
+    Value_LowerRoman,
+    Value_UpperRoman,
     Value_SmallCaps,
     Value_Uppercase,
     Value_Lowercase,
@@ -361,18 +368,18 @@ struct Q_GUI_EXPORT Value
 };
 
 struct ColorData {
-    ColorData() : type(Invalid) {}
-    ColorData(const QColor &col) : color(col) , type(Color) {}
-    ColorData(QPalette::ColorRole r) : role(r) , type(Role) {}
+    ColorData() : role(QPalette::NoRole), type(Invalid) {}
+    ColorData(const QColor &col) : color(col), role(QPalette::NoRole), type(Color) {}
+    ColorData(QPalette::ColorRole r) : role(r), type(Role) {}
     QColor color;
     QPalette::ColorRole role;
     enum { Invalid, Color, Role} type;
 };
 
 struct BrushData {
-    BrushData() : type(Invalid) {}
-    BrushData(const QBrush &br) : brush(br) , type(Brush) {}
-    BrushData(QPalette::ColorRole r) : role(r) , type(Role) {}
+    BrushData() : role(QPalette::NoRole), type(Invalid) {}
+    BrushData(const QBrush &br) : brush(br), role(QPalette::NoRole), type(Brush) {}
+    BrushData(QPalette::ColorRole r) : role(r), type(Role) {}
     QBrush brush;
     QPalette::ColorRole role;
     enum { Invalid, Brush, Role, DependsOnThePalette } type;
@@ -403,7 +410,7 @@ struct BorderData {
 // 4. QVector<Declaration> - { prop1: value1; prop2: value2; }
 // 5. Declaration - prop1: value1;
 
-struct Q_GUI_EXPORT Declaration
+struct Q_AUTOTEST_EXPORT Declaration
 {
     struct DeclarationData : public QSharedData
     {
@@ -495,16 +502,16 @@ const quint64 PseudoClass_Alternate        = Q_UINT64_C(0x0000100000000000);
 const quint64 PseudoClass_Any              = Q_UINT64_C(0x0000ffffffffffff);
 const int NumPseudos = 46;
 
-struct Q_GUI_EXPORT Pseudo
+struct Pseudo
 {
-    Pseudo() : negated(false) { }
+    Pseudo() : type(0), negated(false) { }
     quint64 type;
     QString name;
     QString function;
     bool negated;
 };
 
-struct Q_GUI_EXPORT AttributeSelector
+struct AttributeSelector
 {
     enum ValueMatchType {
         NoMatch,
@@ -519,7 +526,7 @@ struct Q_GUI_EXPORT AttributeSelector
     ValueMatchType valueMatchCriterium;
 };
 
-struct Q_GUI_EXPORT BasicSelector
+struct BasicSelector
 {
     inline BasicSelector() : relationToNext(NoRelation) {}
 
@@ -539,7 +546,7 @@ struct Q_GUI_EXPORT BasicSelector
     Relation relationToNext;
 };
 
-struct Q_GUI_EXPORT Selector
+struct Q_AUTOTEST_EXPORT Selector
 {
     QVector<BasicSelector> basicSelectors;
     int specificity() const;
@@ -552,7 +559,7 @@ struct MediaRule;
 struct PageRule;
 struct ImportRule;
 
-struct Q_GUI_EXPORT ValueExtractor
+struct Q_AUTOTEST_EXPORT ValueExtractor
 {
     ValueExtractor(const QVector<Declaration> &declarations, const QPalette & = QPalette());
 
@@ -586,7 +593,7 @@ private:
     QPalette pal;
 };
 
-struct Q_GUI_EXPORT StyleRule
+struct StyleRule
 {
     StyleRule() : order(0) { }
     QVector<Selector> selectors;
@@ -594,19 +601,19 @@ struct Q_GUI_EXPORT StyleRule
     int order;
 };
 
-struct Q_GUI_EXPORT MediaRule
+struct MediaRule
 {
     QStringList media;
     QVector<StyleRule> styleRules;
 };
 
-struct Q_GUI_EXPORT PageRule
+struct PageRule
 {
     QString selector;
     QVector<Declaration> declarations;
 };
 
-struct Q_GUI_EXPORT ImportRule
+struct ImportRule
 {
     QString href;
     QStringList media;
@@ -620,7 +627,7 @@ enum StyleSheetOrigin {
     StyleSheetOrigin_Inline
 };
 
-struct Q_GUI_EXPORT StyleSheet
+struct StyleSheet
 {
     StyleSheet() : origin(StyleSheetOrigin_Unspecified), depth(0) { }
     QVector<StyleRule> styleRules;  //only contains rules that are not indexed
@@ -719,7 +726,7 @@ enum TokenType {
 
 struct Q_GUI_EXPORT Symbol
 {
-    inline Symbol() : start(0), len(-1) {}
+    inline Symbol() : token(NONE), start(0), len(-1) {}
     TokenType token;
     QString text;
     int start, len;
@@ -731,7 +738,6 @@ class Q_AUTOTEST_EXPORT Scanner
 public:
     static QString preprocess(const QString &input, bool *hasEscapeSequences = 0);
     static void scan(const QString &preprocessedInput, QVector<Symbol> *symbols);
-    static const char *tokenName(TokenType t);
 };
 
 class Q_GUI_EXPORT Parser

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -110,6 +110,7 @@ struct glyph_metrics_t
     QFixed yoff;
 
     glyph_metrics_t transformed(const QTransform &xform) const;
+    inline bool isValid() const {return x != 100000 && y != 100000;}
 };
 Q_DECLARE_TYPEINFO(glyph_metrics_t, Q_PRIMITIVE_TYPE);
 
@@ -310,6 +311,7 @@ public:
           logClusters(0), f(0), fontEngine(0)
     {}
     QTextItemInt(const QScriptItem &si, QFont *font, const QTextCharFormat &format = QTextCharFormat());
+    QTextItemInt(const QGlyphLayout &g, QFont *font, const QChar *chars, int numChars, QFontEngine *fe);
 
     /// copy the structure items, adjusting the glyphs arrays to the right subarrays.
     /// the width of the returned QTextItemInt is not adjusted, for speed reasons
@@ -344,11 +346,11 @@ struct Q_AUTOTEST_EXPORT QScriptItem
 {
     inline QScriptItem()
         : position(0),
-          num_glyphs(0), descent(-1), ascent(-1), width(-1),
+          num_glyphs(0), descent(-1), ascent(-1), leading(-1), width(-1),
           glyph_data_offset(0) {}
     inline QScriptItem(int p, const QScriptAnalysis &a)
         : position(p), analysis(a),
-          num_glyphs(0), descent(-1), ascent(-1), width(-1),
+          num_glyphs(0), descent(-1), ascent(-1), leading(-1), width(-1),
           glyph_data_offset(0) {}
 
     int position;
@@ -356,6 +358,7 @@ struct Q_AUTOTEST_EXPORT QScriptItem
     unsigned short num_glyphs;
     QFixed descent;
     QFixed ascent;
+    QFixed leading;
     QFixed width;
     int glyph_data_offset;
     QFixed height() const { return ascent + descent + 1; }
@@ -372,19 +375,25 @@ struct Q_AUTOTEST_EXPORT QScriptLine
     QScriptLine()
         : from(0), length(0),
         justified(0), gridfitted(0),
-        hasTrailingSpaces(0) {}
+        hasTrailingSpaces(0), leadingIncluded(0) {}
     QFixed descent;
     QFixed ascent;
+    QFixed leading;
     QFixed x;
     QFixed y;
     QFixed width;
     QFixed textWidth;
+    QFixed textAdvance;
     int from;
     signed int length : 29;
     mutable uint justified : 1;
     mutable uint gridfitted : 1;
     uint hasTrailingSpaces : 1;
-    QFixed height() const { return ascent + descent + 1; }
+    uint leadingIncluded : 1;
+    QFixed height() const { return (ascent + descent).ceil() + 1
+                            + (leadingIncluded?  qMax(QFixed(),leading) : QFixed()); }
+    QFixed base() const { return ascent
+                          + (leadingIncluded ? qMax(QFixed(),leading) : QFixed()); }
     void setDefaultHeight(QTextEngine *eng);
     void operator+=(const QScriptLine &other);
 };
@@ -393,6 +402,7 @@ Q_DECLARE_TYPEINFO(QScriptLine, Q_PRIMITIVE_TYPE);
 
 inline void QScriptLine::operator+=(const QScriptLine &other)
 {
+    leading= qMax(leading + ascent, other.leading + other.ascent) - qMax(ascent, other.ascent);
     descent = qMax(descent, other.descent);
     ascent = qMax(ascent, other.ascent);
     textWidth += other.textWidth;
@@ -406,6 +416,11 @@ class QTextFormatCollection;
 
 class Q_GUI_EXPORT QTextEngine {
 public:
+    enum LayoutState {
+        LayoutEmpty,
+        InLayout,
+        LayoutFailed,
+    };
     struct LayoutData {
         LayoutData(const QString &str, void **stack_memory, int mem_size);
         LayoutData();
@@ -418,11 +433,11 @@ public:
         QGlyphLayout glyphLayout;
         mutable int used;
         uint hasBidi : 1;
-        uint inLayout : 1;
+        uint layoutState : 2;
         uint memory_on_stack : 1;
         bool haveCharAttributes;
         QString string;
-        void reallocate(int totalGlyphs);
+        bool reallocate(int totalGlyphs);
     };
 
     QTextEngine(LayoutData *data);
@@ -448,6 +463,7 @@ public:
     void validate() const;
     void itemize() const;
 
+    bool isRightToLeft() const;
     static void bidiReorder(int numRuns, const quint8 *levels, int *visualOrder);
 
     const HB_CharAttributes *attributes() const;
@@ -475,7 +491,7 @@ public:
         return end - si->position;
     }
 
-    QFontEngine *fontEngine(const QScriptItem &si, QFixed *ascent = 0, QFixed *descent = 0) const;
+    QFontEngine *fontEngine(const QScriptItem &si, QFixed *ascent = 0, QFixed *descent = 0, QFixed *leading = 0) const;
     QFont font(const QScriptItem &si) const;
     inline QFont font() const { return fnt; }
 
@@ -509,9 +525,10 @@ public:
         return layoutData->glyphLayout.mid(si->glyph_data_offset, si->num_glyphs);
     }
 
-    inline void ensureSpace(int nGlyphs) const {
+    inline bool ensureSpace(int nGlyphs) const {
         if (layoutData->glyphLayout.numGlyphs - layoutData->used < nGlyphs)
-            layoutData->reallocate((((layoutData->used + nGlyphs)*3/2 + 15) >> 4) << 4);
+            return layoutData->reallocate((((layoutData->used + nGlyphs)*3/2 + 15) >> 4) << 4);
+        return true;
     }
 
     void freeMemory();
@@ -581,7 +598,7 @@ private:
     void addRequiredBoundaries() const;
     void shapeText(int item) const;
     void shapeTextWithHarfbuzz(int item) const;
-#if defined(Q_OS_WINCE)
+#if defined(Q_WS_WINCE)
     void shapeTextWithCE(int item) const;
 #endif
 #if defined(Q_WS_MAC)

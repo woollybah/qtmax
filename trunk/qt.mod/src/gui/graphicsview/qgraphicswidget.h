@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -66,26 +66,27 @@ class QStyleOption;
 
 class QGraphicsWidgetPrivate;
 
-class Q_GUI_EXPORT QGraphicsWidget : public QObject, public QGraphicsItem, public QGraphicsLayoutItem
+class Q_GUI_EXPORT QGraphicsWidget : public QGraphicsObject, public QGraphicsLayoutItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem QGraphicsLayoutItem)
     Q_PROPERTY(QPalette palette READ palette WRITE setPalette)
     Q_PROPERTY(QFont font READ font WRITE setFont)
     Q_PROPERTY(Qt::LayoutDirection layoutDirection READ layoutDirection WRITE setLayoutDirection RESET unsetLayoutDirection)
-    Q_PROPERTY(QSizeF size READ size WRITE resize)
+    Q_PROPERTY(QSizeF size READ size WRITE resize NOTIFY geometryChanged)
+    Q_PROPERTY(QSizeF minimumSize READ minimumSize WRITE setMinimumSize)
+    Q_PROPERTY(QSizeF preferredSize READ preferredSize WRITE setPreferredSize)
+    Q_PROPERTY(QSizeF maximumSize READ maximumSize WRITE setMaximumSize)
+    Q_PROPERTY(QSizePolicy sizePolicy READ sizePolicy WRITE setSizePolicy)
     Q_PROPERTY(Qt::FocusPolicy focusPolicy READ focusPolicy WRITE setFocusPolicy)
-    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled)
-    Q_PROPERTY(bool visible READ isVisible WRITE setVisible)
     Q_PROPERTY(Qt::WindowFlags windowFlags READ windowFlags WRITE setWindowFlags)
     Q_PROPERTY(QString windowTitle READ windowTitle WRITE setWindowTitle)
-    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
-    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
-    Q_PROPERTY(QRectF geometry READ geometry WRITE setGeometry)
-
+    Q_PROPERTY(QRectF geometry READ geometry WRITE setGeometry NOTIFY geometryChanged)
+    Q_PROPERTY(bool autoFillBackground READ autoFillBackground WRITE setAutoFillBackground)
+    Q_PROPERTY(QGraphicsLayout* layout READ layout WRITE setLayout NOTIFY layoutChanged)
 public:
     QGraphicsWidget(QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0);
     ~QGraphicsWidget();
-
     QGraphicsLayout *layout() const;
     void setLayout(QGraphicsLayout *layout);
     void adjustSize();
@@ -102,6 +103,9 @@ public:
 
     QPalette palette() const;
     void setPalette(const QPalette &palette);
+
+    bool autoFillBackground() const;
+    void setAutoFillBackground(bool enabled);
 
     void resize(const QSizeF &size);
     inline void resize(qreal w, qreal h) { resize(QSizeF(w, h)); }
@@ -175,6 +179,10 @@ public:
     using QObject::children;
 #endif
 
+Q_SIGNALS:
+    void geometryChanged();
+    void layoutChanged();
+
 public Q_SLOTS:
     bool close();
 
@@ -225,7 +233,7 @@ protected:
 
 private:
     Q_DISABLE_COPY(QGraphicsWidget)
-    Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr, QGraphicsWidget)
+    Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QGraphicsWidget)
     friend class QGraphicsScene;
     friend class QGraphicsScenePrivate;
     friend class QGraphicsView;

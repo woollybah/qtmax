@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -373,6 +373,8 @@ public:
 
         SE_ShapedFrameContents,
 
+        SE_ToolBarHandle,
+
         // do not add any values below/greater than this
         SE_CustomBase = 0xf0000000
     };
@@ -453,6 +455,7 @@ public:
         SC_MdiNormalButton  =      0x00000002,
         SC_MdiCloseButton   =      0x00000004,
 
+        SC_CustomBase =            0xf0000000,
         SC_All =                   0xffffffff
     };
     Q_DECLARE_FLAGS(SubControls, SubControl)
@@ -629,6 +632,11 @@ public:
     virtual QSize sizeFromContents(ContentsType ct, const QStyleOption *opt,
                                    const QSize &contentsSize, const QWidget *w = 0) const = 0;
 
+    enum RequestSoftwareInputPanel {
+        RSIP_OnMouseClickAndAlreadyFocused,
+        RSIP_OnMouseClick
+    };
+
     enum StyleHint {
         SH_EtchDisabledText,
         SH_DitherDisabledText,
@@ -727,7 +735,8 @@ public:
         SH_ItemView_DrawDelegateFrame,
         SH_TabBar_CloseButtonPosition,
         SH_DockWidget_ButtonsHaveFrame,
-
+        SH_ToolButtonStyle,
+        SH_RequestSoftwareInputPanel,
         // Add new style hint values here
 
 #ifdef QT3_SUPPORT
@@ -845,6 +854,8 @@ public:
                               QSizePolicy::ControlTypes controls2, Qt::Orientation orientation,
                               QStyleOption *option = 0, QWidget *widget = 0) const;
 
+    const QStyle * proxy() const;
+
 protected Q_SLOTS:
     QIcon standardIconImplementation(StandardPixmap standardIcon, const QStyleOption *opt = 0,
                                      const QWidget *widget = 0) const;
@@ -859,12 +870,15 @@ private:
     friend class QWidget;
     friend class QWidgetPrivate;
     friend class QApplication;
+    friend class QProxyStyle;
+    friend class QProxyStylePrivate;
+    void setProxy(QStyle *style);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QStyle::State)
 Q_DECLARE_OPERATORS_FOR_FLAGS(QStyle::SubControls)
 
-#if !defined(QT_NO_DEBUG_STREAM) && !defined(QT_NO_DEBUG)
+#if !defined(QT_NO_DEBUG_STREAM)
 Q_GUI_EXPORT QDebug operator<<(QDebug debug, QStyle::State state);
 #endif
 
