@@ -59,6 +59,7 @@ copydll QtGui
 copydll QtWebKit
 copydll QtNetwork
 copydll phonon
+copydll QtXmlPatterns
 
 copyplugin gif imageformats
 copyplugin jpeg imageformats
