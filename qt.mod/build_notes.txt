@@ -1,7 +1,8 @@
 Mac
 
 ./configure -cocoa -exceptions -shared -debug-and-release -no-rpath -arch x86 -no-framework
-
+(64-bit)
+./configure -cocoa -exceptions -shared -release -no-rpath -arch x86_64 -no-framework
 
 Win32
 
