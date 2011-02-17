@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -70,6 +70,8 @@ class QNetworkAccessManagerPrivate;
 class QNetworkReplyImplPrivate;
 class QAbstractNetworkCache;
 class QNetworkCacheMetaData;
+class QNetworkAccessBackendUploadIODevice;
+class QNonContiguousByteDevice;
 
 // Should support direct file upload from disk or download to disk.
 //
@@ -86,14 +88,13 @@ public:
     // have different names. The Connection has two streams:
     //
     // - Upstream:
-    //   Upstream is data that is being written into this connection,
-    //   from the user. Upstream operates in a "pull" mechanism: the
-    //   connection will be notified that there is more data available
-    //   by a call to "upstreamReadyRead". The number of bytes
-    //   available is given by upstreamBytesAvailable(). A call to
-    //   readUpstream() always yields the entire upstream buffer. When
-    //   the connection has processed a certain amount of bytes from
-    //   that buffer, it should call upstreamBytesConsumed().
+    //   The upstream uses a QNonContiguousByteDevice provided
+    //   by the backend. This device emits the usual readyRead()
+    //   signal when the backend has data available for the connection
+    //   to write. The different backends can listen on this signal
+    //   and then pull upload data from the QNonContiguousByteDevice and
+    //   deal with it.
+    //
     //
     // - Downstream:
     //   Downstream is the data that is being read from this
@@ -110,16 +111,18 @@ public:
     //   socket).
 
     virtual void open() = 0;
+#ifndef QT_NO_BEARERMANAGEMENT
+    virtual bool start();
+#endif
     virtual void closeDownstreamChannel() = 0;
-    virtual void closeUpstreamChannel() = 0;
     virtual bool waitForDownstreamReadyRead(int msecs) = 0;
-    virtual bool waitForUpstreamBytesWritten(int msecs) = 0;
 
     // slot-like:
-    virtual void upstreamReadyRead();
     virtual void downstreamReadyWrite();
+    virtual void setDownstreamLimited(bool b);
     virtual void copyFinished(QIODevice *);
     virtual void ignoreSslErrors();
+    virtual void ignoreSslErrors(const QList<QSslError> &errors);
 
     virtual void fetchSslConfiguration(QSslConfiguration &configuration) const;
     virtual void setSslConfiguration(const QSslConfiguration &configuration);
@@ -155,18 +158,27 @@ public:
     QVariant attribute(QNetworkRequest::Attribute code) const;
     void setAttribute(QNetworkRequest::Attribute code, const QVariant &value);
 
+    // return true if the QNonContiguousByteDevice of the upload
+    // data needs to support reset(). Currently needed for HTTP.
+    // This will possibly enable buffering of the upload data.
+    virtual bool needsResetableUploadData() { return false; }
+
+    // Returns true if backend is able to resume downloads.
+    virtual bool canResume() const { return false; }
+    virtual void setResumeOffset(quint64 offset) { Q_UNUSED(offset); }
+
 protected:
-    // these functions control the upstream mechanism
-    // that is, data coming into the backend and out via the connection
-    qint64 upstreamBytesAvailable() const;
-    void upstreamBytesConsumed(qint64 count);
-    QByteArray readUpstream();
+    // Create the device used for reading the upload data
+    QNonContiguousByteDevice* createUploadByteDevice();
+
 
     // these functions control the downstream mechanism
     // that is, data that has come via the connection and is going out the backend
     qint64 nextDownstreamBlockSize() const;
-    qint64 downstreamBytesToConsume() const;
-    void writeDownstreamData(const QByteArray &data);
+    void writeDownstreamData(QByteDataBuffer &list);
+
+public slots:
+    // for task 251801, needs to be a slot to be called asynchronously
     void writeDownstreamData(QIODevice *data);
 
 protected slots:
@@ -176,13 +188,17 @@ protected slots:
     void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth);
 #endif
     void authenticationRequired(QAuthenticator *auth);
+    void cacheCredentials(QAuthenticator *auth);
     void metaDataChanged();
     void redirectionRequested(const QUrl &destination);
     void sslErrors(const QList<QSslError> &errors);
+    void emitReplyUploadProgress(qint64 bytesSent, qint64 bytesTotal);
 
 private:
     friend class QNetworkAccessManager;
     friend class QNetworkAccessManagerPrivate;
+    friend class QNetworkAccessBackendUploadIODevice;
+    friend class QNetworkReplyImplPrivate;
     QNetworkAccessManagerPrivate *manager;
     QNetworkReplyImplPrivate *reply;
 };

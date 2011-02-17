@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -57,7 +57,7 @@
 #include "qsslsocket_p.h"
 
 #ifdef Q_OS_WIN
-#include <windows.h>
+#include <qt_windows.h>
 #if defined(OCSP_RESPONSE)
 #undef OCSP_RESPONSE
 #endif
@@ -77,6 +77,12 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 #include <openssl/x509_vfy.h>
+#include <openssl/dsa.h>
+#include <openssl/rsa.h>
+
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+typedef _STACK STACK;
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -91,6 +97,7 @@ public:
     bool initSslContext();
     SSL *ssl;
     SSL_CTX *ctx;
+    EVP_PKEY *pkey;
     BIO *readBio;
     BIO *writeBio;
     SSL_SESSION *session;
@@ -102,14 +109,69 @@ public:
     void startClientEncryption();
     void startServerEncryption();
     void transmit();
-    bool testConnection();
+    bool startHandshake();
     void disconnectFromHost();
     void disconnected();
     QSslCipher sessionCipher() const;
 
     static QSslCipher QSslCipher_from_SSL_CIPHER(SSL_CIPHER *cipher);
     static QList<QSslCertificate> STACKOFX509_to_QSslCertificates(STACK_OF(X509) *x509);
+    Q_AUTOTEST_EXPORT static bool isMatchingHostname(const QString &cn, const QString &hostname);
 };
+
+#if defined(Q_OS_SYMBIAN)
+
+#include <QByteArray>
+#include <e32base.h>
+#include <f32file.h>
+#include <unifiedcertstore.h>     // link against certstore.lib
+#include <ccertattributefilter.h> // link against ctframework.lib
+
+// The purpose of this class is to wrap the asynchronous API of Symbian certificate store to one
+// synchronizable call. The user of this class needs to provide a TRequestStatus object which can
+// be used with User::WaitForRequest() unlike with the calls of the certificate store API.
+// A thread is used instead of a CActiveSchedulerWait scheme, because that would make the call
+// asynchronous (other events might be processed during the call even though the call would be seemingly
+// synchronous).
+
+class CSymbianCertificateRetriever : public CActive
+{
+public:
+    static CSymbianCertificateRetriever* NewL();
+    ~CSymbianCertificateRetriever();
+
+    int GetCertificates(QList<QByteArray> &aCertificates);
+
+private:
+    void ConstructL();
+    CSymbianCertificateRetriever();
+    static TInt ThreadEntryPoint(TAny* aParams);
+    void doThreadEntryL();
+    void GetCertificateL();
+    void DoCancel();
+    void RunL();
+    TInt RunError(TInt aError);
+
+private:
+    enum {
+        Initializing,
+        Listing,
+        RetrievingCertificates
+    } iState;
+
+    RThread iThread;
+    CUnifiedCertStore* iCertStore;
+    RMPointerArray<CCTCertInfo> iCertInfos;
+    CCertAttributeFilter* iCertFilter;
+    TInt iCurrentCertIndex;
+    QByteArray iCertificateData;
+    QList<QByteArray>* iCertificates;
+    TInt iSequenceError;
+};
+
+
+#endif
+
 
 QT_END_NAMESPACE
 

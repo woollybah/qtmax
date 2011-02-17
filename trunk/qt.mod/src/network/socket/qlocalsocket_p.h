@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -65,6 +65,7 @@
 #elif defined(Q_OS_WIN)
 #   include "private/qwindowspipewriter_p.h"
 #   include "private/qringbuffer_p.h"
+#   include <private/qwineventnotifier_p.h>
 #else
 #   include "private/qnativesocketengine_p.h"
 #   include <qtcpsocket.h>
@@ -73,43 +74,6 @@
 #endif
 
 QT_BEGIN_NAMESPACE
-
-#if !defined(Q_OS_WIN) && !defined(QT_LOCALSOCKET_TCP)
-static inline int qSocket(int af, int socketype, int proto)
-{
-    int ret;
-    while((ret = qt_socket_socket(af, socketype, proto)) == -1 && errno == EINTR){}
-    return ret;
-}
-
-static inline int qBind(int fd, const sockaddr *sa, int len)
-{
-    int ret;
-    while((ret = QT_SOCKET_BIND(fd, (sockaddr*)sa, len)) == -1 && errno == EINTR){}
-    return ret;
-}
-
-static inline int qConnect(int fd, const sockaddr *sa, int len)
-{
-    int ret;
-    while((ret = QT_SOCKET_CONNECT(fd, (sockaddr*)sa, len)) == -1 && errno == EINTR){}
-    return ret;
-}
-
-static inline int qListen(int fd, int backlog)
-{
-    int ret;
-    while((ret = qt_socket_listen(fd, backlog)) == -1 && errno == EINTR){}
-    return ret;
-}
-
-static inline int qAccept(int fd, struct sockaddr *addr, QT_SOCKLEN_T *addrlen)
-{
-    int ret;
-    while((ret = qt_socket_accept(fd, addr, addrlen)) == -1 && errno == EINTR){}
-    return ret;
-}
-#endif //#if !defined(Q_OS_WIN) && !defined(QT_LOCALSOCKET_TCP)
 
 #if !defined(Q_OS_WIN) || defined(QT_LOCALSOCKET_TCP)
 class QLocalUnixSocket : public QTcpSocket
@@ -164,26 +128,29 @@ public:
     void _q_stateChanged(QAbstractSocket::SocketState newState);
     void _q_error(QAbstractSocket::SocketError newError);
 #elif defined(Q_OS_WIN)
-    ~QLocalSocketPrivate() {
-	CloseHandle(overlapped.hEvent);
-    }
-
+    ~QLocalSocketPrivate();
+    void destroyPipeHandles();
     void setErrorString(const QString &function);
     void _q_notified();
     void _q_canWrite();
     void _q_pipeClosed();
-    qint64 readData(char *data, qint64 maxSize);
-    qint64 bytesAvailable();
-    bool readFromSocket();
+    void _q_emitReadyRead();
+    DWORD checkPipeState();
+    void startAsyncRead();
+    bool completeAsyncRead();
+    void checkReadyRead();
     HANDLE handle;
     OVERLAPPED overlapped;
     QWindowsPipeWriter *pipeWriter;
     qint64 readBufferMaxSize;
     QRingBuffer readBuffer;
-    QTimer dataNotifier;
+    int actualReadBufferSize;
+    QWinEventNotifier *dataReadNotifier;
     QLocalSocket::LocalSocketError error;
-    bool readyReadEmitted;
+    bool readSequenceStarted;
+    bool pendingReadyRead;
     bool pipeClosed;
+    static const qint64 initialReadBufferSize = 4096;
 #else
     QLocalUnixSocket unixSocket;
     QString generateErrorString(QLocalSocket::LocalSocketError, const QString &function) const;
