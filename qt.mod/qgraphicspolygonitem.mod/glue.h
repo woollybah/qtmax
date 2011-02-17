@@ -46,12 +46,33 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQGraphicsPolygonItem : public QGraphicsPolygonItem
+class MaxQGraphicsPolygonItem : public QGraphicsPolygonItem, MaxQGraphicsEventItem
 {
 public:
 	MaxQGraphicsPolygonItem(BBObject * handle, QGraphicsItem * parent);
 	MaxQGraphicsPolygonItem(BBObject * handle, MaxQPolygonF * polygon, QGraphicsItem * parent);
 	~MaxQGraphicsPolygonItem();
+
+	virtual void defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	virtual void defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultDropEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultFocusInEvent(QFocusEvent * focusEvent);
+	virtual void defaultFocusOutEvent(QFocusEvent * focusEvent);
+	virtual void defaultHoverEnterEvent(QGraphicsSceneHoverEvent * hoverEvent);
+	virtual void defaultHoverLeaveEvent(QGraphicsSceneHoverEvent * hoverEvent);
+	virtual void defaultHoverMoveEvent(QGraphicsSceneHoverEvent * hoverEvent);
+	virtual void defaultInputMethodEvent(QInputMethodEvent * event);
+	virtual void defaultKeyPressEvent(QKeyEvent * keyEvent);
+	virtual void defaultKeyReleaseEvent(QKeyEvent * keyEvent);
+	virtual void defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultSceneEvent(QEvent * event);
+	virtual void defaultSceneEventFilter(QGraphicsItem * watched, QEvent * event);
+	virtual void defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent);
 
 private:
 	BBObject * maxHandle;

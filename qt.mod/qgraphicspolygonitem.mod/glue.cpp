@@ -41,8 +41,91 @@ MaxQGraphicsPolygonItem::~MaxQGraphicsPolygonItem()
 	qgiunbind(this);
 }
 
+// *********************************************
+
+
+void MaxQGraphicsPolygonItem::defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent) {
+	QGraphicsPolygonItem::contextMenuEvent(contextMenuEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsPolygonItem::dragEnterEvent(event);
+}
+
+void MaxQGraphicsPolygonItem::defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsPolygonItem::dragLeaveEvent(event);
+}
+
+void MaxQGraphicsPolygonItem::defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsPolygonItem::dragMoveEvent(event);
+}
+
+void MaxQGraphicsPolygonItem::defaultDropEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsPolygonItem::dropEvent(event);
+}
+
+void MaxQGraphicsPolygonItem::defaultFocusInEvent(QFocusEvent * focusEvent) {
+	QGraphicsPolygonItem::focusInEvent(focusEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultFocusOutEvent(QFocusEvent * focusEvent) {
+	QGraphicsPolygonItem::focusOutEvent(focusEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultHoverEnterEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsPolygonItem::hoverEnterEvent(hoverEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultHoverLeaveEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsPolygonItem::hoverLeaveEvent(hoverEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultHoverMoveEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsPolygonItem::hoverMoveEvent(hoverEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultInputMethodEvent(QInputMethodEvent * event) {
+	QGraphicsPolygonItem::inputMethodEvent(event);
+}
+
+void MaxQGraphicsPolygonItem::defaultKeyPressEvent(QKeyEvent * keyEvent) {
+	QGraphicsPolygonItem::keyPressEvent(keyEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultKeyReleaseEvent(QKeyEvent * keyEvent) {
+	QGraphicsPolygonItem::keyReleaseEvent(keyEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsPolygonItem::mouseDoubleClickEvent(mouseEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsPolygonItem::mouseMoveEvent(mouseEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsPolygonItem::mousePressEvent(mouseEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsPolygonItem::mouseReleaseEvent(mouseEvent);
+}
+
+void MaxQGraphicsPolygonItem::defaultSceneEvent(QEvent * event) {
+	QGraphicsPolygonItem::sceneEvent(event);
+}
+
+void MaxQGraphicsPolygonItem::defaultSceneEventFilter(QGraphicsItem * watched, QEvent * event) {
+	QGraphicsPolygonItem::sceneEventFilter(watched, event);
+}
+
+void MaxQGraphicsPolygonItem::defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent) {
+	QGraphicsPolygonItem::wheelEvent(wheelEvent);
+}
 
 // *********************************************
+
 
 QGraphicsPolygonItem * bmx_qt_qgraphicspolygonitem_create(BBObject * handle, QGraphicsItem * parent) {
 	return new MaxQGraphicsPolygonItem(handle, parent);
@@ -67,7 +150,6 @@ void bmx_qt_qgraphicspolygonitem_setfillrule(QGraphicsPolygonItem * item, int ru
 void bmx_qt_qgraphicspolygonitem_setpolygon(QGraphicsPolygonItem * item, MaxQPolygonF * polygon) {
 	item->setPolygon(polygon->Polygon());
 }
-
 
 
 // NOTES :
