@@ -35,8 +35,8 @@ namespace WebCore {
 }
 
 class QWebHistoryItemPrivate;
-class QWEBKIT_EXPORT QWebHistoryItem
-{
+
+class QWEBKIT_EXPORT QWebHistoryItem {
 public:
     QWebHistoryItem(const QWebHistoryItem &other);
     QWebHistoryItem &operator=(const QWebHistoryItem &other);
@@ -60,12 +60,15 @@ private:
     friend class QWebHistory;
     friend class QWebPage;
     friend class WebCore::FrameLoaderClientQt;
+    friend class QWebHistoryItemPrivate;
+    //friend QDataStream & operator<<(QDataStream& out,const QWebHistoryItem& hist);
+    //friend QDataStream & operator>>(QDataStream& in,QWebHistoryItem& hist);
     QExplicitlySharedDataPointer<QWebHistoryItemPrivate> d;
 };
 
+
 class QWebHistoryPrivate;
-class QWEBKIT_EXPORT QWebHistory
-{
+class QWEBKIT_EXPORT QWebHistory {
 public:
     void clear();
 
@@ -98,10 +101,15 @@ private:
 
     friend class QWebPage;
     friend class QWebPagePrivate;
+    friend QWEBKIT_EXPORT QDataStream& operator>>(QDataStream&, QWebHistory&);
+    friend QWEBKIT_EXPORT QDataStream& operator<<(QDataStream&, const QWebHistory&);
 
     Q_DISABLE_COPY(QWebHistory)
 
     QWebHistoryPrivate *d;
 };
+
+QWEBKIT_EXPORT QDataStream& operator<<(QDataStream& stream, const QWebHistory& history);
+QWEBKIT_EXPORT QDataStream& operator>>(QDataStream& stream, QWebHistory& history);
 
 #endif

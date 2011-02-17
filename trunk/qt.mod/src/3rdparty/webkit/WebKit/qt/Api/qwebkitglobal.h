@@ -22,22 +22,20 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(Q_OS_WIN)
-#  if defined(QT_NODLL)
-#    undef QT_MAKEDLL
-#    undef QT_DLL
-#  elif defined(QT_MAKEDLL)        /* create a Qt DLL library */
-#    if defined(QT_DLL)
-#      undef QT_DLL
-#    endif
-#    if defined(BUILD_WEBKIT)
-#        define QWEBKIT_EXPORT Q_DECL_EXPORT
-#    else
-#        define QWEBKIT_EXPORT Q_DECL_IMPORT
-#    endif
-#  elif defined(QT_DLL) /* use a Qt DLL library */
-#    define QWEBKIT_EXPORT Q_DECL_IMPORT
+#define QTWEBKIT_VERSION_STR "2.0.1"
+// QTWEBKIT_VERSION is (major << 16) + (minor << 8) + patch. Similar to Qt.
+#define QTWEBKIT_VERSION 0x020001
+// Use: #if (QTWEBKIT_VERSION >= QTWEBKIT_VERSION_CHECK(2, 0, 0)). Similar to Qt.
+#define QTWEBKIT_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+
+#if defined(QT_MAKEDLL)        /* create a Qt DLL library */
+#  if defined(BUILD_WEBKIT)
+#      define QWEBKIT_EXPORT Q_DECL_EXPORT
+#  else
+#      define QWEBKIT_EXPORT Q_DECL_IMPORT
 #  endif
+#elif defined(QT_DLL) /* use a Qt DLL library */
+#  define QWEBKIT_EXPORT Q_DECL_IMPORT
 #endif
 
 #if !defined(QWEBKIT_EXPORT)
@@ -47,16 +45,5 @@
 #    define QWEBKIT_EXPORT
 #  endif
 #endif
-
-#if QT_VERSION < 0x040400
-    #ifndef QT_BEGIN_NAMESPACE
-    #define QT_BEGIN_NAMESPACE
-    #endif
-
-    #ifndef QT_END_NAMESPACE
-    #define QT_END_NAMESPACE
-    #endif
-#endif
-
 
 #endif // QWEBKITGLOBAL_H
