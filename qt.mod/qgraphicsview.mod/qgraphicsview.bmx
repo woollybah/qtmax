@@ -481,7 +481,7 @@ Type QGraphicsScene Extends QObject
 		Return bmx_qt_qgraphicsscene_hasfocus(qObjectPtr)
 	End Method
 
-	Method itemAt:QGraphicsItem(x:Float, y:Float)
+	Method itemAt:QGraphicsItem(x:Double, y:Double)
 		Return QGraphicsItem._find(bmx_qt_qgraphicsscene_itemat(qObjectPtr, x, y))
 	End Method
 
@@ -529,8 +529,12 @@ Type QGraphicsScene Extends QObject
 		bmx_qt_qgraphicsscene_setactivewindow(qObjectPtr, widget.qObjectPtr)
 	End Method
 	
-	Method setSceneRect(rect:QRectF)
-		bmx_qt_qgraphicsscene_setscenerect(qObjectPtr, rect.qObjectPtr)
+	Method setSceneRect(x:Double, y:Double, w:Double, h:Double)
+		bmx_qt_qgraphicsscene_setscenerect(qObjectPtr, x, y, w, h)
+	End Method
+
+	Method setSceneRectRect(rect:QRectF)
+		bmx_qt_qgraphicsscene_setscenerectrect(qObjectPtr, rect.qObjectPtr)
 	End Method
 
 	Method setBackgroundBrush(brush:QBrush)
@@ -605,11 +609,11 @@ Type QGraphicsScene Extends QObject
 		End If
 	End Method
 	
-	Method height:Float()
+	Method height:Double()
 		Return bmx_qt_qgraphicsscene_width(qObjectPtr)
 	End Method
 	
-	Method width:Float()
+	Method width:Double()
 		Return bmx_qt_qgraphicsscene_height(qObjectPtr)
 	End Method
 
@@ -757,6 +761,61 @@ Type QGraphicsScene Extends QObject
 		scene.wheelEvent(QGraphicsSceneWheelEvent._create(wheelEvent))
 	End Function
 	
+	Method items:QGraphicsItemList()
+		Return QGraphicsItemList._create(bmx_qt_qgraphicsscene_items(qObjectPtr))
+	End Method
+	
+End Type
+
+Type QGraphicsItemList
+
+	Field listPtr:Byte Ptr
+
+	Function _create:QGraphicsItemList(listPtr:Byte Ptr)
+		If listPtr Then
+			Local this:QGraphicsItemList = New QGraphicsItemList
+			this.listPtr = listPtr
+			Return this
+		End If
+	End Function
+
+	Method ObjectEnumerator:QGraphicsItemListEnumerator()
+		Local enum:QGraphicsItemListEnumerator = New QGraphicsItemListEnumerator
+		enum.list = Self
+
+		Return enum
+	End Method
+
+	Method size:Int()
+		Return bmx_qt_qgraphicsitemlist_size(listPtr)
+	End Method
+	
+	Method Delete()
+		If listPtr Then
+			bmx_qt_qgraphicsitemlist_free(listPtr)
+			listPtr = Null
+		End If
+	End Method
+	
+End Type
+
+' private
+Type QGraphicsItemListEnumerator
+
+	Field list:QGraphicsItemList
+
+	Method HasNext:Int()
+		Return bmx_qt_qgraphicsitemlist_hasnext(list.listPtr)
+	End Method
+	
+	Method NextObject:Object()
+		If HasNext() Then
+			Return QGraphicsItem._find(bmx_qt_qgraphicsitemlist_nextobject(list.listPtr))
+		Else
+			bmx_qt_qgraphicsitemlist_reset(list.listPtr)
+		End If
+	End Method
+
 End Type
 
 
@@ -1034,12 +1093,35 @@ Type QGraphicsItem
 		End If
 	End Function
 	
+	Function CreateGraphicsItem:QGraphicsItem(parent:QGraphicsItem = Null)
+		Return New QGraphicsItem.CreateItem(parent)
+	End Function
+	
+	Method CreateItem:QGraphicsItem(parent:QGraphicsItem = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qgraphicsitem_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qgraphicsitem_create(Self, Null)
+		End If
+		OnInit()
+		Return Self
+	End Method
+	
 	Method OnInit()
 	End Method
 
 	Method boundingRect:QRectF()
 		Return QRectF._create(bmx_qt_qgraphicsitem_boundingrect(qObjectPtr))
 	End Method
+	
+	Function _boundingRect:Byte Ptr(item:QGraphicsItem)
+		Local rect:QRectF = item.boundingRect()
+		If rect Then
+			Return rect.qObjectPtr
+		Else
+			Return Null
+		End If
+	End Function
 	
 	Method isSelected:Int()
 		Return bmx_qt_qgraphicsitem_isselected(qObjectPtr)
@@ -1065,8 +1147,27 @@ Type QGraphicsItem
 		Return bmx_qt_qgraphicsitem_iswindow(qObjectPtr)
 	End Method
 	
-	Method pos(x:Float Var, y:Float Var)
+	Method mapFromItem(item:QGraphicsItem, x:Double, y:Double, x1:Double Var, y1:Double Var)
+		bmx_qt_qgraphicsitem_mapfromitem(qObjectPtr, item.qObjectPtr, x, y, Varptr x1, Varptr y1)
+	End Method
+	
+	Method paint(painter:QPainter, option:QStyleOptionGraphicsItem, widget:QWidget)
+	End Method
+	
+	Function _paint(item:QGraphicsItem, painter:Byte Ptr, option:Byte Ptr, widget:Byte Ptr)
+		If widget Then
+			item.paint(QPainter._create(painter), QStyleOptionGraphicsItem._create(option), QWidget._find(widget))
+		Else
+			item.paint(QPainter._create(painter), QStyleOptionGraphicsItem._create(option), Null)
+		End If
+	End Function
+	
+	Method pos(x:Double Var, y:Double Var)
 		bmx_qt_qgraphicsitem_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method prepareGeometryChange()
+		bmx_qt_qgraphicsitem_preparegeometrychange(qObjectPtr)
 	End Method
 
 	Method removeSceneEventFilter(filterItem:QGraphicsItem)
@@ -1077,11 +1178,11 @@ Type QGraphicsItem
 		bmx_qt_qgraphicsitem_resettransform(qObjectPtr)
 	End Method
 	
-	Method rotate(angle:Float)
+	Method rotate(angle:Double)
 		bmx_qt_qgraphicsitem_rotate(qObjectPtr, angle)
 	End Method
 	
-	Method scale(sx:Float, sy:Float)
+	Method scale(sx:Double, sy:Double)
 		bmx_qt_qgraphicsitem_scale(qObjectPtr, sx, sy)
 	End Method
 	
@@ -1093,7 +1194,7 @@ Type QGraphicsItem
 		Return QRectF._create(bmx_qt_qgraphicsitem_sceneboundingrect(qObjectPtr))
 	End Method
 	
-	Method scenePos(x:Float Var, y:Float Var)
+	Method scenePos(x:Double Var, y:Double Var)
 		bmx_qt_qgraphicsitem_scenepos(qObjectPtr, Varptr x, Varptr y)
 	End Method
 	
@@ -1101,7 +1202,7 @@ Type QGraphicsItem
 		Return QTransform._create(bmx_qt_qgraphicsitem_scenetransform(qObjectPtr))
 	End Method
 	
-	Method scroll(dx:Float, dy:Float, rect:QRectF = Null)
+	Method scroll(dx:Double, dy:Double, rect:QRectF = Null)
 		If rect Then
 			bmx_qt_qgraphicsitem_scroll(qObjectPtr, dx, dy, rect.qObjectPtr)
 		Else
@@ -1197,9 +1298,179 @@ Type QGraphicsItem
 		bmx_qt_qgraphicsitem_addtoscene(qObjectPtr, scene)
 	End Method
 	
+	Method update(rect:QRectF = Null)
+		If rect Then
+			bmx_qt_qgraphicsitem_update(qObjectPtr, rect.qObjectPtr)
+		Else
+			bmx_qt_qgraphicsitem_update(qObjectPtr, Null)
+		End If
+	End Method
+	
 	Function _Free()
 	End Function
+
+
+	Method contextMenuEvent(contextMenuEvent:QGraphicsSceneContextMenuEvent)
+		bmx_qt_qgraphicsitem_defaultcontextmenuevent(qObjectPtr, contextMenuEvent.qObjectPtr)
+	End Method
 	
+	Function _contextMenuEvent(item:QGraphicsItem, contextMenuEvent:Byte Ptr)
+		item.contextMenuEvent(QGraphicsSceneContextMenuEvent._create(contextMenuEvent))
+	End Function
+	
+	Method dragEnterEvent(event:QGraphicsSceneDragDropEvent)
+		bmx_qt_qgraphicsitem_defaultdragenterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _dragEnterEvent(item:QGraphicsItem, event:Byte Ptr)
+		item.dragEnterEvent(QGraphicsSceneDragDropEvent._create(event))
+	End Function
+	
+	Method dragLeaveEvent(event:QGraphicsSceneDragDropEvent)
+		bmx_qt_qgraphicsitem_defaultdragleaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _dragLeaveEvent(item:QGraphicsItem, event:Byte Ptr)
+		item.dragLeaveEvent(QGraphicsSceneDragDropEvent._create(event))
+	End Function
+	
+	Method dragMoveEvent(event:QGraphicsSceneDragDropEvent)
+		bmx_qt_qgraphicsitem_defaultdragmoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _dragMoveEvent(item:QGraphicsItem, event:Byte Ptr)
+		item.dragMoveEvent(QGraphicsSceneDragDropEvent._create(event))
+	End Function
+
+	Method dropEvent(event:QGraphicsSceneDragDropEvent)
+		bmx_qt_qgraphicsitem_defaultdropevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _dropEvent(item:QGraphicsItem, event:Byte Ptr)
+		item.dropEvent(QGraphicsSceneDragDropEvent._create(event))
+	End Function
+	
+	Method focusInEvent(focusEvent:QFocusEvent)
+		bmx_qt_qgraphicsitem_defaultfocusinevent(qObjectPtr, focusEvent.qObjectPtr)
+	End Method
+	
+	Function _focusInEvent(item:QGraphicsItem, focusEvent:Byte Ptr)
+		item.focusInEvent(QFocusEvent._create(focusEvent))
+	End Function
+	
+	Method focusOutEvent(focusEvent:QFocusEvent)
+		bmx_qt_qgraphicsitem_defaultfocusoutevent(qObjectPtr, focusEvent.qObjectPtr)
+	End Method
+	
+	Function _focusOutEvent(item:QGraphicsItem, focusEvent:Byte Ptr)
+		item.focusOutEvent(QFocusEvent._create(focusEvent))
+	End Function
+	
+	Method hoverEnterEvent(hoverEvent:QGraphicsSceneHoverEvent)
+		bmx_qt_qgraphicsitem_defaulthoverenterevent(qObjectPtr, hoverEvent.qObjectPtr)
+	End Method
+	
+	Function _hoverEnterEvent(item:QGraphicsItem, hoverEvent:Byte Ptr)
+		item.hoverEnterEvent(QGraphicsSceneHoverEvent._create(hoverEvent))
+	End Function
+	
+	Method hoverLeaveEvent(hoverEvent:QGraphicsSceneHoverEvent)
+		bmx_qt_qgraphicsitem_defaulthoverleaveevent(qObjectPtr, hoverEvent.qObjectPtr)
+	End Method
+	
+	Function _hoverLeaveEvent(item:QGraphicsItem, hoverEvent:Byte Ptr)
+		item.hoverLeaveEvent(QGraphicsSceneHoverEvent._create(hoverEvent))
+	End Function
+	
+	Method hoverMoveEvent(hoverEvent:QGraphicsSceneHoverEvent)
+		bmx_qt_qgraphicsitem_defaulthovermoveevent(qObjectPtr, hoverEvent.qObjectPtr)
+	End Method
+	
+	Function _hoverMoveEvent(item:QGraphicsItem, hoverEvent:Byte Ptr)
+		item.hoverMoveEvent(QGraphicsSceneHoverEvent._create(hoverEvent))
+	End Function
+	
+	Method inputMethodEvent(event:QInputMethodEvent)
+		bmx_qt_qgraphicsitem_defaultinputmethodevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _inputMethodEvent(item:QGraphicsItem, event:Byte Ptr)
+		item.inputMethodEvent(QInputMethodEvent._create(event))
+	End Function
+	
+	Method keyPressEvent(keyEvent:QKeyEvent)
+		bmx_qt_qgraphicsitem_defaultkeypressevent(qObjectPtr, keyEvent.qObjectPtr)
+	End Method
+	
+	Function _keyPressEvent(item:QGraphicsItem, keyEvent:Byte Ptr)
+		item.keyPressEvent(QKeyEvent._create(keyEvent))
+	End Function
+	
+	Method keyReleaseEvent(keyEvent:QKeyEvent)
+		bmx_qt_qgraphicsitem_defaultkeyreleaseevent(qObjectPtr, keyEvent.qObjectPtr)
+	End Method
+	
+	Function _keyReleaseEvent(item:QGraphicsItem, keyEvent:Byte Ptr)
+		item.keyReleaseEvent(QKeyEvent._create(keyEvent))
+	End Function
+	
+	Method mouseDoubleClickEvent(mouseEvent:QGraphicsSceneMouseEvent)
+		bmx_qt_qgraphicsitem_defaultmousedoubleclickevent(qObjectPtr, mouseEvent.qObjectPtr)
+	End Method
+	
+	Function _mouseDoubleClickEvent(item:QGraphicsItem, mouseEvent:Byte Ptr)
+		item.mouseDoubleClickEvent(QGraphicsSceneMouseEvent._create(mouseEvent))
+	End Function
+	
+	Method mouseMoveEvent(mouseEvent:QGraphicsSceneMouseEvent)
+		bmx_qt_qgraphicsitem_defaultmousemoveevent(qObjectPtr, mouseEvent.qObjectPtr)
+	End Method
+	
+	Function _mouseMoveEvent(item:QGraphicsItem, mouseEvent:Byte Ptr)
+		item.mouseMoveEvent(QGraphicsSceneMouseEvent._create(mouseEvent))
+	End Function
+	
+	Method mousePressEvent(mouseEvent:QGraphicsSceneMouseEvent)
+		bmx_qt_qgraphicsitem_defaultmousepressevent(qObjectPtr, mouseEvent.qObjectPtr)
+	End Method
+	
+	Function _mousePressEvent(item:QGraphicsItem, mouseEvent:Byte Ptr)
+		item.mousePressEvent(QGraphicsSceneMouseEvent._create(mouseEvent))
+	End Function
+	
+	Method mouseReleaseEvent(mouseEvent:QGraphicsSceneMouseEvent)
+		bmx_qt_qgraphicsitem_defaultmousereleaseevent(qObjectPtr, mouseEvent.qObjectPtr)
+	End Method
+	
+	Function _mouseReleaseEvent(item:QGraphicsItem, mouseEvent:Byte Ptr)
+		item.mouseReleaseEvent(QGraphicsSceneMouseEvent._create(mouseEvent))
+	End Function
+
+	Method sceneEvent(event:QEvent)
+		bmx_qt_qgraphicsitem_defaultsceneevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _sceneEvent(item:QGraphicsItem, event:Byte Ptr)
+		item.sceneEvent(QEvent._create(event))
+	End Function
+
+	Method sceneEventFilter(watched:QGraphicsItem, event:QEvent)
+		bmx_qt_qgraphicsitem_defaultsceneeventfilter(qObjectPtr, watched.qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _sceneEventFilter(item:QGraphicsItem, watched:Byte Ptr, event:Byte Ptr)
+		item.sceneEventFilter(QGraphicsItem._find(watched), QEvent._create(event))
+	End Function
+
+	Method wheelEvent(wheelEvent:QGraphicsSceneWheelEvent)
+		bmx_qt_qgraphicsitem_defaultwheelevent(qObjectPtr, wheelEvent.qObjectPtr)
+	End Method
+	
+	Function _wheelEvent(item:QGraphicsItem, wheelEvent:Byte Ptr)
+		item.wheelEvent(QGraphicsSceneWheelEvent._create(wheelEvent))
+	End Function
+
+
 End Type
 
 

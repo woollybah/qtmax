@@ -36,6 +36,9 @@
 
 class MaxQGraphicsView;
 class MaxQGraphicsScene;
+class MaxQGraphicsItem;
+class MaxQGraphicsEventItem;
+class MaxQGraphicsItemList;
 
 extern "C" {
 
@@ -66,6 +69,8 @@ extern "C" {
 	void _qt_qgraphicsview_QGraphicsScene__setItem(BBArray * arr, int index, QGraphicsItem * item);
 
 	void _qt_qgraphicsview_QGraphicsItem__Free(BBObject * handle);
+	MaxQRectF * _qt_qgraphicsview_QGraphicsItem__boundingRect(BBObject * handle);
+	void _qt_qgraphicsview_QGraphicsItem__paint(BBObject * handle, QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
 
 	
 	QGraphicsView * bmx_qt_qgraphicsview_create(BBObject * handle, QWidget * parent);
@@ -129,7 +134,8 @@ extern "C" {
 	void bmx_qt_qgraphicsview_render(QGraphicsView * view, QPainter * painter, MaxQRectF * target, MaxQRect * source, int aspectRatioMode);
 
 	QGraphicsScene * bmx_qt_qgraphicsscene_create(BBObject * handle, QObject * parent);
-	void bmx_qt_qgraphicsscene_setscenerect(QGraphicsScene * scene, MaxQRectF * rect);
+	void bmx_qt_qgraphicsscene_setscenerectrect(QGraphicsScene * scene, MaxQRectF * rect);
+	void bmx_qt_qgraphicsscene_setscenerect(QGraphicsScene * scene, double x, double y, double w, double h);
 	void bmx_qt_qgraphicsscene_advance(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_clear(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_clearselection(QGraphicsScene * scene);
@@ -150,16 +156,17 @@ extern "C" {
 	BBArray * bmx_qt_qgraphicsscene_selecteditems(QGraphicsScene * scene);
 	MaxQPainterPath * bmx_qt_qgraphicsscene_selectionarea(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_setactivewindow(QGraphicsScene * scene, QGraphicsWidget * widget);
-	float bmx_qt_qgraphicsscene_width(QGraphicsScene * scene);
-	float bmx_qt_qgraphicsscene_height(QGraphicsScene * scene);
+	double bmx_qt_qgraphicsscene_width(QGraphicsScene * scene);
+	double bmx_qt_qgraphicsscene_height(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_udpate(QGraphicsScene * scene, MaxQRectF * rect);
 	int bmx_qt_qgraphicsscene_hasfocus(QGraphicsScene * scene);
-	QGraphicsItem * bmx_qt_qgraphicsscene_itemat(QGraphicsScene * scene, float x, float y);
+	QGraphicsItem * bmx_qt_qgraphicsscene_itemat(QGraphicsScene * scene, double x, double y);
 	int bmx_qt_qgraphicsscene_itemindexmethod(QGraphicsScene * scene);
 	MaxQRectF * bmx_qt_qgraphicsscene_itemsboundingrect(QGraphicsScene * scene);
 	QGraphicsItem * bmx_qt_qgraphicsscene_mousegrabberitem(QGraphicsScene * scene);
 	MaxQPalette * bmx_qt_qgraphicsscene_palette(QGraphicsScene * scene);
 	void bmx_qt_qgraphicsscene_removeitem(QGraphicsScene * scene, QGraphicsItem * item);
+	MaxQGraphicsItemList * bmx_qt_qgraphicsscene_items(QGraphicsScene * scene);
 
 	void bmx_qt_qgraphicsscene_defaultdrawbackground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect);
 	void bmx_qt_qgraphicsscene_defaultdrawforeground(MaxQGraphicsScene * scene, QPainter * painter, MaxQRectF * rect);
@@ -214,16 +221,47 @@ extern "C" {
 	void bmx_qt_qgraphicsitem_setzvalue(QGraphicsItem * item, double z);
 	MaxQRectF * bmx_qt_qgraphicsitem_boundingrect(QGraphicsItem * item);
 	void bmx_qt_qgraphicsitem_addtoscene(QGraphicsItem * item, QGraphicsScene * scene);
-	void bmx_qt_qgraphicsitem_pos(QGraphicsItem * item, float * x, float * y);
+	void bmx_qt_qgraphicsitem_pos(QGraphicsItem * item, double * x, double * y);
 	void bmx_qt_qgraphicsitem_removesceneeventfilter(QGraphicsItem * item, QGraphicsItem * filterItem);
 	void bmx_qt_qgraphicsitem_resettransform(QGraphicsItem * item);
-	void bmx_qt_qgraphicsitem_rotate(QGraphicsItem * item, float angle);
-	void bmx_qt_qgraphicsitem_scale(QGraphicsItem * item, float sx, float sy);
+	void bmx_qt_qgraphicsitem_rotate(QGraphicsItem * item, double angle);
+	void bmx_qt_qgraphicsitem_scale(QGraphicsItem * item, double sx, double sy);
 	QGraphicsScene * bmx_qt_qgraphicsitem_scene(QGraphicsItem * item);
 	MaxQRectF * bmx_qt_qgraphicsitem_sceneboundingrect(QGraphicsItem * item);
-	void bmx_qt_qgraphicsitem_scenepos(QGraphicsItem * item, float * x, float * y);
+	void bmx_qt_qgraphicsitem_scenepos(QGraphicsItem * item, double * x, double * y);
 	MaxQTransform * bmx_qt_qgraphicsitem_scenetransform(QGraphicsItem * item);
-	void bmx_qt_qgraphicsitem_scroll(QGraphicsItem * item, float dx, float dy, MaxQRectF * rect);
+	void bmx_qt_qgraphicsitem_scroll(QGraphicsItem * item, double dx, double dy, MaxQRectF * rect);
+	void bmx_qt_qgraphicsitem_update(QGraphicsItem * item, MaxQRectF * rect);
+	QGraphicsItem * bmx_qt_qgraphicsitem_create(BBObject * handle, QGraphicsItem * parent);
+	void bmx_qt_qgraphicsitem_mapfromitem(QGraphicsItem * gi, QGraphicsItem * item, double x, double y, double * x1, double * y1);
+	void bmx_qt_qgraphicsitem_preparegeometrychange(QGraphicsItem * item);
+
+	void bmx_qt_qgraphicsitem_defaultcontextmenuevent(void * item, QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	void bmx_qt_qgraphicsitem_defaultdragenterevent(void * item, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsitem_defaultdragleaveevent(void * item, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsitem_defaultdragmoveevent(void * item, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsitem_defaultdropevent(void * item, QGraphicsSceneDragDropEvent * event);
+	void bmx_qt_qgraphicsitem_defaultfocusinevent(void * item, QFocusEvent * focusEvent);
+	void bmx_qt_qgraphicsitem_defaultfocusoutevent(void * item, QFocusEvent * focusEvent);
+	void bmx_qt_qgraphicsitem_defaulthoverenterevent(void * item, QGraphicsSceneHoverEvent * hoverEvent);
+	void bmx_qt_qgraphicsitem_defaulthoverleaveevent(void * item, QGraphicsSceneHoverEvent * hoverEvent);
+	void bmx_qt_qgraphicsitem_defaulthovermoveevent(void * item, QGraphicsSceneHoverEvent * hoverEvent);
+	void bmx_qt_qgraphicsitem_defaultinputmethodevent(void * item, QInputMethodEvent * event);
+	void bmx_qt_qgraphicsitem_defaultkeypressevent(void * item, QKeyEvent * keyEvent);
+	void bmx_qt_qgraphicsitem_defaultkeyreleaseevent(void * item, QKeyEvent * keyEvent);
+	void bmx_qt_qgraphicsitem_defaultmousedoubleclickevent(void * item, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsitem_defaultmousemoveevent(void * item, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsitem_defaultmousepressevent(void * item, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsitem_defaultmousereleaseevent(void * item, QGraphicsSceneMouseEvent * mouseEvent);
+	void bmx_qt_qgraphicsitem_defaultsceneevent(void * item, QEvent * event);
+	void bmx_qt_qgraphicsitem_defaultsceneeventfilter(void * item, QGraphicsItem * watched, QEvent * event);
+	void bmx_qt_qgraphicsitem_defaultwheelevent(void * item, QGraphicsSceneWheelEvent * wheelEvent);
+
+	int bmx_qt_qgraphicsitemlist_size(MaxQGraphicsItemList * list);
+	void bmx_qt_qgraphicsitemlist_free(MaxQGraphicsItemList * list);
+	int bmx_qt_qgraphicsitemlist_hasnext(MaxQGraphicsItemList * list);
+	QGraphicsItem * bmx_qt_qgraphicsitemlist_nextobject(MaxQGraphicsItemList * list);
+	void bmx_qt_qgraphicsitemlist_reset(MaxQGraphicsItemList * list);
 
 }
 
@@ -360,6 +398,89 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent);
 	void wheelEvent(QGraphicsSceneWheelEvent * wheelEvent);
+};
+
+class MaxQGraphicsEventItem
+{
+public:
+	MaxQGraphicsEventItem() {};
+
+	virtual void defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent) {};
+	virtual void defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event) {};
+	virtual void defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event) {};
+	virtual void defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event) {};
+	virtual void defaultDropEvent(QGraphicsSceneDragDropEvent * event) {};
+	virtual void defaultFocusInEvent(QFocusEvent * focusEvent) {};
+	virtual void defaultFocusOutEvent(QFocusEvent * focusEvent) {};
+	virtual void defaultHoverEnterEvent(QGraphicsSceneHoverEvent * hoverEvent) {};
+	virtual void defaultHoverLeaveEvent(QGraphicsSceneHoverEvent * hoverEvent) {};
+	virtual void defaultHoverMoveEvent(QGraphicsSceneHoverEvent * hoverEvent) {};
+	virtual void defaultInputMethodEvent(QInputMethodEvent * event) {};
+	virtual void defaultKeyPressEvent(QKeyEvent * keyEvent) {};
+	virtual void defaultKeyReleaseEvent(QKeyEvent * keyEvent) {};
+	virtual void defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent) {};
+	virtual void defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) {};
+	virtual void defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) {};
+	virtual void defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent) {};
+	virtual void defaultSceneEvent(QEvent * event) {};
+	virtual void defaultSceneEventFilter(QGraphicsItem * watched, QEvent * event) {};
+	virtual void defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent) {};
+	
+};
+
+
+class MaxQGraphicsItem : public QGraphicsItem, MaxQGraphicsEventItem
+{
+public:
+
+	MaxQGraphicsItem(BBObject * handle, QGraphicsItem * parent);
+	~MaxQGraphicsItem();
+	
+	QRectF boundingRect () const;
+	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+
+	virtual void defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent);
+	virtual void defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultDropEvent(QGraphicsSceneDragDropEvent * event);
+	virtual void defaultFocusInEvent(QFocusEvent * focusEvent);
+	virtual void defaultFocusOutEvent(QFocusEvent * focusEvent);
+	virtual void defaultHoverEnterEvent(QGraphicsSceneHoverEvent * hoverEvent);
+	virtual void defaultHoverLeaveEvent(QGraphicsSceneHoverEvent * hoverEvent);
+	virtual void defaultHoverMoveEvent(QGraphicsSceneHoverEvent * hoverEvent);
+	virtual void defaultInputMethodEvent(QInputMethodEvent * event);
+	virtual void defaultKeyPressEvent(QKeyEvent * keyEvent);
+	virtual void defaultKeyReleaseEvent(QKeyEvent * keyEvent);
+	virtual void defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent);
+	virtual void defaultSceneEvent(QEvent * event);
+	virtual void defaultSceneEventFilter(QGraphicsItem * watched, QEvent * event);
+	virtual void defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent);
+
+	void DoPrepareGeometryChange() {
+		prepareGeometryChange();
+	}
+	
+private:
+	BBObject * maxHandle;
+};
+
+class MaxQGraphicsItemList
+{
+public:
+	MaxQGraphicsItemList(const QList<QGraphicsItem *> & l);
+	~MaxQGraphicsItemList();
+	void Reset();
+	int HasNext();
+	QGraphicsItem * NextObject();
+	int Size();
+
+private:
+	QList<QGraphicsItem *> list;
+	QList<QGraphicsItem *>::iterator iter;
 };
 
 #endif

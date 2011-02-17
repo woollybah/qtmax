@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Tue 6. Oct 08:15:58 2009
-**      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
+** Created: Wed Feb 16 20:25:36 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,8 +10,8 @@
 #include "glue.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'glue.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 61
-#error "This file was generated using the moc from 4.5.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 62
+#error "This file was generated using the moc from 4.7.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,13 +20,15 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_MaxQGraphicsView[] = {
 
  // content:
-       2,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
        0,    0, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
 
        0        // eod
 };
@@ -40,9 +42,13 @@ const QMetaObject MaxQGraphicsView::staticMetaObject = {
       qt_meta_data_MaxQGraphicsView, 0 }
 };
 
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MaxQGraphicsView::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
 const QMetaObject *MaxQGraphicsView::metaObject() const
 {
-    return &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *MaxQGraphicsView::qt_metacast(const char *_clname)
@@ -63,13 +69,15 @@ int MaxQGraphicsView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 static const uint qt_meta_data_MaxQGraphicsScene[] = {
 
  // content:
-       2,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
       26,   19,   18,   18, 0x08,
@@ -91,9 +99,13 @@ const QMetaObject MaxQGraphicsScene::staticMetaObject = {
       qt_meta_data_MaxQGraphicsScene, 0 }
 };
 
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MaxQGraphicsScene::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
 const QMetaObject *MaxQGraphicsScene::metaObject() const
 {
-    return &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *MaxQGraphicsScene::qt_metacast(const char *_clname)

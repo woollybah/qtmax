@@ -31,7 +31,9 @@ Import Qt.QGraphicsSceneDragDropEvent
 Import Qt.QGraphicsSceneHelpEvent
 Import Qt.QGraphicsSceneMouseEvent
 Import Qt.QGraphicsSceneWheelEvent
+Import Qt.QGraphicsSceneHoverEvent
 Import Qt.QCursor
+Import Qt.QStyleOptionGraphicsItem
 Import BRL.Blitz
 
 
@@ -72,8 +74,8 @@ Extern
 	Function bmx_qt_qgraphicsview_setresizeanchor(handle:Byte Ptr, anchor:Int)
 	Function bmx_qt_qgraphicsview_setrubberbandselectionmode(handle:Byte Ptr, _mode:Int)
 	Function bmx_qt_qgraphicsview_setscene(handle:Byte Ptr, scene:Byte Ptr)
-	Function bmx_qt_qgraphicsview_setscenerectrect(handle:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsview_setscenerect(handle:Byte Ptr, x:Double, y:Double, w:Double, h:Double)
+	Function bmx_qt_qgraphicsview_setscenerectrect(handle:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsview_settransform(handle:Byte Ptr, matrix:Byte Ptr, combine:Int)
 	Function bmx_qt_qgraphicsview_settransformationanchor(handle:Byte Ptr, anchor:Int)
 	Function bmx_qt_qgraphicsview_scale(handle:Byte Ptr, sx:Double, sy:Double)
@@ -116,7 +118,8 @@ Extern
 	Function bmx_qt_qgraphicsview_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
 
 	Function bmx_qt_qgraphicsscene_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-	Function bmx_qt_qgraphicsscene_setscenerect(handle:Byte Ptr, rect:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_setscenerectrect(handle:Byte Ptr, rect:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_setscenerect(handle:Byte Ptr, x:Double, y:Double, w:Double, h:Double)
 	Function bmx_qt_qgraphicsscene_advance(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_clear(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_clearselection(handle:Byte Ptr)
@@ -136,16 +139,17 @@ Extern
 	Function bmx_qt_qgraphicsscene_scenerect:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_selectionarea:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_setactivewindow(handle:Byte Ptr, widget:Byte Ptr)
-	Function bmx_qt_qgraphicsscene_width:Float(handle:Byte Ptr)
-	Function bmx_qt_qgraphicsscene_height:Float(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_width:Double(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_height:Double(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_udpate(handle:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_hasfocus:Int(handle:Byte Ptr)
-	Function bmx_qt_qgraphicsscene_itemat:Byte Ptr(handle:Byte Ptr, x:Float, y:Float)
+	Function bmx_qt_qgraphicsscene_itemat:Byte Ptr(handle:Byte Ptr, x:Double, y:Double)
 	Function bmx_qt_qgraphicsscene_itemindexmethod:Int(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_itemsboundingrect:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_mousegrabberitem:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_palette:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_removeitem(handle:Byte Ptr, item:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_items:Byte Ptr(handle:Byte Ptr)
 
 	Function bmx_qt_qgraphicsscene_defaultdrawbackground(handle:Byte Ptr, painter:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_defaultdrawforeground(handle:Byte Ptr, painter:Byte Ptr, rect:Byte Ptr)
@@ -198,15 +202,47 @@ Extern
 	Function bmx_qt_qgraphicsitem_setzvalue(handle:Byte Ptr, z:Double)
 	Function bmx_qt_qgraphicsitem_boundingrect:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsitem_addtoscene(handle:Byte Ptr, scene:Byte Ptr)
-	Function bmx_qt_qgraphicsitem_pos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsitem_pos(handle:Byte Ptr, x:Double Ptr, y:Double Ptr)
 	Function bmx_qt_qgraphicsitem_removesceneeventfilter(handle:Byte Ptr, filterItem:Byte Ptr)
 	Function bmx_qt_qgraphicsitem_resettransform(handle:Byte Ptr)
-	Function bmx_qt_qgraphicsitem_rotate(handle:Byte Ptr, angle:Float)
-	Function bmx_qt_qgraphicsitem_scale(handle:Byte Ptr, sx:Float, sy:Float)
+	Function bmx_qt_qgraphicsitem_rotate(handle:Byte Ptr, angle:Double)
+	Function bmx_qt_qgraphicsitem_scale(handle:Byte Ptr, sx:Double, sy:Double)
 	Function bmx_qt_qgraphicsitem_scene:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsitem_sceneboundingrect:Byte Ptr(handle:Byte Ptr)
-	Function bmx_qt_qgraphicsitem_scenepos(handle:Byte Ptr, x:Float Ptr, y:Float Ptr)
+	Function bmx_qt_qgraphicsitem_scenepos(handle:Byte Ptr, x:Double Ptr, y:Double Ptr)
 	Function bmx_qt_qgraphicsitem_scenetransform:Byte Ptr(handle:Byte Ptr)
-	Function bmx_qt_qgraphicsitem_scroll(handle:Byte Ptr, dx:Float, dy:Float, rect:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_scroll(handle:Byte Ptr, dx:Double, dy:Double, rect:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_update(handle:Byte Ptr, rect:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_mapfromitem(handle:Byte Ptr, item:Byte Ptr, x:Double, y:Double, x1:Double Ptr, y1:Double Ptr)
+	Function bmx_qt_qgraphicsitem_preparegeometrychange(handle:Byte Ptr)
+
+	Function bmx_qt_qgraphicsitem_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+
+	Function bmx_qt_qgraphicsitem_defaultcontextmenuevent(handle:Byte Ptr, contextMenuEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultdragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultdragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultdragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultdropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultfocusinevent(handle:Byte Ptr, focusEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultfocusoutevent(handle:Byte Ptr, focusEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaulthoverenterevent(handle:Byte Ptr, hoverEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaulthoverleaveevent(handle:Byte Ptr, hoverEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaulthovermoveevent(handle:Byte Ptr, hoverEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultinputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultkeypressevent(handle:Byte Ptr, keyEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultkeyreleaseevent(handle:Byte Ptr, keyEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultmousedoubleclickevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultmousemoveevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultmousepressevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultmousereleaseevent(handle:Byte Ptr, mouseEvent:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultsceneevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultsceneeventfilter(handle:Byte Ptr, watched:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_defaultwheelevent(handle:Byte Ptr, wheelEvent:Byte Ptr)
+
+	Function bmx_qt_qgraphicsitemlist_size:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsitemlist_free(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsitemlist_hasnext:Int(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsitemlist_nextobject:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsitemlist_reset(handle:Byte Ptr)
 
 End Extern
