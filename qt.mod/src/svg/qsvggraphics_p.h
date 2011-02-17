@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtSvg module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -80,21 +80,9 @@ public:
     QSvgArc(QSvgNode *parent, const QPainterPath &path);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
-    QPainterPath cubic;
-    QRectF m_cachedBounds;
-};
-
-class QSvgCircle : public QSvgNode
-{
-public:
-    QSvgCircle(QSvgNode *parent, const QRectF &rect);
-    virtual void draw(QPainter *p, QSvgExtraStates &states);
-    virtual Type type() const;
-    virtual QRectF bounds() const;
-private:
-    QRectF m_bounds;
+    QPainterPath m_path;
 };
 
 class QSvgEllipse : public QSvgNode
@@ -103,9 +91,16 @@ public:
     QSvgEllipse(QSvgNode *parent, const QRectF &rect);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
     QRectF m_bounds;
+};
+
+class QSvgCircle : public QSvgEllipse
+{
+public:
+    QSvgCircle(QSvgNode *parent, const QRectF &rect) : QSvgEllipse(parent, rect) { }
+    virtual Type type() const;
 };
 
 class QSvgImage : public QSvgNode
@@ -115,7 +110,7 @@ public:
               const QRect &bounds);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
     QImage m_image;
     QRect  m_bounds;
@@ -127,9 +122,9 @@ public:
     QSvgLine(QSvgNode *parent, const QLineF &line);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
-    QLineF m_bounds;
+    QLineF m_line;
 };
 
 class QSvgPath : public QSvgNode
@@ -138,14 +133,13 @@ public:
     QSvgPath(QSvgNode *parent, const QPainterPath &qpath);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 
     QPainterPath *qpath() {
         return &m_path;
     }
 private:
     QPainterPath m_path;
-    QRectF m_cachedBounds;
 };
 
 class QSvgPolygon : public QSvgNode
@@ -154,7 +148,7 @@ public:
     QSvgPolygon(QSvgNode *parent, const QPolygonF &poly);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
     QPolygonF m_poly;
 };
@@ -165,7 +159,7 @@ public:
     QSvgPolyline(QSvgNode *parent, const QPolygonF &poly);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
     QPolygonF m_poly;
 };
@@ -176,11 +170,13 @@ public:
     QSvgRect(QSvgNode *paren, const QRectF &rect, int rx=0, int ry=0);
     virtual Type type() const;
     virtual void draw(QPainter *p, QSvgExtraStates &states);
-    virtual QRectF bounds() const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
     QRectF m_rect;
     int m_rx, m_ry;
 };
+
+class  QSvgTspan;
 
 class  QSvgText : public QSvgNode
 {
@@ -197,26 +193,47 @@ public:
 
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    void insertText(const QString &text, WhitespaceMode mode);
-    void insertFormat(const QTextCharFormat &format);
-    void insertLineBreak();
-    void popFormat();
-    void setTextAlignment(const Qt::Alignment &alignment);
-    const QTextCharFormat &topFormat() const;
-    qreal scale() const;
-    void setScale(qreal scale);
-    //virtual QRectF bounds() const;
+
+    void addTspan(QSvgTspan *tspan) {m_tspans.append(tspan);}
+    void addText(const QString &text);
+    void addLineBreak() {m_tspans.append(LINEBREAK);}
+    void setWhitespaceMode(WhitespaceMode mode) {m_mode = mode;}
+
+    //virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 private:
+    static QSvgTspan * const LINEBREAK;
+
     QPointF m_coord;
 
-    QVector<QString> m_paragraphs;
-    QStack<QTextCharFormat> m_formats;
-    Qt::Alignment           m_textAlignment;
-    QVector<QList<QTextLayout::FormatRange> > m_formatRanges;
-    qreal m_scale;
-    bool m_appendSpace;
+    // 'm_tspans' is also used to store characters outside tspans and line breaks.
+    // If a 'm_tspan' item is null, it indicates a line break.
+    QVector<QSvgTspan *> m_tspans;
+
     Type m_type;
     QSizeF m_size;
+    WhitespaceMode m_mode;
+};
+
+class  QSvgTspan : public QSvgNode
+{
+public:
+    // tspans are also used to store normal text, so the 'isProperTspan' is used to separate text from tspan.
+    QSvgTspan(QSvgNode *parent, bool isProperTspan = true)
+        : QSvgNode(parent), m_mode(QSvgText::Default), m_isTspan(isProperTspan)
+    {
+    }
+    ~QSvgTspan() { };
+    virtual Type type() const {return TSPAN;}
+    virtual void draw(QPainter *, QSvgExtraStates &) {Q_ASSERT(!"Tspans should be drawn through QSvgText::draw().");}
+    void addText(const QString &text) {m_text += text;}
+    const QString &text() const {return m_text;}
+    bool isTspan() const {return m_isTspan;}
+    void setWhitespaceMode(QSvgText::WhitespaceMode mode) {m_mode = mode;}
+    QSvgText::WhitespaceMode whitespaceMode() const {return m_mode;}
+private:
+    QString m_text;
+    QSvgText::WhitespaceMode m_mode;
+    bool m_isTspan;
 };
 
 class QSvgUse : public QSvgNode
@@ -225,13 +242,11 @@ public:
     QSvgUse(const QPointF &start, QSvgNode *parent, QSvgNode *link);
     virtual void draw(QPainter *p, QSvgExtraStates &states);
     virtual Type type() const;
-    virtual QRectF bounds() const;
-    virtual QRectF transformedBounds(const QTransform &transform) const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
 
 private:
     QSvgNode *m_link;
     QPointF   m_start;
-    mutable QRectF    m_bounds;
 };
 
 class QSvgVideo : public QSvgNode

@@ -10,6 +10,7 @@
 #include "qscriptengineagent.h"
 #include "qscriptextensioninterface.h"
 #include "qscriptextensionplugin.h"
+#include "qscriptprogram.h"
 #include "qscriptstring.h"
 #include "qscriptvalue.h"
 #include "qscriptvalueiterator.h"

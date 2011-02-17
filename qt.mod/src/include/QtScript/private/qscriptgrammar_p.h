@@ -1,1 +1,1 @@
-#include "../../../src/script/qscriptgrammar_p.h"
+#include "../../../src/script/parser/qscriptgrammar_p.h"

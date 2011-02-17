@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtSvg module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -86,6 +86,7 @@ public:
         RECT,
         TEXT,
         TEXTAREA,
+        TSPAN,
         USE,
         VIDEO
     };
@@ -116,18 +117,18 @@ public:
 
     QSvgNode *parent() const;
 
-    void appendStyleProperty(QSvgStyleProperty *prop, const QString &id,
-                             bool justLink=false);
-    void applyStyle(QPainter *p, QSvgExtraStates &states);
-    void revertStyle(QPainter *p, QSvgExtraStates &states);
+    void appendStyleProperty(QSvgStyleProperty *prop, const QString &id);
+    void applyStyle(QPainter *p, QSvgExtraStates &states) const;
+    void revertStyle(QPainter *p, QSvgExtraStates &states) const;
     QSvgStyleProperty *styleProperty(QSvgStyleProperty::Type type) const;
-    QSvgStyleProperty *styleProperty(const QString &id) const;
+    QSvgFillStyleProperty *styleProperty(const QString &id) const;
 
     QSvgTinyDocument *document() const;
 
     virtual Type type() const =0;
-    virtual QRectF bounds() const;
-    virtual QRectF transformedBounds(const QTransform &transform) const;
+    virtual QRectF bounds(QPainter *p, QSvgExtraStates &states) const;
+    virtual QRectF transformedBounds(QPainter *p, QSvgExtraStates &states) const;
+    QRectF transformedBounds() const;
 
     void setRequiredFeatures(const QStringList &lst);
     const QStringList & requiredFeatures() const;
@@ -156,12 +157,11 @@ public:
     QString xmlClass() const;
     void setXmlClass(const QString &str);
 protected:
-    QSvgStyle   m_style;
+    mutable QSvgStyle m_style;
 
-    qreal strokeWidth() const;
+    static qreal strokeWidth(QPainter *p);
 private:
     QSvgNode   *m_parent;
-    QHash<QString, QSvgRefCounter<QSvgStyleProperty> > m_styles;
 
     QStringList m_requiredFeatures;
     QStringList m_requiredExtensions;
@@ -175,6 +175,7 @@ private:
     QString m_class;
 
     DisplayMode m_displayMode;
+    mutable QRectF m_cachedBounds;
 
     friend class QSvgTinyDocument;
 };
