@@ -55,6 +55,7 @@ Extern
 	Function bmx_qt_qbrush_free(handle:Byte Ptr)
 	Function bmx_qt_qbrush_createwithpixmap:Byte Ptr(pixmap:Byte Ptr)
 	Function bmx_qt_qbrush_texture:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qbrush_createwithgradient:Byte Ptr(gradient:Byte Ptr)
 
 End Extern
 
