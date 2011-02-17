@@ -22,6 +22,10 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QAbstractScrollArea
+Import Qt.QAbstractItemModel
+Import Qt.QStyleOptionViewItem
+Import Qt.QPainter
+Import Qt.QHelpEvent
 Import BRL.Blitz
 
 
@@ -45,5 +49,7 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qabstractitemview_setmodel(handle:Byte Ptr, model:Byte Ptr)
 
 End Extern

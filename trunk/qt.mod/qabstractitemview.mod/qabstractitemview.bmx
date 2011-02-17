@@ -33,6 +33,38 @@ Import "common.bmx"
 
 Type QAbstractItemView Extends QAbstractScrollArea
 
+	Method setModel(model:QAbstractItemModel)
+		bmx_qt_qabstractitemview_setmodel(qObjectPtr, model.qObjectPtr)
+	End Method
 
+End Type
+
+Type QAbstractItemDelegate Extends QObject
+
+	Method createEditorQWidget(parent:QWidget, option:QStyleOptionViewItem, index:QModelIndex)
+	End Method
+	
+	Method editorEvent:Int(event:QEvent, model:QAbstractItemModel, option:QStyleOptionViewItem, index:QModelIndex)
+	End Method
+	
+	Method paint(painter:QPainter, option:QStyleOptionViewItem, index:QModelIndex)
+	End Method
+	
+	Method setEditorData(editor:QWidget, index:QModelIndex)
+	End Method
+	
+	Method setModelData(editor:QWidget, model:QAbstractItemModel, index:QModelIndex)
+	End Method
+	
+	Method sizeHint(option:QStyleOptionViewItem, index:QModelIndex, w:Int Var, h:Int Var)
+	End Method
+	
+	Method updateEditorGeometry(editor:QWidget, option:QStyleOptionViewItem, index:QModelIndex)
+	End Method
+	
+
+	Method helpEvent:Int(event:QHelpEvent, view:QAbstractItemView, option:QStyleOptionViewItem, index:QModelIndex)
+	End Method
+	
 End Type
 
