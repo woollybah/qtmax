@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,6 +44,7 @@
 
 #include <QtCore/qnamespace.h>
 #include <QtCore/qbytearray.h>
+#include <QtCore/qobjectdefs.h>
 
 QT_BEGIN_HEADER
 
@@ -54,7 +55,9 @@ QT_MODULE(Core)
 class QEventPrivate;
 class Q_CORE_EXPORT QEvent           // event base class
 {
+    Q_GADGET
     QDOC_PROPERTY(bool accepted READ isAccepted WRITE setAccepted)
+    Q_ENUMS(Type)
 public:
     enum Type {
         /*
@@ -263,9 +266,28 @@ public:
         UngrabMouse = 187,
         GrabKeyboard = 188,
         UngrabKeyboard = 189,
-        CocoaRequestModal = 190,                // Internal for requesting an application modal Cocoa Window
         MacGLClearDrawable = 191,               // Internal Cocoa, the window has changed, so we must clear
 
+        StateMachineSignal = 192,
+        StateMachineWrapped = 193,
+
+        TouchBegin = 194,
+        TouchUpdate = 195,
+        TouchEnd = 196,
+
+#ifndef QT_NO_GESTURES
+        NativeGesture = 197,                    // Internal for platform gesture support
+#endif
+        RequestSoftwareInputPanel = 199,
+        CloseSoftwareInputPanel = 200,
+
+        UpdateSoftKeys = 201,                   // Internal for compressing soft key updates
+
+        WinIdChange = 203,
+#ifndef QT_NO_GESTURES
+        Gesture = 198,
+        GestureOverride = 202,
+#endif
         // 512 reserved for Qt Jambi's MetaCall event
         // 513 reserved for Qt Jambi's DeleteOnMainThread event
 
@@ -304,6 +326,12 @@ private:
     friend class Q3AccelManager;
     friend class QShortcutMap;
     friend class QETWidget;
+    friend class QGraphicsView;
+    friend class QGraphicsViewPrivate;
+    friend class QGraphicsScenePrivate;
+#ifndef QT_NO_GESTURES
+    friend class QGestureManager;
+#endif
 };
 
 class Q_CORE_EXPORT QTimerEvent : public QEvent

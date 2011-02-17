@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,6 +44,7 @@
 
 #include <QtCore/qstring.h>
 #include <QtCore/qnamespace.h>
+#include <QtCore/qsharedpointer.h>
 
 QT_BEGIN_HEADER
 
@@ -229,10 +230,12 @@ public:
     QDate date() const;
     QTime time() const;
     Qt::TimeSpec timeSpec() const;
+    qint64 toMSecsSinceEpoch() const;
     uint toTime_t() const;
     void setDate(const QDate &date);
     void setTime(const QTime &time);
     void setTimeSpec(Qt::TimeSpec spec);
+    void setMSecsSinceEpoch(qint64 msecs);
     void setTime_t(uint secsSince1Jan1970UTC);
 #ifndef QT_NO_DATESTRING
     QString toString(Qt::DateFormat f = Qt::TextDate) const;
@@ -248,6 +251,7 @@ public:
     inline QDateTime toUTC() const { return toTimeSpec(Qt::UTC); }
     int daysTo(const QDateTime &) const;
     int secsTo(const QDateTime &) const;
+    qint64 msecsTo(const QDateTime &) const;
 
     bool operator==(const QDateTime &other) const;
     inline bool operator!=(const QDateTime &other) const { return !(*this == other); }
@@ -260,11 +264,14 @@ public:
     int utcOffset() const;
 
     static QDateTime currentDateTime();
+    static QDateTime currentDateTimeUtc();
 #ifndef QT_NO_DATESTRING
     static QDateTime fromString(const QString &s, Qt::DateFormat f = Qt::TextDate);
     static QDateTime fromString(const QString &s, const QString &format);
 #endif
     static QDateTime fromTime_t(uint secsSince1Jan1970UTC);
+    static QDateTime fromMSecsSinceEpoch(qint64 msecs);
+    static qint64 currentMSecsSinceEpoch();
 
 #ifdef QT3_SUPPORT
     inline QT3_SUPPORT void setTime_t(uint secsSince1Jan1970UTC, Qt::TimeSpec spec) {
@@ -284,7 +291,7 @@ public:
 private:
     friend class QDateTimePrivate;
     void detach();
-    QDateTimePrivate *d;
+    QExplicitlySharedDataPointer<QDateTimePrivate> d;
 
 #ifndef QT_NO_DATASTREAM
     friend Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QDateTime &);

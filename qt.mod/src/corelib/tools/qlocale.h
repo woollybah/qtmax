@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -99,11 +99,9 @@ public:
     virtual QVariant query(QueryType type, QVariant in) const;
     virtual QLocale fallbackLocale() const;
 
-#ifdef QLOCALE_CPP
 private:
     QSystemLocale(bool);
     friend QSystemLocale *QSystemLocale_globalSystemLocale();
-#endif
 };
 #endif
 
@@ -289,7 +287,56 @@ public:
         Hawaiian = 163,
         Tyap = 164,
         Chewa = 165,
-        LastLanguage = Chewa
+        Filipino = 166,
+        SwissGerman = 167,
+        SichuanYi = 168,
+        Kpelle = 169,
+        LowGerman = 170,
+        SouthNdebele = 171,
+        NorthernSotho = 172,
+        NorthernSami = 173,
+        Taroko = 174,
+        Gusii = 175,
+        Taita = 176,
+        Fulah = 177,
+        Kikuyu = 178,
+        Samburu = 179,
+        Sena = 180,
+        NorthNdebele = 181,
+        Rombo = 182,
+        Tachelhit = 183,
+        Kabyle = 184,
+        Nyankole = 185,
+        Bena = 186,
+        Vunjo = 187,
+        Bambara = 188,
+        Embu = 189,
+        Cherokee = 190,
+        Morisyen = 191,
+        Makonde = 192,
+        Langi = 193,
+        Ganda = 194,
+        Bemba = 195,
+        Kabuverdianu = 196,
+        Meru = 197,
+        Kalenjin = 198,
+        Nama = 199,
+        Machame = 200,
+        Colognian = 201,
+        Masai = 202,
+        Soga = 203,
+        Luyia = 204,
+        Asu = 205,
+        Teso = 206,
+        Saho = 207,
+        KoyraChiini = 208,
+        Rwa = 209,
+        Luo = 210,
+        Chiga = 211,
+        CentralMoroccoTamazight = 212,
+        KoyraboroSenni = 213,
+        Shambala = 214,
+        LastLanguage = Shambala
     };
 
     enum Country {
@@ -535,7 +582,12 @@ public:
         Zambia = 239,
         Zimbabwe = 240,
         SerbiaAndMontenegro = 241,
-        LastCountry = SerbiaAndMontenegro
+        Montenegro = 242,
+        Serbia = 243,
+        SaintBarthelemy = 244,
+        SaintMartin = 245,
+        LatinAmericaAndTheCaribbean = 246,
+        LastCountry = LatinAmericaAndTheCaribbean
     };
 
     enum MeasurementSystem { MetricSystem, ImperialSystem };
@@ -614,6 +666,8 @@ public:
 
     MeasurementSystem measurementSystem() const;
 
+    Qt::LayoutDirection textDirection() const;
+
     inline bool operator==(const QLocale &other) const;
     inline bool operator!=(const QLocale &other) const;
 
@@ -633,11 +687,7 @@ public:
     struct Data {
         quint16 index;
         quint16 numberOptions;
-    }
-#if (defined(__arm__) || defined(__ARMEL__))
-        Q_PACKED
-#endif
-        ;
+    };
 private:
     friend struct QLocalePrivate;
     // ### We now use this field to pack an index into locale_data and NumberOptions.

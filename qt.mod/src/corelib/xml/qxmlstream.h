@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -42,12 +42,13 @@
 #ifndef QXMLSTREAM_H
 #define QXMLSTREAM_H
 
-#include <QtCore/QIODevice>
+#include <QtCore/qiodevice.h>
 
 #ifndef QT_NO_XMLSTREAM
 
-#include <QtCore/QString>
-#include <QtCore/QVector>
+#include <QtCore/qstring.h>
+#include <QtCore/qvector.h>
+#include <QtCore/qscopedpointer.h>
 
 QT_BEGIN_HEADER
 
@@ -60,7 +61,7 @@ QT_MODULE(Core)
 // keep binary compatibility
 //
 // The list of supported platforms is in:
-//   http://qtsoftware.com/developer/notes/supported_platforms
+//   http://qt.nokia.com/doc/supported_platforms.html
 //
 // These platforms do not support symbol moving nor duplication
 // (because duplicate symbols cause warnings when linking):
@@ -321,6 +322,9 @@ public:
     bool atEnd() const;
     TokenType readNext();
 
+    bool readNextStartElement();
+    void skipCurrentElement();
+
     TokenType tokenType() const;
     QString tokenString() const;
 
@@ -348,6 +352,13 @@ public:
     qint64 characterOffset() const;
 
     QXmlStreamAttributes attributes() const;
+
+    enum ReadElementTextBehaviour {
+        ErrorOnUnexpectedElement,
+        IncludeChildElements,
+        SkipChildElements
+    };
+    QString readElementText(ReadElementTextBehaviour behaviour);
     QString readElementText();
 
     QStringRef name() const;
@@ -392,7 +403,7 @@ public:
 private:
     Q_DISABLE_COPY(QXmlStreamReader)
     Q_DECLARE_PRIVATE(QXmlStreamReader)
-    QXmlStreamReaderPrivate *d_ptr;
+    QScopedPointer<QXmlStreamReaderPrivate> d_ptr;
 
 };
 #endif // QT_NO_XMLSTREAMREADER
@@ -465,7 +476,7 @@ public:
 private:
     Q_DISABLE_COPY(QXmlStreamWriter)
     Q_DECLARE_PRIVATE(QXmlStreamWriter)
-    QXmlStreamWriterPrivate *d_ptr;
+    QScopedPointer<QXmlStreamWriterPrivate> d_ptr;
 };
 #endif // QT_NO_XMLSTREAMWRITER
 

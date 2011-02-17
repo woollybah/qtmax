@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -98,8 +98,10 @@ Q_DECLARE_TYPEINFO(QSize, Q_MOVABLE_TYPE);
   QSize stream functions
  *****************************************************************************/
 
+#ifndef QT_NO_DATASTREAM
 Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QSize &);
 Q_CORE_EXPORT QDataStream &operator>>(QDataStream &, QSize &);
+#endif
 
 
 /*****************************************************************************
@@ -171,14 +173,14 @@ inline const QSize operator*(qreal c, const QSize &s)
 
 inline QSize &QSize::operator/=(qreal c)
 {
-    Q_ASSERT(!qFuzzyCompare(c + 1, 1));
+    Q_ASSERT(!qFuzzyIsNull(c));
     wd = qRound(wd/c); ht = qRound(ht/c);
     return *this;
 }
 
 inline const QSize operator/(const QSize &s, qreal c)
 {
-    Q_ASSERT(!qFuzzyCompare(c + 1, 1));
+    Q_ASSERT(!qFuzzyIsNull(c));
     return QSize(qRound(s.wd/c), qRound(s.ht/c));
 }
 
@@ -249,8 +251,10 @@ Q_DECLARE_TYPEINFO(QSizeF, Q_MOVABLE_TYPE);
   QSizeF stream functions
  *****************************************************************************/
 
+#ifndef QT_NO_DATASTREAM
 Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QSizeF &);
 Q_CORE_EXPORT QDataStream &operator>>(QDataStream &, QSizeF &);
+#endif
 
 
 /*****************************************************************************
@@ -327,14 +331,14 @@ inline const QSizeF operator*(qreal c, const QSizeF &s)
 
 inline QSizeF &QSizeF::operator/=(qreal c)
 {
-    Q_ASSERT(!qFuzzyCompare(c + 1, 1));
+    Q_ASSERT(!qFuzzyIsNull(c));
     wd = wd/c; ht = ht/c;
     return *this;
 }
 
 inline const QSizeF operator/(const QSizeF &s, qreal c)
 {
-    Q_ASSERT(!qFuzzyCompare(c + 1, 1));
+    Q_ASSERT(!qFuzzyIsNull(c));
     return QSizeF(s.wd/c, s.ht/c);
 }
 

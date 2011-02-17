@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -96,19 +96,19 @@ public:
 
     inline void unlock()
     {
-        if (q_lock) {
+        if (q_val) {
             if ((q_val & quintptr(1u)) == quintptr(1u)) {
                 q_val &= ~quintptr(1u);
-                q_lock->unlock();
+                readWriteLock()->unlock();
             }
         }
     }
 
     inline void relock()
     {
-        if (q_lock) {
+        if (q_val) {
             if ((q_val & quintptr(1u)) == quintptr(0u)) {
-                q_lock->lockForRead();
+                readWriteLock()->lockForRead();
                 q_val |= quintptr(1u);
             }
         }
@@ -119,14 +119,11 @@ public:
 
 private:
     Q_DISABLE_COPY(QReadLocker)
-    union {
-        QReadWriteLock *q_lock;
-        quintptr q_val;
-    };
+    quintptr q_val;
 };
 
 inline QReadLocker::QReadLocker(QReadWriteLock *areadWriteLock)
-    : q_lock(areadWriteLock)
+    : q_val(reinterpret_cast<quintptr>(areadWriteLock))
 {
     Q_ASSERT_X((q_val & quintptr(1u)) == quintptr(0),
                "QReadLocker", "QReadWriteLock pointer is misaligned");
@@ -143,19 +140,19 @@ public:
 
     inline void unlock()
     {
-        if (q_lock) {
+        if (q_val) {
             if ((q_val & quintptr(1u)) == quintptr(1u)) {
                 q_val &= ~quintptr(1u);
-                q_lock->unlock();
+                readWriteLock()->unlock();
             }
         }
     }
 
     inline void relock()
     {
-        if (q_lock) {
+        if (q_val) {
             if ((q_val & quintptr(1u)) == quintptr(0u)) {
-                q_lock->lockForWrite();
+                readWriteLock()->lockForWrite();
                 q_val |= quintptr(1u);
             }
         }
@@ -167,14 +164,11 @@ public:
 
 private:
     Q_DISABLE_COPY(QWriteLocker)
-    union{
-        QReadWriteLock *q_lock;
-        quintptr q_val;
-    };
+    quintptr q_val;
 };
 
 inline QWriteLocker::QWriteLocker(QReadWriteLock *areadWriteLock)
-    : q_lock(areadWriteLock)
+    : q_val(reinterpret_cast<quintptr>(areadWriteLock))
 {
     Q_ASSERT_X((q_val & quintptr(1u)) == quintptr(0),
                "QWriteLocker", "QReadWriteLock pointer is misaligned");
@@ -190,7 +184,8 @@ inline QWriteLocker::QWriteLocker(QReadWriteLock *areadWriteLock)
 class Q_CORE_EXPORT QReadWriteLock
 {
 public:
-    inline explicit QReadWriteLock() { }
+    enum RecursionMode { NonRecursive, Recursive };
+    inline explicit QReadWriteLock(RecursionMode = NonRecursive) { }
     inline ~QReadWriteLock() { }
 
     static inline void lockForRead() { }

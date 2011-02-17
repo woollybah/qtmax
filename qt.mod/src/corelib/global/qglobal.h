@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,19 +44,19 @@
 
 #include <stddef.h>
 
-#define QT_VERSION_STR "4.5.2"
+#define QT_VERSION_STR "4.7.1"
 /*
    QT_VERSION is (major << 16) + (minor << 8) + patch.
 */
-#define QT_VERSION 0x040502
+#define QT_VERSION 0x040701
 /*
    can be used like #if (QT_VERSION >= QT_VERSION_CHECK(4, 4, 0))
 */
 #define QT_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 
-#define QT_PACKAGEDATE_STR "2009-06-20"
+#define QT_PACKAGEDATE_STR "2010-11-06"
 
-#define QT_PACKAGE_TAG "g4b2b47ac6c9fe284dce45cf33ff674d7110c1619"
+#define QT_PACKAGE_TAG "1b3f43c997b00d6b0d435ed8be08596c913a0189"
 
 #if !defined(QT_BUILD_MOC)
 #include <QtCore/qconfig.h>
@@ -110,7 +110,7 @@ namespace QT_NAMESPACE {}
     This expands to a "using QT_NAMESPACE" also in _header files_.
     It is the only way the feature can be used without too much
     pain, but if people _really_ do not want it they can add
-    DEFINES += QT_NO_USING_NAMESPACE to theur .pro files.
+    DEFINES += QT_NO_USING_NAMESPACE to their .pro files.
     */
    QT_USE_NAMESPACE
 # endif
@@ -144,10 +144,11 @@ namespace QT_NAMESPACE {}
    The operating system, must be one of: (Q_OS_x)
 
      DARWIN   - Darwin OS (synonym for Q_OS_MAC)
+     SYMBIAN  - Symbian
      MSDOS    - MS-DOS and Windows
      OS2      - OS/2
      OS2EMX   - XFree86 on OS/2 (not PM)
-     WIN32    - Win32 (Windows 95/98/ME and Windows NT/2000/XP)
+     WIN32    - Win32 (Windows 2000/XP/Vista/7 and Windows Server 2003/2008)
      WINCE    - WinCE (Windows CE 5.0)
      CYGWIN   - Cygwin
      SOLARIS  - Sun Solaris
@@ -182,6 +183,10 @@ namespace QT_NAMESPACE {}
 #  else
 #    define Q_OS_DARWIN32
 #  endif
+#elif defined(__SYMBIAN32__) || defined(SYMBIAN)
+#  define Q_OS_SYMBIAN
+#  define Q_NO_POSIX_SIGNALS
+#  define QT_NO_GETIFADDRS
 #elif defined(__CYGWIN__)
 #  define Q_OS_CYGWIN
 #elif defined(MSDOS) || defined(_MSDOS)
@@ -238,8 +243,6 @@ namespace QT_NAMESPACE {}
 #elif defined(__DGUX__)
 #  define Q_OS_DGUX
 #elif defined(__QNXNTO__)
-#  define Q_OS_QNX6
-#elif defined(__QNX__)
 #  define Q_OS_QNX
 #elif defined(_SEQUENT_)
 #  define Q_OS_DYNIX
@@ -251,6 +254,8 @@ namespace QT_NAMESPACE {}
 #  define Q_OS_UNIXWARE
 #elif defined(__INTEGRITY)
 #  define Q_OS_INTEGRITY
+#elif defined(VXWORKS) /* there is no "real" VxWorks define - this has to be set in the mkspec! */
+#  define Q_OS_VXWORKS
 #elif defined(__MAKEDEPEND__)
 #else
 #  error "Qt has not been ported to this OS - talk to qt-bugs@trolltech.com"
@@ -270,13 +275,17 @@ namespace QT_NAMESPACE {}
 #  endif
 #endif
 
-#ifdef AUTODETECT_COCOA
+#ifdef QT_AUTODETECT_COCOA
 #  ifdef Q_OS_MAC64
 #    define QT_MAC_USE_COCOA 1
 #    define QT_BUILD_KEY QT_BUILD_KEY_COCOA
 #  else
 #    define QT_BUILD_KEY QT_BUILD_KEY_CARBON
 #  endif
+#endif
+
+#if defined(Q_OS_MAC64) && !defined(QT_MAC_USE_COCOA) && !defined(QT_BUILD_QMAKE)
+#error "You are building a 64-bit application, but using a 32-bit version of Qt. Check your build configuration."
 #endif
 
 #if defined(Q_OS_MSDOS) || defined(Q_OS_OS2) || defined(Q_OS_WIN)
@@ -293,7 +302,7 @@ namespace QT_NAMESPACE {}
 #  ifdef MAC_OS_X_VERSION_MIN_REQUIRED
 #    undef MAC_OS_X_VERSION_MIN_REQUIRED
 #  endif
-#  define MAC_OS_X_VERSION_MIN_REQUIRED MAC_OS_X_VERSION_10_3
+#  define MAC_OS_X_VERSION_MIN_REQUIRED MAC_OS_X_VERSION_10_4
 #  include <AvailabilityMacros.h>
 #  if !defined(MAC_OS_X_VERSION_10_3)
 #     define MAC_OS_X_VERSION_10_3 MAC_OS_X_VERSION_10_2 + 1
@@ -307,16 +316,9 @@ namespace QT_NAMESPACE {}
 #  if !defined(MAC_OS_X_VERSION_10_6)
 #       define MAC_OS_X_VERSION_10_6 MAC_OS_X_VERSION_10_5 + 1
 #  endif
-#  if (MAC_OS_X_VERSION_MAX_ALLOWED == MAC_OS_X_VERSION_10_6)
-#    warning "Support for this version of Mac OS X is still preliminary"
-#  endif
 #  if (MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6)
-#    error "This version of Mac OS X is unsupported"
+#    warning "This version of Mac OS X is unsupported"
 #  endif
-#endif
-
-#ifdef QT_MAC_USE_COCOA
-#define QT_MAC_NO_QUICKDRAW 1
 #endif
 
 #ifdef __LSB_VERSION__
@@ -351,7 +353,9 @@ namespace QT_NAMESPACE {}
      HIGHC    - MetaWare High C/C++
      PGI      - Portland Group C++
      GHS      - Green Hills Optimizing C++ Compilers
+     GCCE     - GCCE (Symbian GCCE builds)
      RVCT     - ARM Realview Compiler Suite
+     NOKIAX86 - Nokia x86 (Symbian WINSCW builds)
 
 
    Should be sorted most to least authoritative.
@@ -372,6 +376,9 @@ namespace QT_NAMESPACE {}
 
 #elif defined(__MWERKS__)
 #  define Q_CC_MWERKS
+#  if defined(__EMU_SYMBIAN_OS__)
+#    define Q_CC_NOKIAX86
+#  endif
 /* "explicit" recognized since 4.0d1 */
 
 #elif defined(_MSC_VER)
@@ -381,6 +388,9 @@ namespace QT_NAMESPACE {}
 #  define Q_OUTOFLINE_TEMPLATE inline
 #  define Q_NO_TEMPLATE_FRIENDS
 #  define QT_NO_PARTIAL_TEMPLATE_SPECIALIZATION
+#    define Q_ALIGNOF(type)   __alignof(type)
+#    define Q_DECL_ALIGN(n)   __declspec(align(n))
+
 /* Visual C++.Net issues for _MSC_VER >= 1300 */
 #  if _MSC_VER >= 1300
 #    define Q_CC_MSVC_NET
@@ -402,14 +412,12 @@ namespace QT_NAMESPACE {}
 #  if defined(__INTEL_COMPILER)
 #    define Q_CC_INTEL
 #  endif
-/* x64 does not support mmx intrinsics on windows */
-#  if (defined(Q_OS_WIN64) && defined(_M_X64))
+/* MSVC does not support SSE/MMX on x64 */
+#  if (defined(Q_CC_MSVC) && defined(_M_X64))
 #    undef QT_HAVE_SSE
-#    undef QT_HAVE_SSE2
 #    undef QT_HAVE_MMX
 #    undef QT_HAVE_3DNOW
 #  endif
-
 
 #elif defined(__BORLANDC__) || defined(__TURBOC__)
 #  define Q_CC_BOR
@@ -422,29 +430,23 @@ namespace QT_NAMESPACE {}
 
 #elif defined(__WATCOMC__)
 #  define Q_CC_WAT
-#  if defined(Q_OS_QNX4)
-/* compiler flags */
-#    define Q_TYPENAME
-#    define Q_NO_BOOL_TYPE
-#    define Q_CANNOT_DELETE_CONSTANT
-#    define mutable
-/* ??? */
-#    define Q_BROKEN_TEMPLATE_SPECIALIZATION
-/* no template classes in QVariant */
-#    define QT_NO_TEMPLATE_VARIANT
-/* Wcc does not fill in functions needed by valuelists, maps, and
-   valuestacks implicitly */
-#    define Q_FULL_TEMPLATE_INSTANTIATION
-/* can we just compare the structures? */
-#    define Q_FULL_TEMPLATE_INSTANTIATION_MEMCMP
-/* these are not useful to our customers */
-#    define QT_NO_QWS_MULTIPROCESS
-#    define QT_NO_QWS_CURSOR
+
+/* Symbian GCCE */
+#elif defined(__GCCE__)
+#  define Q_CC_GCCE
+#  define QT_VISIBILITY_AVAILABLE
+#  if defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__)
+#    define QT_HAVE_ARMV6
 #  endif
 
-#elif defined(__CC_ARM)
+/* ARM Realview Compiler Suite
+   RVCT compiler also defines __EDG__ and __GNUC__ (if --gnu flag is given),
+   so check for it before that */
+#elif defined(__ARMCC__) || defined(__CC_ARM)
 #  define Q_CC_RVCT
-
+#  if __TARGET_ARCH_ARM >= 6
+#    define QT_HAVE_ARMV6
+#  endif
 #elif defined(__GNUC__)
 #  define Q_CC_GNU
 #  define Q_C_CALLBACKS
@@ -466,6 +468,11 @@ namespace QT_NAMESPACE {}
 #  if __GNUC__ == 2 && __GNUC_MINOR__ <= 95
 #    define Q_NO_USING_KEYWORD
 #    define QT_NO_STL_WCHAR
+#  endif
+#  if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 95)
+#    define Q_ALIGNOF(type)   __alignof__(type)
+#    define Q_TYPEOF(expr)    __typeof__(expr)
+#    define Q_DECL_ALIGN(n)   __attribute__((__aligned__(n)))
 #  endif
 /* GCC 3.1 and GCC 3.2 wrongly define _SB_CTYPE_MACROS on HP-UX */
 #  if defined(Q_OS_HPUX) && __GNUC__ == 3 && __GNUC_MINOR__ >= 1
@@ -520,6 +527,11 @@ namespace QT_NAMESPACE {}
 #    define Q_OUTOFLINE_TEMPLATE inline
 #    define Q_BROKEN_TEMPLATE_SPECIALIZATION
 #    define Q_CANNOT_DELETE_CONSTANT
+#  elif __xlC__ >= 0x0600
+#    define Q_ALIGNOF(type)     __alignof__(type)
+#    define Q_TYPEOF(expr)      __typeof__(expr)
+#    define Q_DECL_ALIGN(n)     __attribute__((__aligned__(n)))
+#    define Q_PACKED            __attribute__((__packed__))
 #  endif
 
 /* Older versions of DEC C++ do not define __EDG__ or __EDG - observed
@@ -598,6 +610,13 @@ namespace QT_NAMESPACE {}
 #  elif defined(__ghs)
 #    define Q_CC_GHS
 
+#  elif defined(__DCC__)
+#    define Q_CC_DIAB
+#    undef Q_NO_BOOL_TYPE
+#    if !defined(__bool)
+#      define Q_NO_BOOL_TYPE
+#    endif
+
 /* The UnixWare 7 UDK compiler is based on EDG and does define __EDG__ */
 #  elif defined(__USLC__) && defined(__SCO_VERSION__)
 #    define Q_CC_USLC
@@ -629,6 +648,11 @@ namespace QT_NAMESPACE {}
 #    endif
 #  endif
 
+/* VxWorks' DIAB toolchain has an additional EDG type C++ compiler
+   (see __DCC__ above). This one is for C mode files (__EDG is not defined) */
+#elif defined(_DIAB_TOOL)
+#  define Q_CC_DIAB
+
 /* Never tested! */
 #elif defined(__HIGHC__)
 #  define Q_CC_HIGHC
@@ -640,8 +664,18 @@ namespace QT_NAMESPACE {}
     in which case _BOOL is not defined
         this is the default in 4.2 compatibility mode triggered by -compat=4 */
 #  if __SUNPRO_CC >= 0x500
-#    if __SUNPRO_CC < 0x570
-#      define QT_NO_TEMPLATE_TEMPLATE_PARAMETERS
+#    define QT_NO_TEMPLATE_TEMPLATE_PARAMETERS
+   /* see http://developers.sun.com/sunstudio/support/Ccompare.html */
+#    if __SUNPRO_CC >= 0x590
+#      define Q_ALIGNOF(type)   __alignof__(type)
+#      define Q_TYPEOF(expr)    __typeof__(expr)
+#      define Q_DECL_ALIGN(n)   __attribute__((__aligned__(n)))
+#    endif
+#    if __SUNPRO_CC >= 0x550
+#      define Q_DECL_EXPORT     __global
+#    endif
+#    if __SUNPRO_CC < 0x5a0
+#      define Q_NO_TEMPLATE_FRIENDS
 #    endif
 #    if !defined(_BOOL)
 #      define Q_NO_BOOL_TYPE
@@ -672,8 +706,17 @@ namespace QT_NAMESPACE {}
 #  if defined(__HP_aCC) || __cplusplus >= 199707L
 #    define Q_NO_TEMPLATE_FRIENDS
 #    define Q_CC_HPACC
-#    ifdef QT_ARCH_PARISC
+#    if __HP_aCC-0 < 060000
 #      define QT_NO_TEMPLATE_TEMPLATE_PARAMETERS
+#      define Q_DECL_EXPORT     __declspec(dllexport)
+#      define Q_DECL_IMPORT     __declspec(dllimport)
+#    endif
+#    if __HP_aCC-0 >= 061200
+#      define Q_DECL_ALIGNED(n) __attribute__((aligned(n)))
+#    endif
+#    if __HP_aCC-0 >= 062000
+#      define Q_DECL_EXPORT     __attribute__((visibility("default")))
+#      define Q_DECL_IMPORT     Q_DECL_EXPORT
 #    endif
 #  else
 #    define Q_CC_HP
@@ -683,6 +726,10 @@ namespace QT_NAMESPACE {}
 #    define Q_NO_EXPLICIT_KEYWORD
 #  endif
 #  define Q_NO_USING_KEYWORD /* ### check "using" status */
+
+#elif defined(__WINSCW__) && !defined(Q_CC_NOKIAX86)
+#  define Q_CC_NOKIAX86
+
 
 #else
 #  error "Qt has not been tested with this compiler - talk to qt-bugs@trolltech.com"
@@ -731,6 +778,7 @@ namespace QT_NAMESPACE {}
      QWS      - Qt for Embedded Linux
      WIN32    - Windows
      X11      - X Window System
+     S60      - Symbian S60
      PM       - unsupported
      WIN16    - unsupported
 */
@@ -747,6 +795,10 @@ namespace QT_NAMESPACE {}
 #  endif
 #elif defined(Q_OS_WINCE)
 #  define Q_WS_WIN32
+#  define Q_WS_WINCE
+#  if defined(Q_OS_WINCE_WM)
+#    define Q_WS_WINCE_WM
+#  endif
 #elif defined(Q_OS_OS2)
 #  define Q_WS_PM
 #  error "Qt does not work with OS/2 Presentation Manager or Workplace Shell"
@@ -759,12 +811,16 @@ namespace QT_NAMESPACE {}
 #    elif defined(Q_OS_MAC32)
 #      define Q_WS_MAC32
 #    endif
+#  elif defined(Q_OS_SYMBIAN)
+#    if !defined(QT_NO_S60)
+#      define Q_WS_S60
+#    endif
 #  elif !defined(Q_WS_QWS)
 #    define Q_WS_X11
 #  endif
 #endif
 
-#if defined(Q_WS_WIN16) || defined(Q_WS_WIN32)
+#if defined(Q_WS_WIN16) || defined(Q_WS_WIN32) || defined(Q_WS_WINCE)
 #  define Q_WS_WIN
 #endif
 
@@ -783,7 +839,7 @@ typedef short qint16;              /* 16 bit signed */
 typedef unsigned short quint16;    /* 16 bit unsigned */
 typedef int qint32;                /* 32 bit signed */
 typedef unsigned int quint32;      /* 32 bit unsigned */
-#if defined(Q_OS_WIN) && !defined(Q_CC_GNU)
+#if defined(Q_OS_WIN) && !defined(Q_CC_GNU) && !defined(Q_CC_MWERKS)
 #  define Q_INT64_C(c) c ## i64    /* signed 64 bit constant */
 #  define Q_UINT64_C(c) c ## ui64   /* unsigned 64 bit constant */
 typedef __int64 qint64;            /* 64 bit signed */
@@ -801,10 +857,13 @@ typedef quint64 qulonglong;
 #ifndef QT_POINTER_SIZE
 #  if defined(Q_OS_WIN64)
 #   define QT_POINTER_SIZE 8
-#  elif defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
+#  elif defined(Q_OS_WIN32) || defined(Q_OS_WINCE) || defined(Q_OS_SYMBIAN)
 #   define QT_POINTER_SIZE 4
 #  endif
 #endif
+
+#define Q_INIT_RESOURCE_EXTERN(name) \
+    extern int QT_MANGLE_NAMESPACE(qInitResources_ ## name) ();
 
 #define Q_INIT_RESOURCE(name) \
     do { extern int QT_MANGLE_NAMESPACE(qInitResources_ ## name) ();       \
@@ -821,17 +880,14 @@ typedef quint64 qulonglong;
       sizeof(void *) == sizeof(quintptr)
       && sizeof(void *) == sizeof(qptrdiff)
 */
-template <int> class QUintForSize    { private: typedef void    Type; };
-template <>    class QUintForSize<4> { public:  typedef quint32 Type; };
-template <>    class QUintForSize<8> { public:  typedef quint64 Type; };
-template <typename T> class QUintForType : public QUintForSize<sizeof(T)> { };
-typedef QUintForType<void *>::Type quintptr;
-
-template <int> class QIntForSize    { private: typedef void   Type; };
-template <>    class QIntForSize<4> { public:  typedef qint32 Type; };
-template <>    class QIntForSize<8> { public:  typedef qint64 Type; };
-template <typename T> class QIntForType : public QIntForSize<sizeof(T)> { };
-typedef QIntForType<void *>::Type qptrdiff;
+template <int> struct QIntegerForSize;
+template <>    struct QIntegerForSize<1> { typedef quint8  Unsigned; typedef qint8  Signed; };
+template <>    struct QIntegerForSize<2> { typedef quint16 Unsigned; typedef qint16 Signed; };
+template <>    struct QIntegerForSize<4> { typedef quint32 Unsigned; typedef qint32 Signed; };
+template <>    struct QIntegerForSize<8> { typedef quint64 Unsigned; typedef qint64 Signed; };
+template <class T> struct QIntegerForSizeof: QIntegerForSize<sizeof(T)> { };
+typedef QIntegerForSizeof<void*>::Unsigned quintptr;
+typedef QIntegerForSizeof<void*>::Signed qptrdiff;
 
 /*
    Useful type definitions for Qt
@@ -853,6 +909,14 @@ QT_END_INCLUDE_NAMESPACE
 */
 
 #ifndef QT_LINUXBASE /* the LSB defines TRUE and FALSE for us */
+/* Symbian OS defines TRUE = 1 and FALSE = 0,
+redefine to built-in booleans to make autotests work properly */
+#ifdef Q_OS_SYMBIAN
+    #include <e32def.h> /* Symbian OS defines */
+
+    #undef TRUE
+    #undef FALSE
+#endif
 #  ifndef TRUE
 #   define TRUE true
 #   define FALSE false
@@ -917,9 +981,11 @@ QT_END_INCLUDE_NAMESPACE
 #  undef QT_DEPRECATED_VARIABLE
 #  undef QT_DEPRECATED_CONSTRUCTOR
 #elif defined(QT_DEPRECATED_WARNINGS)
+#  ifdef QT3_SUPPORT
 /* enable Qt3 support warnings as well */
-#  undef QT3_SUPPORT_WARNINGS
-#  define QT3_SUPPORT_WARNINGS
+#    undef QT3_SUPPORT_WARNINGS
+#    define QT3_SUPPORT_WARNINGS
+#  endif
 #  undef QT_DEPRECATED
 #  define QT_DEPRECATED Q_DECL_DEPRECATED
 #  undef QT_DEPRECATED_VARIABLE
@@ -998,15 +1064,27 @@ QT_END_INCLUDE_NAMESPACE
 #  define QT_FASTCALL
 #endif
 
+//defines the type for the WNDPROC on windows
+//the alignment needs to be forced for sse2 to not crash with mingw
+#if defined(Q_WS_WIN)
+#  if defined(Q_CC_MINGW)
+#    define QT_ENSURE_STACK_ALIGNED_FOR_SSE __attribute__ ((force_align_arg_pointer))
+#  else
+#    define QT_ENSURE_STACK_ALIGNED_FOR_SSE
+#  endif
+#  define QT_WIN_CALLBACK CALLBACK QT_ENSURE_STACK_ALIGNED_FOR_SSE 
+#endif
+
 typedef int QNoImplicitBoolCast;
 
 #if defined(QT_ARCH_ARM) || defined(QT_ARCH_ARMV6) || defined(QT_ARCH_AVR32) || (defined(QT_ARCH_MIPS) && (defined(Q_WS_QWS) || defined(Q_OS_WINCE))) || defined(QT_ARCH_SH) || defined(QT_ARCH_SH4A)
 #define QT_NO_FPU
 #endif
 
+// This logic must match the one in qmetatype.h
 #if defined(QT_COORD_TYPE)
 typedef QT_COORD_TYPE qreal;
-#elif defined(QT_NO_FPU) || defined(QT_ARCH_ARM) || defined(QT_ARCH_WINDOWSCE)
+#elif defined(QT_NO_FPU) || defined(QT_ARCH_ARM) || defined(QT_ARCH_WINDOWSCE) || defined(QT_ARCH_SYMBIAN)
 typedef float qreal;
 #else
 typedef double qreal;
@@ -1022,8 +1100,13 @@ inline T qAbs(const T &t) { return t >= 0 ? t : -t; }
 inline int qRound(qreal d)
 { return d >= 0.0 ? int(d + 0.5) : int(d - int(d-1) + 0.5) + int(d-1); }
 
+#if defined(QT_NO_FPU) || defined(QT_ARCH_ARM) || defined(QT_ARCH_WINDOWSCE) || defined(QT_ARCH_SYMBIAN)
+inline qint64 qRound64(double d)
+{ return d >= 0.0 ? qint64(d + 0.5) : qint64(d - qreal(qint64(d-1)) + 0.5) + qint64(d-1); }
+#else
 inline qint64 qRound64(qreal d)
-{ return d >= 0.0 ? qint64(d + 0.5) : qint64(d - qint64(d-1) + 0.5) + qint64(d-1); }
+{ return d >= 0.0 ? qint64(d + 0.5) : qint64(d - qreal(qint64(d-1)) + 0.5) + qint64(d-1); }
+#endif
 
 template <typename T>
 inline const T &qMin(const T &a, const T &b) { if (a < b) return a; return b; }
@@ -1078,12 +1161,21 @@ class QDataStream;
 #  define QT_NO_COP
 #endif
 
+#if defined(Q_OS_VXWORKS)
+#  define QT_NO_CRASHHANDLER     // no popen
+#  define QT_NO_PROCESS          // no exec*, no fork
+#  define QT_NO_LPR
+#  define QT_NO_SHAREDMEMORY     // only POSIX, no SysV and in the end...
+#  define QT_NO_SYSTEMSEMAPHORE  // not needed at all in a flat address space
+#  define QT_NO_QWS_MULTIPROCESS // no processes
+#endif
+
 # include <QtCore/qfeatures.h>
 
 #define QT_SUPPORTS(FEATURE) (!defined(QT_NO_##FEATURE))
 
 #ifndef Q_DECL_EXPORT
-#  ifdef Q_OS_WIN
+#  if defined(Q_OS_WIN) || defined(Q_CC_NOKIAX86) || defined(Q_CC_RVCT)
 #    define Q_DECL_EXPORT __declspec(dllexport)
 #  elif defined(QT_VISIBILITY_AVAILABLE)
 #    define Q_DECL_EXPORT __attribute__((visibility("default")))
@@ -1093,7 +1185,7 @@ class QDataStream;
 #  endif
 #endif
 #ifndef Q_DECL_IMPORT
-#  if defined(Q_OS_WIN)
+#  if defined(Q_OS_WIN) || defined(Q_CC_NOKIAX86) || defined(Q_CC_RVCT)
 #    define Q_DECL_IMPORT __declspec(dllimport)
 #  else
 #    define Q_DECL_IMPORT
@@ -1101,10 +1193,10 @@ class QDataStream;
 #endif
 
 /*
-   Create Qt DLL if QT_DLL is defined (Windows only)
+   Create Qt DLL if QT_DLL is defined (Windows and Symbian only)
 */
 
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) || defined(Q_OS_SYMBIAN)
 #  if defined(QT_NODLL)
 #    undef QT_MAKEDLL
 #    undef QT_DLL
@@ -1137,10 +1229,25 @@ class QDataStream;
 #    else
 #      define Q_SVG_EXPORT Q_DECL_IMPORT
 #    endif
+#    if defined(QT_BUILD_DECLARATIVE_LIB)
+#      define Q_DECLARATIVE_EXPORT Q_DECL_EXPORT
+#    else
+#      define Q_DECLARATIVE_EXPORT Q_DECL_IMPORT
+#    endif
 #    if defined(QT_BUILD_OPENGL_LIB)
 #      define Q_OPENGL_EXPORT Q_DECL_EXPORT
 #    else
 #      define Q_OPENGL_EXPORT Q_DECL_IMPORT
+#    endif
+#    if defined(QT_BUILD_MULTIMEDIA_LIB)
+#      define Q_MULTIMEDIA_EXPORT Q_DECL_EXPORT
+#    else
+#      define Q_MULTIMEDIA_EXPORT Q_DECL_IMPORT
+#    endif
+#    if defined(QT_BUILD_OPENVG_LIB)
+#      define Q_OPENVG_EXPORT Q_DECL_EXPORT
+#    else
+#      define Q_OPENVG_EXPORT Q_DECL_IMPORT
 #    endif
 #    if defined(QT_BUILD_XML_LIB)
 #      define Q_XML_EXPORT Q_DECL_EXPORT
@@ -1172,6 +1279,11 @@ class QDataStream;
 #    else
 #      define Q_COMPAT_EXPORT Q_DECL_IMPORT
 #    endif
+#    if defined(QT_BUILD_DBUS_LIB)
+#      define Q_DBUS_EXPORT Q_DECL_EXPORT
+#    else
+#      define Q_DBUS_EXPORT Q_DECL_IMPORT
+#    endif
 #    define Q_TEMPLATEDLL
 #  elif defined(QT_DLL) /* use a Qt DLL library */
 #    define Q_CORE_EXPORT Q_DECL_IMPORT
@@ -1179,13 +1291,17 @@ class QDataStream;
 #    define Q_SQL_EXPORT Q_DECL_IMPORT
 #    define Q_NETWORK_EXPORT Q_DECL_IMPORT
 #    define Q_SVG_EXPORT Q_DECL_IMPORT
+#    define Q_DECLARATIVE_EXPORT Q_DECL_IMPORT
 #    define Q_CANVAS_EXPORT Q_DECL_IMPORT
 #    define Q_OPENGL_EXPORT Q_DECL_IMPORT
+#    define Q_MULTIMEDIA_EXPORT Q_DECL_IMPORT
+#    define Q_OPENVG_EXPORT Q_DECL_IMPORT
 #    define Q_XML_EXPORT Q_DECL_IMPORT
 #    define Q_XMLPATTERNS_EXPORT Q_DECL_IMPORT
 #    define Q_SCRIPT_EXPORT Q_DECL_IMPORT
 #    define Q_SCRIPTTOOLS_EXPORT Q_DECL_IMPORT
 #    define Q_COMPAT_EXPORT Q_DECL_IMPORT
+#    define Q_DBUS_EXPORT Q_DECL_IMPORT
 #    define Q_TEMPLATEDLL
 #  endif
 #  define Q_NO_DECLARED_NOT_DEFINED
@@ -1205,24 +1321,31 @@ class QDataStream;
 #    define Q_SQL_EXPORT Q_DECL_EXPORT
 #    define Q_NETWORK_EXPORT Q_DECL_EXPORT
 #    define Q_SVG_EXPORT Q_DECL_EXPORT
+#    define Q_DECLARATIVE_EXPORT Q_DECL_EXPORT
 #    define Q_OPENGL_EXPORT Q_DECL_EXPORT
+#    define Q_MULTIMEDIA_EXPORT Q_DECL_EXPORT
+#    define Q_OPENVG_EXPORT Q_DECL_EXPORT
 #    define Q_XML_EXPORT Q_DECL_EXPORT
 #    define Q_XMLPATTERNS_EXPORT Q_DECL_EXPORT
 #    define Q_SCRIPT_EXPORT Q_DECL_EXPORT
 #    define Q_SCRIPTTOOLS_EXPORT Q_DECL_EXPORT
 #    define Q_COMPAT_EXPORT Q_DECL_EXPORT
+#    define Q_DBUS_EXPORT Q_DECL_EXPORT
 #  else
 #    define Q_CORE_EXPORT
 #    define Q_GUI_EXPORT
 #    define Q_SQL_EXPORT
 #    define Q_NETWORK_EXPORT
 #    define Q_SVG_EXPORT
+#    define Q_DECLARATIVE_EXPORT
 #    define Q_OPENGL_EXPORT
+#    define Q_MULTIMEDIA_EXPORT
 #    define Q_XML_EXPORT
 #    define Q_XMLPATTERNS_EXPORT
 #    define Q_SCRIPT_EXPORT
 #    define Q_SCRIPTTOOLS_EXPORT
 #    define Q_COMPAT_EXPORT
+#    define Q_DBUS_EXPORT
 #  endif
 #endif
 
@@ -1239,6 +1362,12 @@ class QDataStream;
 #    else
 #      define Q_GUI_EXPORT_INLINE inline
 #    endif
+#elif defined(Q_CC_RVCT)
+// we force RVCT not to export inlines by passing --visibility_inlines_hidden
+// so we need to just inline it, rather than exporting and inlining
+// note: this affects the contents of the DEF files (ie. these functions do not appear)
+#    define Q_CORE_EXPORT_INLINE inline
+#    define Q_GUI_EXPORT_INLINE inline
 #else
 #    define Q_CORE_EXPORT_INLINE Q_CORE_EXPORT inline
 #    define Q_GUI_EXPORT_INLINE Q_GUI_EXPORT inline
@@ -1246,17 +1375,46 @@ class QDataStream;
 
 /*
    No, this is not an evil backdoor. QT_BUILD_INTERNAL just exports more symbols
-   for Trolltech's internal unit tests. If you want slower loading times and more
+   for Qt's internal unit tests. If you want slower loading times and more
    symbols that can vanish from version to version, feel free to define QT_BUILD_INTERNAL.
 */
-#if defined(QT_BUILD_INTERNAL) && defined(Q_OS_WIN) && defined(QT_MAKEDLL)
+#if defined(QT_BUILD_INTERNAL) && (defined(Q_OS_WIN) || defined(Q_OS_SYMBIAN)) && defined(QT_MAKEDLL)
 #    define Q_AUTOTEST_EXPORT Q_DECL_EXPORT
-#elif defined(QT_BUILD_INTERNAL) && defined(Q_OS_WIN) && defined(QT_DLL)
+#elif defined(QT_BUILD_INTERNAL) && (defined(Q_OS_WIN) || defined(Q_OS_SYMBIAN)) && defined(QT_DLL)
 #    define Q_AUTOTEST_EXPORT Q_DECL_IMPORT
-#elif defined(QT_BUILD_INTERNAL) && !defined(Q_OS_WIN) && defined(QT_SHARED)
+#elif defined(QT_BUILD_INTERNAL) && !(defined(Q_OS_WIN) || defined(Q_OS_SYMBIAN)) && defined(QT_SHARED)
 #    define Q_AUTOTEST_EXPORT Q_DECL_EXPORT
 #else
 #    define Q_AUTOTEST_EXPORT
+#endif
+
+inline void qt_noop() {}
+
+/* These wrap try/catch so we can switch off exceptions later.
+
+   Beware - do not use more than one QT_CATCH per QT_TRY, and do not use
+   the exception instance in the catch block.
+   If you can't live with those constraints, don't use these macros.
+   Use the QT_NO_EXCEPTIONS macro to protect your code instead.
+*/
+
+#ifdef QT_BOOTSTRAPPED
+#  define QT_NO_EXCEPTIONS
+#endif
+#if !defined(QT_NO_EXCEPTIONS) && defined(Q_CC_GNU) && !defined (__EXCEPTIONS) && !defined(Q_MOC_RUN)
+#  define QT_NO_EXCEPTIONS
+#endif
+
+#ifdef QT_NO_EXCEPTIONS
+#  define QT_TRY if (true)
+#  define QT_CATCH(A) else
+#  define QT_THROW(A) qt_noop()
+#  define QT_RETHROW qt_noop()
+#else
+#  define QT_TRY try
+#  define QT_CATCH(A) catch (A)
+#  define QT_THROW(A) throw A
+#  define QT_RETHROW throw
 #endif
 
 /*
@@ -1355,6 +1513,32 @@ public:
     };
     static const MacVersion MacintoshVersion;
 #endif
+#ifdef Q_OS_SYMBIAN
+    enum SymbianVersion {
+        SV_Unknown = 1000000, // Assume unknown is something newer than what is supported
+        //These are the Symbian Ltd versions 9.2-9.4
+        SV_9_2 = 10,
+        SV_9_3 = 20,
+        SV_9_4 = 30,
+        //Following values are the symbian foundation versions, i.e. Symbian^1 == SV_SF_1
+        SV_SF_1 = SV_9_4,
+        SV_SF_2 = 40,
+        SV_SF_3 = 50,
+        SV_SF_4 = 60
+    };
+    static SymbianVersion symbianVersion();
+    enum S60Version {
+        SV_S60_None = 0,
+        SV_S60_Unknown = SV_Unknown,
+        SV_S60_3_1 = SV_9_2,
+        SV_S60_3_2 = SV_9_3,
+        SV_S60_5_0 = SV_9_4,
+        //versions beyond 5.0 are to be confirmed - it is better to use symbian version
+        SV_S60_5_1 = SV_SF_2,
+        SV_S60_5_2 = SV_SF_3
+    };
+    static S60Version s60Version();
+#endif
 };
 
 Q_CORE_EXPORT const char *qVersion();
@@ -1375,21 +1559,14 @@ inline QT3_SUPPORT bool qSysInfo(int *wordSize, bool *bigEndian)
 
 #if defined(Q_WS_WIN) || defined(Q_OS_CYGWIN)
 #if defined(QT3_SUPPORT)
-inline QT3_SUPPORT bool qt_winUnicode() { return !(QSysInfo::WindowsVersion & QSysInfo::WV_DOS_based); }
+inline QT3_SUPPORT bool qt_winUnicode() { return true; }
 inline QT3_SUPPORT int qWinVersion() { return QSysInfo::WindowsVersion; }
 #endif
 
-#ifdef Q_OS_WINCE
-#define QT_WA(uni, ansi) uni
-#define QT_WA_INLINE(uni, ansi) (uni)
-#elif defined(UNICODE)
-#define QT_WA(uni, ansi) if (!(QSysInfo::windowsVersion() & QSysInfo::WV_DOS_based)) { uni } else { ansi }
+// ### Qt 5: remove Win9x support macros QT_WA and QT_WA_INLINE.
+#define QT_WA(unicode, ansi) unicode
+#define QT_WA_INLINE(unicode, ansi) (unicode)
 
-#define QT_WA_INLINE(uni, ansi) (!(QSysInfo::windowsVersion() & QSysInfo::WV_DOS_based) ? uni : ansi)
-#else
-#define QT_WA(uni, ansi) ansi
-#define QT_WA_INLINE(uni, ansi) ansi
-#endif
 #endif /* Q_WS_WIN */
 
 #ifndef Q_OUTOFLINE_TEMPLATE
@@ -1407,7 +1584,7 @@ inline QT3_SUPPORT int qWinVersion() { return QSysInfo::WindowsVersion; }
    Avoid "unused parameter" warnings
 */
 
-#if defined(Q_CC_INTEL) && !defined(Q_OS_WIN)
+#if defined(Q_CC_INTEL) && !defined(Q_OS_WIN) || defined(Q_CC_RVCT)
 template <typename T>
 inline void qUnused(T &x) { (void)x; }
 #  define Q_UNUSED(x) qUnused(x);
@@ -1418,6 +1595,15 @@ inline void qUnused(T &x) { (void)x; }
 /*
    Debugging and error handling
 */
+
+/*
+   On Symbian we do not know beforehand whether we are compiling in
+   release or debug mode, so check the Symbian build define here,
+   and set the QT_NO_DEBUG define appropriately.
+*/
+#if defined(Q_OS_SYMBIAN) && defined(NDEBUG) && !defined(QT_NO_DEBUG)
+#  define QT_NO_DEBUG
+#endif
 
 #if !defined(QT_NO_DEBUG) && !defined(QT_DEBUG)
 #  define QT_DEBUG
@@ -1477,17 +1663,15 @@ Q_CORE_EXPORT_INLINE QDebug qCritical();
 inline QNoDebug qDebug();
 #endif
 
-#define QT_NO_QDEBUG_MACRO if(1); else qDebug
+#define QT_NO_QDEBUG_MACRO while (false) qDebug
 #ifdef QT_NO_DEBUG_OUTPUT
 #  define qDebug QT_NO_QDEBUG_MACRO
 #endif
-#define QT_NO_QWARNING_MACRO if(1); else qWarning
+#define QT_NO_QWARNING_MACRO while (false) qWarning
 #ifdef QT_NO_WARNING_OUTPUT
 #  define qWarning QT_NO_QWARNING_MACRO
 #endif
 
-
-inline void qt_noop() {}
 
 Q_CORE_EXPORT void qt_assert(const char *assertion, const char *file, int line);
 
@@ -1514,14 +1698,22 @@ Q_CORE_EXPORT void qt_assert_x(const char *where, const char *what, const char *
 #endif
 
 Q_CORE_EXPORT void qt_check_pointer(const char *, int);
+Q_CORE_EXPORT void qBadAlloc();
 
-#ifndef QT_NO_DEBUG
-#  define Q_CHECK_PTR(p) do {if(!(p))qt_check_pointer(__FILE__,__LINE__);} while (0)
+#ifdef QT_NO_EXCEPTIONS
+#  if defined(QT_NO_DEBUG)
+#    define Q_CHECK_PTR(p) qt_noop();
+#  else
+#    define Q_CHECK_PTR(p) do {if(!(p))qt_check_pointer(__FILE__,__LINE__);} while (0)
+#  endif
 #else
-#  define Q_CHECK_PTR(p)
+#  define Q_CHECK_PTR(p) do { if (!(p)) qBadAlloc(); } while (0)
 #endif
 
-#if (defined(Q_CC_GNU) && !defined(Q_OS_SOLARIS)) || defined(Q_CC_HPACC)
+template <typename T>
+inline T *q_check_ptr(T *p) { Q_CHECK_PTR(p); return p; }
+
+#if (defined(Q_CC_GNU) && !defined(Q_OS_SOLARIS)) || defined(Q_CC_HPACC) || defined(Q_CC_DIAB)
 #  define Q_FUNC_INFO __PRETTY_FUNCTION__
 #elif defined(_MSC_VER)
     /* MSVC 2002 doesn't have __FUNCSIG__ nor can it handle QT_STRINGIFY. */
@@ -1531,7 +1723,7 @@ Q_CORE_EXPORT void qt_check_pointer(const char *, int);
 #      define Q_FUNC_INFO __FUNCSIG__
 #  endif
 #else
-#   if defined(Q_OS_SOLARIS) || defined(Q_CC_XLC)
+#   if defined(Q_OS_SOLARIS) || defined(Q_CC_XLC) || defined(Q_OS_SYMBIAN)
 #      define Q_FUNC_INFO __FILE__ "(line number unavailable)"
 #   else
         /* These two macros makes it possible to turn the builtin line expander into a
@@ -1540,9 +1732,9 @@ Q_CORE_EXPORT void qt_check_pointer(const char *, int);
 #       define QT_STRINGIFY(x) QT_STRINGIFY2(x)
 #       define Q_FUNC_INFO __FILE__ ":" QT_STRINGIFY(__LINE__)
 #   endif
-    /* The MIPSpro compiler postpones macro expansion, and therefore macros must be in scope
-     * when being used. */
-#   if !defined(Q_CC_MIPS)
+    /* The MIPSpro and RVCT compilers postpones macro expansion,
+       and therefore macros must be in scope when being used. */
+#   if !defined(Q_CC_MIPS) && !defined(Q_CC_RVCT) && !defined(Q_CC_NOKIAX86)
 #       undef QT_STRINGIFY2
 #       undef QT_STRINGIFY
 #   endif
@@ -1667,12 +1859,12 @@ public:
     static TYPE *NAME()                                                 \
     {                                                                   \
         if (!this_##NAME.pointer && !this_##NAME.destroyed) {           \
-            TYPE *x = new TYPE;                                         \
+            QScopedPointer<TYPE > x(new TYPE);                          \
             INITIALIZER;                                                \
-            if (!this_##NAME.pointer.testAndSetOrdered(0, x))           \
-                delete x;                                               \
-            else                                                        \
+            if (this_##NAME.pointer.testAndSetOrdered(0, x.data())) {   \
                 static QGlobalStaticDeleter<TYPE > cleanup(this_##NAME); \
+                x.take();                                               \
+            }                                                           \
         }                                                               \
         return this_##NAME.pointer;                                     \
     }
@@ -1704,6 +1896,22 @@ static inline bool qFuzzyCompare(double p1, double p2)
 static inline bool qFuzzyCompare(float p1, float p2)
 {
     return (qAbs(p1 - p2) <= 0.00001f * qMin(qAbs(p1), qAbs(p2)));
+}
+
+/*!
+  \internal
+*/
+static inline bool qFuzzyIsNull(double d)
+{
+    return qAbs(d) <= 0.000000000001;
+}
+
+/*!
+  \internal
+*/
+static inline bool qFuzzyIsNull(float f)
+{
+    return qAbs(f) <= 0.00001f;
 }
 
 /*
@@ -1837,7 +2045,7 @@ enum { /* TYPEINFO flags */
 
 #define Q_DECLARE_TYPEINFO(TYPE, FLAGS) \
 template <> \
-class QTypeInfo<TYPE> \
+class QTypeInfo<TYPE > \
 { \
 public: \
     enum { \
@@ -1850,6 +2058,14 @@ public: \
     static inline const char *name() { return #TYPE; } \
 }
 
+template <typename T>
+inline void qSwap(T &value1, T &value2)
+{
+    const T t = value1;
+    value1 = value2;
+    value2 = t;
+}
+
 /*
    Specialize a shared type with:
 
@@ -1859,33 +2075,12 @@ public: \
    types must declare a 'bool isDetached(void) const;' member for this
    to work.
 */
-#if defined Q_CC_MSVC && _MSC_VER < 1300
-template <typename T>
-inline void qSwap_helper(T &value1, T &value2, T*)
-{
-    T t = value1;
-    value1 = value2;
-    value2 = t;
-}
 #define Q_DECLARE_SHARED(TYPE)                                          \
 template <> inline bool qIsDetached<TYPE>(TYPE &t) { return t.isDetached(); } \
-template <> inline void qSwap_helper<TYPE>(TYPE &value1, TYPE &value2, TYPE*) \
-{ \
-    const TYPE::DataPtr t = value1.data_ptr(); \
-    value1.data_ptr() = value2.data_ptr(); \
-    value2.data_ptr() = t; \
-}
-#else
-#define Q_DECLARE_SHARED(TYPE)                                          \
-template <> inline bool qIsDetached<TYPE>(TYPE &t) { return t.isDetached(); } \
-template <typename T> inline void qSwap(T &, T &); \
 template <> inline void qSwap<TYPE>(TYPE &value1, TYPE &value2) \
 { \
-    const TYPE::DataPtr t = value1.data_ptr(); \
-    value1.data_ptr() = value2.data_ptr(); \
-    value2.data_ptr() = t; \
+    qSwap(value1.data_ptr(), value2.data_ptr()); \
 }
-#endif
 
 /*
    QTypeInfo primitive specializations
@@ -1915,6 +2110,9 @@ Q_DECLARE_TYPEINFO(long double, Q_PRIMITIVE_TYPE);
 Q_CORE_EXPORT void *qMalloc(size_t size);
 Q_CORE_EXPORT void qFree(void *ptr);
 Q_CORE_EXPORT void *qRealloc(void *ptr, size_t size);
+Q_CORE_EXPORT void *qMallocAligned(size_t size, size_t alignment);
+Q_CORE_EXPORT void *qReallocAligned(void *ptr, size_t size, size_t oldsize, size_t alignment);
+Q_CORE_EXPORT void qFreeAligned(void *ptr);
 Q_CORE_EXPORT void *qMemCopy(void *dest, const void *src, size_t n);
 Q_CORE_EXPORT void *qMemSet(void *dest, int c, size_t n);
 
@@ -2013,7 +2211,7 @@ public:
 
     inline bool operator!() const { return !i; }
 
-    inline bool testFlag(Enum f) const { return (i & f) == f; }
+    inline bool testFlag(Enum f) const { return (i & f) == f && (f != 0 || i == int(f) ); }
 };
 
 #define Q_DECLARE_FLAGS(Flags, Enum)\
@@ -2042,7 +2240,7 @@ typedef uint Flags;
 
 #endif /* Q_NO_TYPESAFE_FLAGS */
 
-#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL)
+#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_RVCT)
 /* make use of typeof-extension */
 template <typename T>
 class QForeachContainer {
@@ -2095,6 +2293,17 @@ inline const QForeachContainer<T> *qForeachContainer(const QForeachContainerBase
              qForeachContainer(&_container_, true ? 0 : qForeachPointer(container))->brk;           \
              --qForeachContainer(&_container_, true ? 0 : qForeachPointer(container))->brk)
 
+#elif defined(Q_CC_DIAB)
+// VxWorks DIAB generates unresolvable symbols, if container is a function call
+#  define Q_FOREACH(variable,container)                                                             \
+    if(0){}else                                                                                     \
+    for (const QForeachContainerBase &_container_ = qForeachContainerNew(container);                \
+         qForeachContainer(&_container_, (__typeof__(container) *) 0)->condition();       \
+         ++qForeachContainer(&_container_, (__typeof__(container) *) 0)->i)               \
+        for (variable = *qForeachContainer(&_container_, (__typeof__(container) *) 0)->i; \
+             qForeachContainer(&_container_, (__typeof__(container) *) 0)->brk;           \
+             --qForeachContainer(&_container_, (__typeof__(container) *) 0)->brk)
+
 #else
 #  define Q_FOREACH(variable, container) \
     for (const QForeachContainerBase &_container_ = qForeachContainerNew(container); \
@@ -2125,9 +2334,12 @@ inline const QForeachContainer<T> *qForeachContainer(const QForeachContainerBase
 #endif
 #endif
 
+template <typename T> static inline T *qGetPtrHelper(T *ptr) { return ptr; }
+template <typename Wrapper> static inline typename Wrapper::pointer qGetPtrHelper(const Wrapper &p) { return p.data(); }
+
 #define Q_DECLARE_PRIVATE(Class) \
-    inline Class##Private* d_func() { return reinterpret_cast<Class##Private *>(d_ptr); } \
-    inline const Class##Private* d_func() const { return reinterpret_cast<const Class##Private *>(d_ptr); } \
+    inline Class##Private* d_func() { return reinterpret_cast<Class##Private *>(qGetPtrHelper(d_ptr)); } \
+    inline const Class##Private* d_func() const { return reinterpret_cast<const Class##Private *>(qGetPtrHelper(d_ptr)); } \
     friend class Class##Private;
 
 #define Q_DECLARE_PRIVATE_D(Dptr, Class) \
@@ -2149,6 +2361,18 @@ inline const QForeachContainer<T> *qForeachContainer(const QForeachContainerBase
 #define QT_TRANSLATE_NOOP_UTF8(scope, x) (x)
 #define QT_TRANSLATE_NOOP3(scope, x, comment) {x, comment}
 #define QT_TRANSLATE_NOOP3_UTF8(scope, x, comment) {x, comment}
+
+#ifndef QT_NO_TRANSLATION // ### This should enclose the NOOPs above
+
+// Defined in qcoreapplication.cpp
+// The better name qTrId() is reserved for an upcoming function which would
+// return a much more powerful QStringFormatter instead of a QString.
+Q_CORE_EXPORT QString qtTrId(const char *id, int n = -1);
+
+#define QT_TRID_NOOP(id) id
+
+#endif // QT_NO_TRANSLATION
+
 #define QDOC_PROPERTY(text)
 
 /*
@@ -2169,14 +2393,9 @@ inline const QForeachContainer<T> *qForeachContainer(const QForeachContainerBase
    classes contains a private copy constructor and assignment
    operator to disable copying (the compiler gives an error message).
 */
-
-#if !defined(Q_NO_DECLARED_NOT_DEFINED) || !defined(QT_MAKEDLL)
-# define Q_DISABLE_COPY(Class) \
-     Class(const Class &); \
-     Class &operator=(const Class &);
-#else
-# define Q_DISABLE_COPY(Class)
-#endif
+#define Q_DISABLE_COPY(Class) \
+    Class(const Class &); \
+    Class &operator=(const Class &);
 
 class QByteArray;
 Q_CORE_EXPORT QByteArray qgetenv(const char *varName);
@@ -2212,6 +2431,66 @@ QT3_SUPPORT Q_CORE_EXPORT const char *qInstallPathTranslations();
 QT3_SUPPORT Q_CORE_EXPORT const char *qInstallPathSysconf();
 #endif
 
+#if defined(Q_OS_SYMBIAN)
+
+#ifdef SYMBIAN_BUILD_GCE
+#define Q_SYMBIAN_SUPPORTS_SURFACES
+//RWsPointerCursor is fixed, so don't use low performance sprites
+#define Q_SYMBIAN_FIXED_POINTER_CURSORS
+#define Q_SYMBIAN_HAS_EXTENDED_BITMAP_TYPE
+#define Q_SYMBIAN_WINDOW_SIZE_CACHE
+#define QT_SYMBIAN_SUPPORTS_ADVANCED_POINTER
+
+//enabling new graphics resources
+#ifdef SYMBIAN_GRAPHICS_EGL_SGIMAGELITE
+#  define QT_SYMBIAN_SUPPORTS_SGIMAGE
+#endif
+
+#ifdef SYMBIAN_GRAPHICS_WSERV_QT_EFFECTS
+#  define Q_SYMBIAN_SEMITRANSPARENT_BG_SURFACE
+#endif
+#endif
+
+
+//Symbian does not support data imports from a DLL
+#define Q_NO_DATA_RELOCATION
+
+QT_END_NAMESPACE
+// forward declare std::exception
+#ifdef __cplusplus
+namespace std { class exception; }
+#endif
+QT_BEGIN_NAMESPACE
+Q_CORE_EXPORT void qt_symbian_throwIfError(int error);
+Q_CORE_EXPORT void qt_symbian_exception2LeaveL(const std::exception& ex);
+Q_CORE_EXPORT int qt_symbian_exception2Error(const std::exception& ex);
+
+#define QT_TRAP_THROWING(_f)                        \
+    {                                               \
+        TInt ____error;                             \
+        TRAP(____error, _f);                        \
+        qt_symbian_throwIfError(____error);                 \
+     }
+
+#define QT_TRYCATCH_ERROR(_err, _f)                         \
+    {                                                       \
+        _err = KErrNone;                                    \
+        try {                                               \
+            _f;                                             \
+        } catch (const std::exception &____ex) {            \
+            _err = qt_symbian_exception2Error(____ex);       \
+        }                                                   \
+    }
+
+#define QT_TRYCATCH_LEAVING(_f)                         \
+    {                                                   \
+    TInt ____err;                                       \
+    QT_TRYCATCH_ERROR(____err, _f)                      \
+    User::LeaveIfError(____err);                        \
+    }
+#endif
+
+
 /*
    This gives us the possibility to check which modules the user can
    use. These are purely compile time checks and will generate no code.
@@ -2235,12 +2514,16 @@ QT3_SUPPORT Q_CORE_EXPORT const char *qInstallPathSysconf();
 #define QT_MODULE_TEST                 0x04000
 #define QT_MODULE_DBUS                 0x08000
 #define QT_MODULE_SCRIPTTOOLS          0x10000
+#define QT_MODULE_OPENVG               0x20000
+#define QT_MODULE_MULTIMEDIA           0x40000
+#define QT_MODULE_DECLARATIVE          0x80000
 
 /* Qt editions */
 #define QT_EDITION_CONSOLE      (QT_MODULE_CORE \
                                  | QT_MODULE_NETWORK \
                                  | QT_MODULE_SQL \
                                  | QT_MODULE_SCRIPT \
+                                 | QT_MODULE_MULTIMEDIA \
                                  | QT_MODULE_XML \
                                  | QT_MODULE_XMLPATTERNS \
                                  | QT_MODULE_TEST \
@@ -2254,7 +2537,9 @@ QT3_SUPPORT Q_CORE_EXPORT const char *qInstallPathSysconf();
                                  | QT_MODULE_GUI \
                                  | QT_MODULE_NETWORK \
                                  | QT_MODULE_OPENGL \
+                                 | QT_MODULE_OPENVG \
                                  | QT_MODULE_SQL \
+                                 | QT_MODULE_MULTIMEDIA \
                                  | QT_MODULE_XML \
                                  | QT_MODULE_XMLPATTERNS \
                                  | QT_MODULE_SCRIPT \
@@ -2262,6 +2547,7 @@ QT3_SUPPORT Q_CORE_EXPORT const char *qInstallPathSysconf();
                                  | QT_MODULE_QT3SUPPORTLIGHT \
                                  | QT_MODULE_QT3SUPPORT \
                                  | QT_MODULE_SVG \
+                                 | QT_MODULE_DECLARATIVE \
                                  | QT_MODULE_GRAPHICSVIEW \
                                  | QT_MODULE_HELP \
                                  | QT_MODULE_TEST \
@@ -2285,6 +2571,9 @@ QT3_SUPPORT Q_CORE_EXPORT const char *qInstallPathSysconf();
 #define QT_LICENSED_MODULE(x) \
     enum QtValidLicenseFor##x##Module { Licensed##x = true };
 
+/* qdoc is really unhappy with the following block of preprocessor checks,
+   making it difficult to document classes properly after this point. */
+
 #if (QT_EDITION & QT_MODULE_CORE)
 QT_LICENSED_MODULE(Core)
 #endif
@@ -2297,8 +2586,14 @@ QT_LICENSED_MODULE(Network)
 #if (QT_EDITION & QT_MODULE_OPENGL)
 QT_LICENSED_MODULE(OpenGL)
 #endif
+#if (QT_EDITION & QT_MODULE_OPENVG)
+QT_LICENSED_MODULE(OpenVG)
+#endif
 #if (QT_EDITION & QT_MODULE_SQL)
 QT_LICENSED_MODULE(Sql)
+#endif
+#if (QT_EDITION & QT_MODULE_MULTIMEDIA)
+QT_LICENSED_MODULE(Multimedia)
 #endif
 #if (QT_EDITION & QT_MODULE_XML)
 QT_LICENSED_MODULE(Xml)
@@ -2324,6 +2619,9 @@ QT_LICENSED_MODULE(Qt3Support)
 #if (QT_EDITION & QT_MODULE_SVG)
 QT_LICENSED_MODULE(Svg)
 #endif
+#if (QT_EDITION & QT_MODULE_DECLARATIVE)
+QT_LICENSED_MODULE(Declarative)
+#endif
 #if (QT_EDITION & QT_MODULE_ACTIVEQT)
 QT_LICENSED_MODULE(ActiveQt)
 #endif
@@ -2341,30 +2639,28 @@ QT_LICENSED_MODULE(DBus)
 #  define QT_NO_QFUTURE
 #endif
 
-/*
-    Turn off certain features for compilers that have problems parsing
-    the code.
-*/
-#if (defined(Q_CC_HPACC) && defined(QT_ARCH_PARISC)) \
-    || defined(Q_CC_MIPS) \
-    || defined(Q_CC_XLC)
-// HP aCC A.03.*, MIPSpro, and xlC cannot handle
-// the template function declarations for the QtConcurrent functions
-#  define QT_NO_QFUTURE
-#  define QT_NO_CONCURRENT
-#endif
-
-// MSVC 6.0, MSVC .NET 2002, and old versions of Sun CC can`t handle the map(), etc templates,
+// MSVC 6.0 and MSVC .NET 2002,  can`t handle the map(), etc templates,
 // but the QFuture class compiles.
-#if (defined(Q_CC_MSVC) && _MSC_VER <= 1300) || (defined (__SUNPRO_CC) && __SUNPRO_CC <= 0x590)
+#if (defined(Q_CC_MSVC) && _MSC_VER <= 1300)
 #  define QT_NO_CONCURRENT
 #endif
 
-// Mingw uses a gcc 3 version which has problems with some of the
-// map/filter overloads. So does IRIX and Solaris.
-#if (defined(Q_OS_IRIX) || defined(Q_CC_MINGW) || defined (Q_OS_SOLARIS)) && (__GNUC__ < 4)
+// gcc 3 version has problems with some of the
+// map/filter overloads.
+#if defined(Q_CC_GNU) && (__GNUC__ < 4)
 #  define QT_NO_CONCURRENT_MAP
 #  define QT_NO_CONCURRENT_FILTER
+#endif
+
+#ifdef Q_OS_QNX
+// QNX doesn't have SYSV style shared memory. Multiprocess QWS apps,
+// shared fonts and QSystemSemaphore + QSharedMemory are not available
+#  define QT_NO_QWS_MULTIPROCESS
+#  define QT_NO_QWS_SHARE_FONTS
+#  define QT_NO_SYSTEMSEMAPHORE
+#  define QT_NO_SHAREDMEMORY
+// QNX currently doesn't support forking in a thread, so disable QProcess
+#  define QT_NO_PROCESS
 #endif
 
 QT_END_NAMESPACE

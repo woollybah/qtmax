@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -51,6 +51,8 @@
 #include <QtCore/qdebug.h>
 #include <QtCore/qtconcurrentexception.h>
 #include <QtCore/qwaitcondition.h>
+#include <QtCore/qatomic.h>
+#include <QtCore/qsemaphore.h>
 
 QT_BEGIN_HEADER
 QT_BEGIN_NAMESPACE
@@ -61,55 +63,29 @@ QT_MODULE(Core)
 
 namespace QtConcurrent {
 
-// A Semaphore that can wait until all resources are returned.
-class ThreadEngineSemaphore
+// The ThreadEngineBarrier counts worker threads, and allows one
+// thread to wait for all others to finish. Tested for its use in
+// QtConcurrent, requires more testing for use as a general class.
+class ThreadEngineBarrier
 {
-public:
-    ThreadEngineSemaphore()
-    :count(0) { }
-
-    void acquire()
-    {
-        QMutexLocker lock(&mutex);
-        ++count;
-    }
-
-    int release()
-    {
-        QMutexLocker lock(&mutex);
-        if (--count == 0)
-            waitCondition.wakeAll();
-        return count;
-    }
-
-    // Wait until all resources are released.
-    void wait()
-    {
-        QMutexLocker lock(&mutex);
-        if (count != 0)
-            waitCondition.wait(&mutex);
-    }
-
-    int currentCount()
-    {
-        return count;
-    }
-
-    // releases a resource, unless this is the last resource.
-    // returns true if a resource was released.
-    bool releaseUnlessLast()
-    {
-        QMutexLocker lock(&mutex);
-        if (count == 1)
-            return false;
-        --count;
-        return true;
-    }
-
 private:
+    // The thread count is maintained as an integer in the count atomic
+    // variable. The count can be either positive or negative - a negative
+    // count signals that a thread is waiting on the barrier.
+
+    // BC note: inlined code from Qt < 4.6 will expect to find the QMutex 
+    // and QAtomicInt here. ### Qt 5: remove.
     QMutex mutex;
-    int count;
-    QWaitCondition waitCondition;
+    QAtomicInt count;
+
+    QSemaphore semaphore;
+public:
+    ThreadEngineBarrier();
+    void acquire();
+    int release();
+    void wait();
+    int currentCount();
+    bool releaseUnlessLast();
 };
 
 enum ThreadFunctionResult { ThrottleThread, ThreadFinished };
@@ -132,6 +108,7 @@ public:
     bool isProgressReportingEnabled();
     void setProgressValue(int progress);
     void setProgressRange(int minimum, int maximum);
+    void acquireBarrierSemaphore();
 
 protected: // The user overrides these:
     virtual void start() {}
@@ -152,7 +129,7 @@ private:
 protected:
     QFutureInterfaceBase *futureInterface;
     QThreadPool *threadPool;
-    ThreadEngineSemaphore semaphore;
+    ThreadEngineBarrier barrier;
     QtConcurrent::internal::ExceptionStore exceptionStore;
 };
 
@@ -199,7 +176,7 @@ public:
         QFuture<T> future = QFuture<T>(futureInterfaceTyped());
         start();
 
-        semaphore.acquire();
+        acquireBarrierSemaphore();
         threadPool->start(this);
         return future;
     }
@@ -261,9 +238,11 @@ protected:
 template <typename T>
 class ThreadEngineStarter : public ThreadEngineStarterBase<T>
 {
+    typedef ThreadEngineStarterBase<T> Base;
+    typedef ThreadEngine<T> TypedThreadEngine;
 public:
-    ThreadEngineStarter(ThreadEngine<T> *threadEngine)
-    :ThreadEngineStarterBase<T>(threadEngine) {}
+    ThreadEngineStarter(TypedThreadEngine *eng)
+        : Base(eng) { }
 
     T startBlocking()
     {

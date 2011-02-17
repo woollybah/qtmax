@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -57,6 +57,10 @@
 #include "QtCore/qvarlengtharray.h"
 
 #include "qlocale.h"
+
+#if defined(Q_OS_SYMBIAN) && !defined(QT_NO_SYSTEMLOCALE)
+class CEnvironmentChangeNotifier;
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -96,7 +100,7 @@ public:
 
         ShowBase            = 0x80,
         UppercaseBase       = 0x100,
-        ForcePoint          = Alternate,
+        ForcePoint          = Alternate
     };
 
     enum GroupSeparatorMode {
@@ -140,29 +144,29 @@ public:
     QString dateTimeToString(const QString &format, const QDate *date, const QTime *time,
                              const QLocale *q) const;
 
-    quint32 m_language_id, m_country_id;
+    quint16 m_language_id, m_country_id;
 
     quint16 m_decimal, m_group, m_list, m_percent,
         m_zero, m_minus, m_plus, m_exponential;
 
-    quint32 m_short_date_format_idx, m_short_date_format_size;
-    quint32 m_long_date_format_idx, m_long_date_format_size;
-    quint32 m_short_time_format_idx, m_short_time_format_size;
-    quint32 m_long_time_format_idx, m_long_time_format_size;
-    quint32 m_standalone_short_month_names_idx, m_standalone_short_month_names_size;
-    quint32 m_standalone_long_month_names_idx, m_standalone_long_month_names_size;
-    quint32 m_standalone_narrow_month_names_idx, m_standalone_narrow_month_names_size;
-    quint32 m_short_month_names_idx, m_short_month_names_size;
-    quint32 m_long_month_names_idx, m_long_month_names_size;
-    quint32 m_narrow_month_names_idx, m_narrow_month_names_size;
-    quint32 m_standalone_short_day_names_idx, m_standalone_short_day_names_size;
-    quint32 m_standalone_long_day_names_idx, m_standalone_long_day_names_size;
-    quint32 m_standalone_narrow_day_names_idx, m_standalone_narrow_day_names_size;
-    quint32 m_short_day_names_idx, m_short_day_names_size;
-    quint32 m_long_day_names_idx, m_long_day_names_size;
-    quint32 m_narrow_day_names_idx, m_narrow_day_names_size;
-    quint32 m_am_idx, m_am_size;
-    quint32 m_pm_idx, m_pm_size;
+    quint16 m_short_date_format_idx, m_short_date_format_size;
+    quint16 m_long_date_format_idx, m_long_date_format_size;
+    quint16 m_short_time_format_idx, m_short_time_format_size;
+    quint16 m_long_time_format_idx, m_long_time_format_size;
+    quint16 m_standalone_short_month_names_idx, m_standalone_short_month_names_size;
+    quint16 m_standalone_long_month_names_idx, m_standalone_long_month_names_size;
+    quint16 m_standalone_narrow_month_names_idx, m_standalone_narrow_month_names_size;
+    quint16 m_short_month_names_idx, m_short_month_names_size;
+    quint16 m_long_month_names_idx, m_long_month_names_size;
+    quint16 m_narrow_month_names_idx, m_narrow_month_names_size;
+    quint16 m_standalone_short_day_names_idx, m_standalone_short_day_names_size;
+    quint16 m_standalone_long_day_names_idx, m_standalone_long_day_names_size;
+    quint16 m_standalone_narrow_day_names_idx, m_standalone_narrow_day_names_size;
+    quint16 m_short_day_names_idx, m_short_day_names_size;
+    quint16 m_long_day_names_idx, m_long_day_names_size;
+    quint16 m_narrow_day_names_idx, m_narrow_day_names_size;
+    quint16 m_am_idx, m_am_size;
+    quint16 m_pm_idx, m_pm_size;
 };
 
 inline char QLocalePrivate::digitToCLocale(const QChar &in) const
@@ -200,6 +204,20 @@ inline char QLocalePrivate::digitToCLocale(const QChar &in) const
 
     return 0;
 }
+
+#if defined(Q_OS_SYMBIAN) && !defined(QT_NO_SYSTEMLOCALE)
+class QEnvironmentChangeNotifier
+{
+public:
+    QEnvironmentChangeNotifier();
+    ~QEnvironmentChangeNotifier();
+
+    static TInt localeChanged(TAny *data);
+
+private:
+    CEnvironmentChangeNotifier *iChangeNotifier;
+};
+#endif
 
 QT_END_NAMESPACE
 

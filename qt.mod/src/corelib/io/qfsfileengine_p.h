@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -66,13 +66,12 @@ QT_BEGIN_NAMESPACE
 #define Q_USE_DEPRECATED_MAP_API 1
 #endif
 
-class QFSFileEnginePrivate : public QAbstractFileEnginePrivate
+class Q_AUTOTEST_EXPORT QFSFileEnginePrivate : public QAbstractFileEnginePrivate
 {
     Q_DECLARE_PUBLIC(QFSFileEngine)
 
 public:
 #ifdef Q_WS_WIN
-    static QByteArray win95Name(const QString &path);
     static QString longFileName(const QString &path);
 #endif
     static QString canonicalized(const QString &path);
@@ -111,19 +110,19 @@ public:
     FILE *fh;
 #ifdef Q_WS_WIN
     HANDLE fileHandle;
-    QHash<uchar *, QPair<int /*offset*/, HANDLE /*handle*/> > maps;
+    HANDLE mapHandle;
+    QHash<uchar *, DWORD /* offset % AllocationGranularity */> maps;
+
+#ifndef Q_OS_WINCE
     mutable int cachedFd;
+#endif
+
     mutable DWORD fileAttrib;
 #else
-    QHash<uchar *, QPair<int /*offset*/, int /*handle|len*/> > maps;
+    QHash<uchar *, QPair<int /*offset % PageSize*/, size_t /*length + offset % PageSize*/> > maps;
     mutable QT_STATBUF st;
 #endif
     int fd;
-
-#ifdef Q_USE_DEPRECATED_MAP_API
-    void mapHandleClose();
-    HANDLE fileMapHandle;
-#endif
 
     enum LastIOCommand
     {
@@ -138,10 +137,11 @@ public:
     mutable uint is_sequential : 2;
     mutable uint could_stat : 1;
     mutable uint tried_stat : 1;
-#ifdef Q_OS_UNIX
+#if !defined(Q_OS_WINCE)
     mutable uint need_lstat : 1;
     mutable uint is_link : 1;
 #endif
+
     bool doStat() const;
     bool isSymlink() const;
 
@@ -151,9 +151,12 @@ public:
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
     static void resolveLibs();
-    static bool resolveUNCLibs_NT();
-    static bool resolveUNCLibs_9x();
+    static bool resolveUNCLibs();
     static bool uncListSharesOnServer(const QString &server, QStringList *list);
+#endif
+
+#ifdef Q_OS_SYMBIAN
+    void setSymbianError(int symbianError, QFile::FileError defaultError, QString defaultString);
 #endif
 
 protected:
@@ -161,10 +164,7 @@ protected:
 
     void init();
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
-    QAbstractFileEngine::FileFlags getPermissions() const;
-    QString getLink() const;
-#endif
+    QAbstractFileEngine::FileFlags getPermissions(QAbstractFileEngine::FileFlags type) const;
 };
 
 QT_END_NAMESPACE

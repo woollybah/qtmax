@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -73,6 +73,16 @@ typedef std::basic_string<wchar_t> QStdWString;
 #error qstring.h must be included before any header file that defines truncate
 #endif
 
+#if defined(Q_CC_GNU) && (__GNUC__ == 4 && __GNUC_MINOR__ == 0)
+//There is a bug in GCC 4.0 that tries to instantiate template of annonymous enum
+#  ifdef QT_USE_FAST_OPERATOR_PLUS
+#    undef QT_USE_FAST_OPERATOR_PLUS
+#  endif
+#  ifdef QT_USE_FAST_CONCATENATION
+#    undef QT_USE_FAST_CONCATENATION
+#  endif
+#endif
+
 QT_BEGIN_HEADER
 
 QT_BEGIN_NAMESPACE
@@ -91,7 +101,8 @@ class Q_CORE_EXPORT QString
 {
 public:
     inline QString();
-    QString(const QChar *unicode, int size);
+    QString(const QChar *unicode, int size); // Qt5: don't cap size < 0
+    explicit QString(const QChar *unicode); // Qt5: merge with the above
     QString(QChar c);
     QString(int size, QChar c);
     inline QString(const QLatin1String &latin1);
@@ -122,6 +133,7 @@ public:
 
     inline void detach();
     inline bool isDetached() const;
+    inline bool isSharedWith(const QString &other) const { return d == other.d; }
     void clear();
 
     inline const QChar at(int i) const;
@@ -331,6 +343,7 @@ public:
     int toWCharArray(wchar_t *array) const;
     static QString fromWCharArray(const wchar_t *, int size = -1);
 
+    QString &setRawData(const QChar *unicode, int size);
     QString &setUnicode(const QChar *unicode, int size);
     inline QString &setUtf16(const ushort *utf16, int size);
 
@@ -577,7 +590,9 @@ public:
 #endif
 
     bool isSimpleText() const { if (!d->clean) updateProperties(); return d->simpletext; }
-    bool isRightToLeft() const { if (!d->clean) updateProperties(); return d->righttoleft; }
+    bool isRightToLeft() const;
+
+    QString(int size, Qt::Initialization);
 
 private:
 #if defined(QT_NO_CAST_FROM_ASCII) && !defined(Q_NO_DECLARED_NOT_DEFINED)
@@ -592,13 +607,14 @@ private:
     struct Data {
         QBasicAtomicInt ref;
         int alloc, size;
-        ushort *data;
+        ushort *data; // QT5: put that after the bit field to fill alignment gap; don't use sizeof any more then
         ushort clean : 1;
         ushort simpletext : 1;
         ushort righttoleft : 1;
         ushort asciiCache : 1;
         ushort capacity : 1;
         ushort reserved : 11;
+        // ### Qt5: try to ensure that "array" is aligned to 16 bytes on both 32- and 64-bit
         ushort array[1];
     };
     static Data shared_null;
@@ -629,6 +645,7 @@ private:
     friend class QCharRef;
     friend class QTextCodec;
     friend class QStringRef;
+    friend struct QAbstractConcatenable;
     friend inline bool qStringComparisonHelper(const QString &s1, const char *s2);
     friend inline bool qStringComparisonHelper(const QStringRef &s1, const char *s2);
 public:
@@ -1001,13 +1018,15 @@ inline int QByteArray::findRev(const QString &s, int from) const
 #  endif // QT3_SUPPORT
 #endif // QT_NO_CAST_TO_ASCII
 
+#ifndef QT_USE_FAST_OPERATOR_PLUS
+# ifndef QT_USE_FAST_CONCATENATION
 inline const QString operator+(const QString &s1, const QString &s2)
 { QString t(s1); t += s2; return t; }
 inline const QString operator+(const QString &s1, QChar s2)
 { QString t(s1); t += s2; return t; }
 inline const QString operator+(QChar s1, const QString &s2)
 { QString t(s1); t += s2; return t; }
-#ifndef QT_NO_CAST_FROM_ASCII
+#  ifndef QT_NO_CAST_FROM_ASCII
 inline QT_ASCII_CAST_WARN const QString operator+(const QString &s1, const char *s2)
 { QString t(s1); t += QString::fromAscii(s2); return t; }
 inline QT_ASCII_CAST_WARN const QString operator+(const char *s1, const QString &s2)
@@ -1020,7 +1039,9 @@ inline QT_ASCII_CAST_WARN const QString operator+(const QByteArray &ba, const QS
 { QString t = QString::fromAscii(ba.constData(), qstrnlen(ba.constData(), ba.size())); t += s; return t; }
 inline QT_ASCII_CAST_WARN const QString operator+(const QString &s, const QByteArray &ba)
 { QString t(s); t += QString::fromAscii(ba.constData(), qstrnlen(ba.constData(), ba.size())); return t; }
-#endif
+#  endif // QT_NO_CAST_FROM_ASCII
+# endif // QT_USE_FAST_CONCATENATION
+#endif // QT_USE_FAST_OPERATOR_PLUS
 
 #ifndef QT_NO_STL
 inline std::string QString::toStdString() const
@@ -1058,7 +1079,7 @@ inline QChar &QString::ref(uint i)
 }
 #endif
 
-#ifndef QT_NO_DATASTREAM
+#if !defined(QT_NO_DATASTREAM) || (defined(QT_BOOTSTRAPPED) && !defined(QT_BUILD_QMAKE))
 Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QString &);
 Q_CORE_EXPORT QDataStream &operator>>(QDataStream &, QString &);
 #endif
@@ -1076,12 +1097,6 @@ public:
 Q_DECLARE_TYPEINFO(QString, Q_MOVABLE_TYPE);
 Q_DECLARE_SHARED(QString)
 Q_DECLARE_OPERATORS_FOR_FLAGS(QString::SectionFlags)
-
-#if defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
-extern Q_CORE_EXPORT QByteArray qt_winQString2MB(const QString& s, int len=-1);
-extern Q_CORE_EXPORT QByteArray qt_winQString2MB(const QChar *ch, int len);
-extern Q_CORE_EXPORT QString qt_winMB2QString(const char* mb, int len=-1);
-#endif
 
 
 class Q_CORE_EXPORT QStringRef {
@@ -1230,5 +1245,9 @@ inline int QStringRef::localeAwareCompare(const QStringRef &s1, const QStringRef
 QT_END_NAMESPACE
 
 QT_END_HEADER
+
+#ifdef QT_USE_FAST_CONCATENATION
+#include <QtCore/qstringbuilder.h>
+#endif
 
 #endif // QSTRING_H
