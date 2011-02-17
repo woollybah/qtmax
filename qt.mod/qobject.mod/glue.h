@@ -39,6 +39,8 @@ extern "C" {
 	void bmx_qt_qobject_setparent(QObject * obj, QObject * parent);
 	int bmx_qt_qobject_blocksignals(QObject * obj, int block);
 	int bmx_qt_qobject_signalsblocked(QObject * obj);
+	int bmx_qt_qobject_starttimer(QObject * obj, int interval);
+	void bmx_qt_qobject_killtimer(QObject * obj, int id);
 
 }
 
