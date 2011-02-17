@@ -13,17 +13,21 @@
 #  define QT_EDITION QT_EDITION_OPENSOURCE
 #endif
 
-#if (defined(_DEBUG) || defined(DEBUG))
-# if (defined(WIN64) || defined(_WIN64) || defined(__WIN64__))
-#  define QT_BUILD_KEY "Windows x64 mingw debug full-config"
-# else
-#  define QT_BUILD_KEY "Windows mingw debug full-config"
-# endif
+#if defined(__SYMBIAN32__)
+# define QT_BUILD_KEY "Symbian full-config"
 #else
-# if (defined(WIN64) || defined(_WIN64) || defined(__WIN64__))
-#  define QT_BUILD_KEY "Windows x64 mingw release full-config"
+# if (!QT_NO_DEBUG)
+#  if (defined(WIN64) || defined(_WIN64) || defined(__WIN64__))
+#   define QT_BUILD_KEY "Windows x64 mingw debug full-config"
+#  else
+#   define QT_BUILD_KEY "Windows mingw debug full-config"
+#  endif
 # else
-#  define QT_BUILD_KEY "Windows mingw release full-config"
+#  if (defined(WIN64) || defined(_WIN64) || defined(__WIN64__))
+#   define QT_BUILD_KEY "Windows x64 mingw release full-config"
+#  else
+#   define QT_BUILD_KEY "Windows mingw release full-config"
+#  endif
 # endif
 #endif
 
@@ -46,16 +50,40 @@
 # define QT_NO_DBUS
 #endif
 
-#if defined(QT_NO_DIRECT3D) && defined(QT_DIRECT3D)
-# undef QT_NO_DIRECT3D
-#elif !defined(QT_NO_DIRECT3D)
-# define QT_NO_DIRECT3D
+#if defined(QT_NO_FREETYPE) && defined(QT_FREETYPE)
+# undef QT_NO_FREETYPE
+#elif !defined(QT_NO_FREETYPE)
+# define QT_NO_FREETYPE
+#endif
+
+#if defined(QT_NO_IMAGEFORMAT_JPEG) && defined(QT_IMAGEFORMAT_JPEG)
+# undef QT_NO_IMAGEFORMAT_JPEG
+#elif !defined(QT_NO_IMAGEFORMAT_JPEG)
+# define QT_NO_IMAGEFORMAT_JPEG
+#endif
+
+#if defined(QT_NO_IMAGEFORMAT_MNG) && defined(QT_IMAGEFORMAT_MNG)
+# undef QT_NO_IMAGEFORMAT_MNG
+#elif !defined(QT_NO_IMAGEFORMAT_MNG)
+# define QT_NO_IMAGEFORMAT_MNG
+#endif
+
+#if defined(QT_NO_IMAGEFORMAT_TIFF) && defined(QT_IMAGEFORMAT_TIFF)
+# undef QT_NO_IMAGEFORMAT_TIFF
+#elif !defined(QT_NO_IMAGEFORMAT_TIFF)
+# define QT_NO_IMAGEFORMAT_TIFF
 #endif
 
 #if defined(QT_NO_OPENSSL) && defined(QT_OPENSSL)
 # undef QT_NO_OPENSSL
 #elif !defined(QT_NO_OPENSSL)
 # define QT_NO_OPENSSL
+#endif
+
+#if defined(QT_NO_OPENVG) && defined(QT_OPENVG)
+# undef QT_NO_OPENVG
+#elif !defined(QT_NO_OPENVG)
+# define QT_NO_OPENVG
 #endif
 
 #if defined(QT_NO_PHONON) && defined(QT_PHONON)
@@ -68,6 +96,12 @@
 # undef QT_NO_STYLE_GTK
 #elif !defined(QT_NO_STYLE_GTK)
 # define QT_NO_STYLE_GTK
+#endif
+
+#if defined(QT_NO_STYLE_S60) && defined(QT_STYLE_S60)
+# undef QT_NO_STYLE_S60
+#elif !defined(QT_NO_STYLE_S60)
+# define QT_NO_STYLE_S60
 #endif
 
 #if defined(QT_NO_STYLE_WINDOWSCE) && defined(QT_STYLE_WINDOWSCE)

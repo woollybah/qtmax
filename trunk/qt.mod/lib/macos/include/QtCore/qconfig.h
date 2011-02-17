@@ -43,16 +43,42 @@
 # define QT_POINTER_SIZE 4
 #endif
 
+#ifndef QT_BOOTSTRAPPED
+
+#if defined(QT_NO_ALSA) && defined(QT_ALSA)
+# undef QT_NO_ALSA
+#elif !defined(QT_NO_ALSA) && !defined(QT_ALSA)
+# define QT_NO_ALSA
+#endif
+
 #if defined(QT_NO_CLOCK_MONOTONIC) && defined(QT_CLOCK_MONOTONIC)
 # undef QT_NO_CLOCK_MONOTONIC
 #elif !defined(QT_NO_CLOCK_MONOTONIC) && !defined(QT_CLOCK_MONOTONIC)
 # define QT_NO_CLOCK_MONOTONIC
 #endif
 
+#if defined(QT_NO_COREWLAN) && defined(QT_COREWLAN)
+# undef QT_NO_COREWLAN
+#elif !defined(QT_NO_COREWLAN) && !defined(QT_COREWLAN)
+# define QT_NO_COREWLAN
+#endif
+
 #if defined(QT_NO_DBUS) && defined(QT_DBUS)
 # undef QT_NO_DBUS
 #elif !defined(QT_NO_DBUS) && !defined(QT_DBUS)
 # define QT_NO_DBUS
+#endif
+
+#if defined(QT_NO_EGL) && defined(QT_EGL)
+# undef QT_NO_EGL
+#elif !defined(QT_NO_EGL) && !defined(QT_EGL)
+# define QT_NO_EGL
+#endif
+
+#if defined(QT_NO_FREETYPE) && defined(QT_FREETYPE)
+# undef QT_NO_FREETYPE
+#elif !defined(QT_NO_FREETYPE) && !defined(QT_FREETYPE)
+# define QT_NO_FREETYPE
 #endif
 
 #if defined(QT_NO_GLIB) && defined(QT_GLIB)
@@ -65,6 +91,18 @@
 # undef QT_NO_GSTREAMER
 #elif !defined(QT_NO_GSTREAMER) && !defined(QT_GSTREAMER)
 # define QT_NO_GSTREAMER
+#endif
+
+#if defined(QT_NO_GUI) && defined(QT_GUI)
+# undef QT_NO_GUI
+#elif !defined(QT_NO_GUI) && !defined(QT_GUI)
+# define QT_NO_GUI
+#endif
+
+#if defined(QT_NO_ICD) && defined(QT_ICD)
+# undef QT_NO_ICD
+#elif !defined(QT_NO_ICD) && !defined(QT_ICD)
+# define QT_NO_ICD
 #endif
 
 #if defined(QT_NO_IMAGEFORMAT_JPEG) && defined(QT_IMAGEFORMAT_JPEG)
@@ -103,10 +141,28 @@
 # define QT_NO_NAS
 #endif
 
+#if defined(QT_NO_OPENVG) && defined(QT_OPENVG)
+# undef QT_NO_OPENVG
+#elif !defined(QT_NO_OPENVG) && !defined(QT_OPENVG)
+# define QT_NO_OPENVG
+#endif
+
+#if defined(QT_NO_S60) && defined(QT_S60)
+# undef QT_NO_S60
+#elif !defined(QT_NO_S60) && !defined(QT_S60)
+# define QT_NO_S60
+#endif
+
 #if defined(QT_NO_STYLE_GTK) && defined(QT_STYLE_GTK)
 # undef QT_NO_STYLE_GTK
 #elif !defined(QT_NO_STYLE_GTK) && !defined(QT_STYLE_GTK)
 # define QT_NO_STYLE_GTK
+#endif
+
+#if defined(QT_NO_STYLE_S60) && defined(QT_STYLE_S60)
+# undef QT_NO_STYLE_S60
+#elif !defined(QT_NO_STYLE_S60) && !defined(QT_STYLE_S60)
+# define QT_NO_STYLE_S60
 #endif
 
 #if defined(QT_NO_SXE) && defined(QT_SXE)
@@ -150,6 +206,8 @@
 #elif !defined(QT_RUNTIME_XRANDR) && !defined(QT_NO_RUNTIME_XRANDR)
 # define QT_RUNTIME_XRANDR
 #endif
+
+#endif // QT_BOOTSTRAPPED
 
 #define QT_VISIBILITY_AVAILABLE
 
