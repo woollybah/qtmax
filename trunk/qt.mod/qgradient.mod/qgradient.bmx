@@ -165,11 +165,15 @@ End Type
 
 Type QRadialGradient Extends QGradient
 
-	Function CreateRadialGradient:QRadialGradient(cx:Double, cy:Double, radius:Double, fx:Double, fy:Double)
+	Function CreateRadialGradient:QRadialGradient(cx:Double, cy:Double, radius:Double, fx:Double = -999, fy:Double = -999)
 		Return New QRadialGradient.Create(cx, cy, radius, fx, fy)
 	End Function
 	
-	Method Create:QRadialGradient(cx:Double, cy:Double, radius:Double, fx:Double, fy:Double)
+	Method Create:QRadialGradient(cx:Double, cy:Double, radius:Double, fx:Double = -999, fy:Double = -999)
+		If fx = -999 And fy = -999 Then
+			fx = cx
+			fy = cy
+		End If
 		qObjectPtr = bmx_qt_qradialgradient_create(cx, cy, radius, fx, fy)
 		Return Self
 	End Method
