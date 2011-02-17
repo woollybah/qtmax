@@ -35,6 +35,88 @@ MaxQGraphicsSvgItem::~MaxQGraphicsSvgItem()
 	qunbind(this);
 }
 
+// *********************************************
+
+
+void MaxQGraphicsSvgItem::defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent) {
+	QGraphicsSvgItem::contextMenuEvent(contextMenuEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsSvgItem::dragEnterEvent(event);
+}
+
+void MaxQGraphicsSvgItem::defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsSvgItem::dragLeaveEvent(event);
+}
+
+void MaxQGraphicsSvgItem::defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsSvgItem::dragMoveEvent(event);
+}
+
+void MaxQGraphicsSvgItem::defaultDropEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsSvgItem::dropEvent(event);
+}
+
+void MaxQGraphicsSvgItem::defaultFocusInEvent(QFocusEvent * focusEvent) {
+	QGraphicsSvgItem::focusInEvent(focusEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultFocusOutEvent(QFocusEvent * focusEvent) {
+	QGraphicsSvgItem::focusOutEvent(focusEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultHoverEnterEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsSvgItem::hoverEnterEvent(hoverEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultHoverLeaveEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsSvgItem::hoverLeaveEvent(hoverEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultHoverMoveEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsSvgItem::hoverMoveEvent(hoverEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultInputMethodEvent(QInputMethodEvent * event) {
+	QGraphicsSvgItem::inputMethodEvent(event);
+}
+
+void MaxQGraphicsSvgItem::defaultKeyPressEvent(QKeyEvent * keyEvent) {
+	QGraphicsSvgItem::keyPressEvent(keyEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultKeyReleaseEvent(QKeyEvent * keyEvent) {
+	QGraphicsSvgItem::keyReleaseEvent(keyEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsSvgItem::mouseDoubleClickEvent(mouseEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsSvgItem::mouseMoveEvent(mouseEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsSvgItem::mousePressEvent(mouseEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsSvgItem::mouseReleaseEvent(mouseEvent);
+}
+
+void MaxQGraphicsSvgItem::defaultSceneEvent(QEvent * event) {
+	QGraphicsSvgItem::sceneEvent(event);
+}
+
+void MaxQGraphicsSvgItem::defaultSceneEventFilter(QGraphicsItem * watched, QEvent * event) {
+	QGraphicsSvgItem::sceneEventFilter(watched, event);
+}
+
+void MaxQGraphicsSvgItem::defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent) {
+	QGraphicsSvgItem::wheelEvent(wheelEvent);
+}
 
 // *********************************************
 
