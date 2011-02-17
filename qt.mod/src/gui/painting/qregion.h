@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -59,7 +59,7 @@ QT_MODULE(Gui)
 template <class T> class QVector;
 class QVariant;
 
-#if defined(Q_WS_QWS) || defined(Q_WS_X11) || defined(Q_WS_MAC) || defined(Q_OS_WINCE)
+#if defined(Q_WS_QWS) || defined(Q_WS_X11) || defined(Q_WS_MAC) || defined(Q_WS_WIN) || defined(Q_OS_SYMBIAN)
 struct QRegionPrivate;
 #endif
 
@@ -116,7 +116,10 @@ public:
     QRect boundingRect() const;
     QVector<QRect> rects() const;
     void setRects(const QRect *rect, int num);
-    int numRects() const;
+#ifdef QT_DEPRECATED
+    QT_DEPRECATED int numRects() const;
+#endif
+    int rectCount() const;
 
     const QRegion operator|(const QRegion &r) const;
     const QRegion operator+(const QRegion &r) const;
@@ -148,6 +151,7 @@ public:
 #elif defined(Q_WS_MAC)
 #if defined Q_WS_MAC32
     RgnHandle toQDRgn() const;
+    RgnHandle toQDRgnForUpdate_sys() const;
     static QRegion fromQDRgn(RgnHandle shape);
 #endif
 #ifdef QT_MAC_USE_COCOA
@@ -199,7 +203,7 @@ private:
 #elif defined(Q_WS_MAC) && !defined(QT_MAC_USE_COCOA)
         mutable RgnHandle unused; // Here for binary compatability reasons. ### Qt 5 remove.
 #endif
-#if defined(Q_WS_QWS) || defined(Q_WS_X11) || defined(Q_WS_MAC) || defined(Q_OS_WINCE)
+#if defined(Q_WS_QWS) || defined(Q_WS_X11) || defined(Q_WS_MAC) || defined(Q_WS_WIN) || defined(Q_OS_SYMBIAN)
         QRegionPrivate *qt_rgn;
 #endif
     };

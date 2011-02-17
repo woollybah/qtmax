@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -58,6 +58,7 @@
 #include <qlist.h>
 #include <qlocale.h>
 #include <qevent.h>
+#include <qhash.h>
 
 #if defined (Q_WS_MAC64)
 # include <private/qt_mac_p.h>
@@ -160,6 +161,7 @@ public:
     bool translateKeyEvent(QWidget *receiver, const MSG &msg, bool grab);
     void updatePossibleKeyCodes(unsigned char *kbdBuffer, quint32 scancode, quint32 vk_key);
     bool isADeadKey(unsigned int vk_key, unsigned int modifiers);
+    void deleteLayouts();
 
     KeyboardLayoutItem *keyLayout[256];
 
@@ -181,13 +183,14 @@ public:
                            const XEvent *,
                            bool grab);
 
-    bool useXKB;
+    int xkb_currentGroup;
     QXCoreDesc coreDesc;
 
 #elif defined(Q_WS_MAC)
     bool updateKeyboard();
     void updateKeyMap(EventHandlerCallRef, EventRef, void *);
     bool translateKeyEvent(QWidget *, EventHandlerCallRef, EventRef, void *, bool);
+    void deleteLayouts();
 
     enum { NullMode, UnicodeMode, OtherMode } keyboard_mode;
     union {
@@ -203,6 +206,13 @@ public:
     UInt32 keyboard_dead;
     KeyboardLayoutItem *keyLayout[256];
 #elif defined(Q_WS_QWS)
+#elif defined(Q_OS_SYMBIAN)
+public:
+    QString translateKeyEvent(int keySym, Qt::KeyboardModifiers modifiers);
+    int mapS60KeyToQt(TUint s60key);
+    int mapS60ScanCodesToQt(TUint s60key);
+    int mapQtToS60Key(int qtKey);
+    int mapQtToS60ScanCodes(int qtKey);
 #endif
 };
 

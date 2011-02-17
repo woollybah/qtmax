@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -47,8 +47,8 @@
 //  -------------
 //
 // This file is not part of the Qt API.  It exists for the convenience
-// of qapplication_*.cpp, qwidget*.cpp and qfiledialog.cpp.  This header
-// file may change from version to version without notice, or even be removed.
+// of other Qt classes.  This header file may change from version to
+// version without notice, or even be removed.
 //
 // We mean it.
 //
@@ -57,7 +57,9 @@
 
 #if !defined(QT_NO_GRAPHICSVIEW) || (QT_EDITION & QT_MODULE_GRAPHICSVIEW) != QT_MODULE_GRAPHICSVIEW
 
-#include "qgraphicsscene_bsp_p.h"
+#include "qgraphicssceneevent.h"
+#include "qgraphicsview.h"
+#include "qgraphicsview_p.h"
 #include "qgraphicsitem_p.h"
 
 #include <private/qobject_p.h>
@@ -68,88 +70,99 @@
 #include <QtGui/qfont.h>
 #include <QtGui/qpalette.h>
 #include <QtGui/qstyle.h>
+#include <QtGui/qstyleoption.h>
 
 QT_BEGIN_NAMESPACE
 
+class QGraphicsSceneIndex;
 class QGraphicsView;
 class QGraphicsWidget;
 
-class QGraphicsScenePrivate : public QObjectPrivate
+class Q_AUTOTEST_EXPORT QGraphicsScenePrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(QGraphicsScene)
 public:
     QGraphicsScenePrivate();
     void init();
 
-    quint32 changedSignalMask;
+    static QGraphicsScenePrivate *get(QGraphicsScene *q);
+
+    int changedSignalIndex;
+    int processDirtyItemsIndex;
+    int polishItemsIndex;
 
     QGraphicsScene::ItemIndexMethod indexMethod;
-    int bspTreeDepth;
+    QGraphicsSceneIndex *index;
 
-    QList<QGraphicsItem *> estimateItemsInRect(const QRectF &rect) const;
-    void addToIndex(QGraphicsItem *item);
-    void removeFromIndex(QGraphicsItem *item);
-    void resetIndex();
-
-    QGraphicsSceneBspTree bspTree;
-    void _q_updateIndex();
     int lastItemCount;
 
     QRectF sceneRect;
-    bool hasSceneRect;
+
+    quint32 hasSceneRect : 1;
+    quint32 dirtyGrowingItemsBoundingRect : 1;
+    quint32 updateAll : 1;
+    quint32 calledEmitUpdated : 1;
+    quint32 processDirtyItemsEmitted : 1;
+    quint32 needSortTopLevelItems : 1;
+    quint32 holesInTopLevelSiblingIndex : 1;
+    quint32 topLevelSequentialOrdering : 1;
+    quint32 scenePosDescendantsUpdatePending : 1;
+    quint32 stickyFocus : 1;
+    quint32 hasFocus : 1;
+    quint32 lastMouseGrabberItemHasImplicitMouseGrab : 1;
+    quint32 allItemsIgnoreHoverEvents : 1;
+    quint32 allItemsUseDefaultCursor : 1;
+    quint32 painterStateProtection : 1;
+    quint32 sortCacheEnabled : 1; // for compatibility
+    quint32 allItemsIgnoreTouchEvents : 1;
+    quint32 padding : 15;
+
     QRectF growingItemsBoundingRect;
-    QRectF largestUntransformableItem;
 
     void _q_emitUpdated();
     QList<QRectF> updatedRects;
-    bool updateAll;
-    bool calledEmitUpdated;
 
     QPainterPath selectionArea;
     int selectionChanging;
     QSet<QGraphicsItem *> selectedItems;
-    QList<QGraphicsItem *> unindexedItems;
-    QList<QGraphicsItem *> indexedItems;
-    QList<QGraphicsItem *> dirtyItems;
-    QList<QGraphicsItem *> pendingUpdateItems;
-    QList<QGraphicsItem *> unpolishedItems;
+    QVector<QGraphicsItem *> unpolishedItems;
+    QList<QGraphicsItem *> topLevelItems;
+
     QMap<QGraphicsItem *, QPointF> movingItemsInitialPositions;
+    void registerTopLevelItem(QGraphicsItem *item);
+    void unregisterTopLevelItem(QGraphicsItem *item);
     void _q_updateLater();
     void _q_polishItems();
 
-    void _q_resetDirtyItems();
-    void resetDirtyItemsLater();
-    bool dirtyItemResetPending;
+    void _q_processDirtyItems();
 
-    QList<int> freeItemIndexes;
-    bool regenerateIndex;
+    QSet<QGraphicsItem *> scenePosItems;
+    void setScenePosItemEnabled(QGraphicsItem *item, bool enabled);
+    void registerScenePosItem(QGraphicsItem *item);
+    void unregisterScenePosItem(QGraphicsItem *item);
+    void _q_updateScenePosDescendants();
 
-    bool purgePending;
-    void _q_removeItemLater(QGraphicsItem *item);
-    QSet<QGraphicsItem *> removedItems;
-    void purgeRemovedItems();
+    void removeItemHelper(QGraphicsItem *item);
 
     QBrush backgroundBrush;
     QBrush foregroundBrush;
 
-    int indexTimerId;
-    bool restartIndexTimer;
-    void startIndexTimer();
-
-    bool stickyFocus;
-    bool hasFocus;
+    quint32 rectAdjust;
     QGraphicsItem *focusItem;
     QGraphicsItem *lastFocusItem;
     QGraphicsWidget *tabFocusFirst;
-    QGraphicsWidget *activeWindow;
+    QGraphicsItem *activePanel;
+    QGraphicsItem *lastActivePanel;
     int activationRefCount;
+    int childExplicitActivation;
+    void setActivePanelHelper(QGraphicsItem *item, bool duringActivationEvent);
+    void setFocusItemHelper(QGraphicsItem *item, Qt::FocusReason focusReason);
 
     QList<QGraphicsWidget *> popupWidgets;
     void addPopup(QGraphicsWidget *widget);
     void removePopup(QGraphicsWidget *widget, bool itemIsDying = false);
 
     QGraphicsItem *lastMouseGrabberItem;
-    bool lastMouseGrabberItemHasImplicitMouseGrab;
     QList<QGraphicsItem *> mouseGrabberItems;
     void grabMouse(QGraphicsItem *item, bool implicit = false);
     void ungrabMouse(QGraphicsItem *item, bool itemIsDying = false);
@@ -159,27 +172,30 @@ public:
     void grabKeyboard(QGraphicsItem *item);
     void ungrabKeyboard(QGraphicsItem *item, bool itemIsDying = false);
     void clearKeyboardGrabber();
-    
+
     QGraphicsItem *dragDropItem;
     QGraphicsWidget *enterWidget;
     Qt::DropAction lastDropAction;
     QList<QGraphicsItem *> cachedItemsUnderMouse;
     QList<QGraphicsItem *> hoverItems;
+    QPointF lastSceneMousePos;
+    void enableMouseTrackingOnViews();
     QMap<Qt::MouseButton, QPointF> mouseGrabberButtonDownPos;
     QMap<Qt::MouseButton, QPointF> mouseGrabberButtonDownScenePos;
     QMap<Qt::MouseButton, QPoint> mouseGrabberButtonDownScreenPos;
     QList<QGraphicsItem *> itemsAtPosition(const QPoint &screenPos,
                                            const QPointF &scenePos,
                                            QWidget *widget) const;
-    static bool itemCollidesWithPath(QGraphicsItem *item, const QPainterPath &path, Qt::ItemSelectionMode mode);
     void storeMouseButtonsForMouseGrabber(QGraphicsSceneMouseEvent *event);
 
     QList<QGraphicsView *> views;
-    bool painterStateProtection;
+    void addView(QGraphicsView *view);
+    void removeView(QGraphicsView *view);
 
     QMultiMap<QGraphicsItem *, QGraphicsItem *> sceneEventFilters;
     void installSceneEventFilter(QGraphicsItem *watched, QGraphicsItem *filter);
     void removeSceneEventFilter(QGraphicsItem *watched, QGraphicsItem *filter);
+    bool filterDescendantEvent(QGraphicsItem *item, QEvent *event);
     bool filterEvent(QGraphicsItem *item, QEvent *event);
     bool sendEvent(QGraphicsItem *item, QEvent *event);
 
@@ -197,56 +213,71 @@ public:
     void mousePressEventHandler(QGraphicsSceneMouseEvent *mouseEvent);
     QGraphicsWidget *windowForItem(const QGraphicsItem *item) const;
 
-    QList<QGraphicsItem *> items_helper(const QPointF &pos) const;
-    QList<QGraphicsItem *> items_helper(const QRectF &rect,
-                                        Qt::ItemSelectionMode mode,
-                                        Qt::SortOrder order) const;
-    QList<QGraphicsItem *> items_helper(const QPolygonF &rect,
-                                        Qt::ItemSelectionMode mode,
-                                        Qt::SortOrder order) const;
-    QList<QGraphicsItem *> items_helper(const QPainterPath &rect,
-                                        Qt::ItemSelectionMode mode,
-                                        Qt::SortOrder order) const;
-    void childItems_helper(QList<QGraphicsItem *> *items,
-                           const QGraphicsItem *parent,
-                           const QPointF &pos) const;
-    void childItems_helper(QList<QGraphicsItem *> *items,
-                           const QGraphicsItem *parent,
-                           const QRectF &rect,
-                           Qt::ItemSelectionMode mode) const;
-    void childItems_helper(QList<QGraphicsItem *> *items,
-                           const QGraphicsItem *parent,
-                           const QPolygonF &polygon,
-                           Qt::ItemSelectionMode mode) const;
-    void childItems_helper(QList<QGraphicsItem *> *items,
-                           const QGraphicsItem *parent,
-                           const QPainterPath &path,
-                           Qt::ItemSelectionMode mode) const;
-
-    bool sortCacheEnabled;
-    bool updatingSortCache;
-    void invalidateSortCache();
-    static void climbTree(QGraphicsItem *item, int *stackingOrder);
-    void _q_updateSortCache();
-
-    static bool closestItemFirst_withoutCache(const QGraphicsItem *item1, const QGraphicsItem *item2);
-    static bool closestItemLast_withoutCache(const QGraphicsItem *item1, const QGraphicsItem *item2);
-
-    static inline bool closestItemFirst_withCache(const QGraphicsItem *item1, const QGraphicsItem *item2)
-    { 
-        return item1->d_ptr->globalStackingOrder < item2->d_ptr->globalStackingOrder;
-    }
-    static inline bool closestItemLast_withCache(const QGraphicsItem *item1, const QGraphicsItem *item2)
-    {
-        return item1->d_ptr->globalStackingOrder >= item2->d_ptr->globalStackingOrder;
-    }
-
-    static void sortItems(QList<QGraphicsItem *> *itemList, Qt::SortOrder order, bool cached);
-
     void drawItemHelper(QGraphicsItem *item, QPainter *painter,
                         const QStyleOptionGraphicsItem *option, QWidget *widget,
                         bool painterStateProtection);
-    
+
+    void drawItems(QPainter *painter, const QTransform *const viewTransform,
+                   QRegion *exposedRegion, QWidget *widget);
+
+    void drawSubtreeRecursive(QGraphicsItem *item, QPainter *painter, const QTransform *const,
+                              QRegion *exposedRegion, QWidget *widget, qreal parentOpacity = qreal(1.0),
+                              const QTransform *const effectTransform = 0);
+    void draw(QGraphicsItem *, QPainter *, const QTransform *const, const QTransform *const,
+              QRegion *, QWidget *, qreal, const QTransform *const, bool, bool);
+
+    void markDirty(QGraphicsItem *item, const QRectF &rect = QRectF(), bool invalidateChildren = false,
+                   bool force = false, bool ignoreOpacity = false, bool removingItemFromScene = false,
+                   bool updateBoundingRect = false);
+    void processDirtyItemsRecursive(QGraphicsItem *item, bool dirtyAncestorContainsChildren = false,
+                                    qreal parentOpacity = qreal(1.0));
+
+    inline void resetDirtyItem(QGraphicsItem *item, bool recursive = false)
+    {
+        Q_ASSERT(item);
+        item->d_ptr->dirty = 0;
+        item->d_ptr->paintedViewBoundingRectsNeedRepaint = 0;
+        item->d_ptr->geometryChanged = 0;
+        if (!item->d_ptr->dirtyChildren)
+            recursive = false;
+        item->d_ptr->dirtyChildren = 0;
+        item->d_ptr->needsRepaint = QRectF();
+        item->d_ptr->allChildrenDirty = 0;
+        item->d_ptr->fullUpdatePending = 0;
+        item->d_ptr->ignoreVisible = 0;
+        item->d_ptr->ignoreOpacity = 0;
+#ifndef QT_NO_GRAPHICSEFFECT
+        QGraphicsEffect::ChangeFlags flags;
+        if (item->d_ptr->notifyBoundingRectChanged) {
+            flags |= QGraphicsEffect::SourceBoundingRectChanged;
+            item->d_ptr->notifyBoundingRectChanged = 0;
+        }
+        if (item->d_ptr->notifyInvalidated) {
+            flags |= QGraphicsEffect::SourceInvalidated;
+            item->d_ptr->notifyInvalidated = 0;
+        }
+#endif //QT_NO_GRAPHICSEFFECT
+        if (recursive) {
+            for (int i = 0; i < item->d_ptr->children.size(); ++i)
+                resetDirtyItem(item->d_ptr->children.at(i), recursive);
+        }
+#ifndef QT_NO_GRAPHICSEFFECT
+        if (flags && item->d_ptr->graphicsEffect)
+            item->d_ptr->graphicsEffect->sourceChanged(flags);
+#endif //QT_NO_GRAPHICSEFFECT
+    }
+
+    inline void ensureSortedTopLevelItems()
+    {
+        if (needSortTopLevelItems) {
+            qSort(topLevelItems.begin(), topLevelItems.end(), qt_notclosestLeaf);
+            topLevelSequentialOrdering = false;
+            needSortTopLevelItems = false;
+        }
+    }
+
+    void ensureSequentialTopLevelSiblingIndexes();
+
     QStyle *style;
     QFont font;
     void setFont_helper(const QFont &font);
@@ -257,10 +288,68 @@ public:
     void resolvePalette();
     void updatePalette(const QPalette &palette);
 
-    mutable QVector<QTransform> sceneTransformCache;
-    mutable QBitArray validTransforms;
-    mutable QVector<int> freeSceneTransformSlots;
+    QStyleOptionGraphicsItem styleOptionTmp;
+
+    QMap<int, QTouchEvent::TouchPoint> sceneCurrentTouchPoints;
+    QMap<int, QGraphicsItem *> itemForTouchPointId;
+    static void updateTouchPointsForItem(QGraphicsItem *item, QTouchEvent *touchEvent);
+    int findClosestTouchPointId(const QPointF &scenePos);
+    void touchEventHandler(QTouchEvent *touchEvent);
+    bool sendTouchBeginEvent(QGraphicsItem *item, QTouchEvent *touchEvent);
+    void enableTouchEventsOnViews();
+
+    QList<QGraphicsObject *> cachedTargetItems;
+#ifndef QT_NO_GESTURES
+    QHash<QGraphicsObject *, QSet<QGesture *> > cachedItemGestures;
+    QHash<QGraphicsObject *, QSet<QGesture *> > cachedAlreadyDeliveredGestures;
+    QHash<QGesture *, QGraphicsObject *> gestureTargets;
+    QHash<Qt::GestureType, int>  grabbedGestures;
+    void gestureEventHandler(QGestureEvent *event);
+    void gestureTargetsAtHotSpots(const QSet<QGesture *> &gestures,
+                           Qt::GestureFlag flag,
+                           QHash<QGraphicsObject *, QSet<QGesture *> > *targets,
+                           QSet<QGraphicsObject *> *itemsSet = 0,
+                           QSet<QGesture *> *normal = 0,
+                           QSet<QGesture *> *conflicts = 0);
+    void cancelGesturesForChildren(QGesture *original);
+    void grabGesture(QGraphicsItem *, Qt::GestureType gesture);
+    void ungrabGesture(QGraphicsItem *, Qt::GestureType gesture);
+#endif // QT_NO_GESTURES
+
+    void updateInputMethodSensitivityInViews();
+
+    QList<QGraphicsItem *> modalPanels;
+    void enterModal(QGraphicsItem *item,
+                    QGraphicsItem::PanelModality panelModality = QGraphicsItem::NonModal);
+    void leaveModal(QGraphicsItem *item);
 };
+
+// QRectF::intersects() returns false always if either the source or target
+// rectangle's width or height are 0. This works around that problem.
+static inline void _q_adjustRect(QRectF *rect)
+{
+    Q_ASSERT(rect);
+    if (!rect->width())
+        rect->adjust(qreal(-0.00001), 0, qreal(0.00001), 0);
+    if (!rect->height())
+        rect->adjust(0, qreal(-0.00001), 0, qreal(0.00001));
+}
+
+static inline QRectF adjustedItemBoundingRect(const QGraphicsItem *item)
+{
+    Q_ASSERT(item);
+    QRectF boundingRect(item->boundingRect());
+    _q_adjustRect(&boundingRect);
+    return boundingRect;
+}
+
+static inline QRectF adjustedItemEffectiveBoundingRect(const QGraphicsItem *item)
+{
+    Q_ASSERT(item);
+    QRectF boundingRect(QGraphicsItemPrivate::get(item)->effectiveBoundingRect());
+    _q_adjustRect(&boundingRect);
+    return boundingRect;
+}
 
 QT_END_NAMESPACE
 

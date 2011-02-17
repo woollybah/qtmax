@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -103,6 +103,7 @@ struct QDockAreaLayoutItem
     QSize maximumSize() const;
     QSize sizeHint() const;
     bool expansive(Qt::Orientation o) const;
+    bool hasFixedSize(Qt::Orientation o) const;
 
     QLayoutItem *widgetItem;
     QDockAreaLayoutInfo *subinfo;
@@ -127,7 +128,7 @@ class Q_AUTOTEST_EXPORT QDockAreaLayoutInfo
 {
 public:
     QDockAreaLayoutInfo();
-    QDockAreaLayoutInfo(int _sep, QInternal::DockPosition _dockPos, Qt::Orientation _o,
+    QDockAreaLayoutInfo(const int *_sep, QInternal::DockPosition _dockPos, Qt::Orientation _o,
                         int tbhape, QMainWindow *window);
 
     QSize minimumSize() const;
@@ -135,18 +136,18 @@ public:
     QSize sizeHint() const;
     QSize size() const;
 
-    bool insertGap(QList<int> path, QLayoutItem *dockWidgetItem);
-    QLayoutItem *plug(QList<int> path);
-    QLayoutItem *unplug(QList<int> path);
+    bool insertGap(const QList<int> &path, QLayoutItem *dockWidgetItem);
+    QLayoutItem *plug(const QList<int> &path);
+    QLayoutItem *unplug(const QList<int> &path);
     enum TabMode { NoTabs, AllowTabs, ForceTabs };
     QList<int> gapIndex(const QPoint &pos, bool nestingEnabled,
                             TabMode tabMode) const;
-    void remove(QList<int> path);
+    void remove(const QList<int> &path);
     void unnest(int index);
     void split(int index, Qt::Orientation orientation, QLayoutItem *dockWidgetItem);
     void tab(int index, QLayoutItem *dockWidgetItem);
-    QDockAreaLayoutItem &item(QList<int> path);
-    QDockAreaLayoutInfo *info(QList<int> path);
+    QDockAreaLayoutItem &item(const QList<int> &path);
+    QDockAreaLayoutInfo *info(const QList<int> &path);
     QDockAreaLayoutInfo *info(QWidget *widget);
 
     enum { // sentinel values used to validate state data
@@ -161,12 +162,13 @@ public:
     bool expansive(Qt::Orientation o) const;
     int changeSize(int index, int size, bool below);
     QRect itemRect(int index) const;
-    QRect itemRect(QList<int> path) const;
+    QRect itemRect(const QList<int> &path) const;
     QRect separatorRect(int index) const;
-    QRect separatorRect(QList<int> path) const;
+    QRect separatorRect(const QList<int> &path) const;
 
     void clear();
     bool isEmpty() const;
+    bool hasFixedSize() const;
     QList<int> findSeparator(const QPoint &pos) const;
     int next(int idx) const;
     int prev(int idx) const;
@@ -179,7 +181,7 @@ public:
     void paintSeparators(QPainter *p, QWidget *widget, const QRegion &clip,
                             const QPoint &mouse) const;
     QRegion separatorRegion() const;
-    int separatorMove(int index, int delta, QVector<QLayoutStruct> *cache);
+    int separatorMove(int index, int delta);
 
     QLayoutItem *itemAt(int *x, int index) const;
     QLayoutItem *takeAt(int *x, int index);
@@ -187,16 +189,17 @@ public:
 
     QMainWindowLayout *mainWindowLayout() const;
 
-    int sep;
-    QVector<QWidget*> separatorWidgets;
+    const int *sep;
+    mutable QVector<QWidget*> separatorWidgets;
     QInternal::DockPosition dockPos;
     Qt::Orientation o;
     QRect rect;
     QMainWindow *mainWindow;
     QList<QDockAreaLayoutItem> item_list;
-
+#ifndef QT_NO_TABBAR
     void updateSeparatorWidgets() const;
     QSet<QWidget*> usedSeparatorWidgets() const;
+#endif //QT_NO_TABBAR
 
 #ifndef QT_NO_TABBAR
     quintptr currentTabId() const;
@@ -205,11 +208,9 @@ public:
     QRect tabContentRect() const;
     bool tabbed;
     QTabBar *tabBar;
-    QSize tabBarMin, tabBarHint;
     int tabBarShape;
-    bool tabBarVisible;
 
-    void updateTabBar() const;
+    bool updateTabBar() const;
     void setTabBarShape(int shape);
     QSize tabBarMinimumSize() const;
     QSize tabBarSizeHint() const;
@@ -231,7 +232,8 @@ public:
     QDockAreaLayout(QMainWindow *win);
     QDockAreaLayoutInfo docks[4];
     int sep; // separator extent
-    QVector<QWidget*> separatorWidgets;
+    bool fallbackToSizeHints; //determines if we should use the sizehint for the dock areas (true until the layout is restored or the central widget is set)
+    mutable QVector<QWidget*> separatorWidgets;
 
     bool isValid() const;
 
@@ -244,18 +246,18 @@ public:
     QList<int> gapIndex(const QPoint &pos) const;
     QList<int> findSeparator(const QPoint &pos) const;
 
-    QDockAreaLayoutItem &item(QList<int> path);
-    QDockAreaLayoutInfo *info(QList<int> path);
-    const QDockAreaLayoutInfo *info(QList<int> path) const;
+    QDockAreaLayoutItem &item(const QList<int> &path);
+    QDockAreaLayoutInfo *info(const QList<int> &path);
+    const QDockAreaLayoutInfo *info(const QList<int> &path) const;
     QDockAreaLayoutInfo *info(QWidget *widget);
-    QRect itemRect(QList<int> path) const;
+    QRect itemRect(const QList<int> &path) const;
     QRect separatorRect(int index) const;
-    QRect separatorRect(QList<int> path) const;
+    QRect separatorRect(const QList<int> &path) const;
 
-    bool insertGap(QList<int> path, QLayoutItem *dockWidgetItem);
-    QLayoutItem *plug(QList<int> path);
-    QLayoutItem *unplug(QList<int> path);
-    void remove(QList<int> path);
+    bool insertGap(const QList<int> &path, QLayoutItem *dockWidgetItem);
+    QLayoutItem *plug(const QList<int> &path);
+    QLayoutItem *unplug(const QList<int> &path);
+    void remove(const QList<int> &path);
 
     void fitLayout();
 
@@ -275,9 +277,10 @@ public:
     void paintSeparators(QPainter *p, QWidget *widget, const QRegion &clip,
                             const QPoint &mouse) const;
     QRegion separatorRegion() const;
-    int separatorMove(QList<int> separator, const QPoint &origin, const QPoint &dest,
-                        QVector<QLayoutStruct> *cache);
+    int separatorMove(const QList<int> &separator, const QPoint &origin, const QPoint &dest);
+#ifndef QT_NO_TABBAR
     void updateSeparatorWidgets() const;
+#endif //QT_NO_TABBAR
 
     QLayoutItem *itemAt(int *x, int index) const;
     QLayoutItem *takeAt(int *x, int index);
@@ -288,12 +291,14 @@ public:
     void setGrid(QVector<QLayoutStruct> *ver_struct_list,
                     QVector<QLayoutStruct> *hor_struct_list);
 
-    QRect gapRect(QList<int> path) const;
+    QRect gapRect(const QList<int> &path) const;
 
     void keepSize(QDockWidget *w);
-
+#ifndef QT_NO_TABBAR
     QSet<QTabBar*> usedTabBars() const;
     QSet<QWidget*> usedSeparatorWidgets() const;
+#endif //QT_NO_TABBAR
+    void styleChangedEvent();
 };
 
 QT_END_NAMESPACE

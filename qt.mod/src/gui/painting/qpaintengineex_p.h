@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -54,11 +54,12 @@
 //
 
 #include <QtGui/qpaintengine.h>
+#include <QtGui/qdrawutil.h>
 
-#include "qpaintengine_p.h"
-#include "qstroker_p.h"
-#include "qpainter_p.h"
-#include "qvectorpath_p.h"
+#include <private/qpaintengine_p.h>
+#include <private/qstroker_p.h>
+#include <private/qpainter_p.h>
+#include <private/qvectorpath_p.h>
 
 
 QT_BEGIN_HEADER
@@ -69,8 +70,8 @@ QT_MODULE(Gui)
 
 class QPainterState;
 class QPaintEngineExPrivate;
+class QStaticTextItem;
 struct StrokeHandler;
-
 
 struct QIntRect {
     int x1, y1, x2, y2;
@@ -133,24 +134,9 @@ public:
     qreal pts[8];
 };
 
-
-
 #ifndef QT_NO_DEBUG_STREAM
 QDebug Q_GUI_EXPORT &operator<<(QDebug &, const QVectorPath &path);
 #endif
-
-class Q_GUI_EXPORT QPaintEngineExPrivate : public QPaintEnginePrivate
-{
-public:
-    QPaintEngineExPrivate();
-    ~QPaintEngineExPrivate();
-
-    QStroker stroker;
-    QDashStroker dasher;
-    StrokeHandler *strokeHandler;
-    QStrokerOps *activeStroker;
-    QPen strokerPen;
-};
 
 class QPixmapFilter;
 
@@ -158,8 +144,7 @@ class Q_GUI_EXPORT QPaintEngineEx : public QPaintEngine
 {
     Q_DECLARE_PRIVATE(QPaintEngineEx)
 public:
-    inline QPaintEngineEx()
-        : QPaintEngine(*new QPaintEngineExPrivate, AllFeatures) { extended = true; }
+    QPaintEngineEx();
 
     virtual QPainterState *createState(QPainterState *orig) const;
 
@@ -183,6 +168,8 @@ public:
 
     virtual void fillRect(const QRectF &rect, const QBrush &brush);
     virtual void fillRect(const QRectF &rect, const QColor &color);
+
+    virtual void drawRoundedRect(const QRectF &rect, qreal xrad, qreal yrad, Qt::SizeMode mode);
 
     virtual void drawRects(const QRect *rects, int rectCount);
     virtual void drawRects(const QRectF *rects, int rectCount);
@@ -210,25 +197,66 @@ public:
 
     virtual void drawTiledPixmap(const QRectF &r, const QPixmap &pixmap, const QPointF &s);
 
+    virtual void drawPixmapFragments(const QPainter::PixmapFragment *fragments, int fragmentCount, const QPixmap &pixmap,
+                                     QFlags<QPainter::PixmapFragmentHint> hints);
+
     virtual void updateState(const QPaintEngineState &state);
+
+    virtual void drawStaticTextItem(QStaticTextItem *) = 0;
 
     virtual void setState(QPainterState *s);
     inline QPainterState *state() { return static_cast<QPainterState *>(QPaintEngine::state); }
     inline const QPainterState *state() const { return static_cast<const QPainterState *>(QPaintEngine::state); }
 
-    virtual QPixmapFilter *createPixmapFilter(int /*type*/) const { return 0; }
+    virtual void sync() {}
+
+    virtual void beginNativePainting() {}
+    virtual void endNativePainting() {}
+
+    // Return a pixmap filter of "type" that can render the parameters
+    // in "prototype".  The returned filter is owned by the engine and
+    // will be destroyed when the engine is destroyed.  The "prototype"
+    // allows the engine to pick different filters based on the parameters
+    // that will be requested, and not just the "type".
+    virtual QPixmapFilter *pixmapFilter(int /*type*/, const QPixmapFilter * /*prototype*/) { return 0; }
+
+    // These flags are needed in the implementation of paint buffers.
+    enum Flags
+    {
+        DoNotEmulate = 0x01,        // If set, QPainter will not wrap this engine in an emulation engine.
+        IsEmulationEngine = 0x02    // If set, this object is a QEmulationEngine.
+    };
+    virtual uint flags() const {return 0;}
 
 protected:
     QPaintEngineEx(QPaintEngineExPrivate &data);
 };
 
+class Q_GUI_EXPORT QPaintEngineExPrivate : public QPaintEnginePrivate
+{
+    Q_DECLARE_PUBLIC(QPaintEngineEx)
+public:
+    QPaintEngineExPrivate();
+    ~QPaintEngineExPrivate();
+
+    void replayClipOperations();
+    bool hasClipOperations() const;
+
+    QStroker stroker;
+    QDashStroker dasher;
+    StrokeHandler *strokeHandler;
+    QStrokerOps *activeStroker;
+    QPen strokerPen;
+
+    QRect exDeviceRect;
+};
 
 inline uint QVectorPath::polygonFlags(QPaintEngine::PolygonDrawMode mode) {
     switch (mode) {
     case QPaintEngine::ConvexMode: return ConvexPolygonHint | ImplicitClose;
-    case QPaintEngine::OddEvenMode: return NonCurvedShapeHint | OddEvenFill | ImplicitClose;
-    case QPaintEngine::WindingMode: return NonCurvedShapeHint | WindingFill | ImplicitClose;
-    case QPaintEngine::PolylineMode: return NonCurvedShapeHint;
+    case QPaintEngine::OddEvenMode: return PolygonHint | OddEvenFill | ImplicitClose;
+    case QPaintEngine::WindingMode: return PolygonHint | WindingFill | ImplicitClose;
+    case QPaintEngine::PolylineMode: return PolygonHint;
     default: return 0;
     }
 }

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -73,6 +73,9 @@
 **
 ****************************************************************************/
 
+#ifndef QT_COCOA_HELPERS_MAC_P_H
+#define QT_COCOA_HELPERS_MAC_P_H
+
 //
 //  W A R N I N G
 //  -------------
@@ -105,6 +108,8 @@
 #include <qpoint.h>
 #include "private/qt_mac_p.h"
 
+struct HIContentBorderMetrics;
+
 #ifdef Q_WS_MAC32
 typedef struct _NSPoint NSPoint; // Just redefine here so I don't have to pull in all of Cocoa.
 #else
@@ -112,17 +117,26 @@ typedef struct CGPoint NSPoint;
 #endif
 
 QT_BEGIN_NAMESPACE
+
+enum {
+    QtCocoaEventSubTypeWakeup       = SHRT_MAX,
+    QtCocoaEventSubTypePostMessage  = SHRT_MAX-1
+};
+
 Qt::MouseButtons qt_mac_get_buttons(int buttons);
 Qt::MouseButton qt_mac_get_button(EventMouseButton button);
-void macWindowFade(void * /*OSWindowRef*/ window, float durationSeconds = 0);
+void macWindowFade(void * /*OSWindowRef*/ window, float durationSeconds = 0.15);
 bool macWindowIsTextured(void * /*OSWindowRef*/ window);
 void macWindowToolbarShow(const QWidget *widget, bool show );
 void macWindowToolbarSet( void * /*OSWindowRef*/ window, void* toolbarRef );
-bool macWindowToolbarVisible( void * /*OSWindowRef*/ window );
+bool macWindowToolbarIsVisible( void * /*OSWindowRef*/ window );
 void macWindowSetHasShadow( void * /*OSWindowRef*/ window, bool hasShadow );
 void macWindowFlush(void * /*OSWindowRef*/ window);
-struct HIContentBorderMetrics;
+void macSendToolbarChangeEvent(QWidget *widget);
 void qt_mac_updateContentBorderMetricts(void * /*OSWindowRef */window, const ::HIContentBorderMetrics &metrics);
+void qt_mac_replaceDrawRect(void * /*OSWindowRef */window, QWidgetPrivate *widget);
+void qt_mac_replaceDrawRectOriginal(void * /*OSWindowRef */window, QWidgetPrivate *widget);
+void qt_mac_showBaseLineSeparator(void * /*OSWindowRef */window, bool show);
 void * /*NSImage */qt_mac_create_nsimage(const QPixmap &pm);
 void qt_mac_update_mouseTracking(QWidget *widget);
 OSStatus qt_mac_drawCGImage(CGContextRef cg, const CGRect *inbounds, CGImageRef);
@@ -130,7 +144,13 @@ bool qt_mac_checkForNativeSizeGrip(const QWidget *widget);
 void qt_dispatchTabletProximityEvent(void * /*NSEvent * */ tabletEvent);
 #ifdef QT_MAC_USE_COCOA
 bool qt_dispatchKeyEventWithCocoa(void * /*NSEvent * */ keyEvent, QWidget *widgetToGetEvent);
+void qt_cocoaChangeOverrideCursor(const QCursor &cursor);
+// These methods exists only for supporting unified mode.
+void macDrawRectOnTop(void * /*OSWindowRef */ window);
+void macSyncDrawingOnFirstInvocation(void * /*OSWindowRef */window);
+void qt_cocoaStackChildWindowOnTopOfOtherChildren(QWidget *widget);
 #endif
+void qt_mac_menu_collapseSeparators(void * /*NSMenu */ menu, bool collapse);
 bool qt_dispatchKeyEvent(void * /*NSEvent * */ keyEvent, QWidget *widgetToGetEvent);
 void qt_dispatchModifiersChanged(void * /*NSEvent * */flagsChangedEvent, QWidget *widgetToGetEvent);
 void qt_mac_dispatchNCMouseMessage(void */* NSWindow* */eventWindow, void */* NSEvent* */mouseEvent, 
@@ -142,6 +162,9 @@ struct ::TabletProximityRec;
 void qt_dispatchTabletProximityEvent(const ::TabletProximityRec &proxRec);
 Qt::KeyboardModifiers qt_cocoaModifiers2QtModifiers(ulong modifierFlags);
 Qt::KeyboardModifiers qt_cocoaDragOperation2QtModifiers(uint dragOperations);
+QPixmap qt_mac_convert_iconref(const IconRef icon, int width, int height);
+void qt_mac_constructQIconFromIconRef(const IconRef icon, const IconRef overlayIcon, QIcon *retIcon,
+                                      QStyle::StandardPixmap standardIcon = QStyle::SP_CustomBase);
 inline int flipYCoordinate(int y)
 {
     return QApplication::desktop()->screenGeometry(0).height() - y;    
@@ -161,6 +184,9 @@ void *qt_mac_QStringListToNSMutableArrayVoid(const QStringList &list);
 
 void qt_syncCocoaTitleBarButtons(OSWindowRef window, QWidget *widgetForWindow);
 
+CGFloat qt_mac_get_scalefactor();
+QString qt_mac_get_pasteboardString(OSPasteboardRef paste);
+
 #ifdef __OBJC__
 inline NSMutableArray *qt_mac_QStringListToNSMutableArray(const QStringList &qstrlist)
 { return reinterpret_cast<NSMutableArray *>(qt_mac_QStringListToNSMutableArrayVoid(qstrlist)); }
@@ -170,6 +196,29 @@ inline QString qt_mac_NSStringToQString(const NSString *nsstr)
 
 inline NSString *qt_mac_QStringToNSString(const QString &qstr)
 { return [reinterpret_cast<const NSString *>(QCFString::toCFStringRef(qstr)) autorelease]; }
+
+#ifdef QT_MAC_USE_COCOA
+class QCocoaPostMessageArgs {
+public:
+    id target;
+    SEL selector;
+    QCocoaPostMessageArgs(id target, SEL selector) : target(target), selector(selector)
+    {
+        [target retain];
+    }
+
+    ~QCocoaPostMessageArgs()
+    {
+        [target release];
+    }
+};
+bool qt_cocoaPostMessage(id target, SEL selector);
 #endif
 
+#endif
+
+void qt_mac_post_retranslateAppMenu();
+
 QT_END_NAMESPACE
+
+#endif // QT_COCOA_HELPERS_MAC_P_H

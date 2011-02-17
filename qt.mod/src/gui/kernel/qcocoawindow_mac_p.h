@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -50,13 +50,21 @@
 // We mean it.
 //
 
-#include "qmacdefines_mac.h"
 #ifdef QT_MAC_USE_COCOA
+#include "qmacdefines_mac.h"
 #import <Cocoa/Cocoa.h>
+#include <private/qapplication_p.h>
+#include <private/qbackingstore_p.h>
+
 
 enum { QtMacCustomizeWindow = 1 << 21 }; // This will one day be run over by
 
 QT_FORWARD_DECLARE_CLASS(QWidget);
+QT_FORWARD_DECLARE_CLASS(QStringList);
+
+@interface NSWindow (QtCoverForHackWithCategory)
++ (Class)frameViewClassForStyleMask:(NSUInteger)styleMask;
+@end
 
 @interface NSWindow (QT_MANGLE_NAMESPACE(QWidgetIntegration))
 - (id)QT_MANGLE_NAMESPACE(qt_initWithQWidget):(QWidget *)widget contentRect:(NSRect)rect styleMask:(NSUInteger)mask;
@@ -65,8 +73,12 @@ QT_FORWARD_DECLARE_CLASS(QWidget);
 
 @interface QT_MANGLE_NAMESPACE(QCocoaWindow) : NSWindow {
     bool leftButtonIsRightButton;
+    QStringList *currentCustomDragTypes;
 }
 
 + (Class)frameViewClassForStyleMask:(NSUInteger)styleMask;
+- (void)registerDragTypes;
+
 @end
 #endif
+

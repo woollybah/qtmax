@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,6 +44,7 @@
 
 #include <QtGui/qwindowdefs.h>
 #include <QtCore/qobject.h>
+#include <QtCore/qmargins.h>
 #include <QtGui/qpaintdevice.h>
 #include <QtGui/qpalette.h>
 #include <QtGui/qfont.h>
@@ -95,6 +96,7 @@ class QIcon;
 class QWindowSurface;
 class QLocale;
 class QGraphicsProxyWidget;
+class QGraphicsEffect;
 #if defined(Q_WS_X11)
 class QX11Info;
 #endif
@@ -129,9 +131,6 @@ public:
 
     int alloc_region_index;
 //    int alloc_region_revision;
-#endif
-#if defined(Q_OS_WINCE)
-    uint window_state_internal : 4;
 #endif
     QRect wrect;
 };
@@ -212,6 +211,7 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
 #endif
     Q_PROPERTY(QLocale locale READ locale WRITE setLocale RESET unsetLocale)
     Q_PROPERTY(QString windowFilePath READ windowFilePath WRITE setWindowFilePath DESIGNABLE isWindow)
+    Q_PROPERTY(Qt::InputMethodHints inputMethodHints READ inputMethodHints WRITE setInputMethodHints)
 
 public:
     enum RenderFlag {
@@ -288,6 +288,10 @@ public:
     void setMaximumWidth(int maxw);
     void setMaximumHeight(int maxh);
 
+#ifdef Q_QDOC
+    void setupUi(QWidget *widget);
+#endif
+
     QSize sizeIncrement() const;
     void setSizeIncrement(const QSize &);
     void setSizeIncrement(int w, int h);
@@ -350,6 +354,16 @@ public:
     void render(QPainter *painter, const QPoint &targetOffset = QPoint(),
                 const QRegion &sourceRegion = QRegion(),
                 RenderFlags renderFlags = RenderFlags(DrawWindowBackground | DrawChildren));
+
+#ifndef QT_NO_GRAPHICSEFFECT
+    QGraphicsEffect *graphicsEffect() const;
+    void setGraphicsEffect(QGraphicsEffect *effect);
+#endif //QT_NO_GRAPHICSEFFECT
+
+#ifndef QT_NO_GESTURES
+    void grabGesture(Qt::GestureType type, Qt::GestureFlags flags = Qt::GestureFlags());
+    void ungrabGesture(Qt::GestureType type);
+#endif
 
 public Q_SLOTS:
     void setWindowTitle(const QString &);
@@ -469,7 +483,7 @@ public Q_SLOTS:
 
     virtual void setVisible(bool visible);
     inline void setHidden(bool hidden) { setVisible(!hidden); }
-#ifndef Q_OS_WINCE
+#ifndef Q_WS_WINCE
     inline void show() { setVisible(true); }
 #else
     void show();
@@ -521,7 +535,10 @@ public:
     QRegion visibleRegion() const;
 
     void setContentsMargins(int left, int top, int right, int bottom);
+    void setContentsMargins(const QMargins &margins);
     void getContentsMargins(int *left, int *top, int *right, int *bottom) const;
+    QMargins contentsMargins() const;
+
     QRect contentsRect() const;
 
 public:
@@ -539,6 +556,7 @@ public:
 
     QWidget *focusWidget() const;
     QWidget *nextInFocusChain() const;
+    QWidget *previousInFocusChain() const;
 
     // drag and drop
     bool acceptDrops() const;
@@ -673,6 +691,10 @@ protected:
     virtual void inputMethodEvent(QInputMethodEvent *);
 public:
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
+
+    Qt::InputMethodHints inputMethodHints() const;
+    void setInputMethodHints(Qt::InputMethodHints hints);
+
 protected:
     void resetInputContext();
 protected Q_SLOTS:
@@ -713,16 +735,20 @@ private:
     friend class QGLContext;
     friend class QGLWidget;
     friend class QGLWindowSurface;
-    friend class QVGWindowSurface;
     friend class QX11PaintEngine;
     friend class QWin32PaintEngine;
     friend class QShortcutPrivate;
     friend class QShortcutMap;
     friend class QWindowSurface;
-    friend class QD3DWindowSurface;
     friend class QGraphicsProxyWidget;
     friend class QGraphicsProxyWidgetPrivate;
     friend class QStyleSheetStyle;
+    friend struct QWidgetExceptionCleaner;
+#ifndef QT_NO_GESTURES
+    friend class QGestureManager;
+    friend class QWinNativePanGestureRecognizer;
+#endif // QT_NO_GESTURES
+    friend class QWidgetEffectSourcePrivate;
 
 #ifdef Q_WS_MAC
     friend class QCoreGraphicsPaintEnginePrivate;
@@ -744,9 +770,14 @@ private:
     friend bool isWidgetOpaque(const QWidget *);
     friend class QGLWidgetPrivate;
 #endif
+#ifdef Q_OS_SYMBIAN
+    friend class QSymbianControl;
+    friend class QS60WindowSurface;
+#endif
 #ifdef Q_WS_X11
     friend void qt_net_update_user_time(QWidget *tlw, unsigned long timestamp);
     friend void qt_net_remove_user_time(QWidget *tlw);
+    friend void qt_set_winid_on_widget(QWidget*, Qt::HANDLE);
 #endif
 
     friend Q_GUI_EXPORT QWidgetData *qt_qwidget_data(QWidget *widget);
@@ -755,6 +786,9 @@ private:
 private:
     Q_DISABLE_COPY(QWidget)
     Q_PRIVATE_SLOT(d_func(), void _q_showIfNotHidden())
+#ifdef Q_OS_SYMBIAN
+    Q_PRIVATE_SLOT(d_func(), void _q_delayedDestroy(WId winId))
+#endif
 
     QWidgetData *data;
 
@@ -807,7 +841,7 @@ public:
     inline QT3_SUPPORT void setFont(const QFont &f, bool) { setFont(f); }
     inline QT3_SUPPORT void setPalette(const QPalette &p, bool) { setPalette(p); }
     enum BackgroundOrigin { WidgetOrigin, ParentOrigin, WindowOrigin, AncestorOrigin };
-    inline QT3_SUPPORT void setBackgroundOrigin(BackgroundOrigin){};
+    inline QT3_SUPPORT void setBackgroundOrigin(BackgroundOrigin) {}
     inline QT3_SUPPORT BackgroundOrigin backgroundOrigin() const { return WindowOrigin; }
     inline QT3_SUPPORT QPoint backgroundOffset() const { return QPoint(); }
     inline QT3_SUPPORT void repaint(bool) { repaint(); }

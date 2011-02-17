@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -47,8 +47,8 @@
 //  -------------
 //
 // This file is not part of the Qt API.  It exists for the convenience
-// of qapplication_*.cpp, qwidget*.cpp and qfiledialog.cpp.  This header
-// file may change from version to version without notice, or even be removed.
+// of other Qt classes.  This header file may change from version to
+// version without notice, or even be removed.
 //
 // We mean it.
 //
@@ -58,7 +58,9 @@
 #if !defined(QT_NO_GRAPHICSVIEW) || (QT_EDITION & QT_MODULE_GRAPHICSVIEW) != QT_MODULE_GRAPHICSVIEW
 
 #include <QtGui/qevent.h>
+#include <QtCore/qcoreapplication.h>
 #include "qgraphicssceneevent.h"
+#include <QtGui/qstyleoption.h>
 #include <private/qabstractscrollarea_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -75,47 +77,56 @@ public:
     QPainter::RenderHints renderHints;
 
     QGraphicsView::DragMode dragMode;
-    bool sceneInteractionAllowed;
+
+    quint32 sceneInteractionAllowed : 1;
+    quint32 hasSceneRect : 1;
+    quint32 connectedToScene : 1;
+    quint32 useLastMouseEvent : 1;
+    quint32 identityMatrix : 1;
+    quint32 dirtyScroll : 1;
+    quint32 accelerateScrolling : 1;
+    quint32 keepLastCenterPoint : 1;
+    quint32 transforming : 1;
+    quint32 handScrolling : 1;
+    quint32 mustAllocateStyleOptions : 1;
+    quint32 mustResizeBackgroundPixmap : 1;
+    quint32 fullUpdatePending : 1;
+    quint32 hasUpdateClip : 1;
+    quint32 padding : 18;
+
     QRectF sceneRect;
-    bool hasSceneRect;
     void updateLastCenterPoint();
-    bool connectedToScene;
 
     qint64 horizontalScroll() const;
     qint64 verticalScroll() const;
 
-    QList<QGraphicsItem *> itemsInArea(const QPainterPath &path,
-                                       Qt::ItemSelectionMode mode = Qt::IntersectsItemShape,
-                                       Qt::SortOrder = Qt::AscendingOrder) const;
+    QRectF mapRectToScene(const QRect &rect) const;
+    QRectF mapRectFromScene(const QRectF &rect) const;
 
+    QRect updateClip;
     QPointF mousePressItemPoint;
     QPointF mousePressScenePoint;
     QPoint mousePressViewPoint;
     QPoint mousePressScreenPoint;
     QPointF lastMouseMoveScenePoint;
     QPoint lastMouseMoveScreenPoint;
+    QPoint dirtyScrollOffset;
     Qt::MouseButton mousePressButton;
     QTransform matrix;
-    bool identityMatrix;
     qint64 scrollX, scrollY;
-    bool dirtyScroll;
     void updateScroll();
 
-    bool accelerateScrolling;
     qreal leftIndent;
     qreal topIndent;
 
     // Replaying mouse events
     QMouseEvent lastMouseEvent;
-    bool useLastMouseEvent;
     void replayLastMouseEvent();
     void storeMouseEvent(QMouseEvent *event);
     void mouseMoveEventHandler(QMouseEvent *event);
 
     QPointF lastCenterPoint;
-    bool keepLastCenterPoint;
     Qt::Alignment alignment;
-    bool transforming;
 
     QGraphicsView::ViewportAnchor transformationAnchor;
     QGraphicsView::ViewportAnchor resizeAnchor;
@@ -129,20 +140,17 @@ public:
     bool rubberBanding;
     Qt::ItemSelectionMode rubberBandSelectionMode;
 #endif
-    bool handScrolling;
     int handScrollMotions;
 
     QGraphicsView::CacheMode cacheMode;
 
     QVector<QStyleOptionGraphicsItem> styleOptions;
-    bool mustAllocateStyleOptions;
     QStyleOptionGraphicsItem *allocStyleOptionsArray(int numItems);
     void freeStyleOptionsArray(QStyleOptionGraphicsItem *array);
 
     QBrush backgroundBrush;
     QBrush foregroundBrush;
     QPixmap backgroundPixmap;
-    bool mustResizeBackgroundPixmap;
     QRegion backgroundPixmapExposed;
 
 #ifndef QT_NO_CURSOR
@@ -159,28 +167,59 @@ public:
 
     QRect mapToViewRect(const QGraphicsItem *item, const QRectF &rect) const;
     QRegion mapToViewRegion(const QGraphicsItem *item, const QRectF &rect) const;
-    void itemUpdated(QGraphicsItem *item, const QRectF &rect);
-    bool fullUpdatePending;
-    QList<QRect> dirtyRects;
-    QList<QRegion> dirtyRegions;
-    int dirtyRectCount;
+    QRegion dirtyRegion;
     QRect dirtyBoundingRect;
-    void updateLater();
-    bool updatingLater;
-    void _q_updateLaterSlot();
-    void updateAll();
-    void updateRect(const QRect &rect);
-    void updateRegion(const QRegion &region);
+    void processPendingUpdates();
+    inline void updateAll()
+    {
+        viewport->update();
+        fullUpdatePending = true;
+        dirtyBoundingRect = QRect();
+        dirtyRegion = QRegion();
+    }
+
+    inline void dispatchPendingUpdateRequests()
+    {
+#ifndef Q_WS_MAC
+        // QWidget::update() works slightly different on the Mac; it's not part of
+        // our backing store so it needs special threatment.
+        if (qt_widget_private(viewport)->paintOnScreen())
+            QCoreApplication::sendPostedEvents(viewport, QEvent::UpdateRequest);
+        else
+            QCoreApplication::sendPostedEvents(viewport->window(), QEvent::UpdateRequest);
+#else
+        // At this point either HIViewSetNeedsDisplay (Carbon) or setNeedsDisplay: YES (Cocoa)
+        // is called, which means there's a pending update request. We want to dispatch it
+        // now because otherwise graphics view updates would require two
+        // round-trips in the event loop before the item is painted.
+        extern void qt_mac_dispatchPendingUpdateRequests(QWidget *);
+        qt_mac_dispatchPendingUpdateRequests(viewport->window());
+#endif
+    }
+
+    void setUpdateClip(QGraphicsItem *);
+
+    inline bool updateRectF(const QRectF &rect)
+    {
+        if (rect.isEmpty())
+            return false;
+        if (optimizationFlags & QGraphicsView::DontAdjustForAntialiasing)
+            return updateRect(rect.toAlignedRect().adjusted(-1, -1, 1, 1));
+        return updateRect(rect.toAlignedRect().adjusted(-2, -2, 2, 2));
+    }
+
+    bool updateRect(const QRect &rect);
+    bool updateRegion(const QRectF &rect, const QTransform &xform);
     bool updateSceneSlotReimplementedChecked;
+    QRegion exposedRegion;
 
-    QList<QGraphicsItem *> findItems(const QRegion &exposedRegion, bool *allItems) const;
+    QList<QGraphicsItem *> findItems(const QRegion &exposedRegion, bool *allItems,
+                                     const QTransform &viewTransform) const;
 
-    void generateStyleOptions(const QList<QGraphicsItem *> &itemList,
-			      QGraphicsItem **itemArray,
-			      QStyleOptionGraphicsItem *styleOptionArray,
-			      const QTransform &worldTransform,
-			      bool allItems,
-			      const QRegion &exposedRegion) const;
+    QPointF mapToScene(const QPointF &point) const;
+    QRectF mapToScene(const QRectF &rect) const;
+    static void translateTouchEvent(QGraphicsViewPrivate *d, QTouchEvent *touchEvent);
+    void updateInputMethodSensitivity();
 };
 
 QT_END_NAMESPACE

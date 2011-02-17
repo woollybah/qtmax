@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -63,15 +63,8 @@ QT_FORWARD_DECLARE_CLASS(QWidget)
 QT_FORWARD_DECLARE_CLASS(QSize)
 QT_FORWARD_DECLARE_CLASS(QWidgetData)
 
-@interface QT_MANGLE_NAMESPACE(QCocoaWindowDelegate) : NSObject {
-    QHash<NSWindow *, QWidget *> *m_windowHash;
-    QHash<NSDrawer *, QWidget *> *m_drawerHash;
-}
-+ (QT_MANGLE_NAMESPACE(QCocoaWindowDelegate)*)sharedDelegate;
-- (void)becomeDelegteForWindow:(NSWindow *)window  widget:(QWidget *)widget;
-- (void)resignDelegateForWindow:(NSWindow *)window;
-- (void)becomeDelegateForDrawer:(NSDrawer *)drawer widget:(QWidget *)widget;
-- (void)resignDelegateForDrawer:(NSDrawer *)drawer;
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_5
+@protocol NSWindowDelegate <NSObject>
 - (NSSize)windowWillResize:(NSWindow *)window toSize:(NSSize)proposedFrameSize;
 - (void)windowDidMiniaturize:(NSNotification*)notification;
 - (void)windowDidResize:(NSNotification *)notification;
@@ -83,6 +76,28 @@ QT_FORWARD_DECLARE_CLASS(QWidgetData)
 - (void)windowDidResignMain:(NSNotification*)notification;
 - (void)windowDidBecomeKey:(NSNotification*)notification;
 - (void)windowDidResignKey:(NSNotification*)notification;
+- (BOOL)window:(NSWindow *)window shouldPopUpDocumentPathMenu:(NSMenu *)menu;
+- (BOOL)window:(NSWindow *)window shouldDragDocumentWithEvent:(NSEvent *)event from:(NSPoint)dragImageLocation withPasteboard:(NSPasteboard *)pasteboard;
+- (BOOL)windowShouldZoom:(NSWindow *)window toFrame:(NSRect)newFrame;
+@end
+
+@protocol NSDrawerDelegate <NSObject>
+- (NSSize)drawerWillResizeContents:(NSDrawer *)sender toSize:(NSSize)contentSize;
+@end
+
+#endif
+
+
+
+@interface QT_MANGLE_NAMESPACE(QCocoaWindowDelegate) : NSObject<NSWindowDelegate, NSDrawerDelegate> {
+    QHash<NSWindow *, QWidget *> *m_windowHash;
+    QHash<NSDrawer *, QWidget *> *m_drawerHash;
+}
++ (QT_MANGLE_NAMESPACE(QCocoaWindowDelegate)*)sharedDelegate;
+- (void)becomeDelegteForWindow:(NSWindow *)window  widget:(QWidget *)widget;
+- (void)resignDelegateForWindow:(NSWindow *)window;
+- (void)becomeDelegateForDrawer:(NSDrawer *)drawer widget:(QWidget *)widget;
+- (void)resignDelegateForDrawer:(NSDrawer *)drawer;
 - (void)dumpMaximizedStateforWidget:(QWidget*)qwidget window:(NSWindow *)window;
 - (void)syncSizeForWidget:(QWidget *)qwidget
         toSize:(const QSize &)newSize
@@ -90,6 +105,6 @@ QT_FORWARD_DECLARE_CLASS(QWidgetData)
 - (NSSize)closestAcceptableSizeForWidget:(QWidget *)qwidget
         window:(NSWindow *)window withNewSize:(NSSize)proposedSize;
 - (QWidget *)qt_qwidgetForWindow:(NSWindow *)window;
-- (void)checkForMove:(const NSRect &)newRect forWidget:(QWidget *)qwidget;
+- (void)syncContentViewFrame: (NSNotification *)notification;
 @end
 #endif

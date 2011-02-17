@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -45,6 +45,7 @@
 #include <QtCore/qnamespace.h>
 #include <QtCore/qrect.h>
 #include <QtCore/qpoint.h>
+#include <QtCore/qscopedpointer.h>
 #include <QtGui/qpixmap.h>
 #include <QtGui/qimage.h>
 #include <QtGui/qtextoption.h>
@@ -77,6 +78,9 @@ class QPolygon;
 class QTextItem;
 class QMatrix;
 class QTransform;
+class QStaticText;
+
+class QPainterPrivateDeleter;
 
 class Q_GUI_EXPORT QPainter
 {
@@ -94,6 +98,29 @@ public:
     };
 
     Q_DECLARE_FLAGS(RenderHints, RenderHint)
+
+    class PixmapFragment {
+    public:
+        qreal x;
+        qreal y;
+        qreal sourceLeft;
+        qreal sourceTop;
+        qreal width;
+        qreal height;
+        qreal scaleX;
+        qreal scaleY;
+        qreal rotation;
+        qreal opacity;
+        static PixmapFragment Q_GUI_EXPORT create(const QPointF &pos, const QRectF &sourceRect,
+                                            qreal scaleX = 1, qreal scaleY = 1,
+                                            qreal rotation = 0, qreal opacity = 1);
+    };
+
+    enum PixmapFragmentHint {
+        OpaqueHint = 0x01
+    };
+
+    Q_DECLARE_FLAGS(PixmapFragmentHints, PixmapFragmentHint)
 
     QPainter();
     explicit QPainter(QPaintDevice *);
@@ -348,6 +375,9 @@ public:
     inline void drawPixmap(const QRect &r, const QPixmap &pm);
     inline void drawPixmap(int x, int y, int w, int h, const QPixmap &pm);
 
+    void drawPixmapFragments(const PixmapFragment *fragments, int fragmentCount,
+                             const QPixmap &pixmap, PixmapFragmentHints hints = 0);
+
     void drawImage(const QRectF &targetRect, const QImage &image, const QRectF &sourceRect,
                    Qt::ImageConversionFlags flags = Qt::AutoColor);
     inline void drawImage(const QRect &targetRect, const QImage &image, const QRect &sourceRect,
@@ -365,6 +395,10 @@ public:
 
     void setLayoutDirection(Qt::LayoutDirection direction);
     Qt::LayoutDirection layoutDirection() const;
+
+    void drawStaticText(const QPointF &topLeftPosition, const QStaticText &staticText);
+    inline void drawStaticText(const QPoint &topLeftPosition, const QStaticText &staticText);
+    inline void drawStaticText(int left, int top, const QStaticText &staticText);
 
     void drawText(const QPointF &p, const QString &s);
     inline void drawText(const QPoint &p, const QString &s);
@@ -419,6 +453,9 @@ public:
                               const QPoint& offset = QPoint());
     static QPaintDevice *redirected(const QPaintDevice *device, QPoint *offset = 0);
     static void restoreRedirected(const QPaintDevice *device);
+
+    void beginNativePainting();
+    void endNativePainting();
 
 #ifdef QT3_SUPPORT
 
@@ -497,7 +534,7 @@ private:
     Q_DISABLE_COPY(QPainter)
     friend class Q3Painter;
 
-    QPainterPrivate *d_ptr;
+    QScopedPointer<QPainterPrivate> d_ptr;
 
     friend class QFontEngine;
     friend class QFontEngineBox;
@@ -507,6 +544,7 @@ private:
     friend class QFontEngineXLFD;
     friend class QWSManager;
     friend class QPaintEngine;
+    friend class QPaintEngineExPrivate;
     friend class QOpenGLPaintEngine;
     friend class QX11PaintEngine;
     friend class QX11PaintEnginePrivate;
@@ -887,6 +925,16 @@ inline void QPainter::drawImage(int x, int y, const QImage &image, int sx, int s
         drawImage(QPointF(x, y), image);
     else
         drawImage(QRectF(x, y, -1, -1), image, QRectF(sx, sy, sw, sh), flags);
+}
+
+inline void QPainter::drawStaticText(const QPoint &p, const QStaticText &staticText)
+{
+    drawStaticText(QPointF(p), staticText);
+}
+
+inline void QPainter::drawStaticText(int x, int y, const QStaticText &staticText)
+{
+    drawStaticText(QPointF(x, y), staticText);
 }
 
 inline void QPainter::drawTextItem(const QPoint &p, const QTextItem &ti)

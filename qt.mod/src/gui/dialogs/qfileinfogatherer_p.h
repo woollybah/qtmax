@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -60,9 +60,10 @@
 #include <qfileiconprovider.h>
 #include <qfsfileengine.h>
 #include <qpair.h>
-#include <qdatetime.h>
 #include <qstack.h>
+#include <qdatetime.h>
 #include <qdir.h>
+#include <qelapsedtimer.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -88,11 +89,7 @@ public:
         return fe.caseSensitive();
     }
     QFile::Permissions permissions() const {
-        return mPermissions;
-    }
-
-    void setPermissions (QFile::Permissions permissions) {
-        mPermissions = permissions;
+        return mFileInfo.permissions();
     }
 
     Type type() const {
@@ -140,7 +137,6 @@ public:
 
 private :
     QFileInfo mFileInfo;
-    QFile::Permissions mPermissions;
 };
 
 class QFileIconProvider;
@@ -155,6 +151,7 @@ Q_SIGNALS:
     void updates(const QString &directory, const QList<QPair<QString, QFileInfo> > &updates);
     void newListOfFiles(const QString &directory, const QStringList &listOfFiles) const;
     void nameResolved(const QString &fileName, const QString &resolvedName) const;
+    void directoryLoaded(const QString &path);
 
 public:
     QFileInfoGatherer(QObject *parent = 0);
@@ -178,13 +175,12 @@ protected:
     void getFileInfos(const QString &path, const QStringList &files);
 
 private:
-    void fetch(const QFileInfo &info, QTime &base, bool &firstTime, QList<QPair<QString, QFileInfo> > &updatedFiles, const QString &path);
+    void fetch(const QFileInfo &info, QElapsedTimer &base, bool &firstTime, QList<QPair<QString, QFileInfo> > &updatedFiles, const QString &path);
     QString translateDriveName(const QFileInfo &drive) const;
-    QFile::Permissions translatePermissions(const QFileInfo &fileInfo) const;
 
     QMutex mutex;
     QWaitCondition condition;
-    bool abort;
+    volatile bool abort;
 
     QStack<QString> path;
     QStack<QStringList> files;
@@ -199,9 +195,6 @@ private:
     uint userId;
     uint groupId;
 #endif
-public :
-    //for testing purpose
-    static bool fetchedRoot;
 };
 #endif // QT_NO_FILESYSTEMMODEL
 

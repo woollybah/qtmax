@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -60,6 +60,7 @@ class Q_GUI_EXPORT QLCDNumber : public QFrame // LCD number widget
     Q_ENUMS(Mode SegmentStyle)
     Q_PROPERTY(bool smallDecimalPoint READ smallDecimalPoint WRITE setSmallDecimalPoint)
     Q_PROPERTY(int numDigits READ numDigits WRITE setNumDigits)
+    Q_PROPERTY(int digitCount READ digitCount WRITE setDigitCount)
     Q_PROPERTY(Mode mode READ mode WRITE setMode)
     Q_PROPERTY(SegmentStyle segmentStyle READ segmentStyle WRITE setSegmentStyle)
     Q_PROPERTY(double value READ value WRITE display)
@@ -81,9 +82,12 @@ public:
     };
 
     bool smallDecimalPoint() const;
-
-    int numDigits() const;
-    void setNumDigits(int nDigits);
+#ifdef QT_DEPRECATED
+    QT_DEPRECATED int numDigits() const;
+    QT_DEPRECATED void setNumDigits(int nDigits);
+#endif
+    int digitCount() const;
+    void setDigitCount(int nDigits);
 
     bool checkOverflow(double num) const;
     bool checkOverflow(int num) const;

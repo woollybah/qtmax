@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -60,16 +60,20 @@ QT_BEGIN_NAMESPACE
 template <typename Type> class QDataBuffer
 {
 public:
-    QDataBuffer(int res = 64)
+    QDataBuffer(int res)
     {
         capacity = res;
-        buffer = (Type*) qMalloc(capacity * sizeof(Type));
+        if (res)
+            buffer = (Type*) qMalloc(capacity * sizeof(Type));
+        else
+            buffer = 0;
         siz = 0;
     }
 
     ~QDataBuffer()
     {
-        qFree(buffer);
+        if (buffer)
+            qFree(buffer);
     }
 
     inline void reset() { siz = 0; }
@@ -81,13 +85,20 @@ public:
 
     inline Type &at(int i) { Q_ASSERT(i >= 0 && i < siz); return buffer[i]; }
     inline const Type &at(int i) const { Q_ASSERT(i >= 0 && i < siz); return buffer[i]; }
+    inline Type &last() { Q_ASSERT(!isEmpty()); return buffer[siz-1]; }
     inline const Type &last() const { Q_ASSERT(!isEmpty()); return buffer[siz-1]; }
+    inline Type &first() { Q_ASSERT(!isEmpty()); return buffer[0]; }
     inline const Type &first() const { Q_ASSERT(!isEmpty()); return buffer[0]; }
 
     inline void add(const Type &t) {
         reserve(siz + 1);
         buffer[siz] = t;
         ++siz;
+    }
+
+    inline void pop_back() {
+        Q_ASSERT(siz > 0);
+        --siz;
     }
 
     inline void resize(int size) {
@@ -97,6 +108,8 @@ public:
 
     inline void reserve(int size) {
         if (size > capacity) {
+            if (capacity == 0)
+                capacity = 1;
             while (capacity < size)
                 capacity *= 2;
             buffer = (Type*) qRealloc(buffer, capacity * sizeof(Type));
@@ -105,7 +118,12 @@ public:
 
     inline void shrink(int size) {
         capacity = size;
-        buffer = (Type*) qRealloc(buffer, capacity * sizeof(Type));
+        if (size)
+            buffer = (Type*) qRealloc(buffer, capacity * sizeof(Type));
+        else {
+            qFree(buffer);
+            buffer = 0;
+        }
     }
 
     inline void swap(QDataBuffer<Type> &other) {

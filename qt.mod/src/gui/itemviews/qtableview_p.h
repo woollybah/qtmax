@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -53,11 +53,82 @@
 // We mean it.
 //
 
+#include <QtCore/QList>
+#include <QtCore/QLinkedList>
+#include <QtCore/QMap>
+#include <QtCore/QSet>
+#include <QtCore/QDebug>
 #include "private/qabstractitemview_p.h"
 
 #ifndef QT_NO_TABLEVIEW
 
 QT_BEGIN_NAMESPACE
+
+/** \internal
+*
+* This is a list of span with a binary index to look up quickly a span at a certain index.
+*
+* The index is a map of map.
+* spans are mentaly divided into sub spans so that the start of any subspans doesn't overlap
+* with any other subspans. There is no real representation of the subspans.
+* The key of the first map is the row where the subspan starts, the value of the first map is
+* a list (map) of all subspans that starts at the same row.  It is indexed with its row
+*/
+class Q_AUTOTEST_EXPORT QSpanCollection
+{
+public:
+    struct Span
+    {
+        int m_top;
+        int m_left;
+        int m_bottom;
+        int m_right;
+        bool will_be_deleted;
+        Span()
+        : m_top(-1), m_left(-1), m_bottom(-1), m_right(-1), will_be_deleted(false) { }
+        Span(int row, int column, int rowCount, int columnCount)
+        : m_top(row), m_left(column), m_bottom(row+rowCount-1), m_right(column+columnCount-1), will_be_deleted(false) { }
+        inline int top() const { return m_top; }
+        inline int left() const { return m_left; }
+        inline int bottom() const { return m_bottom; }
+        inline int right() const { return m_right; }
+        inline int height() const { return m_bottom - m_top + 1; }
+        inline int width() const { return m_right - m_left + 1; }
+    };
+
+    ~QSpanCollection()
+    {
+        qDeleteAll(spans);
+    }
+
+    void addSpan(Span *span);
+    void updateSpan(Span *span, int old_height);
+    Span *spanAt(int x, int y) const;
+    void clear();
+    QList<Span *> spansInRect(int x, int y, int w, int h) const;
+
+    void updateInsertedRows(int start, int end);
+    void updateInsertedColumns(int start, int end);
+    void updateRemovedRows(int start, int end);
+    void updateRemovedColumns(int start, int end);
+
+#ifdef QT_BUILD_INTERNAL
+    bool checkConsistency() const;
+#endif
+
+    typedef QLinkedList<Span *> SpanList;
+    SpanList spans; //lists of all spans
+private:
+    //the indexes are negative so the QMap::lowerBound do what i need.
+    typedef QMap<int, Span *> SubIndex;
+    typedef QMap<int, SubIndex> Index;
+    Index index;
+
+    bool cleanSpanSubIndex(SubIndex &subindex, int end, bool update = false);
+};
+
+Q_DECLARE_TYPEINFO ( QSpanCollection::Span, Q_MOVABLE_TYPE);
+
 
 class QTableViewPrivate : public QAbstractItemViewPrivate
 {
@@ -68,7 +139,8 @@ public:
           rowSectionAnchor(-1), columnSectionAnchor(-1),
           columnResizeTimerID(0), rowResizeTimerID(0),
           horizontalHeader(0), verticalHeader(0),
-          sortingEnabled(false), geometryRecursionBlock(false)
+          sortingEnabled(false), geometryRecursionBlock(false),
+          visualCursor(QPoint())
  {
     wrapItemText = true;
 #ifndef QT_NO_DRAGANDDROP
@@ -98,11 +170,7 @@ public:
     int sectionSpanEndLogical(const QHeaderView *header, int logical, int span) const;
     int sectionSpanSize(const QHeaderView *header, int logical, int span) const;
     bool spanContainsSection(const QHeaderView *header, int logical, int spanLogical, int span) const;
-    bool spansIntersectColumn(int column) const;
-    bool spansIntersectRow(int row) const;
-    bool spansIntersectColumns(const QList<int> &columns) const;
-    bool spansIntersectRows(const QList<int> &rows) const;
-    void drawAndClipSpans(const QRect &area, QPainter *painter,
+    void drawAndClipSpans(const QRegion &area, QPainter *painter,
                           const QStyleOptionViewItemV4 &option, QBitArray *drawn,
                           int firstVisualRow, int lastVisualRow, int firstVisualColumn, int lastVisualColumn);
     void drawCell(QPainter *painter, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
@@ -120,28 +188,12 @@ public:
     QWidget *cornerWidget;
     bool sortingEnabled;
     bool geometryRecursionBlock;
+    QPoint visualCursor;  // (Row,column) cell coordinates to track through span navigation.
 
-    struct Span
-    {
-        int m_top;
-        int m_left;
-        int m_bottom;
-        int m_right;
-        Span()
-            : m_top(-1), m_left(-1), m_bottom(-1), m_right(-1) { }
-        Span(int row, int column, int rowCount, int columnCount)
-            : m_top(row), m_left(column), m_bottom(row+rowCount-1), m_right(column+columnCount-1) { }
-        inline int top() const { return m_top; }
-        inline int left() const { return m_left; }
-        inline int bottom() const { return m_bottom; }
-        inline int right() const { return m_right; }
-        inline int height() const { return m_bottom - m_top + 1; }
-        inline int width() const { return m_right - m_left + 1; }
-    };
-    QList<Span> spans;
+    QSpanCollection spans;
 
     void setSpan(int row, int column, int rowSpan, int columnSpan);
-    Span span(int row, int column) const;
+    QSpanCollection::Span span(int row, int column) const;
     inline int rowSpan(int row, int column) const {
         return span(row, column).height();
     }
@@ -149,17 +201,7 @@ public:
         return span(row, column).width();
     }
     inline bool hasSpans() const {
-        return !spans.isEmpty();
-    }
-    inline bool spanContainsRow(int row, int spanRow, int span) const {
-        return spanContainsSection(verticalHeader, row, spanRow, span);
-    }
-    inline bool spanContainsColumn(int column, int spanColumn, int span) const {
-        return spanContainsSection(horizontalHeader, column, spanColumn, span);
-    }
-    inline bool isInSpan(int row, int column, const Span &span) const {
-        return spanContainsRow(row, span.top(), span.height())
-            && spanContainsColumn(column, span.left(), span.width());
+        return !spans.spans.isEmpty();
     }
     inline int rowSpanHeight(int row, int span) const {
         return sectionSpanSize(verticalHeader, row, span);
@@ -194,13 +236,18 @@ public:
         return isColumnHidden(c) || !isCellEnabled(r, c);
     }
 
-    QRect visualSpanRect(const Span &span) const;
+    QRect visualSpanRect(const QSpanCollection::Span &span) const;
 
     void _q_selectRow(int row);
     void _q_selectColumn(int column);
 
     void selectRow(int row, bool anchor);
     void selectColumn(int column, bool anchor);
+
+    void _q_updateSpanInsertedRows(const QModelIndex &parent, int start, int end);
+    void _q_updateSpanInsertedColumns(const QModelIndex &parent, int start, int end);
+    void _q_updateSpanRemovedRows(const QModelIndex &parent, int start, int end);
+    void _q_updateSpanRemovedColumns(const QModelIndex &parent, int start, int end);
 };
 
 QT_END_NAMESPACE

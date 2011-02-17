@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -139,19 +139,21 @@ public:
     QByteArray memberToDisconnectOnClose;
 
 #ifdef Q_WS_MAC
-    static void *openCocoaFontPanel(const QFont &initial,
-            QWidget *parent, const QString &title,
-            QFontDialog::FontDialogOptions options,
-            QFontDialogPrivate *priv = 0);
-    static void closeCocoaFontPanel(void *delegate);
-    static QFont execCocoaFontPanel(bool *ok, const QFont &initial, QWidget *parent,
-            const QString &title, QFontDialog::FontDialogOptions options);
     static void setFont(void *delegate, const QFont &font);
 
     inline void done(int result) { q_func()->done(result); }
     inline QFontDialog *fontDialog() { return q_func(); }
 
     void *delegate;
+    void closeCocoaFontPanel();
+    bool nativeDialogInUse;
+    bool canBeNativeDialog();
+    bool setVisible_sys(bool visible);
+    void createNSFontPanelDelegate();
+    void _q_macRunNativeAppModalPanel();
+    void mac_nativeDialogModalHelp();
+    bool showCocoaFontPanel();
+    bool hideCocoaFontPanel();
 
     static bool sharedFontPanelAvailable;
 #endif

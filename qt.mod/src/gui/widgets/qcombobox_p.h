@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -77,6 +77,8 @@
 #include <limits.h>
 
 QT_BEGIN_NAMESPACE
+
+class QAction;
 
 class QComboBoxListView : public QListView
 {
@@ -198,7 +200,9 @@ protected:
         menuOpt.menuItemType = QStyleOptionMenuItem::Scroller;
         if (sliderAction == QAbstractSlider::SliderSingleStepAdd)
             menuOpt.state |= QStyle::State_DownArrow;
+#ifndef Q_WS_S60
         p.eraseRect(rect());
+#endif
         style()->drawControl(QStyle::CE_MenuScroller, &menuOpt, &p);
     }
 
@@ -229,7 +233,6 @@ public:
 public Q_SLOTS:
     void scrollItemView(int action);
     void updateScrollers();
-    void setCurrentIndex(const QModelIndex &index);
     void viewDestroyed();
 
 protected:
@@ -253,6 +256,10 @@ private:
     QAbstractItemView *view;
     QComboBoxPrivateScroller *top;
     QComboBoxPrivateScroller *bottom;
+#ifdef QT_SOFTKEYS_ENABLED
+    QAction *selectAction;
+    QAction *cancelAction;
+#endif
 };
 
 class QComboMenuDelegate : public QAbstractItemDelegate
@@ -265,7 +272,9 @@ protected:
                const QStyleOptionViewItem &option,
                const QModelIndex &index) const {
         QStyleOptionMenuItem opt = getStyleOption(option, index);
+#ifndef Q_WS_S60
         painter->fillRect(option.rect, opt.palette.background());
+#endif
         mCombo->style()->drawControl(QStyle::CE_MenuItem, &opt, painter, mCombo);
     }
     QSize sizeHint(const QStyleOptionViewItem &option,
@@ -290,7 +299,7 @@ public:
     QComboBoxDelegate(QObject *parent, QComboBox *cmb) : QItemDelegate(parent), mCombo(cmb) {}
 
     static bool isSeparator(const QModelIndex &index) {
-        return index.data(Qt::AccessibleDescriptionRole).toString() == QString::fromLatin1("separator");
+        return index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator");
     }
     static void setSeparator(QAbstractItemModel *model, const QModelIndex &index) {
         model->setData(index, QString::fromLatin1("separator"), Qt::AccessibleDescriptionRole);
@@ -337,6 +346,8 @@ public:
     void init();
     QComboBoxPrivateContainer* viewContainer();
     void updateLineEditGeometry();
+    Qt::MatchFlags matchFlags() const;
+    void _q_editingFinished();
     void _q_returnPressed();
     void _q_complete();
     void _q_itemSelected(const QModelIndex &item);
@@ -351,9 +362,8 @@ public:
 #endif
     void _q_resetButton();
     void _q_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-    void _q_rowsAboutToBeInserted(const QModelIndex & parent, int start, int end);
+    void _q_updateIndexBeforeChange();
     void _q_rowsInserted(const QModelIndex & parent, int start, int end);
-    void _q_rowsAboutToBeRemoved(const QModelIndex & parent, int start, int end);
     void _q_rowsRemoved(const QModelIndex & parent, int start, int end);
     void updateArrow(QStyle::StateFlag state);
     bool updateHoverControl(const QPoint &pos);
@@ -370,6 +380,7 @@ public:
     void updateDelegate(bool force = false);
     void keyboardSearchString(const QString &text);
     void modelChanged();
+    void updateViewContainerPaletteAndOpacity();
 
     QAbstractItemModel *model;
     QLineEdit *lineEdit;

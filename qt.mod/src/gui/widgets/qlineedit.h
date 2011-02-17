@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,6 +44,7 @@
 
 #include <QtGui/qframe.h>
 #include <QtCore/qstring.h>
+#include <QtCore/qmargins.h>
 
 QT_BEGIN_HEADER
 
@@ -82,6 +83,7 @@ class Q_GUI_EXPORT QLineEdit : public QWidget
     Q_PROPERTY(bool undoAvailable READ isUndoAvailable)
     Q_PROPERTY(bool redoAvailable READ isRedoAvailable)
     Q_PROPERTY(bool acceptableInput READ hasAcceptableInput)
+    Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText)
 
 public:
     explicit QLineEdit(QWidget* parent=0);
@@ -96,6 +98,9 @@ public:
     QString text() const;
 
     QString displayText() const;
+
+    QString placeholderText() const;
+    void setPlaceholderText(const QString &);
 
     int maxLength() const;
     void setMaxLength(int);
@@ -158,7 +163,9 @@ public:
     bool hasAcceptableInput() const;
 
     void setTextMargins(int left, int top, int right, int bottom);
+    void setTextMargins(const QMargins &margins);
     void getTextMargins(int *left, int *top, int *right, int *bottom) const;
+    QMargins textMargins() const;
 
 public Q_SLOTS:
     void setText(const QString &);
@@ -266,12 +273,16 @@ private:
 #endif
     Q_DISABLE_COPY(QLineEdit)
     Q_DECLARE_PRIVATE(QLineEdit)
-    Q_PRIVATE_SLOT(d_func(), void _q_clipboardChanged())
     Q_PRIVATE_SLOT(d_func(), void _q_handleWindowActivate())
-    Q_PRIVATE_SLOT(d_func(), void _q_deleteSelected())
+    Q_PRIVATE_SLOT(d_func(), void _q_textEdited(const QString &))
+    Q_PRIVATE_SLOT(d_func(), void _q_cursorPositionChanged(int, int))
 #ifndef QT_NO_COMPLETER
     Q_PRIVATE_SLOT(d_func(), void _q_completionHighlighted(QString))
 #endif
+#ifdef QT_KEYPAD_NAVIGATION
+    Q_PRIVATE_SLOT(d_func(), void _q_editFocusChange(bool))
+#endif
+    Q_PRIVATE_SLOT(d_func(), void _q_selectionChanged())
 };
 
 #endif // QT_NO_LINEEDIT

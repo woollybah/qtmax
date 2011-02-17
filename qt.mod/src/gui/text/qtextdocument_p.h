@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -132,6 +132,7 @@ public:
         BlockAdded = 6,
         BlockDeleted = 7,
         GroupFormatChange = 8,
+        CursorMoved = 9,
         Custom = 256
     };
     enum Operation {
@@ -139,7 +140,9 @@ public:
         MoveCursor = 1
     };
     quint16 command;
-    quint8 block; ///< All undo commands that have this set to zero/false are combined with the preceding command on undo/redo.
+    uint block_part : 1; // all commands that are part of an undo block (including the first and the last one) have this set to 1
+    uint block_end : 1; // the last command in an undo block has this set to 1.
+    uint block_padding : 6; // padding since block used to be a quint8
     quint8 operation;
     int format;
     quint32 strPos;
@@ -199,15 +202,19 @@ public:
     inline void undo() { undoRedo(true); }
     inline void redo() { undoRedo(false); }
     void appendUndoItem(QAbstractUndoItem *);
-    inline void beginEditBlock() { editBlock++; }
+    inline void beginEditBlock() { if (0 == editBlock++) ++revision; }
     void joinPreviousEditBlock();
     void endEditBlock();
+    void finishEdit();
     inline bool isInEditBlock() const { return editBlock; }
     void enableUndoRedo(bool enable);
     inline bool isUndoRedoEnabled() const { return undoEnabled; }
 
     inline bool isUndoAvailable() const { return undoEnabled && undoState > 0; }
     inline bool isRedoAvailable() const { return undoEnabled && undoState < undoStack.size(); }
+
+    inline int availableUndoSteps() const { return undoEnabled ? undoState : 0; }
+    inline int availableRedoSteps() const { return undoEnabled ? qMax(undoStack.size() - undoState - 1, 0) : 0; }
 
     inline QString buffer() const { return text; }
     QString plainText() const;
@@ -246,10 +253,11 @@ public:
     inline QFont defaultFont() const { return formats.defaultFont(); }
     inline void setDefaultFont(const QFont &f) { formats.setDefaultFont(f); }
 
+    void clearUndoRedoStacks(QTextDocument::Stacks stacksToClear, bool emitSignals = false);
+
 private:
     bool split(int pos);
     bool unite(uint f);
-    void truncateUndoStack();
 
     void insert_string(int pos, uint strPos, uint length, int format, QTextUndoCommand::Operation op);
     int insert_block(int pos, uint strPos, int format, int blockformat, QTextUndoCommand::Operation op, int command);
@@ -269,7 +277,7 @@ public:
     void documentChange(int from, int length);
 
     inline void addCursor(QTextCursorPrivate *c) { cursors.append(c); }
-    inline void removeCursor(QTextCursorPrivate *c) { cursors.removeAll(c); changedCursors.removeAll(c); }
+    inline void removeCursor(QTextCursorPrivate *c) { cursors.removeAll(c); }
 
     QTextFrame *frameAt(int pos) const;
     QTextFrame *rootFrame() const;
@@ -302,11 +310,13 @@ private:
     QVector<QTextUndoCommand> undoStack;
     bool undoEnabled;
     int undoState;
+    int revision;
     // position in undo stack of the last setModified(false) call
     int modifiedState;
     bool modified;
 
     int editBlock;
+    int editBlockCursorPosition;
     int docChangeFrom;
     int docChangeOldLength;
     int docChangeLength;
@@ -319,8 +329,7 @@ private:
     BlockMap blocks;
     int initialBlockCharFormatIndex;
 
-    QList<QTextCursorPrivate*> cursors;
-    QList<QTextCursorPrivate*> changedCursors;
+    QList<QTextCursorPrivate *> cursors;
     QMap<int, QTextObject *> objects;
     QMap<QUrl, QVariant> resources;
     QMap<QUrl, QVariant> cachedResources;
@@ -334,8 +343,9 @@ public:
     QCss::StyleSheet parsedDefaultStyleSheet;
 #endif
     int maximumBlockCount;
-    bool needsEnsureMaximumBlockCount;
-    bool inContentsChange;
+    uint needsEnsureMaximumBlockCount : 1;
+    uint inContentsChange : 1;
+    uint blockCursorAdjustment : 1;
     QSizeF pageSize;
     QString title;
     QString url;

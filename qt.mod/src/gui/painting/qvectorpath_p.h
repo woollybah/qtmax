@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,9 +55,9 @@
 
 #include <QtGui/qpaintengine.h>
 
-#include "qpaintengine_p.h"
-#include "qstroker_p.h"
-#include "qpainter_p.h"
+#include <private/qpaintengine_p.h>
+#include <private/qstroker_p.h>
+#include <private/qpainter_p.h>
 
 
 QT_BEGIN_HEADER
@@ -66,8 +66,9 @@ QT_BEGIN_NAMESPACE
 
 QT_MODULE(Gui)
 
+class QPaintEngineEx;
 
-#define QVECTORPATH_NO_CACHE
+typedef void (*qvectorpath_cache_cleanup)(QPaintEngineEx *engine, void *data);
 
 struct QRealRect {
     qreal x1, y1, x2, y2;
@@ -77,49 +78,59 @@ class Q_GUI_EXPORT QVectorPath
 {
 public:
     enum Hint {
-        // Basic shapes...
-        LinesHint               = 0x0001, // Just plain lines...
-        RectangleHint           = 0x0002,
-        ConvexPolygonHint       = 0x0003, // Convex polygon...
-        NonISectPolygonHint     = 0x0004, // concave polygon, but not intersecting..
-        NonCurvedShapeHint      = 0x0005, // Generic polygon, possibly self-intersecting...
-        CurvedShapeHint         = 0x0006, // Generic vector path..
-        EllipseHint             = 0x0007,
-        ShapeHintMask           = 0x000f,
+        // Shape hints, in 0x000000ff, access using shape()
+        AreaShapeMask           = 0x0001,       // shape covers an area
+        NonConvexShapeMask      = 0x0002,       // shape is not convex
+        CurvedShapeMask         = 0x0004,       // shape contains curves...
+        LinesShapeMask          = 0x0008,
+        RectangleShapeMask      = 0x0010,
+        ShapeMask               = 0x001f,
+
+        // Shape hints merged into basic shapes..
+        LinesHint               = LinesShapeMask,
+        RectangleHint           = AreaShapeMask | RectangleShapeMask,
+        EllipseHint             = AreaShapeMask | CurvedShapeMask,
+        ConvexPolygonHint       = AreaShapeMask,
+        PolygonHint             = AreaShapeMask | NonConvexShapeMask,
+        RoundedRectHint         = AreaShapeMask | CurvedShapeMask,
+        ArbitraryShapeHint      = AreaShapeMask | NonConvexShapeMask | CurvedShapeMask,
 
         // Other hints
-        CacheHint               = 0x0100,
-        ControlPointRect        = 0x0200, // Set if the control point rect has been calculated...
+        IsCachedHint            = 0x0100, // Set if the cache hint is set
+        ShouldUseCacheHint      = 0x0200, // Set if the path should be cached when possible..
+        ControlPointRect        = 0x0400, // Set if the control point rect has been calculated...
 
         // Shape rendering specifiers...
         OddEvenFill             = 0x1000,
         WindingFill             = 0x2000,
-        ImplicitClose           = 0x4000,
+        ImplicitClose           = 0x4000
     };
 
     // ### Falcon: introduca a struct XY for points so lars is not so confused...
     QVectorPath(const qreal *points,
                 int count,
                 const QPainterPath::ElementType *elements = 0,
-                uint hints = CurvedShapeHint)
+                uint hints = ArbitraryShapeHint)
         : m_elements(elements),
           m_points(points),
           m_count(count),
           m_hints(hints)
-#ifndef QVECTORPATH_NO_CACHE
-        , m_cache(0)
-#endif
     {
     }
 
-    const QRealRect &controlPointRect() const;
+    ~QVectorPath();
 
-    inline Hint shape() const { return (Hint) (m_hints & ShapeHintMask); }
+    QRectF controlPointRect() const;
 
-    inline bool hasCacheHint() const { return m_hints & CacheHint; }
+    inline Hint shape() const { return (Hint) (m_hints & ShapeMask); }
+    inline bool isConvex() const { return (m_hints & NonConvexShapeMask) == 0; }
+    inline bool isCurved() const { return m_hints & CurvedShapeMask; }
+
+    inline bool isCacheable() const { return m_hints & ShouldUseCacheHint; }
     inline bool hasImplicitClose() const { return m_hints & ImplicitClose; }
     inline bool hasWindingFill() const { return m_hints & WindingFill; }
 
+    inline void makeCacheable() const { m_hints |= ShouldUseCacheHint; m_cache = 0; }
     inline uint hints() const { return m_hints; }
 
     inline const QPainterPath::ElementType *elements() const { return m_elements; }
@@ -127,27 +138,32 @@ public:
     inline bool isEmpty() const { return m_points == 0; }
 
     inline int elementCount() const { return m_count; }
+    inline const QPainterPath convertToPainterPath() const;
 
     static inline uint polygonFlags(QPaintEngine::PolygonDrawMode mode);
 
-private:
-    Q_DISABLE_COPY(QVectorPath)
-
-#ifndef QVECTORPATH_NO_CACHE
     struct CacheEntry {
-        void *engine;
-        int id;
-        void *extra;
+        QPaintEngineEx *engine;
+        void *data;
+        qvectorpath_cache_cleanup cleanup;
         CacheEntry *next;
     };
 
-    void addCacheData(CacheEntry *d) {
-        d->next = m_cache;
-        m_cache = d;
+    CacheEntry *addCacheData(QPaintEngineEx *engine, void *data, qvectorpath_cache_cleanup cleanup) const;
+    inline CacheEntry *lookupCacheData(QPaintEngineEx *engine) const {
+        Q_ASSERT(m_hints & ShouldUseCacheHint);
+        CacheEntry *e = m_cache;
+        while (e) {
+            if (e->engine == engine)
+                return e;
+            e = e->next;
+        }
+        return 0;
     }
 
-    CacheEntry *m_cache;
-#endif
+
+private:
+    Q_DISABLE_COPY(QVectorPath)
 
     const QPainterPath::ElementType *m_elements;
     const qreal *m_points;
@@ -155,6 +171,8 @@ private:
 
     mutable uint m_hints;
     mutable QRealRect m_cp_rect;
+
+    mutable CacheEntry *m_cache;
 };
 
 Q_GUI_EXPORT const QVectorPath &qtVectorPathForPath(const QPainterPath &path);

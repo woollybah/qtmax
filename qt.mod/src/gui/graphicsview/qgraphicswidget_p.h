@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -47,8 +47,8 @@
 //  -------------
 //
 // This file is not part of the Qt API.  It exists for the convenience
-// of qapplication_*.cpp, qwidget*.cpp and qfiledialog.cpp.  This header
-// file may change from version to version without notice, or even be removed.
+// of other Qt classes.  This header file may change from version to
+// version without notice, or even be removed.
 //
 // We mean it.
 //
@@ -68,63 +68,39 @@ class QStyleOptionTitleBar;
 
 #if !defined(QT_NO_GRAPHICSVIEW) || (QT_EDITION & QT_MODULE_GRAPHICSVIEW) != QT_MODULE_GRAPHICSVIEW
 
-class Q_GUI_EXPORT QGraphicsWidgetPrivate : public QGraphicsItemPrivate
+class QGraphicsWidgetPrivate : public QGraphicsItemPrivate
 {
     Q_DECLARE_PUBLIC(QGraphicsWidget)
 public:
     QGraphicsWidgetPrivate()
-        : leftMargin(0),
-          topMargin(0),
-          rightMargin(0),
-          bottomMargin(0),
-          leftLayoutItemMargin(0),
-          topLayoutItemMargin(0),
-          rightLayoutItemMargin(0),
-          bottomLayoutItemMargin(0),
+        : margins(0),
           layout(0),
           inheritedPaletteResolveMask(0),
           inheritedFontResolveMask(0),
           inSetGeometry(0),
           polished(0),
           inSetPos(0),
+          autoFillBackground(0),
           focusPolicy(Qt::NoFocus),
           focusNext(0),
           focusPrev(0),
-          focusChild(0),
           windowFlags(0),
-          hoveredSubControl(QStyle::SC_None),
-          grabbedSection(Qt::NoSection),
-          buttonMouseOver(false),
-          buttonSunken(false),
+          windowData(0),
           setWindowFrameMargins(false),
-          leftWindowFrameMargin(0),
-          topWindowFrameMargin(0),
-          rightWindowFrameMargin(0),
-          bottomWindowFrameMargin(0)
+          windowFrameMargins(0)
     { }
+    virtual ~QGraphicsWidgetPrivate();
 
     void init(QGraphicsItem *parentItem, Qt::WindowFlags wFlags);
     qreal titleBarHeight(const QStyleOptionTitleBar &options) const;
 
     // Margins
-    qreal leftMargin;
-    qreal topMargin;
-    qreal rightMargin;
-    qreal bottomMargin;
-    QRectF contentsRect;
+    enum {Left, Top, Right, Bottom};
+    mutable qreal *margins;
+    void ensureMargins() const;
 
-    // Layout item margins
-    void getLayoutItemMargins(qreal *left, qreal *top, qreal *right, qreal *bottom) const;
-    void setLayoutItemMargins(qreal left, qreal top, qreal right, qreal bottom);
-    void setLayoutItemMargins(QStyle::SubElement element, const QStyleOption *opt = 0);
-
-    void fixFocusChainBeforeReparenting(QGraphicsWidget *newParent, QGraphicsScene *newScene = 0);
+    void fixFocusChainBeforeReparenting(QGraphicsWidget *newParent, QGraphicsScene *oldScene, QGraphicsScene *newScene = 0);
     void setLayout_helper(QGraphicsLayout *l);
-
-    qreal leftLayoutItemMargin;
-    qreal topLayoutItemMargin;
-    qreal rightLayoutItemMargin;
-    qreal bottomLayoutItemMargin;
 
     // Layouts
     QGraphicsLayout *layout;
@@ -154,6 +130,16 @@ public:
     void windowFrameHoverMoveEvent(QGraphicsSceneHoverEvent *event);
     void windowFrameHoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     bool hasDecoration() const;
+
+    // Private Properties
+    qreal width() const;
+    void setWidth(qreal);
+    void resetWidth();
+
+    qreal height() const;
+    void setHeight(qreal);
+    void resetHeight();
+    void setGeometryFromSetPos();
 
     // State
     inline int attributeToBitIndex(Qt::WidgetAttribute att) const
@@ -197,31 +183,35 @@ public:
     quint32 inSetGeometry : 1;
     quint32 polished: 1;
     quint32 inSetPos : 1;
+    quint32 autoFillBackground : 1;
 
     // Focus
     Qt::FocusPolicy focusPolicy;
     QGraphicsWidget *focusNext;
     QGraphicsWidget *focusPrev;
-    QGraphicsWidget *focusChild;
-    void setFocusWidget();
-    void clearFocusWidget();
 
     // Windows
     Qt::WindowFlags windowFlags;
-    QString windowTitle;
-    QStyle::SubControl hoveredSubControl;
-    Qt::WindowFrameSection grabbedSection;
-    uint buttonMouseOver : 1;
-    uint buttonSunken : 1;
-    QPointF mouseDelta; // to compensate for small error when interactively resizing
-    QRectF startGeometry;
-    QRect buttonRect;
+    struct WindowData {
+        QString windowTitle;
+        QStyle::SubControl hoveredSubControl;
+        Qt::WindowFrameSection grabbedSection;
+        uint buttonMouseOver : 1;
+        uint buttonSunken : 1;
+        QRectF startGeometry;
+        QRect buttonRect;
+        WindowData()
+            : hoveredSubControl(QStyle::SC_None)
+            , grabbedSection(Qt::NoSection)
+            , buttonMouseOver(false)
+            , buttonSunken(false)
+        {}
+    } *windowData;
+    void ensureWindowData();
 
     bool setWindowFrameMargins;
-    qreal leftWindowFrameMargin;
-    qreal topWindowFrameMargin;
-    qreal rightWindowFrameMargin;
-    qreal bottomWindowFrameMargin;
+    mutable qreal *windowFrameMargins;
+    void ensureWindowFrameMargins() const;
 
 #ifndef QT_NO_ACTION
     QList<QAction *> actions;

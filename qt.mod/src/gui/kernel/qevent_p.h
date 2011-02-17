@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -43,6 +43,8 @@
 #define QEVENT_P_H
 
 #include <QtCore/qglobal.h>
+#include <QtCore/qurl.h>
+#include <QtGui/qevent.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -58,7 +60,7 @@ QT_BEGIN_NAMESPACE
 //
 
 // ### Qt 5: remove
-class Q_GUI_EXPORT QKeyEventEx : public QKeyEvent
+class QKeyEventEx : public QKeyEvent
 {
 public:
     QKeyEventEx(Type type, int key, Qt::KeyboardModifiers modifiers,
@@ -76,7 +78,7 @@ protected:
 };
 
 // ### Qt 5: remove
-class Q_GUI_EXPORT QMouseEventEx : public QMouseEvent
+class QMouseEventEx : public QMouseEvent
 {
 public:
     QMouseEventEx(Type type, const QPointF &pos, const QPoint &globalPos,
@@ -87,6 +89,93 @@ public:
 protected:
     QPointF posF;
     friend class QMouseEvent;
+};
+
+class QTouchEventTouchPointPrivate
+{
+public:
+    inline QTouchEventTouchPointPrivate(int id)
+        : ref(1),
+          id(id),
+          state(Qt::TouchPointReleased),
+          pressure(qreal(-1.))
+    { }
+
+    inline QTouchEventTouchPointPrivate *detach()
+    {
+        QTouchEventTouchPointPrivate *d = new QTouchEventTouchPointPrivate(*this);
+        d->ref = 1;
+        if (!this->ref.deref())
+            delete this;
+        return d;
+    }
+
+    QAtomicInt ref;
+    int id;
+    Qt::TouchPointStates state;
+    QRectF rect, sceneRect, screenRect;
+    QPointF normalizedPos,
+            startPos, startScenePos, startScreenPos, startNormalizedPos,
+            lastPos, lastScenePos, lastScreenPos, lastNormalizedPos;
+    qreal pressure;
+};
+
+#ifndef QT_NO_GESTURES
+class QNativeGestureEvent : public QEvent
+{
+public:
+    enum Type {
+        None,
+        GestureBegin,
+        GestureEnd,
+        Pan,
+        Zoom,
+        Rotate,
+        Swipe
+    };
+
+    QNativeGestureEvent()
+        : QEvent(QEvent::NativeGesture), gestureType(None), percentage(0)
+#ifdef Q_WS_WIN
+        , sequenceId(0), argument(0)
+#endif
+    {
+    }
+
+    Type gestureType;
+    float percentage;
+    QPoint position;
+    float angle;
+#ifdef Q_WS_WIN
+    ulong sequenceId;
+    quint64 argument;
+#endif
+};
+
+class QGestureEventPrivate
+{
+public:
+    inline QGestureEventPrivate(const QList<QGesture *> &list)
+        : gestures(list), widget(0)
+    {
+    }
+
+    QList<QGesture *> gestures;
+    QWidget *widget;
+    QMap<Qt::GestureType, bool> accepted;
+    QMap<Qt::GestureType, QWidget *> targetWidgets;
+};
+#endif // QT_NO_GESTURES
+
+class QFileOpenEventPrivate
+{
+public:
+    inline QFileOpenEventPrivate(const QUrl &url)
+        : url(url)
+    {
+    }
+
+    QUrl url;
 };
 
 QT_END_NAMESPACE

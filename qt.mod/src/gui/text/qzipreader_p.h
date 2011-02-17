@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -49,12 +49,13 @@
 //  -------------
 //
 // This file is not part of the Qt API.  It exists for the convenience
-// of the QLibrary class.  This header file may change from
+// of the QZipReader class.  This header file may change from
 // version to version without notice, or even be removed.
 //
 // We mean it.
 //
 
+#include <QtCore/qdatetime.h>
 #include <QtCore/qfile.h>
 #include <QtCore/qstring.h>
 
@@ -62,7 +63,7 @@ QT_BEGIN_NAMESPACE
 
 class QZipReaderPrivate;
 
-class Q_AUTOTEST_EXPORT QZipReader
+class Q_GUI_EXPORT QZipReader
 {
 public:
     QZipReader(const QString &fileName, QIODevice::OpenMode mode = QIODevice::ReadOnly );
@@ -70,15 +71,18 @@ public:
     explicit QZipReader(QIODevice *device);
     ~QZipReader();
 
+    QIODevice* device() const;
+
     bool isReadable() const;
     bool exists() const;
 
-    struct Q_AUTOTEST_EXPORT FileInfo
+    struct Q_GUI_EXPORT FileInfo
     {
         FileInfo();
         FileInfo(const FileInfo &other);
         ~FileInfo();
         FileInfo &operator=(const FileInfo &other);
+        bool isValid() const;
         QString filePath;
         uint isDir : 1;
         uint isFile : 1;
@@ -86,6 +90,7 @@ public:
         QFile::Permissions permissions;
         uint crc32;
         qint64 size;
+        QDateTime lastModified;
         void *d;
     };
 

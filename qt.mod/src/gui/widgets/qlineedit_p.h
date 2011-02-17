@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -65,6 +65,8 @@
 #include "QtCore/qpointer.h"
 #include "QtGui/qlineedit.h"
 
+#include "private/qlinecontrol_p.h"
+
 QT_BEGIN_NAMESPACE
 
 class QLineEditPrivate : public QWidgetPrivate
@@ -73,174 +75,75 @@ class QLineEditPrivate : public QWidgetPrivate
 public:
 
     QLineEditPrivate()
-        : cursor(0), preeditCursor(0), cursorTimer(0), frame(1),
-          cursorVisible(0), hideCursor(false), separator(0), readOnly(0),
-          dragEnabled(0), contextMenuEnabled(1), echoMode(0), textDirty(0),
-          selDirty(0), validInput(1), alignment(Qt::AlignLeading | Qt::AlignVCenter), ascent(0),
-          maxLength(32767), hscroll(0), vscroll(0), lastCursorPos(-1), maskData(0),
-          modifiedState(0), undoState(0), selstart(0), selend(0), userInput(false),
-          emitingEditingFinished(false), passwordEchoEditing(false)
-#ifndef QT_NO_COMPLETER
-        , completer(0)
-#endif
-        , leftTextMargin(0), topTextMargin(0), rightTextMargin(0), bottomTextMargin(0)
-        {
-        }
+        : control(0), frame(1), contextMenuEnabled(1), cursorVisible(0),
+        dragEnabled(0), clickCausedFocus(0), hscroll(0), vscroll(0),
+        alignment(Qt::AlignLeading | Qt::AlignVCenter),
+        leftTextMargin(0), topTextMargin(0), rightTextMargin(0), bottomTextMargin(0)
+    {
+    }
 
     ~QLineEditPrivate()
     {
-        delete [] maskData;
+        delete control;
     }
-    void init(const QString&);
 
-    QString text;
-    int cursor;
-    int preeditCursor;
-    int cursorTimer; // -1 for non blinking cursor.
-    QPoint tripleClick;
-    QBasicTimer tripleClickTimer;
-    uint frame : 1;
-    uint cursorVisible : 1;
-    uint hideCursor : 1; // used to hide the cursor inside preedit areas
-    uint separator : 1;
-    uint readOnly : 1;
-    uint dragEnabled : 1;
-    uint contextMenuEnabled : 1;
-    uint echoMode : 2;
-    uint textDirty : 1;
-    uint selDirty : 1;
-    uint validInput : 1;
-    uint alignment;
-    int ascent;
-    int maxLength;
-    int hscroll;
-    int vscroll;
-    int lastCursorPos;
+    QLineControl *control;
 
 #ifndef QT_NO_CONTEXTMENU
     QPointer<QAction> selectAllAction;
 #endif
+    void init(const QString&);
 
-    inline void emitCursorPositionChanged();
-    bool sendMouseEventToInputContext(QMouseEvent *e);
-
-    void finishChange(int validateFromState = -1, bool update = false, bool edited = true);
-
-    QPointer<QValidator> validator;
-    struct MaskInputData {
-        enum Casemode { NoCaseMode, Upper, Lower };
-        QChar maskChar; // either the separator char or the inputmask
-        bool separator;
-        Casemode caseMode;
-    };
-    QString inputMask;
-    QChar blank;
-    MaskInputData *maskData;
-    inline int nextMaskBlank(int pos) {
-        int c = findInMask(pos, true, false);
-        separator |= (c != pos);
-        return (c != -1 ?  c : maxLength);
-    }
-    inline int prevMaskBlank(int pos) {
-        int c = findInMask(pos, false, false);
-        separator |= (c != pos);
-        return (c != -1 ? c : 0);
-    }
-
-    void setCursorVisible(bool visible);
-
-
-    // undo/redo handling
-    enum CommandType { Separator, Insert, Remove, Delete, RemoveSelection, DeleteSelection, SetSelection };
-    struct Command {
-        inline Command() {}
-        inline Command(CommandType t, int p, QChar c, int ss, int se) : type(t),uc(c),pos(p),selStart(ss),selEnd(se) {}
-        uint type : 4;
-        QChar uc;
-        int pos, selStart, selEnd;
-    };
-    int modifiedState;
-    int undoState;
-    QVector<Command> history;
-    void addCommand(const Command& cmd);
-    void insert(const QString& s);
-    void del(bool wasBackspace = false);
-    void remove(int pos);
-
-    inline void separate() { separator = true; }
-    void undo(int until = -1);
-    void redo();
-    inline bool isUndoAvailable() const { return !readOnly && undoState; }
-    inline bool isRedoAvailable() const { return !readOnly && undoState < (int)history.size(); }
-
-    // selection
-    int selstart, selend;
-    inline bool allSelected() const { return !text.isEmpty() && selstart == 0 && selend == (int)text.length(); }
-    inline bool hasSelectedText() const { return !text.isEmpty() && selend > selstart; }
-    inline void deselect() { selDirty |= (selend > selstart); selstart = selend = 0; }
-    void removeSelectedText();
-#ifndef QT_NO_CLIPBOARD
-    void copy(bool clipboard = true) const;
-#endif
-    inline bool inSelection(int x) const
-    { if (selstart >= selend) return false;
-    int pos = xToPos(x, QTextLine::CursorOnCharacter);  return pos >= selstart && pos < selend; }
-
-    // masking
-    void parseInputMask(const QString &maskFields);
-    bool isValidInput(QChar key, QChar mask) const;
-    bool hasAcceptableInput(const QString &text) const;
-    QString maskString(uint pos, const QString &str, bool clear = false) const;
-    QString clearString(uint pos, uint len) const;
-    QString stripString(const QString &str) const;
-    int findInMask(int pos, bool forward, bool findSeparator, QChar searchChar = QChar()) const;
-
-    // input methods
-    bool composeMode() const { return !textLayout.preeditAreaText().isEmpty(); }
-
-    // complex text layout
-    QTextLayout textLayout;
-    void updateTextLayout();
-    void moveCursor(int pos, bool mark = false);
-    void setText(const QString& txt, int pos = -1, bool edited = true);
     int xToPos(int x, QTextLine::CursorPosition = QTextLine::CursorBetweenCharacters) const;
     QRect cursorRect() const;
-    bool fixup();
+    void setCursorVisible(bool visible);
+
+    void updatePasswordEchoEditing(bool);
+
+    inline bool shouldEnableInputMethod() const
+    {
+        return !control->isReadOnly();
+    }
+
+    QPoint tripleClick;
+    QBasicTimer tripleClickTimer;
+    uint frame : 1;
+    uint contextMenuEnabled : 1;
+    uint cursorVisible : 1;
+    uint dragEnabled : 1;
+    uint clickCausedFocus : 1;
+    int hscroll;
+    int vscroll;
+    uint alignment;
+    static const int verticalMargin;
+    static const int horizontalMargin;
+
+    bool sendMouseEventToInputContext(QMouseEvent *e);
 
     QRect adjustedContentsRect() const;
 
+    void _q_handleWindowActivate();
+    void _q_textEdited(const QString &);
+    void _q_cursorPositionChanged(int, int);
+#ifdef QT_KEYPAD_NAVIGATION
+    void _q_editFocusChange(bool);
+#endif
+    void _q_selectionChanged();
+#ifndef QT_NO_COMPLETER
+    void _q_completionHighlighted(QString);
+#endif
 #ifndef QT_NO_DRAGANDDROP
-    // drag and drop
     QPoint dndPos;
     QBasicTimer dndTimer;
     void drag();
-#endif
-
-    void _q_clipboardChanged();
-    void _q_handleWindowActivate();
-    void _q_deleteSelected();
-    bool userInput;
-    bool emitingEditingFinished;
-
-#ifdef QT_KEYPAD_NAVIGATION
-    QBasicTimer deleteAllTimer; // keypad navigation
-    QString origText;
-#endif
-
-    bool passwordEchoEditing;
-    void updatePasswordEchoEditing(bool editing);
-
-#ifndef QT_NO_COMPLETER
-    QPointer<QCompleter> completer;
-    void complete(int key = -1);
-    void _q_completionHighlighted(QString);
-    bool advanceToEnabledItem(int n);
 #endif
 
     int leftTextMargin;
     int topTextMargin;
     int rightTextMargin;
     int bottomTextMargin;
+
+    QString placeholderText;
 };
 
 #endif // QT_NO_LINEEDIT

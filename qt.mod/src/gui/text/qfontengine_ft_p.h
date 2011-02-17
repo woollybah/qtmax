@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -119,6 +119,7 @@ struct QFreetypeFace
     static void addBitmapToPath(FT_GlyphSlot slot, const QFixedPoint &point, QPainterPath *path, bool = false);
 
 private:
+    friend class QScopedPointerDeleter<QFreetypeFace>;
     QFreetypeFace() : _lock(QMutex::Recursive) {}
     ~QFreetypeFace() {}
     QAtomicInt ref;
@@ -179,7 +180,21 @@ public:
         FT_Matrix transformationMatrix;
         unsigned long id; // server sided id, GlyphSet for X11
         bool outline_drawing;
+
+        void removeGlyphFromCache(int index);
+        void clear();
+        inline Glyph *getGlyph(int index) const
+        {
+            if (index < 256)
+                return fast_glyph_data[index];
+            return glyph_data.value(index);
+        }
+        void setGlyph(int index, Glyph *glyph);
+
+private:
         mutable QHash<int, Glyph *> glyph_data; // maps from glyph index to glyph data
+        mutable Glyph *fast_glyph_data[256]; // for fast lookup of glyphs < 256
+        mutable int fast_glyph_count;
     };
 
     virtual QFontEngine::FaceId faceId() const;
@@ -226,6 +241,7 @@ public:
 
     virtual void recalcAdvances(QGlyphLayout *glyphs, QTextEngine::ShaperFlags flags) const;
     virtual QImage alphaMapForGlyph(glyph_t);
+    virtual QImage alphaRGBMapForGlyph(glyph_t, int margin, const QTransform &t);
     virtual void removeGlyphFromCache(glyph_t glyph);
 
     virtual int glyphCount() const;
@@ -250,12 +266,12 @@ public:
     QGlyphSet *defaultGlyphs() { return &defaultGlyphSet; }
     GlyphFormat defaultGlyphFormat() const { return defaultFormat; }
 
-    inline Glyph *cachedGlyph(glyph_t g) const { return defaultGlyphSet.glyph_data.value(g); }
+    inline Glyph *cachedGlyph(glyph_t g) const { return defaultGlyphSet.getGlyph(g); }
 
     QGlyphSet *loadTransformedGlyphSet(const QTransform &matrix);
     bool loadGlyphs(QGlyphSet *gs, glyph_t *glyphs, int num_glyphs, GlyphFormat format = Format_Render);
 
-#if defined(Q_WS_QWS)
+#if defined(Q_WS_QWS) || defined(Q_OS_SYMBIAN)
     virtual void draw(QPaintEngine * /*p*/, qreal /*x*/, qreal /*y*/, const QTextItemInt & /*si*/) {}
 #endif
 
@@ -288,6 +304,7 @@ protected:
 
     bool antialias;
     bool transform;
+    bool embolden;
     SubpixelAntialiasingType subpixelType;
     int lcdFilterType;
     bool canUploadGlyphsToServer;

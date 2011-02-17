@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -42,8 +42,9 @@
 #ifndef QPICTURE_H
 #define QPICTURE_H
 
-#include <QtGui/qpaintdevice.h>
 #include <QtCore/qstringlist.h>
+#include <QtCore/qsharedpointer.h>
+#include <QtGui/qpaintdevice.h>
 
 QT_BEGIN_HEADER
 
@@ -106,14 +107,14 @@ private:
     bool exec(QPainter *p, QDataStream &ds, int i);
     void detach_helper();
 
-    QPicturePrivate *d_ptr;
+    QExplicitlySharedDataPointer<QPicturePrivate> d_ptr;
     friend class QPicturePaintEngine;
     friend class Q3Picture;
     friend class QAlphaPaintEngine;
     friend class QPreviewPaintEngine;
 
 public:
-    typedef QPicturePrivate* DataPtr;
+    typedef QExplicitlySharedDataPointer<QPicturePrivate> DataPtr;
     inline DataPtr &data_ptr() { return d_ptr; }
 };
 
@@ -184,8 +185,10 @@ private:
   QPicture stream functions
  *****************************************************************************/
 
+#ifndef QT_NO_DATASTREAM
 Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPicture &);
 Q_GUI_EXPORT QDataStream &operator>>(QDataStream &, QPicture &);
+#endif
 
 #endif // QT_NO_PICTURE
 

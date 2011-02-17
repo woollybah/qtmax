@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -65,7 +65,7 @@
 #define C_80 const m64 mmx_0x0080 = _mm_set1_pi16(0x80)
 #define C_00 const m64 mmx_0x0000 = _mm_setzero_si64()
 
-#if defined(Q_OS_WIN)
+#ifdef Q_CC_MSVC
 #  pragma warning(disable: 4799) // No EMMS at end of function
 #endif
 
@@ -146,36 +146,30 @@ struct QMMXCommonIntrinsics
   result = 0
   d = d * cia
 */
+#define comp_func_Clear_impl(dest, length, const_alpha)\
+{\
+    if (const_alpha == 255) {\
+        qt_memfill(static_cast<quint32*>(dest), quint32(0), length);\
+    } else {\
+        C_FF; C_80; C_00;\
+        m64 ia = MM::negate(MM::load_alpha(const_alpha));\
+        for (int i = 0; i < length; ++i) {\
+            dest[i] = MM::store(MM::byte_mul(MM::load(dest[i]), ia));\
+        }\
+        MM::end();\
+    }\
+}
+
 template <class MM>
 static void QT_FASTCALL comp_func_solid_Clear(uint *dest, int length, uint, uint const_alpha)
 {
-    if (!length)
-        return;
-
-    if (const_alpha == 255) {
-        qt_memfill(static_cast<quint32*>(dest), quint32(0), length);
-    } else {
-        C_FF; C_80; C_00;
-        m64 ia = MM::negate(MM::load_alpha(const_alpha));
-        for (int i = 0; i < length; ++i) {
-            dest[i] = MM::store(MM::byte_mul(MM::load(dest[i]), ia));
-        }
-    }
-    MM::end();
+    comp_func_Clear_impl(dest, length, const_alpha);
 }
 
 template <class MM>
 static void QT_FASTCALL comp_func_Clear(uint *dest, const uint *, int length, uint const_alpha)
 {
-    if (const_alpha == 255) {
-        qt_memfill(static_cast<quint32*>(dest), quint32(0), length);
-    } else {
-        C_FF; C_80; C_00;
-        m64 ia = MM::negate(MM::load_alpha(const_alpha));
-        for (int i = 0; i < length; ++i)
-            dest[i] = MM::store(MM::byte_mul(MM::load(dest[i]), ia));
-    }
-    MM::end();
+    comp_func_Clear_impl(dest, length, const_alpha);
 }
 
 /*
@@ -246,7 +240,10 @@ static void QT_FASTCALL comp_func_SourceOver(uint *dest, const uint *src, int le
     C_FF; C_80; C_00;
     if (const_alpha == 255) {
         for (int i = 0; i < length; ++i) {
-            if ((0xff000000 & src[i]) == 0xff000000) {
+            const uint alphaMaskedSource = 0xff000000 & src[i];
+            if (alphaMaskedSource == 0)
+                continue;
+            if (alphaMaskedSource == 0xff000000) {
                 dest[i] = src[i];
             } else {
                 m64 s = MM::load(src[i]);
@@ -257,6 +254,8 @@ static void QT_FASTCALL comp_func_SourceOver(uint *dest, const uint *src, int le
     } else {
         m64 ca = MM::load_alpha(const_alpha);
         for (int i = 0; i < length; ++i) {
+            if ((0xff000000 & src[i]) == 0)
+                continue;
             m64 s = MM::byte_mul(MM::load(src[i]), ca);
             m64 ia = MM::negate(MM::alpha(s));
             dest[i] = MM::store(MM::add(s, MM::byte_mul(MM::load(dest[i]), ia)));

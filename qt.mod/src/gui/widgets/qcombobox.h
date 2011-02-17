@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -52,7 +52,6 @@ QT_BEGIN_HEADER
 QT_BEGIN_NAMESPACE
 
 QT_MODULE(Gui)
-
 #ifndef QT_NO_COMBOBOX
 
 class QAbstractItemView;
@@ -112,10 +111,10 @@ public:
     bool hasFrame() const;
 
     inline int findText(const QString &text,
-                        Qt::MatchFlags flags = Qt::MatchExactly|Qt::MatchCaseSensitive) const
+                        Qt::MatchFlags flags = static_cast<Qt::MatchFlags>(Qt::MatchExactly|Qt::MatchCaseSensitive)) const
         { return findData(text, Qt::DisplayRole, flags); }
     int findData(const QVariant &data, int role = Qt::UserRole,
-                 Qt::MatchFlags flags = Qt::MatchExactly|Qt::MatchCaseSensitive) const;
+                 Qt::MatchFlags flags = static_cast<Qt::MatchFlags>(Qt::MatchExactly|Qt::MatchCaseSensitive)) const;
 
     enum InsertPolicy {
         NoInsert,
@@ -246,7 +245,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent *e);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
+#ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *e);
+#endif
     void contextMenuEvent(QContextMenuEvent *e);
     void inputMethodEvent(QInputMethodEvent *);
     QVariant inputMethodQuery(Qt::InputMethodQuery) const;
@@ -305,12 +306,12 @@ private:
     Q_PRIVATE_SLOT(d_func(), void _q_itemSelected(const QModelIndex &item))
     Q_PRIVATE_SLOT(d_func(), void _q_emitHighlighted(const QModelIndex &))
     Q_PRIVATE_SLOT(d_func(), void _q_emitCurrentIndexChanged(const QModelIndex &index))
+    Q_PRIVATE_SLOT(d_func(), void _q_editingFinished())
     Q_PRIVATE_SLOT(d_func(), void _q_returnPressed())
     Q_PRIVATE_SLOT(d_func(), void _q_resetButton())
     Q_PRIVATE_SLOT(d_func(), void _q_dataChanged(const QModelIndex &, const QModelIndex &))
-    Q_PRIVATE_SLOT(d_func(), void _q_rowsAboutToBeInserted(const QModelIndex & parent, int start, int end))
+    Q_PRIVATE_SLOT(d_func(), void _q_updateIndexBeforeChange())
     Q_PRIVATE_SLOT(d_func(), void _q_rowsInserted(const QModelIndex & parent, int start, int end))
-    Q_PRIVATE_SLOT(d_func(), void _q_rowsAboutToBeRemoved(const QModelIndex & parent, int start, int end))
     Q_PRIVATE_SLOT(d_func(), void _q_rowsRemoved(const QModelIndex & parent, int start, int end))
     Q_PRIVATE_SLOT(d_func(), void _q_modelDestroyed())
     Q_PRIVATE_SLOT(d_func(), void _q_modelReset())

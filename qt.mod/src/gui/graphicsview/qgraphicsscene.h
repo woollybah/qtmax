@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -83,6 +83,7 @@ class QGraphicsSimpleTextItem;
 class QGraphicsTextItem;
 class QGraphicsView;
 class QGraphicsWidget;
+class QGraphicsSceneIndex;
 class QHelpEvent;
 class QInputMethodEvent;
 class QKeyEvent;
@@ -152,22 +153,39 @@ public:
     QRectF itemsBoundingRect() const;
 
     QList<QGraphicsItem *> items() const;
-    QList<QGraphicsItem *> items(const QPointF &pos) const;
-    QList<QGraphicsItem *> items(const QRectF &rect, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
-    QList<QGraphicsItem *> items(const QPolygonF &polygon, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
-    QList<QGraphicsItem *> items(const QPainterPath &path, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
+    QList<QGraphicsItem *> items(Qt::SortOrder order) const; // ### Qt 5: unify
+
+    QList<QGraphicsItem *> items(const QPointF &pos, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
+    QList<QGraphicsItem *> items(const QRectF &rect, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
+    QList<QGraphicsItem *> items(const QPolygonF &polygon, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
+    QList<QGraphicsItem *> items(const QPainterPath &path, Qt::ItemSelectionMode mode, Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
+
+    QList<QGraphicsItem *> items(const QPointF &pos) const; // ### obsolete
+    QList<QGraphicsItem *> items(const QRectF &rect, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const; // ### obsolete
+    QList<QGraphicsItem *> items(const QPolygonF &polygon, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const; // ### obsolete
+    QList<QGraphicsItem *> items(const QPainterPath &path, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const; // ### obsolete
+
     QList<QGraphicsItem *> collidingItems(const QGraphicsItem *item, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
-    QGraphicsItem *itemAt(const QPointF &pos) const;
+
+    QGraphicsItem *itemAt(const QPointF &pos) const; // ### obsolete
+    QGraphicsItem *itemAt(const QPointF &pos, const QTransform &deviceTransform) const;
 
     inline QList<QGraphicsItem *> items(qreal x, qreal y, qreal w, qreal h, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const
-    { return items(QRectF(x, y, w, h), mode); }
-    inline QGraphicsItem *itemAt(qreal x, qreal y) const
+    { return items(QRectF(x, y, w, h), mode); } // ### obsolete
+    inline QList<QGraphicsItem *> items(qreal x, qreal y, qreal w, qreal h, Qt::ItemSelectionMode mode, Qt::SortOrder order,
+                                        const QTransform &deviceTransform = QTransform()) const
+    { return items(QRectF(x, y, w, h), mode, order, deviceTransform); }
+    inline QGraphicsItem *itemAt(qreal x, qreal y) const // ### obsolete
     { return itemAt(QPointF(x, y)); }
+    inline QGraphicsItem *itemAt(qreal x, qreal y, const QTransform &deviceTransform) const
+    { return itemAt(QPointF(x, y), deviceTransform); }
 
     QList<QGraphicsItem *> selectedItems() const;
     QPainterPath selectionArea() const;
-    void setSelectionArea(const QPainterPath &path);
-    void setSelectionArea(const QPainterPath &path, Qt::ItemSelectionMode);
+    void setSelectionArea(const QPainterPath &path); // ### obsolete
+    void setSelectionArea(const QPainterPath &path, const QTransform &deviceTransform);
+    void setSelectionArea(const QPainterPath &path, Qt::ItemSelectionMode mode); // ### obsolete
+    void setSelectionArea(const QPainterPath &path, Qt::ItemSelectionMode mode, const QTransform &deviceTransform);
 
     QGraphicsItemGroup *createItemGroup(const QList<QGraphicsItem *> &items);
     void destroyItemGroup(QGraphicsItemGroup *group);
@@ -189,7 +207,7 @@ public:
     inline QGraphicsRectItem *addRect(qreal x, qreal y, qreal w, qreal h, const QPen &pen = QPen(), const QBrush &brush = QBrush())
     { return addRect(QRectF(x, y, w, h), pen, brush); }
     void removeItem(QGraphicsItem *item);
-    
+
     QGraphicsItem *focusItem() const;
     void setFocusItem(QGraphicsItem *item, Qt::FocusReason focusReason = Qt::OtherFocusReason);
     bool hasFocus() const;
@@ -225,8 +243,13 @@ public:
     QPalette palette() const;
     void setPalette(const QPalette &palette);
 
+    bool isActive() const;
+    QGraphicsItem *activePanel() const;
+    void setActivePanel(QGraphicsItem *item);
     QGraphicsWidget *activeWindow() const;
     void setActiveWindow(QGraphicsWidget *widget);
+
+    bool sendEvent(QGraphicsItem *item, QEvent *event);
 
 public Q_SLOTS:
     void update(const QRectF &rect = QRectF());
@@ -271,23 +294,28 @@ Q_SIGNALS:
     void selectionChanged();
 
 private:
-    void itemUpdated(QGraphicsItem *item, const QRectF &rect);
-
     Q_DECLARE_PRIVATE(QGraphicsScene)
     Q_DISABLE_COPY(QGraphicsScene)
-    Q_PRIVATE_SLOT(d_func(), void _q_updateIndex())
     Q_PRIVATE_SLOT(d_func(), void _q_emitUpdated())
-    Q_PRIVATE_SLOT(d_func(), void _q_removeItemLater(QGraphicsItem *item))
-    Q_PRIVATE_SLOT(d_func(), void _q_updateLater())
     Q_PRIVATE_SLOT(d_func(), void _q_polishItems())
-    Q_PRIVATE_SLOT(d_func(), void _q_updateSortCache())
-    Q_PRIVATE_SLOT(d_func(), void _q_resetDirtyItems())
+    Q_PRIVATE_SLOT(d_func(), void _q_processDirtyItems())
+    Q_PRIVATE_SLOT(d_func(), void _q_updateScenePosDescendants())
     friend class QGraphicsItem;
     friend class QGraphicsItemPrivate;
+    friend class QGraphicsObject;
     friend class QGraphicsView;
     friend class QGraphicsViewPrivate;
     friend class QGraphicsWidget;
     friend class QGraphicsWidgetPrivate;
+    friend class QGraphicsEffect;
+    friend class QGraphicsSceneIndex;
+    friend class QGraphicsSceneIndexPrivate;
+    friend class QGraphicsSceneBspTreeIndex;
+    friend class QGraphicsSceneBspTreeIndexPrivate;
+    friend class QGraphicsItemEffectSourcePrivate;
+#ifndef QT_NO_GESTURES
+    friend class QGesture;
+#endif
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QGraphicsScene::SceneLayers)

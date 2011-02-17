@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -63,7 +63,7 @@
 #include "QtGui/qpaintengine.h"
 #include <QtCore/qhash.h>
 
-#include "qpen_p.h"
+#include <private/qpen_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -92,8 +92,8 @@ inline Qt::PenJoinStyle qpen_joinStyle(const QPen &p) { return data_ptr(p)->join
 // QBrush inline functions...
 inline QBrush::DataPtr &data_ptr(const QBrush &p) { return const_cast<QBrush &>(p).data_ptr(); }
 inline bool qbrush_fast_equals(const QBrush &a, const QBrush &b) { return data_ptr(a) == data_ptr(b); }
-inline Qt::BrushStyle qbrush_style(const QBrush &b) { return data_ptr(b)->style; };
-inline const QColor &qbrush_color(const QBrush &b) { return data_ptr(b)->color; };
+inline Qt::BrushStyle qbrush_style(const QBrush &b) { return data_ptr(b)->style; }
+inline const QColor &qbrush_color(const QBrush &b) { return data_ptr(b)->color; }
 inline bool qbrush_has_transform(const QBrush &b) { return data_ptr(b)->transform.type() > QTransform::TxNone; }
 
 class QPainterClipInfo
@@ -158,7 +158,7 @@ public:
     QList<QPainterClipInfo> clipInfo; // ### Make me smaller and faster to copy around...
     QTransform worldMatrix;       // World transformation matrix, not window and viewport
     QTransform matrix;            // Complete transformation matrix,
-    QPoint redirection_offset;
+    QTransform redirectionMatrix;
     int wx, wy, ww, wh;         // window rectangle
     int vx, vy, vw, vh;         // viewport rectangle
     qreal opacity;
@@ -228,6 +228,7 @@ public:
     void draw_helper(const QPainterPath &path, DrawOperation operation = StrokeAndFillDraw);
     void drawStretchedGradient(const QPainterPath &path, DrawOperation operation);
     void drawOpaqueBackground(const QPainterPath &path, DrawOperation operation);
+    void drawGlyphs(const quint32 *glyphArray, const QPointF *positionArray, int glyphCount);
 
     void updateMatrix();
     void updateInvMatrix();
@@ -237,6 +238,11 @@ public:
     }
 
     void checkEmulation();
+
+    static QPainterPrivate *get(QPainter *painter)
+    {
+        return painter->d_ptr.data();
+    }
 
     QTransform viewTransform() const;
     static bool attachPainterPrivate(QPainter *q, QPaintDevice *pdev);
@@ -252,6 +258,8 @@ public:
 };
 
 Q_GUI_EXPORT void qt_draw_helper(QPainterPrivate *p, const QPainterPath &path, QPainterPrivate::DrawOperation operation);
+Q_GUI_EXPORT void qt_draw_glyphs(QPainter *painter, const quint32 *glyphArray,
+                                 const QPointF *positionArray, int glyphCount);
 
 QString qt_generate_brush_key(const QBrush &brush);
 

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -62,6 +62,7 @@
 #include "private/qstroker_p.h"
 #include "private/qpainter_p.h"
 #include "private/qtextureglyphcache_p.h"
+#include "private/qoutlinemapper_p.h"
 
 #include <stdlib.h>
 
@@ -165,7 +166,6 @@ public:
 
     void updateMatrix(const QTransform &matrix);
 
-    void drawPath(const QPainterPath &path);
     void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode);
     void drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode);
     void fillPath(const QPainterPath &path, QSpanData *fillData);
@@ -202,7 +202,8 @@ public:
     void clip(const QVectorPath &path, Qt::ClipOperation op);
     void clip(const QRect &rect, Qt::ClipOperation op);
     void clip(const QRegion &region, Qt::ClipOperation op);
-    void clip(const QPainterPath &path, Qt::ClipOperation op);
+
+    void drawStaticTextItem(QStaticTextItem *textItem);
 
     enum ClipType {
         RectClip,
@@ -258,16 +259,21 @@ private:
     void fillRect(const QRectF &rect, QSpanData *data);
     void drawBitmap(const QPointF &pos, const QImage &image, QSpanData *fill);
 
-    void drawCachedGlyphs(const QPointF &p, const QTextItemInt &ti);
+    void drawCachedGlyphs(int numGlyphs, const glyph_t *glyphs, const QFixedPoint *positions,
+                          QFontEngine *fontEngine);
+
+#if defined(Q_OS_SYMBIAN) && defined(QT_NO_FREETYPE)
+    void drawGlyphsS60(const QPointF &p, const QTextItemInt &ti);
+#endif // Q_OS_SYMBIAN && QT_NO_FREETYPE
 
     inline void ensureBrush(const QBrush &brush) {
-        if (!qbrush_fast_equals(state()->lastBrush, brush) || state()->fillFlags)
+        if (!qbrush_fast_equals(state()->lastBrush, brush) || (brush.style() != Qt::NoBrush && state()->fillFlags))
             updateBrush(brush);
     }
     inline void ensureBrush() { ensureBrush(state()->brush); }
 
     inline void ensurePen(const QPen &pen) {
-        if (!qpen_fast_equals(state()->lastPen, pen) || state()->strokeFlags)
+        if (!qpen_fast_equals(state()->lastPen, pen) || (pen.style() != Qt::NoPen && state()->strokeFlags))
             updatePen(pen);
     }
     inline void ensurePen() { ensurePen(state()->pen); }
@@ -294,6 +300,7 @@ QRasterPaintEnginePrivate : public QPaintEngineExPrivate
 {
     Q_DECLARE_PUBLIC(QRasterPaintEngine)
 public:
+    QRasterPaintEnginePrivate();
 
     void rasterizeLine_dashed(QLineF line, qreal width,
                               int *dashIndex, qreal *dashOffset, bool *inDash);
@@ -328,14 +335,13 @@ public:
 
     inline const QClipData *clip() const;
 
-    void strokeProjective(const QPainterPath &path);
     void initializeRasterizer(QSpanData *data);
 
     void recalculateFastImages();
 
     QPaintDevice *device;
-    QOutlineMapper *outlineMapper;
-    QRasterBuffer *rasterBuffer;
+    QScopedPointer<QOutlineMapper> outlineMapper;
+    QScopedPointer<QRasterBuffer>  rasterBuffer;
 
 #if defined (Q_WS_WIN)
     HDC hdc;
@@ -346,11 +352,9 @@ public:
     QRect deviceRect;
 
     QStroker basicStroker;
-    QDashStroker *dashStroker;
+    QScopedPointer<QDashStroker> dashStroker;
 
-    QT_FT_Raster *grayRaster;
-    unsigned long rasterPoolSize;
-    unsigned char *rasterPoolBase;
+    QScopedPointer<QT_FT_Raster> grayRaster;
 
     QDataBuffer<QLineF> cachedLines;
     QSpanData image_filler;
@@ -360,7 +364,7 @@ public:
 
     QFontEngineGlyphCache::Type glyphCacheType;
 
-    QClipData *baseClip;
+    QScopedPointer<QClipData> baseClip;
 
     int deviceDepth;
 
@@ -371,11 +375,15 @@ public:
     uint isPlain45DegreeRotation : 1;
 #endif
 
-    QRasterizer *rasterizer;
+    QScopedPointer<QRasterizer> rasterizer;
 };
 
 
-class QClipData {
+class
+#ifdef Q_WS_QWS
+Q_GUI_EXPORT
+#endif
+QClipData {
 public:
     QClipData(int height);
     ~QClipData();
@@ -482,7 +490,11 @@ private:
 /*******************************************************************************
  * QRasterBuffer
  */
-class QRasterBuffer
+class
+#ifdef Q_WS_QWS
+Q_GUI_EXPORT
+#endif
+QRasterBuffer
 {
 public:
     QRasterBuffer() : m_width(0), m_height(0), m_buffer(0) { init(); }
@@ -542,7 +554,7 @@ inline const QClipData *QRasterPaintEnginePrivate::clip() const {
     Q_Q(const QRasterPaintEngine);
     if (q->state() && q->state()->clip && q->state()->clip->enabled)
         return q->state()->clip;
-    return baseClip;
+    return baseClip.data();
 }
 
 
