@@ -67,6 +67,8 @@ extern "C" {
 
 class MaxQUndoStack : public QUndoStack
 {
+	Q_OBJECT
+
 public:
 	MaxQUndoStack(BBObject * handle, QObject * parent);
 	~MaxQUndoStack();
