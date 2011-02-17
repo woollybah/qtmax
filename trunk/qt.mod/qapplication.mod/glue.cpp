@@ -121,7 +121,9 @@ void bmx_qt_qapplication_changeoverridecursor(MaxQCursor * cursor) {
 }
 
 QClipboard * bmx_qt_qapplication_clipboard() {
-	return QApplication::clipboard();
+	QClipboard * clipboard = QApplication::clipboard();
+	MaxQClipboard::link(clipboard);
+	return clipboard;
 }
 
 int bmx_qt_qapplication_colorspec() {
