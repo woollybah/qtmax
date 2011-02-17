@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -201,6 +201,7 @@ QT_BEGIN_NAMESPACE
 #endif // !defined QT_LINKED_OPENSSL
 
 bool q_resolveOpenSslSymbols();
+long q_ASN1_INTEGER_get(ASN1_INTEGER *a);
 unsigned char * q_ASN1_STRING_data(ASN1_STRING *a);
 int q_ASN1_STRING_length(ASN1_STRING *a);
 long q_BIO_ctrl(BIO *a, int b, long c, void *d);
@@ -226,6 +227,8 @@ char *q_ERR_error_string(unsigned long a, char *b);
 unsigned long q_ERR_get_error();
 const EVP_CIPHER *q_EVP_des_ede3_cbc();
 int q_EVP_PKEY_assign(EVP_PKEY *a, int b, char *c);
+int q_EVP_PKEY_set1_RSA(EVP_PKEY *a, RSA *b);
+int q_EVP_PKEY_set1_DSA(EVP_PKEY *a, DSA *b);
 void q_EVP_PKEY_free(EVP_PKEY *a);
 RSA *q_EVP_PKEY_get1_RSA(EVP_PKEY *a);
 DSA *q_EVP_PKEY_get1_DSA(EVP_PKEY *a);
@@ -254,9 +257,15 @@ int q_PEM_write_bio_RSA_PUBKEY(BIO *a, RSA *b);
 void q_RAND_seed(const void *a, int b);
 int q_RAND_status();
 void q_RSA_free(RSA *a);
-void q_sk_free(STACK *a);
 int q_sk_num(STACK *a);
+void q_sk_pop_free(STACK *a, void (*b)(void *));
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+void q_sk_free(_STACK *a);
+void * q_sk_value(STACK *a, int b);
+#else
+void q_sk_free(STACK *a);
 char * q_sk_value(STACK *a, int b);
+#endif
 int q_SSL_accept(SSL *a);
 int q_SSL_clear(SSL *a);
 char *q_SSL_CIPHER_description(SSL_CIPHER *a, char *b, int c);
@@ -269,7 +278,11 @@ int q_SSL_CTX_check_private_key(SSL_CTX *a);
 #endif
 long q_SSL_CTX_ctrl(SSL_CTX *a, int b, long c, void *d);
 void q_SSL_CTX_free(SSL_CTX *a);
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+SSL_CTX *q_SSL_CTX_new(const SSL_METHOD *a);
+#else
 SSL_CTX *q_SSL_CTX_new(SSL_METHOD *a);
+#endif
 int q_SSL_CTX_set_cipher_list(SSL_CTX *a, const char *b);
 int q_SSL_CTX_set_default_verify_paths(SSL_CTX *a);
 void q_SSL_CTX_set_verify(SSL_CTX *a, int b, int (*c)(int, X509_STORE_CTX *));
@@ -286,7 +299,11 @@ STACK_OF(SSL_CIPHER) *q_SSL_get_ciphers(const SSL *a);
 #else
 STACK_OF(SSL_CIPHER) *q_SSL_get_ciphers(SSL *a);
 #endif
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+const SSL_CIPHER *q_SSL_get_current_cipher(SSL *a);
+#else
 SSL_CIPHER *q_SSL_get_current_cipher(SSL *a);
+#endif
 int q_SSL_get_error(SSL *a, int b);
 STACK_OF(X509) *q_SSL_get_peer_cert_chain(SSL *a);
 X509 *q_SSL_get_peer_certificate(SSL *a);
@@ -304,6 +321,16 @@ void q_SSL_set_bio(SSL *a, BIO *b, BIO *c);
 void q_SSL_set_accept_state(SSL *a);
 void q_SSL_set_connect_state(SSL *a);
 int q_SSL_shutdown(SSL *a);
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+const SSL_METHOD *q_SSLv2_client_method();
+const SSL_METHOD *q_SSLv3_client_method();
+const SSL_METHOD *q_SSLv23_client_method();
+const SSL_METHOD *q_TLSv1_client_method();
+const SSL_METHOD *q_SSLv2_server_method();
+const SSL_METHOD *q_SSLv3_server_method();
+const SSL_METHOD *q_SSLv23_server_method();
+const SSL_METHOD *q_TLSv1_server_method();
+#else
 SSL_METHOD *q_SSLv2_client_method();
 SSL_METHOD *q_SSLv3_client_method();
 SSL_METHOD *q_SSLv23_client_method();
@@ -312,6 +339,7 @@ SSL_METHOD *q_SSLv2_server_method();
 SSL_METHOD *q_SSLv3_server_method();
 SSL_METHOD *q_SSLv23_server_method();
 SSL_METHOD *q_TLSv1_server_method();
+#endif
 int q_SSL_write(SSL *a, const void *b, int c);
 int q_X509_cmp(X509 *a, X509 *b);
 #ifdef SSLEAY_MACROS

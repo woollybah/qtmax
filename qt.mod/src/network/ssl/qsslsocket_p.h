@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -66,6 +66,28 @@
 
 QT_BEGIN_NAMESPACE
 
+#if defined(Q_OS_MAC)
+#include <Security/SecCertificate.h>
+#include <CoreFoundation/CFArray.h>
+    typedef OSStatus (*PtrSecCertificateGetData)(SecCertificateRef, CSSM_DATA_PTR);
+    typedef OSStatus (*PtrSecTrustSettingsCopyCertificates)(int, CFArrayRef*);
+    typedef OSStatus (*PtrSecTrustCopyAnchorCertificates)(CFArrayRef*);
+#elif defined(Q_OS_WIN)
+#include <wincrypt.h>
+#ifndef HCRYPTPROV_LEGACY
+#define HCRYPTPROV_LEGACY HCRYPTPROV
+#endif
+#if defined(Q_OS_WINCE)
+    typedef HCERTSTORE (WINAPI *PtrCertOpenSystemStoreW)(LPCSTR, DWORD, HCRYPTPROV_LEGACY, DWORD, const void*);
+#else
+    typedef HCERTSTORE (WINAPI *PtrCertOpenSystemStoreW)(HCRYPTPROV_LEGACY, LPCWSTR);
+#endif
+    typedef PCCERT_CONTEXT (WINAPI *PtrCertFindCertificateInStore)(HCERTSTORE, DWORD, DWORD, DWORD, const void*, PCCERT_CONTEXT);
+    typedef BOOL (WINAPI *PtrCertCloseStore)(HCERTSTORE, DWORD);
+#endif
+
+
+
 class QSslSocketPrivate : public QTcpSocketPrivate
 {
     Q_DECLARE_PUBLIC(QSslSocket)
@@ -79,16 +101,19 @@ public:
     QSslSocket::SslMode mode;
     bool autoStartHandshake;
     bool connectionEncrypted;
-    bool ignoreSslErrors;
+    bool ignoreAllSslErrors;
+    QList<QSslError> ignoreErrorsList;
     bool* readyReadEmittedPointer;
-
-    QRingBuffer readBuffer;
-    QRingBuffer writeBuffer;
 
     QSslConfigurationPrivate configuration;
     QList<QSslError> sslErrors;
 
-    static bool ensureInitialized();
+    // if set, this hostname is used for certificate validation instead of the hostname
+    // that was used for connecting to.
+    QString verificationPeerName;
+
+    static bool supportsSsl();
+    static void ensureInitialized();
     static void deinitialize();
     static QList<QSslCipher> defaultCiphers();
     static QList<QSslCipher> supportedCiphers();
@@ -104,6 +129,16 @@ public:
     static void addDefaultCaCertificate(const QSslCertificate &cert);
     static void addDefaultCaCertificates(const QList<QSslCertificate> &certs);
 
+#if defined(Q_OS_MAC)
+    static PtrSecCertificateGetData ptrSecCertificateGetData;
+    static PtrSecTrustSettingsCopyCertificates ptrSecTrustSettingsCopyCertificates;
+    static PtrSecTrustCopyAnchorCertificates ptrSecTrustCopyAnchorCertificates;
+#elif defined(Q_OS_WIN)
+    static PtrCertOpenSystemStoreW ptrCertOpenSystemStoreW;
+    static PtrCertFindCertificateInStore ptrCertFindCertificateInStore;
+    static PtrCertCloseStore ptrCertCloseStore;
+#endif
+
     // The socket itself, including private slots.
     QTcpSocket *plainSocket;
     void createPlainSocket(QIODevice::OpenMode openMode);
@@ -115,6 +150,7 @@ public:
     void _q_readyReadSlot();
     void _q_bytesWrittenSlot(qint64);
     void _q_flushWriteBuffer();
+    void _q_flushReadBuffer();
 
     // Platform specific functions
     virtual void startClientEncryption() = 0;
@@ -123,6 +159,13 @@ public:
     virtual void disconnectFromHost() = 0;
     virtual void disconnected() = 0;
     virtual QSslCipher sessionCipher() const = 0;
+
+private:
+    static bool ensureLibraryLoaded();
+    static void ensureCiphersAndCertsLoaded();
+
+    static bool s_libraryLoaded;
+    static bool s_loadedCiphersAndCerts;
 };
 
 QT_END_NAMESPACE

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -59,7 +59,9 @@
 #include "qnetworkproxy.h"
 #include "QtCore/qmap.h"
 #include "QtCore/qqueue.h"
+#include "QtCore/qbuffer.h"
 #include "private/qringbuffer_p.h"
+#include "private/qbytedata_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -75,10 +77,11 @@ public:
     ~QNetworkReplyImpl();
     virtual void abort();
 
-    // reimplemented from QNetworkReply
+    // reimplemented from QNetworkReply / QIODevice
     virtual void close();
     virtual qint64 bytesAvailable() const;
     virtual void setReadBufferSize(qint64 size);
+    virtual bool canReadLine () const;
 
     virtual qint64 readData(char *data, qint64 maxlen);
     virtual bool event(QEvent *);
@@ -87,14 +90,19 @@ public:
     Q_INVOKABLE QSslConfiguration sslConfigurationImplementation() const;
     Q_INVOKABLE void setSslConfigurationImplementation(const QSslConfiguration &configuration);
     virtual void ignoreSslErrors();
+    Q_INVOKABLE virtual void ignoreSslErrorsImplementation(const QList<QSslError> &errors);
 #endif
 
     Q_DECLARE_PRIVATE(QNetworkReplyImpl)
     Q_PRIVATE_SLOT(d_func(), void _q_startOperation())
-    Q_PRIVATE_SLOT(d_func(), void _q_sourceReadyRead())
-    Q_PRIVATE_SLOT(d_func(), void _q_sourceReadChannelFinished())
     Q_PRIVATE_SLOT(d_func(), void _q_copyReadyRead())
     Q_PRIVATE_SLOT(d_func(), void _q_copyReadChannelFinished())
+    Q_PRIVATE_SLOT(d_func(), void _q_bufferOutgoingData())
+    Q_PRIVATE_SLOT(d_func(), void _q_bufferOutgoingDataFinished())
+#ifndef QT_NO_BEARERMANAGEMENT
+    Q_PRIVATE_SLOT(d_func(), void _q_networkSessionConnected())
+    Q_PRIVATE_SLOT(d_func(), void _q_networkSessionFailed())
+#endif
 };
 
 class QNetworkReplyImplPrivate: public QNetworkReplyPrivate
@@ -102,18 +110,18 @@ class QNetworkReplyImplPrivate: public QNetworkReplyPrivate
 public:
     enum InternalNotifications {
         NotifyDownstreamReadyWrite,
-        NotifyUpstreamReadyRead,
         NotifyCloseDownstreamChannel,
-        NotifyCloseUpstreamChannel,
         NotifyCopyFinished
     };
 
     enum State {
-        Idle,
-        Opening,
-        Working,
-        Finished,
-        Aborted
+        Idle,               // The reply is idle.
+        Buffering,          // The reply is buffering outgoing data.
+        Working,            // The reply is uploading/downloading data.
+        Finished,           // The reply has finished.
+        Aborted,            // The reply has been aborted.
+        WaitingForSession,  // The reply is waiting for the session to open before connecting.
+        Reconnecting        // The reply will reconnect to once roaming has completed.
     };
 
     typedef QQueue<InternalNotifications> NotificationQueue;
@@ -125,10 +133,18 @@ public:
     void _q_sourceReadChannelFinished();
     void _q_copyReadyRead();
     void _q_copyReadChannelFinished();
+    void _q_bufferOutgoingData();
+    void _q_bufferOutgoingDataFinished();
+#ifndef QT_NO_BEARERMANAGEMENT
+    void _q_networkSessionConnected();
+    void _q_networkSessionFailed();
+#endif
 
     void setup(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                QIODevice *outgoingData);
-    void setNetworkCache(QAbstractNetworkCache *networkCache);
+
+    void pauseNotificationHandling();
+    void resumeNotificationHandling();
     void backendNotify(InternalNotifications notification);
     void handleNotifications();
     void createCache();
@@ -138,35 +154,48 @@ public:
     void setCachingEnabled(bool enable);
     bool isCachingEnabled() const;
     void consume(qint64 count);
+    void emitUploadProgress(qint64 bytesSent, qint64 bytesTotal);
     qint64 nextDownstreamBlockSize() const;
-    void feed(const QByteArray &data);
-    void feed(QIODevice *data);
+
+    void initCacheSaveDevice();
+    void appendDownstreamDataSignalEmissions();
+    void appendDownstreamData(QByteDataBuffer &data);
+    void appendDownstreamData(QIODevice *data);
+    void appendDownstreamData(const QByteArray &data);
+
     void finished();
     void error(QNetworkReply::NetworkError code, const QString &errorString);
     void metaDataChanged();
     void redirectionRequested(const QUrl &target);
     void sslErrors(const QList<QSslError> &errors);
 
+    bool isFinished() const;
+
     QNetworkAccessBackend *backend;
     QIODevice *outgoingData;
+    QRingBuffer *outgoingDataBuffer;
     QIODevice *copyDevice;
-    QAbstractNetworkCache *networkCache;
+    QAbstractNetworkCache *networkCache() const;
+
+    bool migrateBackend();
 
     bool cacheEnabled;
     QIODevice *cacheSaveDevice;
 
     NotificationQueue pendingNotifications;
+    bool notificationHandlingPaused;
+
     QUrl urlForLastAuthentication;
 #ifndef QT_NO_NETWORKPROXY
     QNetworkProxy lastProxyAuthentication;
     QList<QNetworkProxy> proxyList;
 #endif
 
-    QRingBuffer readBuffer;
-    QRingBuffer writeBuffer;
+    QByteDataBuffer readBuffer;
     qint64 bytesDownloaded;
     qint64 lastBytesDownloaded;
     qint64 bytesUploaded;
+    qint64 preMigrationDownloaded;
 
     QString httpReasonPhrase;
     int httpStatusCode;
@@ -175,6 +204,22 @@ public:
 
     Q_DECLARE_PUBLIC(QNetworkReplyImpl)
 };
+
+#ifndef QT_NO_BEARERMANAGEMENT
+class QDisabledNetworkReply : public QNetworkReply
+{
+    Q_OBJECT
+
+public:
+    QDisabledNetworkReply(QObject *parent, const QNetworkRequest &req,
+                          QNetworkAccessManager::Operation op);
+    ~QDisabledNetworkReply();
+
+    void abort() { }
+protected:
+    qint64 readData(char *, qint64) { return -1; }
+};
+#endif
 
 QT_END_NAMESPACE
 

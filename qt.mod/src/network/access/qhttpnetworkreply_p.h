@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -52,6 +52,7 @@
 //
 // We mean it.
 //
+#include <qplatformdefs.h>
 #ifndef QT_NO_HTTP
 
 #ifndef QT_NO_COMPRESS
@@ -79,10 +80,13 @@ static const unsigned char gz_magic[2] = {0x1f, 0x8b}; // gzip magic header
 #include <private/qhttpnetworkheader_p.h>
 #include <private/qhttpnetworkrequest_p.h>
 #include <private/qauthenticator_p.h>
+#include <private/qringbuffer_p.h>
+#include <private/qbytedata_p.h>
 
 QT_BEGIN_NAMESPACE
 
 class QHttpNetworkConnection;
+class QHttpNetworkConnectionChannel;
 class QHttpNetworkRequest;
 class QHttpNetworkConnectionPrivate;
 class QHttpNetworkReplyPrivate;
@@ -120,14 +124,19 @@ public:
     QString reasonPhrase() const;
 
     qint64 bytesAvailable() const;
-    QByteArray read(qint64 maxSize = -1);
+    qint64 bytesAvailableNextBlock() const;
+    QByteArray readAny();
+    void setDownstreamLimited(bool t);
 
     bool isFinished() const;
+
+    bool isPipeliningUsed() const;
 
 #ifndef QT_NO_OPENSSL
     QSslConfiguration sslConfiguration() const;
     void setSslConfiguration(const QSslConfiguration &config);
     void ignoreSslErrors();
+    void ignoreSslErrors(const QList<QSslError> &errors);
 
 Q_SIGNALS:
     void sslErrors(const QList<QSslError> &errors);
@@ -139,12 +148,13 @@ Q_SIGNALS:
     void finishedWithError(QNetworkReply::NetworkError errorCode, const QString &detail = QString());
     void headerChanged();
     void dataReadProgress(int done, int total);
-    void dataSendProgress(int done, int total);
+    void dataSendProgress(qint64 done, qint64 total);
 
 private:
     Q_DECLARE_PRIVATE(QHttpNetworkReply)
     friend class QHttpNetworkConnection;
     friend class QHttpNetworkConnectionPrivate;
+    friend class QHttpNetworkConnectionChannel;
 };
 
 
@@ -157,18 +167,28 @@ public:
     bool parseStatus(const QByteArray &status);
     qint64 readHeader(QAbstractSocket *socket);
     void parseHeader(const QByteArray &header);
-    qint64 readBody(QAbstractSocket *socket, QIODevice *out);
+    qint64 readBody(QAbstractSocket *socket, QByteDataBuffer *out);
+    qint64 readBodyFast(QAbstractSocket *socket, QByteDataBuffer *rb);
     bool findChallenge(bool forProxy, QByteArray &challenge) const;
     QAuthenticatorPrivate::Method authenticationMethod(bool isProxy) const;
     void clear();
+    void clearHttpLayerInformation();
 
-    qint64 transferRaw(QIODevice *in, QIODevice *out, qint64 size);
-    qint64 transferChunked(QIODevice *in, QIODevice *out);
+    qint64 readReplyBodyRaw(QIODevice *in, QByteDataBuffer *out, qint64 size);
+    qint64 readReplyBodyChunked(QIODevice *in, QByteDataBuffer *out);
     qint64 getChunkSize(QIODevice *in, qint64 *chunkSize);
+
+    void appendUncompressedReplyData(QByteArray &qba);
+    void appendUncompressedReplyData(QByteDataBuffer &data);
+    void appendCompressedReplyData(QByteDataBuffer &data);
+
+    bool shouldEmitSignals();
+    bool expectContent();
+    void eraseData();
 
     qint64 bytesAvailable() const;
     bool isChunked();
-    bool connectionCloseEnabled();
+    bool isConnectionCloseEnabled();
     bool isGzipped();
 #ifndef QT_NO_COMPRESS
     bool gzipCheckHeader(QByteArray &content, int &pos);
@@ -193,10 +213,14 @@ public:
     qint64 bodyLength;
     qint64 contentRead;
     qint64 totalProgress;
-    QByteArray fragment;
+    QByteArray fragment; // used for header, status, chunk header etc, not for reply data
+    bool chunkedTransferEncoding;
+    bool connectionCloseEnabled;
+    bool forceConnectionCloseEnabled;
     qint64 currentChunkSize;
     qint64 currentChunkRead;
     QPointer<QHttpNetworkConnection> connection;
+    QPointer<QHttpNetworkConnectionChannel> connectionChannel;
     bool initInflate;
     bool streamEnd;
 #ifndef QT_NO_COMPRESS
@@ -204,11 +228,12 @@ public:
 #endif
     bool autoDecompress;
 
-    QByteArray responseData; // uncompressed body
+    QByteDataBuffer responseData; // uncompressed body
     QByteArray compressedData; // compressed body (temporary)
-    QBuffer requestDataBuffer;
-    bool requestIsBuffering;
     bool requestIsPrepared;
+
+    bool pipeliningUsed;
+    bool downstreamLimited;
 };
 
 

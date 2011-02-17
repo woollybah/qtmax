@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -52,45 +52,20 @@
 //
 // We mean it.
 //
-
 #include "QtNetwork/qhostaddress.h"
 #include "private/qabstractsocketengine_p.h"
 #ifndef Q_OS_WIN
-# include "qplatformdefs.h"
+#  include "qplatformdefs.h"
 #else
-# include <winsock2.h>
+#  include <winsock2.h>
+#endif
+
+#ifdef Q_OS_SYMBIAN
+#include <private/qeventdispatcher_symbian_p.h>
+#include <unistd.h>
 #endif
 
 QT_BEGIN_NAMESPACE
-
-#ifndef Q_OS_WIN
-// Almost always the same. If not, specify in qplatformdefs.h.
-#if !defined(QT_SOCKOPTLEN_T)
-# define QT_SOCKOPTLEN_T QT_SOCKLEN_T
-#endif
-
-// Tru64 redefines accept -> _accept with _XOPEN_SOURCE_EXTENDED
-static inline int qt_socket_accept(int s, struct sockaddr *addr, QT_SOCKLEN_T *addrlen)
-{ return ::accept(s, addr, static_cast<QT_SOCKLEN_T *>(addrlen)); }
-#if defined(accept)
-# undef accept
-#endif
-
-// UnixWare 7 redefines listen -> _listen
-static inline int qt_socket_listen(int s, int backlog)
-{ return ::listen(s, backlog); }
-#if defined(listen)
-# undef listen
-#endif
-
-// UnixWare 7 redefines socket -> _socket
-static inline int qt_socket_socket(int domain, int type, int protocol)
-{ return ::socket(domain, type, protocol); }
-#if defined(socket)
-# undef socket
-#endif
-
-#endif
 
 // Use our own defines and structs which we know are correct
 #  define QT_SS_MAXSIZE 128
@@ -159,6 +134,8 @@ public:
                              quint16 port);
     bool hasPendingDatagrams() const;
     qint64 pendingDatagramSize() const;
+
+    qint64 bytesToWrite() const;
 
     qint64 receiveBufferSize() const;
     void setReceiveBufferSize(qint64 bufferSize);
