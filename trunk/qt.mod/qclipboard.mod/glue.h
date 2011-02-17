@@ -24,17 +24,69 @@
 #define MAX_QT_QCLIPBOARD
 
 #include "../core.mod/glue.h"
+#include "../qimage.mod/glue.h"
+#include "../qpixmap.mod/glue.h"
 #include <QtCore>
 #include <QClipboard>
+
+class MaxQClipboard;
 
 extern "C" {
 
 #include <blitz.h>
+
+	// used for on-the-fly QClipboard creation - linking to a BlitzMax object.
+	BBObject * _qt_qclipboard_QClipboard__create(QClipboard * clipboard);
+	
+	void _qt_qclipboard_QClipboard__OnChanged(BBObject * handle, int mode);
+	void _qt_qclipboard_QClipboard__OnDataChanged(BBObject * handle);
+	void _qt_qclipboard_QClipboard__OnFindBufferChanged(BBObject * handle);
+	void _qt_qclipboard_QClipboard__OnSelectionChanged(BBObject * handle);
+
+	void bmx_qt_qclipboard_clear(QClipboard * clipboard, int mode);
+	MaxQImage * bmx_qt_qclipboard_image(QClipboard * clipboard, int mode);
+	const QMimeData * bmx_qt_qclipboard_mimedata(QClipboard * clipboard, int mode);
+	int bmx_qt_qclipboard_ownsclipboard(QClipboard * clipboard);
+	int bmx_qt_qclipboard_ownsfindbuffer(QClipboard * clipboard);
+	int bmx_qt_qclipboard_ownsselection(QClipboard * clipboard);
+	MaxQPixmap * bmx_qt_qclipboard_pixmap(QClipboard * clipboard, int mode);
+	void bmx_qt_qclipboard_setimage(QClipboard * clipboard, MaxQImage * image, int mode);
+	void bmx_qt_qclipboard_setmimedata(QClipboard * clipboard, QMimeData * src, int mode);
+	void bmx_qt_qclipboard_setpixmap(QClipboard * clipboard, MaxQPixmap * pixmap, int mode);
+	void bmx_qt_qclipboard_settext(QClipboard * clipboard, BBString * text, int mode);
+	int bmx_qt_qclipboard_supportsfindbuffer(QClipboard * clipboard);
+	int bmx_qt_qclipboard_supportsselection(QClipboard * clipboard);
+	BBString * bmx_qt_qclipboard_text(QClipboard * clipboard, int mode);
+	BBString * bmx_qt_qclipboard_textsubtype(QClipboard * clipboard, BBString * subtype, int mode);
 
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQClipboard : public MaxQObjectWrapper
+{
+	Q_OBJECT
+
+public:
+	MaxQClipboard(BBObject * handle, QClipboard * clipboard);
+	MaxQClipboard(QClipboard * clipboard);
+	
+	QClipboard * Clipboard();
+	
+	static void link(QClipboard * c);
+	
+	~MaxQClipboard();
+
+private:
+	void doConnections();
+	QClipboard * clipboard;
+	
+private slots:
+	void onChanged(QClipboard::Mode mode);
+	void onDataChanged();
+	void onFindBufferChanged();
+	void onSelectionChanged();
+};
 
 #endif
