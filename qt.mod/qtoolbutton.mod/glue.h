@@ -57,6 +57,8 @@ extern "C" {
 
 class MaxQToolButton : public QToolButton
 {
+	Q_OBJECT
+	
 public:
 	MaxQToolButton(BBObject * handle, QWidget * parent);
 	~MaxQToolButton();
