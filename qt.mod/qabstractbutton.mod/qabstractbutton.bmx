@@ -33,6 +33,24 @@ Import "common.bmx"
 
 Type QAbstractButton Extends QWidget
 
+	Function __create:QAbstractButton(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QAbstractButton = New QAbstractButton
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Function _find:QAbstractButton(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QAbstractButton = QAbstractButton(qfind(qObjectPtr))
+			If Not widget Then
+				Return QAbstractButton.__create(qObjectPtr)
+			End If
+			Return widget
+		End If
+	End Function
+
 	Method autoExclusive:Int()
 		Return bmx_qt_qabstractbutton_autoexclusive(qObjectPtr)
 	End Method
