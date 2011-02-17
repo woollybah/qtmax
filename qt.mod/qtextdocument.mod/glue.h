@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qfont.mod/glue.h"
+#include "../qtextformat.mod/glue.h"
 #include <QtCore>
 #include <QTextDocument>
 #include <QTextCursor>
@@ -33,7 +34,7 @@
 
 class MaxQTextDocument;
 class MaxQTextCursor;
-class MaxQTextFormat;
+//class MaxQTextFormat;
 class MaxQTextOption;
 class MaxQTextBlock;
 
@@ -144,7 +145,7 @@ private:
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQTextFormat
+/*class MaxQTextFormat
 {
 public:
 	MaxQTextFormat(const QTextFormat & f);
@@ -154,7 +155,7 @@ public:
 
 private:
 	QTextFormat format;
-};
+};*/
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -119,7 +119,7 @@ QTextCursor & MaxQTextCursor::Cursor() {
 }
 
 // ---------------------------------------------------------------------------------------
-
+/*
 MaxQTextFormat::MaxQTextFormat(const QTextFormat & f)
 	: format(f)
 {
@@ -132,7 +132,7 @@ MaxQTextFormat::~MaxQTextFormat()
 QTextFormat & MaxQTextFormat::Format() {
 	return format;
 }
-
+*/
 // ---------------------------------------------------------------------------------------
 
 MaxQTextOption::MaxQTextOption(const QTextOption & o)
