@@ -35,6 +35,88 @@ MaxQGraphicsRectItem::~MaxQGraphicsRectItem()
 	qgiunbind(this);
 }
 
+// *********************************************
+
+
+void MaxQGraphicsRectItem::defaultContextMenuEvent(QGraphicsSceneContextMenuEvent * contextMenuEvent) {
+	QGraphicsRectItem::contextMenuEvent(contextMenuEvent);
+}
+
+void MaxQGraphicsRectItem::defaultDragEnterEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsRectItem::dragEnterEvent(event);
+}
+
+void MaxQGraphicsRectItem::defaultDragLeaveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsRectItem::dragLeaveEvent(event);
+}
+
+void MaxQGraphicsRectItem::defaultDragMoveEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsRectItem::dragMoveEvent(event);
+}
+
+void MaxQGraphicsRectItem::defaultDropEvent(QGraphicsSceneDragDropEvent * event) {
+	QGraphicsRectItem::dropEvent(event);
+}
+
+void MaxQGraphicsRectItem::defaultFocusInEvent(QFocusEvent * focusEvent) {
+	QGraphicsRectItem::focusInEvent(focusEvent);
+}
+
+void MaxQGraphicsRectItem::defaultFocusOutEvent(QFocusEvent * focusEvent) {
+	QGraphicsRectItem::focusOutEvent(focusEvent);
+}
+
+void MaxQGraphicsRectItem::defaultHoverEnterEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsRectItem::hoverEnterEvent(hoverEvent);
+}
+
+void MaxQGraphicsRectItem::defaultHoverLeaveEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsRectItem::hoverLeaveEvent(hoverEvent);
+}
+
+void MaxQGraphicsRectItem::defaultHoverMoveEvent(QGraphicsSceneHoverEvent * hoverEvent) {
+	QGraphicsRectItem::hoverMoveEvent(hoverEvent);
+}
+
+void MaxQGraphicsRectItem::defaultInputMethodEvent(QInputMethodEvent * event) {
+	QGraphicsRectItem::inputMethodEvent(event);
+}
+
+void MaxQGraphicsRectItem::defaultKeyPressEvent(QKeyEvent * keyEvent) {
+	QGraphicsRectItem::keyPressEvent(keyEvent);
+}
+
+void MaxQGraphicsRectItem::defaultKeyReleaseEvent(QKeyEvent * keyEvent) {
+	QGraphicsRectItem::keyReleaseEvent(keyEvent);
+}
+
+void MaxQGraphicsRectItem::defaultMouseDoubleClickEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsRectItem::mouseDoubleClickEvent(mouseEvent);
+}
+
+void MaxQGraphicsRectItem::defaultMouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsRectItem::mouseMoveEvent(mouseEvent);
+}
+
+void MaxQGraphicsRectItem::defaultMousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsRectItem::mousePressEvent(mouseEvent);
+}
+
+void MaxQGraphicsRectItem::defaultMouseReleaseEvent(QGraphicsSceneMouseEvent * mouseEvent) {
+	QGraphicsRectItem::mouseReleaseEvent(mouseEvent);
+}
+
+void MaxQGraphicsRectItem::defaultSceneEvent(QEvent * event) {
+	QGraphicsRectItem::sceneEvent(event);
+}
+
+void MaxQGraphicsRectItem::defaultSceneEventFilter(QGraphicsItem * watched, QEvent * event) {
+	QGraphicsRectItem::sceneEventFilter(watched, event);
+}
+
+void MaxQGraphicsRectItem::defaultWheelEvent(QGraphicsSceneWheelEvent * wheelEvent) {
+	QGraphicsRectItem::wheelEvent(wheelEvent);
+}
 
 // *********************************************
 
