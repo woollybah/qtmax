@@ -37,6 +37,7 @@ extern "C" {
 
 	MaxQColor * bmx_qt_qcolor_create(int r, int g, int b, int a);
 	MaxQColor * bmx_qt_qcolor_createwithglobalcolor(int color);
+	MaxQColor * bmx_qt_qcolor_lighter(MaxQColor * color, int factor);
 
 }
 
