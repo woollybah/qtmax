@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Tue 6. Oct 08:16:02 2009
-**      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
+** Created: Wed Feb 16 20:25:40 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,8 +10,8 @@
 #include "glue.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'glue.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 61
-#error "This file was generated using the moc from 4.5.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 62
+#error "This file was generated using the moc from 4.7.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,13 +20,15 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_MaxQWidget[] = {
 
  // content:
-       2,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
        0,    0, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
 
        0        // eod
 };
@@ -40,9 +42,13 @@ const QMetaObject MaxQWidget::staticMetaObject = {
       qt_meta_data_MaxQWidget, 0 }
 };
 
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MaxQWidget::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
 const QMetaObject *MaxQWidget::metaObject() const
 {
-    return &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *MaxQWidget::qt_metacast(const char *_clname)
@@ -63,13 +69,15 @@ int MaxQWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 static const uint qt_meta_data_MaxQAction[] = {
 
  // content:
-       2,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   12, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x08,
@@ -90,9 +98,13 @@ const QMetaObject MaxQAction::staticMetaObject = {
       qt_meta_data_MaxQAction, 0 }
 };
 
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MaxQAction::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
 const QMetaObject *MaxQAction::metaObject() const
 {
-    return &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *MaxQAction::qt_metacast(const char *_clname)
@@ -123,13 +135,15 @@ int MaxQAction::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 static const uint qt_meta_data_MaxQActionGroup[] = {
 
  // content:
-       2,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   12, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
       24,   17,   16,   16, 0x08,
@@ -148,9 +162,13 @@ const QMetaObject MaxQActionGroup::staticMetaObject = {
       qt_meta_data_MaxQActionGroup, 0 }
 };
 
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MaxQActionGroup::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
 const QMetaObject *MaxQActionGroup::metaObject() const
 {
-    return &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *MaxQActionGroup::qt_metacast(const char *_clname)
