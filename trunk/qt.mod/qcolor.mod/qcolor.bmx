@@ -54,6 +54,10 @@ Type QColor
 		Return Self
 	End Method
 	
+	Method lighter:QColor(factor:Int = 150)
+		Return QColor._create(bmx_qt_qcolor_lighter(qObjectPtr, factor))
+	End Method
+	
 
 	Method Free()
 		If qObjectPtr Then
