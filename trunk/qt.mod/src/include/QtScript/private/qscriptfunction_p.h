@@ -1,1 +1,1 @@
-#include "../../../src/script/qscriptfunction_p.h"
+#include "../../../src/script/bridge/qscriptfunction_p.h"

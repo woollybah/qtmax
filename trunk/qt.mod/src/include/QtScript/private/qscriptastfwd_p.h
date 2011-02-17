@@ -1,1 +1,1 @@
-#include "../../../src/script/qscriptastfwd_p.h"
+#include "../../../src/script/parser/qscriptastfwd_p.h"

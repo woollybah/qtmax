@@ -1,1 +1,1 @@
-#include "../../../src/script/qscriptstring_p.h"
+#include "../../../src/script/api/qscriptstring_p.h"

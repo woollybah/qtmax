@@ -1,1 +1,1 @@
-#include "../../src/script/qscriptclasspropertyiterator.h"
+#include "../../src/script/api/qscriptclasspropertyiterator.h"

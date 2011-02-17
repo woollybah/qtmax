@@ -1,7 +1,6 @@
 #ifndef QT_QTXMLPATTERNS_MODULE_H
 #define QT_QTXMLPATTERNS_MODULE_H
 #include <QtCore/QtCore>
-#include <QtNetwork/QtNetwork>
 #include "qabstractmessagehandler.h"
 #include "qabstracturiresolver.h"
 #include "qabstractxmlnodemodel.h"
@@ -13,5 +12,7 @@
 #include "qxmlnamepool.h"
 #include "qxmlquery.h"
 #include "qxmlresultitems.h"
+#include "qxmlschema.h"
+#include "qxmlschemavalidator.h"
 #include "qxmlserializer.h"
 #endif
