@@ -24,9 +24,120 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQClipboard::MaxQClipboard(BBObject * handle, QClipboard * clipboard)
+	: clipboard(clipboard), MaxQObjectWrapper(handle, clipboard)
+{
+	doConnections();
+}
 
+MaxQClipboard::MaxQClipboard(QClipboard * c)
+	: clipboard(c), MaxQObjectWrapper(c)
+{
+	maxHandle = _qt_qclipboard_QClipboard__create(clipboard);
+	qbind(clipboard, maxHandle);
+
+	doConnections();
+}
+
+void MaxQClipboard::doConnections() {
+	
+}
+
+QClipboard * MaxQClipboard::Clipboard() {
+	return clipboard;
+}
+
+void MaxQClipboard::link(QClipboard * c) {
+	BBObject * handle = qfind(c);
+	
+	if (handle == &bbNullObject) {
+		MaxQClipboard * clipboard = new MaxQClipboard(c);
+	}
+}
+
+MaxQClipboard::~MaxQClipboard()
+{
+}
+
+void MaxQClipboard::onChanged(QClipboard::Mode mode) {
+	_qt_qclipboard_QClipboard__OnChanged(maxHandle, static_cast<int>(mode));
+}
+
+void MaxQClipboard::onDataChanged() {
+	_qt_qclipboard_QClipboard__OnDataChanged(maxHandle);
+}
+
+void MaxQClipboard::onFindBufferChanged() {
+	_qt_qclipboard_QClipboard__OnFindBufferChanged(maxHandle);
+}
+
+void MaxQClipboard::onSelectionChanged() {
+	_qt_qclipboard_QClipboard__OnSelectionChanged(maxHandle);
+}
 
 // *********************************************
+
+void bmx_qt_qclipboard_clear(QClipboard * clipboard, int mode) {
+	clipboard->clear((QClipboard::Mode)mode);
+}
+
+MaxQImage * bmx_qt_qclipboard_image(QClipboard * clipboard, int mode) {
+	return new MaxQImage(clipboard->image((QClipboard::Mode)mode));
+}
+
+const QMimeData * bmx_qt_qclipboard_mimedata(QClipboard * clipboard, int mode) {
+	return clipboard->mimeData((QClipboard::Mode)mode);
+}
+
+int bmx_qt_qclipboard_ownsclipboard(QClipboard * clipboard) {
+	return static_cast<int>(clipboard->ownsClipboard());
+}
+
+int bmx_qt_qclipboard_ownsfindbuffer(QClipboard * clipboard) {
+	return static_cast<int>(clipboard->ownsFindBuffer());
+}
+
+int bmx_qt_qclipboard_ownsselection(QClipboard * clipboard) {
+	return static_cast<int>(clipboard->ownsSelection());
+}
+
+MaxQPixmap * bmx_qt_qclipboard_pixmap(QClipboard * clipboard, int mode) {
+	return new MaxQPixmap(clipboard->pixmap((QClipboard::Mode)mode));
+}
+
+void bmx_qt_qclipboard_setimage(QClipboard * clipboard, MaxQImage * image, int mode) {
+	clipboard->setImage(image->Image(), (QClipboard::Mode)mode);
+}
+
+void bmx_qt_qclipboard_setmimedata(QClipboard * clipboard, QMimeData * src, int mode) {
+	clipboard->setMimeData(src, (QClipboard::Mode)mode);
+}
+
+void bmx_qt_qclipboard_setpixmap(QClipboard * clipboard, MaxQPixmap * pixmap, int mode) {
+	clipboard->setPixmap(pixmap->Pixmap(), (QClipboard::Mode)mode);
+}
+
+void bmx_qt_qclipboard_settext(QClipboard * clipboard, BBString * text, int mode) {
+	clipboard->setText(qStringFromBBString(text), (QClipboard::Mode)mode);
+}
+
+int bmx_qt_qclipboard_supportsfindbuffer(QClipboard * clipboard) {
+	return static_cast<int>(clipboard->supportsFindBuffer());
+}
+
+int bmx_qt_qclipboard_supportsselection(QClipboard * clipboard) {
+	return static_cast<int>(clipboard->supportsSelection());
+}
+
+BBString * bmx_qt_qclipboard_text(QClipboard * clipboard, int mode) {
+	return bbStringFromQString(clipboard->text((QClipboard::Mode)mode));
+}
+
+BBString * bmx_qt_qclipboard_textsubtype(QClipboard * clipboard, BBString * subtype, int mode) {
+	QString s(qStringFromBBString(subtype));
+	
+	return bbStringFromQString(clipboard->text(s, (QClipboard::Mode)mode));
+}
 
 
 
