@@ -25,11 +25,13 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QAbstractItemView>
 
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qabstractitemview_setmodel(QAbstractItemView * view, QAbstractItemModel * model);
 
 }
 

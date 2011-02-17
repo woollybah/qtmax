@@ -28,6 +28,9 @@
 
 // *********************************************
 
+void bmx_qt_qabstractitemview_setmodel(QAbstractItemView * view, QAbstractItemModel * model) {
+	view->setModel(model);
+}
 
 
 // NOTES :
