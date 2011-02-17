@@ -83,7 +83,7 @@ Type SvgView Extends QGraphicsView
 		s.addItem(m_svgItem)
 		s.addItem(m_outlineItem)
 		
-		s.setSceneRect(m_outlineItem.boundingRect().adjusted(-10, -10, 10, 10))
+		s.setSceneRectRect(m_outlineItem.boundingRect().adjusted(-10, -10, 10, 10))
 	End Method
 	
 	Method setRenderer(renderType:Int = Renderer_Native)
