@@ -127,6 +127,17 @@ QDateTime & MaxQDateTime::DateTime() {
 	return datetime;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQLineF::MaxQLineF(const QLineF & l)
+	: line(l)
+{
+}
+
+QLineF & MaxQLineF::Line() {
+	return line;
+}
+
 // *********************************************
 
 typedef std::map<QObject*, BBObject*> QObjectPeerMap;
@@ -995,6 +1006,116 @@ int bmx_qt_qdate_weeknumber(MaxQDate * date, int * yearNumber) {
 int bmx_qt_qdate_year(MaxQDate * date) {
 	return date->Date().year();
 }
+
+// *********************************************
+
+MaxQLineF * bmx_qt_qlinef_create(double x1, double y1, double x2, double y2) {
+	return new MaxQLineF(QLineF(x1, y1, x2, y2));
+}
+
+void bmx_qt_qlinef_p1(MaxQLineF * line, double * x, double * y) {
+	QPointF f = line->Line().p1();
+	*x = f.x();
+	*y = f.y();
+}
+
+void bmx_qt_qlinef_p2(MaxQLineF * line, double * x, double * y) {
+	QPointF f = line->Line().p2();
+	*x = f.x();
+	*y = f.y();
+}
+
+double bmx_qt_qlinef_x1(MaxQLineF * line) {
+	return line->Line().x1();
+}
+
+double bmx_qt_qlinef_y1(MaxQLineF * line) {
+	return line->Line().y1();
+}
+
+double bmx_qt_qlinef_x2(MaxQLineF * line) {
+	return line->Line().x2();
+}
+
+double bmx_qt_qlinef_y2(MaxQLineF * line) {
+	return line->Line().y2();
+}
+
+double bmx_qt_qlinef_angle(MaxQLineF * line) {
+	return line->Line().angle();
+}
+
+double bmx_qt_qlinef_angleTo(MaxQLineF * line, MaxQLineF * other) {
+	return line->Line().angleTo(other->Line());
+}
+
+double bmx_qt_qlinef_dx(MaxQLineF * line) {
+	return line->Line().dx();
+}
+
+double bmx_qt_qlinef_dy(MaxQLineF * line) {
+	return line->Line().dy();
+}
+
+int bmx_qt_qlinef_intersect(MaxQLineF * line, MaxQLineF * other, double * x, double * y) {
+	QPointF p;
+	QLineF::IntersectType t = line->Line().intersect(other->Line(), &p);
+	*x = p.x();
+	*y = p.y();
+	return t;
+}
+
+int bmx_qt_qlinef_isnull(MaxQLineF * line) {
+	return static_cast<int>(line->Line().isNull());
+}
+
+double bmx_qt_qlinef_length(MaxQLineF * line) {
+	return line->Line().length();
+}
+
+MaxQLineF * bmx_qt_qlinef_normalvector(MaxQLineF * line) {
+	return new MaxQLineF(line->Line().normalVector());
+}
+
+void bmx_qt_qlinef_pointat(MaxQLineF * line, double t, double * x, double * y) {
+	QPointF p(line->Line().pointAt(t));
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qlinef_setp1(MaxQLineF * line, double x, double y) {
+	line->Line().setP1(QPointF(x, y));
+}
+
+void bmx_qt_qlinef_setp2(MaxQLineF * line, double x, double y) {
+	line->Line().setP2(QPointF(x, y));
+}
+
+void bmx_qt_qlinef_setangle(MaxQLineF * line, double angle) {
+	line->Line().setAngle(angle);
+}
+
+void bmx_qt_qlinef_setlength(MaxQLineF * line, double length) {
+	line->Line().setLength(length);
+}
+
+void bmx_qt_qlinef_setline(MaxQLineF * line, double x1, double y1, double x2, double y2) {
+	line->Line().setLine(x1, y1, x2, y2);
+}
+
+void bmx_qt_qlinef_translate(MaxQLineF * line, double dx, double dy) {
+	line->Line().translate(dx, dy);
+}
+
+MaxQLineF * bmx_qt_qlinef_translated(MaxQLineF * line, double dx, double dy) {
+	return new MaxQLineF(line->Line().translated(dx, dy));
+}
+
+MaxQLineF * bmx_qt_qlinef_unitvector(MaxQLineF * line) {
+	return new MaxQLineF(line->Line().unitVector());
+}
+
+
 
 // *********************************************
 

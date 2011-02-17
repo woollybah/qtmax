@@ -26,6 +26,7 @@
 #include <QRect>
 #include <QTime>
 #include <QChar>
+#include <QLineF>
 
 #include <map>
 
@@ -38,6 +39,7 @@ class MaxQTime;
 class MaxQRectF;
 class MaxQDate;
 class MaxQDateTime;
+class MaxQLineF;
 
 class MaxQObjectWrapper;
 
@@ -230,6 +232,31 @@ extern "C" {
 	
 	int bmx_qt_qchar_category(int c);
 
+	MaxQLineF * bmx_qt_qlinef_create(double x1, double y1, double x2, double y2);
+	void bmx_qt_qlinef_p1(MaxQLineF * line, double * x, double * y);
+	void bmx_qt_qlinef_p2(MaxQLineF * line, double * x, double * y);
+	double bmx_qt_qlinef_x1(MaxQLineF * line);
+	double bmx_qt_qlinef_y1(MaxQLineF * line);
+	double bmx_qt_qlinef_x2(MaxQLineF * line);
+	double bmx_qt_qlinef_y2(MaxQLineF * line);
+	double bmx_qt_qlinef_angle(MaxQLineF * line);
+	double bmx_qt_qlinef_angleTo(MaxQLineF * line, MaxQLineF * other);
+	double bmx_qt_qlinef_dx(MaxQLineF * line);
+	double bmx_qt_qlinef_dy(MaxQLineF * line);
+	int bmx_qt_qlinef_intersect(MaxQLineF * line, MaxQLineF * other, double * x, double * y);
+	int bmx_qt_qlinef_isnull(MaxQLineF * line);
+	double bmx_qt_qlinef_length(MaxQLineF * line);
+	MaxQLineF * bmx_qt_qlinef_normalvector(MaxQLineF * line);
+	void bmx_qt_qlinef_pointat(MaxQLineF * line, double t, double * x, double * y);
+	void bmx_qt_qlinef_setp1(MaxQLineF * line, double x, double y);
+	void bmx_qt_qlinef_setp2(MaxQLineF * line, double x, double y);
+	void bmx_qt_qlinef_setangle(MaxQLineF * line, double angle);
+	void bmx_qt_qlinef_setlength(MaxQLineF * line, double length);
+	void bmx_qt_qlinef_setline(MaxQLineF * line, double x1, double y1, double x2, double y2);
+	void bmx_qt_qlinef_translate(MaxQLineF * line, double dx, double dy);
+	MaxQLineF * bmx_qt_qlinef_translated(MaxQLineF * line, double dx, double dy);
+	MaxQLineF * bmx_qt_qlinef_unitvector(MaxQLineF * line);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -326,6 +353,18 @@ public:
 
 private:
 	QDateTime datetime;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQLineF
+{
+public:
+	MaxQLineF(const QLineF & f);
+	QLineF & Line();
+
+private:
+	QLineF line;
 };
 
 #endif

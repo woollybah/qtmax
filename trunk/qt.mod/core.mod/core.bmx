@@ -47,6 +47,7 @@ Import "qrect.bmx"
 Import "qrectf.bmx"
 Import "qevent.bmx"
 Import "qdatetime.bmx"
+Import "qlinef.bmx"
 Import "common.bmx"
 
 Type QCoreObjectPtr
