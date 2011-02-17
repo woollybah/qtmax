@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -66,6 +66,7 @@ QT_BEGIN_NAMESPACE
 class QVariant;
 class QThreadData;
 class QObjectConnectionListVector;
+namespace QtSharedPointer { struct ExternalRefCountData; }
 
 /* mirrored in QtTestLib, DON'T CHANGE without prior warning */
 struct QSignalSpyCallbackSet
@@ -81,32 +82,50 @@ void Q_CORE_EXPORT qt_register_signal_spy_callbacks(const QSignalSpyCallbackSet 
 
 extern QSignalSpyCallbackSet Q_CORE_EXPORT qt_signal_spy_callback_set;
 
-inline QObjectData::~QObjectData() {}
-
 enum { QObjectPrivateVersion = QT_VERSION };
+
+class Q_CORE_EXPORT QAbstractDeclarativeData
+{
+public:
+    static void (*destroyed)(QAbstractDeclarativeData *, QObject *);
+    static void (*parentChanged)(QAbstractDeclarativeData *, QObject *, QObject *);
+};
 
 class Q_CORE_EXPORT QObjectPrivate : public QObjectData
 {
     Q_DECLARE_PUBLIC(QObject)
 
 public:
-    QObjectPrivate(int version = QObjectPrivateVersion);
-    virtual ~QObjectPrivate();
-
-#ifdef QT3_SUPPORT
-    QList<QObject *> pendingChildInsertedEvents;
-    void sendPendingChildInsertedEvents();
-    void removePendingChildInsertedEvents(QObject *child);
-#else
-    // preserve binary compatibility with code compiled without Qt 3 support
-    QList<QObject *> unused;
+    struct ExtraData
+    {
+        ExtraData() {}
+#ifndef QT_NO_USERDATA
+        QVector<QObjectUserData *> userData;
 #endif
+        QList<QByteArray> propertyNames;
+        QList<QVariant> propertyValues;
+    };
 
-    // id of the thread that owns the object
-    QThreadData *threadData;
-    void moveToThread_helper();
-    void setThreadData_helper(QThreadData *currentData, QThreadData *targetData);
-    void _q_reregisterTimers(void *pointer);
+    struct Connection
+    {
+        QObject *sender;
+        QObject *receiver;
+        int method;
+        uint connectionType : 3; // 0 == auto, 1 == direct, 2 == queued, 4 == blocking
+        QBasicAtomicPointer<int> argumentTypes;
+        // The next pointer for the singly-linked ConnectionList
+        Connection *nextConnectionList;
+        //senders linked list
+        Connection *next;
+        Connection **prev;
+        ~Connection();
+    };
+    // ConnectionList is a singly-linked list
+    struct ConnectionList {
+        ConnectionList() : first(0), last(0) {}
+        Connection *first;
+        Connection *last;
+    };
 
     struct Sender
     {
@@ -115,69 +134,112 @@ public:
         int ref;
     };
 
-    // object currently activating the object
-    Sender *currentSender;
 
-    QObject *currentChildBeingDeleted;
+    QObjectPrivate(int version = QObjectPrivateVersion);
+    virtual ~QObjectPrivate();
+    void deleteChildren();
+
+    void setParent_helper(QObject *);
+    void moveToThread_helper();
+    void setThreadData_helper(QThreadData *currentData, QThreadData *targetData);
+    void _q_reregisterTimers(void *pointer);
 
     bool isSender(const QObject *receiver, const char *signal) const;
     QObjectList receiverList(const char *signal) const;
     QObjectList senderList() const;
 
-    QList<QPointer<QObject> > eventFilters;
-
-    void setParent_helper(QObject *);
-
-    void deleteChildren();
-
-    static void clearGuards(QObject *);
-
-    struct ExtraData
-    {
-#ifndef QT_NO_USERDATA
-        QVector<QObjectUserData *> userData;
-#endif
-        QList<QByteArray> propertyNames;
-        QList<QVariant> propertyValues;
-    };
-    ExtraData *extraData;
-    mutable quint32 connectedSignals;
-
-    QString objectName;
-
-    // Note: you must hold the signalSlotLock() before accessing the lists below or calling the functions
-    struct Connection
-    {
-        QObject *receiver;
-        int method;
-        uint connectionType : 3; // 0 == auto, 1 == direct, 2 == queued, 4 == blocking
-        QBasicAtomicPointer<int> argumentTypes;
-    };
-    typedef QList<Connection> ConnectionList;
-
-    QObjectConnectionListVector *connectionLists;
     void addConnection(int signal, Connection *c);
-    void removeReceiver(int signal, QObject *receiver);
     void cleanConnectionLists();
 
-    QList<Sender> senders;
-    void refSender(QObject *sender, int signal);
-    void derefSender(QObject *sender, int signal);
+#ifdef QT3_SUPPORT
+    void sendPendingChildInsertedEvents();
+    void removePendingChildInsertedEvents(QObject *child);
+#endif
 
-    static Sender *setCurrentSender(QObject *receiver,
+    static inline Sender *setCurrentSender(QObject *receiver,
                                     Sender *sender);
-    static void resetCurrentSender(QObject *receiver,
+    static inline void resetCurrentSender(QObject *receiver,
                                    Sender *currentSender,
                                    Sender *previousSender);
     static int *setDeleteWatch(QObjectPrivate *d, int *newWatch);
     static void resetDeleteWatch(QObjectPrivate *d, int *oldWatch, int deleteWatch);
-
-    int *deleteWatch;
+    static void clearGuards(QObject *);
 
     static QObjectPrivate *get(QObject *o) {
         return o->d_func();
     }
+
+    int signalIndex(const char *signalName) const;
+    inline bool isSignalConnected(uint signalIdx) const;
+
+public:
+    QString objectName;
+    ExtraData *extraData;    // extra data set by the user
+    QThreadData *threadData; // id of the thread that owns the object
+
+    QObjectConnectionListVector *connectionLists;
+
+    Connection *senders;     // linked list of connections connected to this object
+    Sender *currentSender;   // object currently activating the object
+    mutable quint32 connectedSignals[2];
+
+#ifdef QT3_SUPPORT
+    QList<QObject *> pendingChildInsertedEvents;
+#else
+    // preserve binary compatibility with code compiled without Qt 3 support
+    // keeping the binary layout stable helps the Qt Creator debugger
+    void *unused;
+#endif
+
+    QList<QPointer<QObject> > eventFilters;
+    union {
+        QObject *currentChildBeingDeleted;
+        QAbstractDeclarativeData *declarativeData; //extra data used by the declarative module
+    };
+
+    // these objects are all used to indicate that a QObject was deleted
+    // plus QPointer, which keeps a separate list
+    QAtomicPointer<QtSharedPointer::ExternalRefCountData> sharedRefcount;
+    int *deleteWatch;
 };
+
+
+/*! \internal
+
+  Returns true if the signal with index \a signal_index from object \a sender is connected.
+  Signals with indices above a certain range are always considered connected (see connectedSignals
+  in QObjectPrivate). If a signal spy is installed, all signals are considered connected.
+
+  \a signal_index must be the index returned by QObjectPrivate::signalIndex;
+*/
+inline bool QObjectPrivate::isSignalConnected(uint signal_index) const
+{
+    return signal_index >= sizeof(connectedSignals) * 8
+        || (connectedSignals[signal_index >> 5] & (1 << (signal_index & 0x1f))
+        || qt_signal_spy_callback_set.signal_begin_callback
+        || qt_signal_spy_callback_set.signal_end_callback);
+}
+
+inline QObjectPrivate::Sender *QObjectPrivate::setCurrentSender(QObject *receiver,
+                                                         Sender *sender)
+{
+    Sender *previousSender = receiver->d_func()->currentSender;
+    receiver->d_func()->currentSender = sender;
+    return previousSender;
+}
+
+inline void QObjectPrivate::resetCurrentSender(QObject *receiver,
+                                        Sender *currentSender,
+                                        Sender *previousSender)
+{
+    // ref is set to zero when this object is deleted during the metacall
+    if (currentSender->ref == 1)
+        receiver->d_func()->currentSender = previousSender;
+    // if we've recursed, we need to tell the caller about the objects deletion
+    if (previousSender)
+        previousSender->ref = currentSender->ref;
+}
+
 
 Q_DECLARE_TYPEINFO(QObjectPrivate::Connection, Q_MOVABLE_TYPE);
 Q_DECLARE_TYPEINFO(QObjectPrivate::Sender, Q_MOVABLE_TYPE);
@@ -207,7 +269,7 @@ private:
     QSemaphore *semaphore_;
 };
 
-class Q_CORE_EXPORT QBoolBlocker
+class QBoolBlocker
 {
 public:
     inline QBoolBlocker(bool &b, bool value=true):block(b), reset(b){block = value;}
@@ -218,6 +280,14 @@ private:
 };
 
 void Q_CORE_EXPORT qDeleteInEventHandler(QObject *o);
+
+
+struct Q_CORE_EXPORT QAbstractDynamicMetaObject : public QMetaObject
+{
+    virtual ~QAbstractDynamicMetaObject() {}
+    virtual int metaCall(QMetaObject::Call, int _id, void **) { return _id; }
+    virtual int createProperty(const char *, const char *) { return -1; }
+};
 
 QT_END_NAMESPACE
 

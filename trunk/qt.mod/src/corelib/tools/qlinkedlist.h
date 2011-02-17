@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -93,6 +93,7 @@ public:
     { if (d->ref != 1) detach_helper(); }
     inline bool isDetached() const { return d->ref == 1; }
     inline void setSharable(bool sharable) { if (!sharable) detach(); d->sharable = sharable; }
+    inline bool isSharedWith(const QLinkedList<T> &other) const { return d == other.d; }
 
     inline bool isEmpty() const { return d->size == 0; }
 
@@ -113,7 +114,7 @@ public:
     {
     public:
         typedef std::bidirectional_iterator_tag  iterator_category;
-        typedef ptrdiff_t  difference_type;
+        typedef qptrdiff difference_type;
         typedef T value_type;
         typedef T *pointer;
         typedef T &reference;
@@ -146,7 +147,7 @@ public:
     {
     public:
         typedef std::bidirectional_iterator_tag  iterator_category;
-        typedef ptrdiff_t  difference_type;
+        typedef qptrdiff difference_type;
         typedef T value_type;
         typedef const T *pointer;
         typedef const T &reference;
@@ -212,7 +213,7 @@ public:
     typedef const value_type *const_pointer;
     typedef value_type &reference;
     typedef const value_type &const_reference;
-    typedef ptrdiff_t difference_type;
+    typedef qptrdiff difference_type;
 
 #ifndef QT_NO_STL
     static inline QLinkedList<T> fromStdList(const std::list<T> &list)
@@ -265,15 +266,22 @@ void QLinkedList<T>::detach_helper()
     x.d->ref = 1;
     x.d->size = d->size;
     x.d->sharable = true;
-    Node *i = e->n, *j = x.e;
-    while (i != e) {
-        j->n = new Node(i->t);
-        j->n->p = j;
-        i = i->n;
-        j = j->n;
+    Node *original = e->n;
+    Node *copy = x.e;
+    while (original != e) {
+        QT_TRY {
+            copy->n = new Node(original->t);
+            copy->n->p = copy;
+            original = original->n;
+            copy = copy->n;
+        } QT_CATCH(...) {
+            copy->n = x.e;
+            free(x.d);
+            QT_RETHROW;
+        }
     }
-    j->n = x.e;
-    x.e->p = j;
+    copy->n = x.e;
+    x.e->p = copy;
     if (!d->ref.deref())
         free(d);
     d = x.d;
@@ -304,10 +312,11 @@ template <typename T>
 QLinkedList<T> &QLinkedList<T>::operator=(const QLinkedList<T> &l)
 {
     if (d != l.d) {
-        l.d->ref.ref();
+        QLinkedListData *o = l.d;
+        o->ref.ref();
         if (!d->ref.deref())
             free(d);
-        d = l.d;
+        d = o;
         if (!d->sharable)
             detach_helper();
     }
@@ -474,14 +483,21 @@ QLinkedList<T> &QLinkedList<T>::operator+=(const QLinkedList<T> &l)
     detach();
     int n = l.d->size;
     d->size += n;
-    Node *o = l.e->n;
+    Node *original = l.e->n;
     while (n--) {
-        Node *i = new Node(o->t);
-        o = o->n;
-        i->n = e;
-        i->p = e->p;
-        i->p->n = i;
-        e->p = i;
+        QT_TRY {
+            Node *copy = new Node(original->t);
+            original = original->n;
+            copy->n = e;
+            copy->p = e->p;
+            copy->p->n = copy;
+            e->p = copy;
+        } QT_CATCH(...) {
+            // restore the original list
+            while (n++<d->size)
+                removeLast();
+            QT_RETHROW;
+        }
     }
     return *this;
 }

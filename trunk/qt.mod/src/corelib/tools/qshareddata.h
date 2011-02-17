@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -69,6 +69,9 @@ private:
 template <class T> class QSharedDataPointer
 {
 public:
+    typedef T Type;
+    typedef T *pointer;
+
     inline void detach() { if (d && d->ref != 1) detach_helper(); }
     inline T &operator*() { detach(); return *d; }
     inline const T &operator*() const { return *d; }
@@ -92,9 +95,10 @@ public:
         if (o.d != d) {
             if (o.d)
                 o.d->ref.ref();
-            if (d && !d->ref.deref())
-                delete d;
+            T *old = d;
             d = o.d;
+            if (old && !old->ref.deref())
+                delete old;
         }
         return *this;
     }
@@ -102,14 +106,18 @@ public:
         if (o != d) {
             if (o)
                 o->ref.ref();
-            if (d && !d->ref.deref())
-                delete d;
+            T *old = d;
             d = o;
+            if (old && !old->ref.deref())
+                delete old;
         }
         return *this;
     }
 
     inline bool operator!() const { return !d; }
+
+    inline void swap(QSharedDataPointer &other)
+    { qSwap(d, other.d); }
 
 protected:
     T *clone();
@@ -124,6 +132,7 @@ template <class T> class QExplicitlySharedDataPointer
 {
 public:
     typedef T Type;
+    typedef T *pointer;
 
     inline T &operator*() const { return *d; }
     inline T *operator->() { return d; }
@@ -167,9 +176,10 @@ public:
         if (o.d != d) {
             if (o.d)
                 o.d->ref.ref();
-            if (d && !d->ref.deref())
-                delete d;
+            T *old = d;
             d = o.d;
+            if (old && !old->ref.deref())
+                delete old;
         }
         return *this;
     }
@@ -177,14 +187,18 @@ public:
         if (o != d) {
             if (o)
                 o->ref.ref();
-            if (d && !d->ref.deref())
-                delete d;
+            T *old = d;
             d = o;
+            if (old && !old->ref.deref())
+                delete old;
         }
         return *this;
     }
 
     inline bool operator!() const { return !d; }
+
+    inline void swap(QExplicitlySharedDataPointer &other)
+    { qSwap(d, other.d); }
 
 protected:
     T *clone();
@@ -234,6 +248,14 @@ Q_OUTOFLINE_TEMPLATE void QExplicitlySharedDataPointer<T>::detach_helper()
 template <class T>
 Q_INLINE_TEMPLATE QExplicitlySharedDataPointer<T>::QExplicitlySharedDataPointer(T *adata) : d(adata)
 { if (d) d->ref.ref(); }
+
+template <class T>
+Q_INLINE_TEMPLATE void qSwap(QSharedDataPointer<T> &p1, QSharedDataPointer<T> &p2)
+{ p1.swap(p2); }
+
+template <class T>
+Q_INLINE_TEMPLATE void qSwap(QExplicitlySharedDataPointer<T> &p1, QExplicitlySharedDataPointer<T> &p2)
+{ p1.swap(p2); }
 
 QT_END_NAMESPACE
 

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,6 +55,8 @@
 
 #include "QtCore/qprocess.h"
 #include "QtCore/qstringlist.h"
+#include "QtCore/qhash.h"
+#include "QtCore/qshareddata.h"
 #include "private/qringbuffer_p.h"
 #include "private/qiodevice_p.h"
 
@@ -75,6 +77,24 @@ class QSocketNotifier;
 class QWindowsPipeWriter;
 class QWinEventNotifier;
 class QTimer;
+#if defined(Q_OS_SYMBIAN)
+class RProcess;
+#endif
+
+class QProcessEnvironmentPrivate: public QSharedData
+{
+public:
+#ifdef Q_OS_WIN
+    typedef QString Unit;
+#else
+    typedef QByteArray Unit;
+#endif
+    typedef QHash<Unit, Unit> Hash;
+    Hash hash;
+
+    static QProcessEnvironment fromList(const QStringList &list);
+    QStringList toList() const;
+};
 
 class QProcessPrivate : public QIODevicePrivate
 {
@@ -161,7 +181,10 @@ public:
 
     QString program;
     QStringList arguments;
-    QStringList environment;
+#if defined(Q_OS_WIN) || defined(Q_OS_SYMBIAN)
+    QString nativeArguments;
+#endif
+    QProcessEnvironment environment;
 
     QRingBuffer outputReadBuffer;
     QRingBuffer errorReadBuffer;
@@ -180,7 +203,7 @@ public:
     QWinEventNotifier *processFinishedNotifier;
 
     void startProcess();
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) && !defined(Q_OS_SYMBIAN)
     void execChild(const char *workingDirectory, char **path, char **argv, char **envp);
 #endif
     bool processStarted();
@@ -220,6 +243,11 @@ public:
     void cleanup();
 #ifdef Q_OS_UNIX
     static void initializeProcessManager();
+#endif
+
+#ifdef Q_OS_SYMBIAN
+    bool processLaunched;
+    RProcess* symbianProcess;
 #endif
 };
 

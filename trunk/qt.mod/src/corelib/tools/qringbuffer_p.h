@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -58,7 +58,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Q_CORE_EXPORT QRingBuffer
+class QRingBuffer
 {
 public:
     inline QRingBuffer(int growth = 4096) : basicBlockSize(growth) {
@@ -72,6 +72,52 @@ public:
 
     inline const char *readPointer() const {
         return buffers.isEmpty() ? 0 : (buffers.first().constData() + head);
+    }
+
+    // access the bytes at a specified position
+    // the out-variable length will contain the amount of bytes readable
+    // from there, e.g. the amount still the same QByteArray
+    inline const char *readPointerAtPosition(qint64 pos, qint64 &length) const {
+        if (buffers.isEmpty()) {
+            length = 0;
+            return 0;
+        }
+
+        if (pos >= bufferSize) {
+            length = 0;
+            return 0;
+        }
+
+        // special case: it is in the first buffer
+        int nextDataBlockSizeValue = nextDataBlockSize();
+        if (pos - head < nextDataBlockSizeValue) {
+            length = nextDataBlockSizeValue - pos;
+            return buffers.at(0).constData() + head + pos;
+        }
+
+        // special case: we only had one buffer and tried to read over it
+        if (buffers.length() == 1) {
+            length = 0;
+            return 0;
+        }
+
+        // skip the first
+        pos -= nextDataBlockSizeValue;
+
+        // normal case: it is somewhere in the second to the-one-before-the-tailBuffer
+        for (int i = 1; i < tailBuffer; i++) {
+            if (pos >= buffers[i].size()) {
+                pos -= buffers[i].size();
+                continue;
+            }
+
+            length = buffers[i].length() - pos;
+            return buffers[i].constData() + pos;
+        }
+
+        // it is in the tail buffer
+        length = tail - pos;
+        return buffers[tailBuffer].constData() + pos;
     }
 
     inline void free(int bytes) {
@@ -101,9 +147,20 @@ public:
             --tailBuffer;
             head = 0;
         }
+
+        if (isEmpty())
+            clear(); // try to minify/squeeze us
     }
 
     inline char *reserve(int bytes) {
+        // if this is a fresh empty QRingBuffer
+        if (bufferSize == 0) {
+            buffers[0].resize(qMax(basicBlockSize, bytes));
+            bufferSize += bytes;
+            tail = bytes;
+            return buffers[tailBuffer].data();
+        }
+
         bufferSize += bytes;
 
         // if there is already enough space, simply return.
@@ -162,6 +219,9 @@ public:
             --tailBuffer;
             tail = buffers.at(tailBuffer).size();
         }
+
+        if (isEmpty())
+            clear(); // try to minify/squeeze us
     }
 
     inline bool isEmpty() const {
@@ -198,13 +258,10 @@ public:
     }
 
     inline void clear() {
-        if(!buffers.isEmpty()) {
-            QByteArray tmp = buffers[0];
-            buffers.clear();
-            buffers << tmp;
-            if (buffers.at(0).size() != basicBlockSize)
-                buffers[0].resize(basicBlockSize);
-        }
+        buffers.erase(buffers.begin() + 1, buffers.end());
+        buffers[0].resize(0);
+        buffers[0].squeeze();
+
         head = tail = 0;
         tailBuffer = 0;
         bufferSize = 0;
@@ -220,6 +277,33 @@ public:
                 start = head;
             if (i == tailBuffer)
                 end = tail;
+            const char *ptr = buffers.at(i).data() + start;
+            for (int j = start; j < end; ++j) {
+                if (*ptr++ == c)
+                    return index;
+                ++index;
+            }
+        }
+        return -1;
+    }
+
+    inline int indexOf(char c, int maxLength) const {
+        int index = 0;
+        int remain = qMin(size(), maxLength);
+        for (int i = 0; remain && i < buffers.size(); ++i) {
+            int start = 0;
+            int end = buffers.at(i).size();
+
+            if (i == 0)
+                start = head;
+            if (i == tailBuffer)
+                end = tail;
+            if (remain < end - start) {
+                end = start + remain;
+                remain = 0;
+            } else {
+                remain -= end - start;
+            }
             const char *ptr = buffers.at(i).data() + start;
             for (int j = start; j < end; ++j) {
                 if (*ptr++ == c)
@@ -253,6 +337,54 @@ public:
 
     inline QByteArray readAll() {
         return read(size());
+    }
+
+    // read an unspecified amount (will read the first buffer)
+    inline QByteArray read() {
+        if (bufferSize == 0)
+            return QByteArray();
+
+        // multiple buffers, just take the first one
+        if (head == 0 && tailBuffer != 0) {
+            QByteArray qba = buffers.takeFirst();
+            --tailBuffer;
+            bufferSize -= qba.length();
+            return qba;
+        }
+
+        // one buffer with good value for head. Just take it.
+        if (head == 0 && tailBuffer == 0) {
+            QByteArray qba = buffers.takeFirst();
+            qba.resize(tail);
+            buffers << QByteArray();
+            bufferSize = 0;
+            tail = 0;
+            return qba;
+        }
+
+        // Bad case: We have to memcpy.
+        // We can avoid by initializing the QRingBuffer with basicBlockSize of 0
+        // and only using this read() function.
+        QByteArray qba(readPointer(), nextDataBlockSize());
+        buffers.removeFirst();
+        head = 0;
+        if (tailBuffer == 0) {
+            buffers << QByteArray();
+            tail = 0;
+        } else {
+            --tailBuffer;
+        }
+        bufferSize -= qba.length();
+        return qba;        
+    }
+
+    // append a new buffer to the end
+    inline void append(const QByteArray &qba) {
+        buffers[tailBuffer].resize(tail);
+        buffers << qba;
+        ++tailBuffer;
+        tail = qba.length();
+        bufferSize += qba.length();
     }
 
     inline QByteArray peek(int maxLength) const {
@@ -309,7 +441,7 @@ public:
 private:
     QList<QByteArray> buffers;
     int head, tail;
-    int tailBuffer;
+    int tailBuffer; // always buffers.size() - 1
     int basicBlockSize;
     int bufferSize;
 };

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -82,8 +82,8 @@ public:
     static QTextCodec *codecForHtml(const QByteArray &ba);
     static QTextCodec *codecForHtml(const QByteArray &ba, QTextCodec *defaultCodec);
 
-    QTextDecoder* makeDecoder() const;
-    QTextEncoder* makeEncoder() const;
+    static QTextCodec *codecForUtfText(const QByteArray &ba);
+    static QTextCodec *codecForUtfText(const QByteArray &ba, QTextCodec *defaultCodec);
 
     bool canEncode(QChar) const;
     bool canEncode(const QString&) const;
@@ -117,6 +117,12 @@ public:
     QByteArray fromUnicode(const QChar *in, int length, ConverterState *state = 0) const
         { return convertFromUnicode(in, length, state); }
 
+    // ### Qt 5: merge these functions.
+    QTextDecoder* makeDecoder() const;
+    QTextDecoder* makeDecoder(ConversionFlags flags) const;
+    QTextEncoder* makeEncoder() const;
+    QTextEncoder* makeEncoder(ConversionFlags flags) const;
+
     virtual QByteArray name() const = 0;
     virtual QList<QByteArray> aliases() const;
     virtual int mibEnum() const = 0;
@@ -142,23 +148,25 @@ public:
 private:
     friend class QTextCodecCleanup;
     static QTextCodec *cftr;
+    static bool validCodecs();
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(QTextCodec::ConversionFlags)
 
-inline QTextCodec* QTextCodec::codecForTr() { return cftr; }
+        inline QTextCodec* QTextCodec::codecForTr() { return validCodecs() ? cftr : 0; }
 inline void QTextCodec::setCodecForTr(QTextCodec *c) { cftr = c; }
-inline QTextCodec* QTextCodec::codecForCStrings() { return QString::codecForCStrings; }
+inline QTextCodec* QTextCodec::codecForCStrings() { return validCodecs() ? QString::codecForCStrings : 0; }
 inline void QTextCodec::setCodecForCStrings(QTextCodec *c) { QString::codecForCStrings = c; }
 
 class Q_CORE_EXPORT QTextEncoder {
     Q_DISABLE_COPY(QTextEncoder)
 public:
     explicit QTextEncoder(const QTextCodec *codec) : c(codec), state() {}
+    QTextEncoder(const QTextCodec *codec, QTextCodec::ConversionFlags flags);
     ~QTextEncoder();
     QByteArray fromUnicode(const QString& str);
     QByteArray fromUnicode(const QChar *uc, int len);
 #ifdef QT3_SUPPORT
-    QByteArray fromUnicode(const QString& uc, int& lenInOut);
+    QT3_SUPPORT QByteArray fromUnicode(const QString& uc, int& lenInOut);
 #endif
     bool hasFailure() const;
 private:
@@ -170,6 +178,7 @@ class Q_CORE_EXPORT QTextDecoder {
     Q_DISABLE_COPY(QTextDecoder)
 public:
     explicit QTextDecoder(const QTextCodec *codec) : c(codec), state() {}
+    QTextDecoder(const QTextCodec *codec, QTextCodec::ConversionFlags flags);
     ~QTextDecoder();
     QString toUnicode(const char* chars, int len);
     QString toUnicode(const QByteArray &ba);

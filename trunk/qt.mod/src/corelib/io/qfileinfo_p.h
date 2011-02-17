@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -46,100 +46,96 @@
 //  W A R N I N G
 //  -------------
 //
-// This file is not part of the Qt API.  It exists for the convenience
-// of QIODevice. This header file may change from version to
+// This file is not part of the Qt API.  It exists purely as an
+// implementation detail.  This header file may change from version to
 // version without notice, or even be removed.
 //
 // We mean it.
 //
 
 #include "qfileinfo.h"
+#include "qabstractfileengine.h"
+#include "qdatetime.h"
+#include "qatomic.h"
+#include "qshareddata.h"
 
 QT_BEGIN_NAMESPACE
 
-class QFileInfoPrivate
+class QFileInfoPrivate : public QSharedData
 {
 public:
-    QFileInfoPrivate(const QFileInfo *copy=0);
-    ~QFileInfoPrivate();
 
-    void initFileEngine(const QString &);
+    enum { CachedFileFlags=0x01, CachedLinkTypeFlag=0x02, CachedBundleTypeFlag=0x04,
+           CachedMTime=0x10, CachedCTime=0x20, CachedATime=0x40,
+           CachedSize =0x08, CachedPerms=0x80 };
 
-    enum Access {
-        ReadAccess,
-        WriteAccess,
-        ExecuteAccess
-    };
-    bool hasAccess(Access access) const;
+    inline QFileInfoPrivate()
+        : QSharedData(), fileEngine(0),
+        cachedFlags(0),
+        isDefaultConstructed(true),
+        cache_enabled(true), fileFlags(0), fileSize(0)
+    {}
+    inline QFileInfoPrivate(const QFileInfoPrivate &copy)
+        : QSharedData(copy), fileEngine(QAbstractFileEngine::create(copy.fileName)),
+        fileName(copy.fileName),
+        cachedFlags(0),
+#ifndef QT_NO_FSFILEENGINE
+        isDefaultConstructed(false),
+#else
+        isDefaultConstructed(!fileEngine),
+#endif
+        cache_enabled(copy.cache_enabled), fileFlags(0), fileSize(0)
+    {}
+    inline QFileInfoPrivate(const QString &file)
+        : QSharedData(), fileEngine(QAbstractFileEngine::create(file)),
+        fileName(file),
+        cachedFlags(0),
+#ifndef QT_NO_FSFILEENGINE
+        isDefaultConstructed(false),
+#else
+        isDefaultConstructed(!fileEngine),
+#endif
+        cache_enabled(true), fileFlags(0), fileSize(0)
+    {
+    }
+
+    inline void clearFlags() const {
+        fileFlags = 0;
+        cachedFlags = 0;
+        if (fileEngine)
+            (void)fileEngine->fileFlags(QAbstractFileEngine::Refresh);
+    }
+    inline void clear() {
+        clearFlags();
+        for (int i = QAbstractFileEngine::NFileNames - 1 ; i >= 0 ; --i)
+            fileNames[i].clear();
+        fileOwners[1].clear();
+        fileOwners[0].clear();
+    }
 
     uint getFileFlags(QAbstractFileEngine::FileFlags) const;
     QDateTime &getFileTime(QAbstractFileEngine::FileTime) const;
     QString getFileName(QAbstractFileEngine::FileName) const;
+    QString getFileOwner(QAbstractFileEngine::FileOwner own) const;
 
-    enum {
-        CachedFileFlags = 0x01,
-        CachedLinkTypeFlag = 0x02,
-        CachedBundleTypeFlag= 0x04,
-        CachedMTime = 0x10,
-        CachedCTime = 0x20,
-        CachedATime = 0x40,
-        CachedSize = 0x08
-    };
+    QScopedPointer<QAbstractFileEngine> const fileEngine;
 
-    struct Data
-    {
-        inline Data()
-            : ref(1), fileEngine(0), cache_enabled(1)
-        {
-            clear();
-        }
+    mutable QString fileName;
+    mutable QString fileNames[QAbstractFileEngine::NFileNames];
+    mutable QString fileOwners[2];
 
-        inline Data(const Data &copy)
-            : ref(1), fileEngine(QAbstractFileEngine::create(copy.fileName)),
-              fileName(copy.fileName), cache_enabled(copy.cache_enabled)
-        {
-            clear();
-        }
-
-        inline ~Data()
-        {
-            delete fileEngine;
-        }
-
-        inline void clear()
-        {
-            fileNames.clear();
-            fileFlags = 0;
-            cachedFlags = 0;
-        }
-
-        mutable QAtomicInt ref;
-
-        QAbstractFileEngine *fileEngine;
-        mutable QString fileName;
-        mutable QHash<int, QString> fileNames;
-        mutable uint cachedFlags : 31;
-        mutable uint cache_enabled : 1;
-        mutable uint fileFlags;
-        mutable qint64 fileSize;
-        mutable QDateTime fileTimes[3];
-
-        inline bool getCachedFlag(uint c) const
-        { return cache_enabled ? (cachedFlags & c) : 0; }
-
-        inline void setCachedFlag(uint c)
-        { if (cache_enabled) cachedFlags |= c; }
-    } *data;
-
-    inline void reset() {
-        detach();
-        data->clear();
-    }
-
-    void detach();
+    mutable uint cachedFlags : 30;
+    bool const isDefaultConstructed : 1; // QFileInfo is a default constructed instance
+    bool cache_enabled : 1;
+    mutable uint fileFlags;
+    mutable qint64 fileSize;
+    mutable QDateTime fileTimes[3];
+    inline bool getCachedFlag(uint c) const
+    { return cache_enabled ? (cachedFlags & c) : 0; }
+    inline void setCachedFlag(uint c) const
+    { if (cache_enabled) cachedFlags |= c; }
 };
 
-
 QT_END_NAMESPACE
-#endif
 
+#endif // QFILEINFO_P_H

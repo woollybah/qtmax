@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,6 +61,10 @@
 #include "QtCore/qwaitcondition.h"
 #include "QtCore/qmap.h"
 #include "private/qobject_p.h"
+
+#ifdef Q_OS_SYMBIAN
+#include <e32base.h>
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -107,33 +111,8 @@ public:
     { }
 };
 
-class Q_CORE_EXPORT QThreadData
-{
-    QAtomicInt _ref;
-
-public:
-    QThreadData(int initialRefCount = 1);
-    ~QThreadData();
-
-    static QThreadData *current();
-    static QThreadData *get2(QThread *thread);
-
-    void ref();
-    void deref();
-
-    QThread *thread;
-    bool quitNow;
-    int loopLevel;
-    QAbstractEventDispatcher *eventDispatcher;
-    QStack<QEventLoop *> eventLoops;
-    QPostEventList postEventList;
-    bool canWait;
-    QMap<int, void *> tls;
-
-    QMutex mutex;
-};
-
 #ifndef QT_NO_THREAD
+
 class QThreadPrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(QThread)
@@ -148,6 +127,9 @@ public:
     bool finished;
     bool terminated;
 
+    bool exited;
+    int returnCode;
+
     uint stackSize;
     QThread::Priority priority;
 
@@ -158,22 +140,79 @@ public:
     QWaitCondition thread_done;
 
     static void *start(void *arg);
-    static void finish(void *arg);
+#if defined(Q_OS_SYMBIAN)
+    static void finish(void *arg, bool lockAnyway=true, bool closeNativeHandle=true);
+#else
+    static void finish(void *);
 #endif
+#endif // Q_OS_UNIX
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
     HANDLE handle;
     unsigned int id;
     int waiters;
-    bool terminationEnabled, terminatePending;
 
     static unsigned int __stdcall start(void *);
     static void finish(void *, bool lockAnyway=true);
 #endif // Q_OS_WIN32
 
+#if defined(Q_OS_WIN32) || defined(Q_OS_WINCE) || defined (Q_OS_SYMBIAN)
+    bool terminationEnabled, terminatePending;
+# endif
     QThreadData *data;
 
     static void createEventDispatcher(QThreadData *data);
+};
+
+#else // QT_NO_THREAD
+
+class QThreadPrivate : public QObjectPrivate
+{
+public:
+    QThreadPrivate(QThreadData *d = 0) : data(d ? d : new QThreadData) {}
+    ~QThreadPrivate() { delete data; }
+
+    QThreadData *data;
+
+    static void setCurrentThread(QThread*) {}
+    static QThread *threadForId(int) { return QThread::currentThread(); }
+    static void createEventDispatcher(QThreadData *data);
+
+    Q_DECLARE_PUBLIC(QThread)
+};
+
+#endif // QT_NO_THREAD
+
+class QThreadData
+{
+    QAtomicInt _ref;
+
+public:
+    QThreadData(int initialRefCount = 1);
+    ~QThreadData();
+
+    static QThreadData *current();
+    static QThreadData *get2(QThread *thread)
+    { Q_ASSERT_X(thread != 0, "QThread", "internal error"); return thread->d_func()->data; }
+
+
+    void ref();
+    void deref();
+
+    QThread *thread;
+    bool quitNow;
+    int loopLevel;
+    QAbstractEventDispatcher *eventDispatcher;
+    QStack<QEventLoop *> eventLoops;
+    QPostEventList postEventList;
+    bool canWait;
+    QVector<void *> tls;
+
+    QMutex mutex;
+
+# ifdef Q_OS_SYMBIAN
+    RThread symbian_thread_handle;
+# endif
 };
 
 // thread wrapper for the main() thread
@@ -190,25 +229,6 @@ public:
 private:
     void run();
 };
-
-#else // QT_NO_THREAD
-
-class QThreadPrivate : public QObjectPrivate
-{
-public:
-    QThreadPrivate() : data(QThreadData::current()) {}
-    ~QThreadPrivate() { }
-
-    QThreadData *data;
-
-    static void setCurrentThread(QThread*) {}
-    static QThread *threadForId(int) { return QThread::currentThread(); }
-    static void createEventDispatcher(QThreadData *data);
-
-    Q_DECLARE_PUBLIC(QThread)
-};
-
-#endif // QT_NO_THREAD
 
 QT_END_NAMESPACE
 

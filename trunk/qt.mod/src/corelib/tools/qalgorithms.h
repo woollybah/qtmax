@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -141,23 +141,6 @@ inline void qCount(const Container &container, const T &value, Size &n)
     qCount(container.constBegin(), container.constEnd(), value, n);
 }
 
-
-#if defined Q_CC_MSVC && _MSC_VER < 1300
-template <typename T>
-inline void qSwap(T &value1, T &value2)
-{
-    qSwap_helper<T>(value1, value2, (T *)0);
-}
-#else
-template <typename T>
-inline void qSwap(T &value1, T &value2)
-{
-    T t = value1;
-    value1 = value2;
-    value2 = t;
-}
-#endif
-
 #ifdef qdoc
 template <typename T>
 LessThan qLess()
@@ -244,7 +227,7 @@ template <typename RandomAccessIterator, typename T>
 Q_OUTOFLINE_TEMPLATE RandomAccessIterator qLowerBound(RandomAccessIterator begin, RandomAccessIterator end, const T &value)
 {
     // Implementation is duplicated from QAlgorithmsPrivate to keep existing code
-    // compiling. We have to allow using *begin and value with different types, 
+    // compiling. We have to allow using *begin and value with different types,
     // and then implementing operator< for those types.
     RandomAccessIterator middle;
     int n = end - begin;
@@ -312,23 +295,12 @@ template <typename RandomAccessIterator, typename T>
 Q_OUTOFLINE_TEMPLATE RandomAccessIterator qBinaryFind(RandomAccessIterator begin, RandomAccessIterator end, const T &value)
 {
     // Implementation is duplicated from QAlgorithmsPrivate.
-    qint64 l = 0;
-    qint64 r = end - begin - 1;
-    if (r < 0)
-        return end;
-    qint64 i = (l + r + 1) / 2;
+    RandomAccessIterator it = qLowerBound(begin, end, value);
 
-    while (r != l) {
-        if (value < begin[i])
-            r = i - 1;
-        else
-            l = i;
-        i = (l + r + 1) / 2;
-    }
-    if (begin[i] < value || value < begin[i])
+    if (it == end || value < *it)
         return end;
-    else
-        return begin + i;
+
+    return it;
 }
 
 template <typename RandomAccessIterator, typename T, typename LessThan>
@@ -368,7 +340,7 @@ template <typename RandomAccessIterator, typename T, typename LessThan>
 Q_OUTOFLINE_TEMPLATE void qSortHelper(RandomAccessIterator start, RandomAccessIterator end, const T &t, LessThan lessThan)
 {
 top:
-    int span = end - start;
+    int span = int(end - start);
     if (span < 2)
         return;
 
@@ -434,9 +406,9 @@ Q_OUTOFLINE_TEMPLATE void qReverse(RandomAccessIterator begin, RandomAccessItera
 template <typename RandomAccessIterator>
 Q_OUTOFLINE_TEMPLATE void qRotate(RandomAccessIterator begin, RandomAccessIterator middle, RandomAccessIterator end)
 {
-    qReverse(begin, middle); 
-    qReverse(middle, end); 
-    qReverse(begin, end); 
+    qReverse(begin, middle);
+    qReverse(middle, end);
+    qReverse(begin, end);
 }
 
 template <typename RandomAccessIterator, typename T, typename LessThan>
@@ -480,7 +452,7 @@ Q_OUTOFLINE_TEMPLATE void qStableSortHelper(RandomAccessIterator begin, RandomAc
     const int span = end - begin;
     if (span < 2)
        return;
-       
+
     const RandomAccessIterator middle = begin + span / 2;
     qStableSortHelper(begin, middle, t, lessThan);
     qStableSortHelper(middle, end, t, lessThan);
@@ -497,7 +469,7 @@ template <typename RandomAccessIterator, typename T, typename LessThan>
 Q_OUTOFLINE_TEMPLATE RandomAccessIterator qLowerBoundHelper(RandomAccessIterator begin, RandomAccessIterator end, const T &value, LessThan lessThan)
 {
     RandomAccessIterator middle;
-    int n = end - begin;
+    int n = int(end - begin);
     int half;
 
     while (n > 0) {
@@ -537,23 +509,12 @@ Q_OUTOFLINE_TEMPLATE RandomAccessIterator qUpperBoundHelper(RandomAccessIterator
 template <typename RandomAccessIterator, typename T, typename LessThan>
 Q_OUTOFLINE_TEMPLATE RandomAccessIterator qBinaryFindHelper(RandomAccessIterator begin, RandomAccessIterator end, const T &value, LessThan lessThan)
 {
-    qint64 l = 0;
-    qint64 r = end - begin - 1;
-    if (r < 0)
-        return end;
-    qint64 i = (l + r + 1) / 2;
+    RandomAccessIterator it = qLowerBoundHelper(begin, end, value, lessThan);
 
-    while (r != l) {
-        if (lessThan(value, begin[i]))
-            r = i - 1;
-        else
-            l = i;
-        i = (l + r + 1) / 2;
-    }
-    if (lessThan(begin[i], value) || lessThan(value, begin[i]))
+    if (it == end || lessThan(value, *it))
         return end;
-    else
-        return begin + i;
+
+    return it;
 }
 
 } //namespace QAlgorithmsPrivate

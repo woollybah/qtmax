@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -43,6 +43,14 @@
 #define QENDIAN_H
 
 #include <QtCore/qglobal.h>
+
+#ifdef Q_OS_LINUX
+# include <features.h>
+#endif
+
+#ifdef __GLIBC__
+#include <byteswap.h>
+#endif
 
 QT_BEGIN_HEADER
 
@@ -149,9 +157,9 @@ template <> inline quint32 qFromLittleEndian<quint32>(const uchar *src)
 
 template <> inline quint16 qFromLittleEndian<quint16>(const uchar *src)
 {
-    return 0
-        | src[0]
-        | src[1] * 0x0100;
+    return quint16(0
+                   | src[0]
+                   | src[1] * 0x0100);
 }
 
 // signed specializations
@@ -241,9 +249,9 @@ inline quint32 qFromBigEndian<quint32>(const uchar *src)
 template<>
 inline quint16 qFromBigEndian<quint16>(const uchar *src)
 {
-    return 0
-        | src[1]
-        | src[0] * quint16(0x0100);
+    return quint16( 0
+                    | src[1]
+                    | src[0] * quint16(0x0100));
 }
 
 
@@ -264,6 +272,21 @@ template <> inline qint16 qFromBigEndian<qint16>(const uchar *src)
  * and it is therefore a bit more convenient and in most cases more efficient.
 */
 template <typename T> T qbswap(T source);
+
+#ifdef __GLIBC__
+template <> inline quint64 qbswap<quint64>(quint64 source)
+{
+    return bswap_64(source);
+}
+template <> inline quint32 qbswap<quint32>(quint32 source)
+{
+    return bswap_32(source);
+}
+template <> inline quint16 qbswap<quint16>(quint16 source)
+{
+    return bswap_16(source);
+}
+#else
 template <> inline quint64 qbswap<quint64>(quint64 source)
 {
     return 0
@@ -288,10 +311,11 @@ template <> inline quint32 qbswap<quint32>(quint32 source)
 
 template <> inline quint16 qbswap<quint16>(quint16 source)
 {
-    return 0
-        | ((source & 0x00ff) << 8)
-        | ((source & 0xff00) >> 8);
+    return quint16( 0
+                    | ((source & 0x00ff) << 8)
+                    | ((source & 0xff00) >> 8) );
 }
+#endif // __GLIBC__
 
 // signed specializations
 template <> inline qint64 qbswap<qint64>(qint64 source)

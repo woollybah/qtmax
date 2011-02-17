@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -42,8 +42,8 @@
 #ifndef QBYTEARRAY_H
 #define QBYTEARRAY_H
 
-#include <QtCore/qglobal.h>
 #include <QtCore/qatomic.h>
+#include <QtCore/qnamespace.h>
 
 #include <string.h>
 #include <stdarg.h>
@@ -122,11 +122,23 @@ template <typename T> class QList;
 
 class Q_CORE_EXPORT QByteArray
 {
+private:
+    struct Data {
+        QBasicAtomicInt ref;
+        int alloc, size;
+        // ### Qt 5.0: We need to add the missing capacity bit
+        // (like other tool classes have), to maintain the
+        // reserved memory on resize.
+        char *data;
+        char array[1];
+    };
+
 public:
     inline QByteArray();
     QByteArray(const char *);
     QByteArray(const char *, int size);
     QByteArray(int size, char c);
+    QByteArray(int size, Qt::Initialization);
     inline QByteArray(const QByteArray &);
     inline ~QByteArray();
 
@@ -152,6 +164,7 @@ public:
     inline const char *constData() const;
     inline void detach();
     bool isDetached() const;
+    inline bool isSharedWith(const QByteArray &other) const { return d == other.d; }
     void clear();
 
 #ifdef Q_COMPILER_MANGLES_RETURN_TYPE
@@ -212,6 +225,7 @@ public:
 
     QByteArray &prepend(char c);
     QByteArray &prepend(const char *s);
+    QByteArray &prepend(const char *s, int len);
     QByteArray &prepend(const QByteArray &a);
     QByteArray &append(char c);
     QByteArray &append(const char *s);
@@ -219,9 +233,11 @@ public:
     QByteArray &append(const QByteArray &a);
     QByteArray &insert(int i, char c);
     QByteArray &insert(int i, const char *s);
+    QByteArray &insert(int i, const char *s, int len);
     QByteArray &insert(int i, const QByteArray &a);
     QByteArray &remove(int index, int len);
     QByteArray &replace(int index, int len, const char *s);
+    QByteArray &replace(int index, int len, const char *s, int alen);
     QByteArray &replace(int index, int len, const QByteArray &s);
     QByteArray &replace(char before, const char *after);
     QByteArray &replace(char before, const QByteArray &after);
@@ -283,6 +299,7 @@ public:
     QByteArray &setNum(qulonglong, int base = 10);
     QByteArray &setNum(float, char f = 'g', int prec = 6);
     QByteArray &setNum(double, char f = 'g', int prec = 6);
+    QByteArray &setRawData(const char *a, uint n); // ### Qt 5: use an int
 
     static QByteArray number(int, int base = 10);
     static QByteArray number(uint, int base = 10);
@@ -309,6 +326,7 @@ public:
     // stl compatibility
     typedef const char & const_reference;
     typedef char & reference;
+    typedef char value_type;
     void push_back(char c);
     void push_back(const char *c);
     void push_back(const QByteArray &a);
@@ -326,8 +344,6 @@ public:
     inline QT3_SUPPORT QByteArray& duplicate(const QByteArray& a) { *this = a; return *this; }
     inline QT3_SUPPORT QByteArray& duplicate(const char *a, uint n)
     { *this = QByteArray(a, n); return *this; }
-    inline QT3_SUPPORT QByteArray& setRawData(const char *a, uint n)
-    { *this = fromRawData(a, n); return *this; }
     inline QT3_SUPPORT void resetRawData(const char *, uint) { clear(); }
     inline QT3_SUPPORT QByteArray lower() const { return toLower(); }
     inline QT3_SUPPORT QByteArray upper() const { return toUpper(); }
@@ -347,15 +363,6 @@ public:
 
 private:
     operator QNoImplicitBoolCast() const;
-    struct Data {
-        QBasicAtomicInt ref;
-        int alloc, size;
-	// ### Qt 5.0: We need to add the missing capacity bit
-	// (like other tool classes have), to maintain the
-	// reserved memory on resize.
-        char *data;
-        char array[1];
-    };
     static Data shared_null;
     static Data shared_empty;
     Data *d;
@@ -366,6 +373,7 @@ private:
 
     friend class QByteRef;
     friend class QString;
+    friend Q_CORE_EXPORT QByteArray qUncompress(const uchar *data, int nbytes);
 public:
     typedef Data * DataPtr;
     inline DataPtr &data_ptr() { return d; }
@@ -435,10 +443,10 @@ class Q_CORE_EXPORT QByteRef {
 public:
 #ifdef Q_COMPILER_MANGLES_RETURN_TYPE
     inline operator const char() const
-        { return i < a.d->size ? a.d->data[i] : 0; }
+        { return i < a.d->size ? a.d->data[i] : char(0); }
 #else
     inline operator char() const
-        { return i < a.d->size ? a.d->data[i] : 0; }
+        { return i < a.d->size ? a.d->data[i] : char(0); }
 #endif
     inline QByteRef &operator=(char c)
         { if (i >= a.d->size) a.expand(i); else a.detach();
@@ -565,7 +573,7 @@ inline QByteArray &QByteArray::setNum(float n, char f, int prec)
 { return setNum(double(n),f,prec); }
 
 
-#ifndef QT_NO_DATASTREAM
+#if !defined(QT_NO_DATASTREAM) || (defined(QT_BOOTSTRAPPED) && !defined(QT_BUILD_QMAKE))
 Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QByteArray &);
 Q_CORE_EXPORT QDataStream &operator>>(QDataStream &, QByteArray &);
 #endif

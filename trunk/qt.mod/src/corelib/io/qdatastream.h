@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -42,6 +42,7 @@
 #ifndef QDATASTREAM_H
 #define QDATASTREAM_H
 
+#include <QtCore/qscopedpointer.h>
 #include <QtCore/qiodevice.h>
 #include <QtCore/qglobal.h>
 
@@ -65,9 +66,8 @@ template <typename T> class QSet;
 template <class Key, class T> class QHash;
 template <class Key, class T> class QMap;
 
+#if !defined(QT_NO_DATASTREAM) || defined(QT_BOOTSTRAPPED)
 class QDataStreamPrivate;
-
-#ifndef QT_NO_DATASTREAM
 class Q_CORE_EXPORT QDataStream
 {
 public:
@@ -83,10 +83,12 @@ public:
         Qt_4_2 = 8,
         Qt_4_3 = 9,
         Qt_4_4 = 10,
-        Qt_4_5 = 11
-#if QT_VERSION >= 0x040600
+        Qt_4_5 = 11,
+        Qt_4_6 = 12,
+        Qt_4_7 = Qt_4_6
+#if QT_VERSION >= 0x040800
 #error Add the datastream version for this Qt version
-        , Qt_4_6 = Qt_4_5
+        Qt_4_8 = Qt_4_7
 #endif
     };
 
@@ -99,6 +101,11 @@ public:
         Ok,
         ReadPastEnd,
 	ReadCorruptData
+    };
+
+    enum FloatingPointPrecision {
+        SinglePrecision,
+        DoublePrecision
     };
 
     QDataStream();
@@ -122,6 +129,9 @@ public:
     Status status() const;
     void setStatus(Status status);
     void resetStatus();
+
+    FloatingPointPrecision floatingPointPrecision() const;
+    void setFloatingPointPrecision(FloatingPointPrecision precision);
 
     ByteOrder byteOrder() const;
     void setByteOrder(ByteOrder);
@@ -176,7 +186,7 @@ public:
 private:
     Q_DISABLE_COPY(QDataStream)
 
-    QDataStreamPrivate *d;
+    QScopedPointer<QDataStreamPrivate> d;
 
     QIODevice *dev;
     bool owndev;
@@ -233,6 +243,7 @@ QDataStream& operator>>(QDataStream& s, QList<T>& l)
     l.clear();
     quint32 c;
     s >> c;
+    l.reserve(c);
     for(quint32 i = 0; i < c; ++i)
     {
         T t;

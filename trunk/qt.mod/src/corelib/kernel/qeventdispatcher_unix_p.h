@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -56,54 +56,20 @@
 #include "QtCore/qabstracteventdispatcher.h"
 #include "QtCore/qlist.h"
 #include "private/qabstracteventdispatcher_p.h"
+#include "private/qcore_unix_p.h"
 #include "private/qpodlist_p.h"
+#include "QtCore/qvarlengtharray.h"
 
-#include <sys/types.h>
-#include <sys/time.h>
-#if !defined(Q_OS_HPUX) || defined(__ia64)
-#include <sys/select.h>
+#if defined(Q_OS_VXWORKS)
+#  include <sys/times.h>
+#else
+#  include <sys/time.h>
+#  if !defined(Q_OS_HPUX) || defined(__ia64)
+#    include <sys/select.h>
+#  endif
 #endif
-#include <unistd.h>
 
 QT_BEGIN_NAMESPACE
-#if !defined(_POSIX_MONOTONIC_CLOCK)
-#  define _POSIX_MONOTONIC_CLOCK -1
-#endif
-
-// Internal operator functions for timevals
-inline bool operator<(const timeval &t1, const timeval &t2)
-{ return t1.tv_sec < t2.tv_sec || (t1.tv_sec == t2.tv_sec && t1.tv_usec < t2.tv_usec); }
-inline bool operator==(const timeval &t1, const timeval &t2)
-{ return t1.tv_sec == t2.tv_sec && t1.tv_usec == t2.tv_usec; }
-inline timeval &operator+=(timeval &t1, const timeval &t2)
-{
-    t1.tv_sec += t2.tv_sec;
-    if ((t1.tv_usec += t2.tv_usec) >= 1000000l) {
-        ++t1.tv_sec;
-        t1.tv_usec -= 1000000l;
-    }
-    return t1;
-}
-inline timeval operator+(const timeval &t1, const timeval &t2)
-{
-    timeval tmp;
-    tmp.tv_sec = t1.tv_sec + t2.tv_sec;
-    if ((tmp.tv_usec = t1.tv_usec + t2.tv_usec) >= 1000000l) {
-        ++tmp.tv_sec;
-        tmp.tv_usec -= 1000000l;
-    }
-    return tmp;
-}
-inline timeval operator-(const timeval &t1, const timeval &t2)
-{
-    timeval tmp;
-    tmp.tv_sec = t1.tv_sec - t2.tv_sec;
-    if ((tmp.tv_usec = t1.tv_usec - t2.tv_usec) < 0l) {
-        --tmp.tv_sec;
-        tmp.tv_usec += 1000000l;
-    }
-    return tmp;
-}
 
 // internal timer info
 struct QTimerInfo {
@@ -111,14 +77,12 @@ struct QTimerInfo {
     timeval interval; // - timer interval
     timeval timeout;  // - when to sent event
     QObject *obj;     // - object to receive event
-    bool inTimerEvent;
+    QTimerInfo **activateRef; // - ref from activateTimers
 };
 
 class QTimerInfoList : public QList<QTimerInfo*>
 {
-#if (_POSIX_MONOTONIC_CLOCK-0 <= 0) || defined(QT_BOOTSTRAPPED)
-    bool useMonotonicTimers;
-
+#if ((_POSIX_MONOTONIC_CLOCK-0 <= 0) && !defined(Q_OS_MAC)) || defined(QT_BOOTSTRAPPED)
     timeval previousTime;
     clock_t previousTicks;
     int ticksPerSecond;
@@ -128,12 +92,10 @@ class QTimerInfoList : public QList<QTimerInfo*>
 #endif
 
     // state variables used by activateTimers()
-    QTimerInfo *firstTimerInfo, *currentTimerInfo;
+    QTimerInfo *firstTimerInfo;
 
 public:
     QTimerInfoList();
-
-    void getTime(timeval &t);
 
     timeval currentTime;
     timeval updateCurrentTime();
@@ -153,14 +115,14 @@ public:
     int activateTimers();
 };
 
-struct Q_CORE_EXPORT QSockNot
+struct QSockNot
 {
     QSocketNotifier *obj;
     int fd;
     fd_set *queue;
 };
 
-class Q_CORE_EXPORT QSockNotType
+class QSockNotType
 {
 public:
     QSockNotType();

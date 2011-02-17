@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -81,9 +81,9 @@ class QDateTimePrivate
 public:
     enum Spec { LocalUnknown = -1, LocalStandard = 0, LocalDST = 1, UTC = 2, OffsetFromUTC = 3};
 
-    QDateTimePrivate() : ref(1), spec(LocalUnknown), utcOffset(0) {}
+    QDateTimePrivate() : spec(LocalUnknown), utcOffset(0) {}
     QDateTimePrivate(const QDateTimePrivate &other)
-        : ref(1), date(other.date), time(other.time), spec(other.spec), utcOffset(other.utcOffset)
+        : date(other.date), time(other.time), spec(other.spec), utcOffset(other.utcOffset)
     {}
 
     QAtomicInt ref;
@@ -138,13 +138,6 @@ public:
         PossibleBoth = 4
     };
 
-    enum {
-        NoSectionIndex = -1,
-        FirstSectionIndex = -2,
-        LastSectionIndex = -3,
-        CalendarPopupIndex = -4
-    };
-
     enum Section {
         NoSection = 0x00000,
         AmPmSection = 0x00001,
@@ -163,7 +156,12 @@ public:
         DateSectionMask = (DaySection|MonthSection|YearSection|YearSection2Digits|DayOfWeekSection),
         FirstSection = 0x02000|Internal,
         LastSection = 0x04000|Internal,
-        CalendarPopupSection = 0x08000|Internal
+        CalendarPopupSection = 0x08000|Internal,
+
+        NoSectionIndex = -1,
+        FirstSectionIndex = -2,
+        LastSectionIndex = -3,
+        CalendarPopupIndex = -4
     }; // duplicated from qdatetimeedit.h
     Q_DECLARE_FLAGS(Sections, Section)
 

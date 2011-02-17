@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -42,6 +42,7 @@
 #ifndef QTIMELINE_H
 #define QTIMELINE_H
 
+#include <QtCore/qeasingcurve.h>
 #include <QtCore/qobject.h>
 
 QT_BEGIN_HEADER
@@ -60,6 +61,7 @@ class Q_CORE_EXPORT QTimeLine : public QObject
     Q_PROPERTY(Direction direction READ direction WRITE setDirection)
     Q_PROPERTY(int loopCount READ loopCount WRITE setLoopCount)
     Q_PROPERTY(CurveShape curveShape READ curveShape WRITE setCurveShape)
+    Q_PROPERTY(QEasingCurve easingCurve READ easingCurve WRITE setEasingCurve)
 public:
     enum State {
         NotRunning,
@@ -104,6 +106,9 @@ public:
 
     CurveShape curveShape() const;
     void setCurveShape(CurveShape shape);
+
+    QEasingCurve easingCurve() const;
+    void setEasingCurve(const QEasingCurve &curve);
 
     int currentTime() const;
     int currentFrame() const;

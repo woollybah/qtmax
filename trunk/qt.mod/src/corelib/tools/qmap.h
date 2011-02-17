@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -51,7 +51,6 @@
 #endif
 
 #include <new>
-#undef QT_MAP_DEBUG
 
 QT_BEGIN_HEADER
 
@@ -75,10 +74,14 @@ struct Q_CORE_EXPORT QMapData
     uint randomBits;
     uint insertInOrder : 1;
     uint sharable : 1;
+    uint strictAlignment : 1;
+    uint reserved : 29;
 
-    static QMapData *createData();
+    static QMapData *createData(); // ### Qt5 remove me
+    static QMapData *createData(int alignment);
     void continueFreeData(int offset);
-    Node *node_create(Node *update[], int offset);
+    Node *node_create(Node *update[], int offset); // ### Qt5 remove me
+    Node *node_create(Node *update[], int offset, int alignment);
     void node_delete(Node *update[], int offset, Node *node);
 #ifdef QT_QMAP_DEBUG
     uint adjust_ptr(Node *node);
@@ -122,6 +125,10 @@ template <class Key, class T>
 struct QMapNode {
     Key key;
     T value;
+
+private:
+    // never access these members through this structure.
+    // see below
     QMapData::Node *backward;
     QMapData::Node *forward[1];
 };
@@ -131,6 +138,22 @@ struct QMapPayloadNode
 {
     Key key;
     T value;
+
+private:
+    // QMap::e is a pointer to QMapData::Node, which matches the member
+    // below. However, the memory allocation node in QMapData::node_create
+    // allocates sizeof(QMapPayloNode) and incorrectly calculates the offset
+    // of 'backward' below. If the alignment of QMapPayloadNode is larger
+    // than the alignment of a pointer, the 'backward' member is aligned to
+    // the end of this structure, not to 'value' above, and will occupy the
+    // tail-padding area.
+    //
+    //  e.g., on a 32-bit archictecture with Key = int and
+    //        sizeof(T) = alignof(T) = 8
+    //   0        4        8        12       16       20       24  byte
+    //   |   key  |   PAD  |      value      |backward|  PAD   |   correct layout
+    //   |   key  |   PAD  |      value      |        |backward|   how it's actually used
+    //   |<-----  value of QMap::payload() = 20 ----->|
     QMapData::Node *backward;
 };
 
@@ -146,6 +169,13 @@ class QMap
     };
 
     static inline int payload() { return sizeof(PayloadNode) - sizeof(QMapData::Node *); }
+    static inline int alignment() {
+#ifdef Q_ALIGNOF
+        return int(qMax(sizeof(void*), Q_ALIGNOF(Node)));
+#else
+        return 0;
+#endif
+    }
     static inline Node *concrete(QMapData::Node *node) {
         return reinterpret_cast<Node *>(reinterpret_cast<char *>(node) - payload());
     }
@@ -172,6 +202,7 @@ public:
     inline void detach() { if (d->ref != 1) detach_helper(); }
     inline bool isDetached() const { return d->ref == 1; }
     inline void setSharable(bool sharable) { if (!sharable) detach(); d->sharable = sharable; }
+    inline bool isSharedWith(const QMap<Key, T> &other) const { return d == other.d; }
     inline void setInsertInOrder(bool ordered) { d->insertInOrder = ordered; }
 
     void clear();
@@ -203,7 +234,7 @@ public:
 
     public:
         typedef std::bidirectional_iterator_tag iterator_category;
-        typedef ptrdiff_t difference_type;
+        typedef qptrdiff difference_type;
         typedef T value_type;
         typedef T *pointer;
         typedef T &reference;
@@ -271,7 +302,7 @@ public:
 
     public:
         typedef std::bidirectional_iterator_tag iterator_category;
-        typedef ptrdiff_t difference_type;
+        typedef qptrdiff difference_type;
         typedef T value_type;
         typedef const T *pointer;
         typedef const T &reference;
@@ -374,7 +405,7 @@ public:
     // STL compatibility
     typedef Key key_type;
     typedef T mapped_type;
-    typedef ptrdiff_t difference_type;
+    typedef qptrdiff difference_type;
     typedef int size_type;
     inline bool empty() const { return isEmpty(); }
 
@@ -395,10 +426,11 @@ template <class Key, class T>
 Q_INLINE_TEMPLATE QMap<Key, T> &QMap<Key, T>::operator=(const QMap<Key, T> &other)
 {
     if (d != other.d) {
-        other.d->ref.ref();
+        QMapData* o = other.d;
+        o->ref.ref();
         if (!d->ref.deref())
             freeData(d);
-        d = other.d;
+        d = o;
         if (!d->sharable)
             detach_helper();
     }
@@ -415,10 +447,30 @@ template <class Key, class T>
 Q_INLINE_TEMPLATE typename QMapData::Node *
 QMap<Key, T>::node_create(QMapData *adt, QMapData::Node *aupdate[], const Key &akey, const T &avalue)
 {
-    QMapData::Node *abstractNode = adt->node_create(aupdate, payload());
-    Node *concreteNode = concrete(abstractNode);
-    new (&concreteNode->key) Key(akey);
-    new (&concreteNode->value) T(avalue);
+    QMapData::Node *abstractNode = adt->node_create(aupdate, payload(), alignment());
+    QT_TRY {
+        Node *concreteNode = concrete(abstractNode);
+        new (&concreteNode->key) Key(akey);
+        QT_TRY {
+            new (&concreteNode->value) T(avalue);
+        } QT_CATCH(...) {
+            concreteNode->key.~Key();
+            QT_RETHROW;
+        }
+    } QT_CATCH(...) {
+        adt->node_delete(aupdate, payload(), abstractNode);
+        QT_RETHROW;
+    }
+
+    // clean up the update array for further insertions
+    /*
+    for (int i = 0; i <= d->topLevel; ++i) {
+        if ( aupdate[i]==reinterpret_cast<QMapData::Node *>(adt) || aupdate[i]->forward[i] != abstractNode)
+            break;
+        aupdate[i] = abstractNode;
+    }
+*/
+
     return abstractNode;
 }
 
@@ -583,16 +635,15 @@ template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE void QMap<Key, T>::freeData(QMapData *x)
 {
     if (QTypeInfo<Key>::isComplex || QTypeInfo<T>::isComplex) {
-        QMapData::Node *y = reinterpret_cast<QMapData::Node *>(x);
-        QMapData::Node *cur = y;
-        QMapData::Node *next = cur->forward[0];
-        while (next != y) {
+        QMapData *cur = x;
+        QMapData *next = cur->forward[0];
+        while (next != x) {
             cur = next;
             next = cur->forward[0];
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
 #pragma warning(disable:4189)
 #endif
-            Node *concreteNode = concrete(cur);
+            Node *concreteNode = concrete(reinterpret_cast<QMapData::Node *>(cur));
             concreteNode->key.~Key();
             concreteNode->value.~T();
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
@@ -697,15 +748,20 @@ template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE void QMap<Key, T>::detach_helper()
 {
     union { QMapData *d; QMapData::Node *e; } x;
-    x.d = QMapData::createData();
+    x.d = QMapData::createData(alignment());
     if (d->size) {
         x.d->insertInOrder = true;
         QMapData::Node *update[QMapData::LastLevel + 1];
         QMapData::Node *cur = e->forward[0];
         update[0] = x.e;
         while (cur != e) {
-            Node *concreteNode = concrete(cur);
-            node_create(x.d, update, concreteNode->key, concreteNode->value);
+            QT_TRY {
+                Node *concreteNode = concrete(cur);
+                node_create(x.d, update, concreteNode->key, concreteNode->value);
+            } QT_CATCH(...) {
+                freeData(x.d);
+                QT_RETHROW;
+            }
             cur = cur->forward[0];
         }
         x.d->insertInOrder = false;
@@ -738,6 +794,7 @@ template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE QList<Key> QMap<Key, T>::uniqueKeys() const
 {
     QList<Key> res;
+    res.reserve(size()); // May be too much, but assume short lifetime
     const_iterator i = begin();
     if (i != end()) {
         for (;;) {
@@ -757,6 +814,7 @@ template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE QList<Key> QMap<Key, T>::keys() const
 {
     QList<Key> res;
+    res.reserve(size());
     const_iterator i = begin();
     while (i != end()) {
         res.append(i.key());
@@ -801,6 +859,7 @@ template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE QList<T> QMap<Key, T>::values() const
 {
     QList<T> res;
+    res.reserve(size());
     const_iterator i = begin();
     while (i != end()) {
         res.append(i.value());
@@ -882,7 +941,7 @@ Q_OUTOFLINE_TEMPLATE bool QMap<Key, T>::operator==(const QMap<Key, T> &other) co
 template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE QMap<Key, T>::QMap(const std::map<Key, T> &other)
 {
-    d = QMapData::createData();
+    d = QMapData::createData(alignment());
     d->insertInOrder = true;
     typename std::map<Key,T>::const_iterator it = other.end();
     while (it != other.begin()) {
@@ -919,11 +978,12 @@ public:
     { return QMap<Key, T>::insertMulti(key, value); }
 
     inline QMultiMap &operator+=(const QMultiMap &other)
-    { unite(other); return *this; }
+    { this->unite(other); return *this; }
     inline QMultiMap operator+(const QMultiMap &other) const
     { QMultiMap result = *this; result += other; return result; }
 
-#ifndef Q_NO_USING_KEYWORD
+#if !defined(Q_NO_USING_KEYWORD) && !defined(Q_CC_RVCT)
+    // RVCT compiler doesn't handle using-keyword right when used functions are overloaded in child class
     using QMap<Key, T>::contains;
     using QMap<Key, T>::remove;
     using QMap<Key, T>::count;
@@ -990,10 +1050,10 @@ Q_INLINE_TEMPLATE int QMultiMap<Key, T>::remove(const Key &key, const T &value)
 {
     int n = 0;
     typename QMap<Key, T>::iterator i(find(key));
-    typename QMap<Key, T>::const_iterator end(QMap<Key, T>::constEnd());
+    typename QMap<Key, T>::iterator end(QMap<Key, T>::end());
     while (i != end && !qMapLessThanKey<Key>(key, i.key())) {
         if (i.value() == value) {
-            i = erase(i);
+            i = this->erase(i);
             ++n;
         } else {
             ++i;

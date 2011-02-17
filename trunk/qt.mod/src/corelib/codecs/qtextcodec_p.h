@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -75,6 +75,33 @@ struct QTextCodecUnalignedPointer
         quintptr data = reinterpret_cast<quintptr>(fn);
         memcpy(dst, &data, sizeof(data));
     }
+};
+
+#else
+
+class QTextCodec
+{
+public:
+    enum ConversionFlag {
+        DefaultConversion,
+        ConvertInvalidToNull = 0x80000000,
+        IgnoreHeader = 0x1,
+        FreeFunction = 0x2
+    };
+    Q_DECLARE_FLAGS(ConversionFlags, ConversionFlag)
+
+    struct ConverterState {
+        ConverterState(ConversionFlags f = DefaultConversion)
+            : flags(f), remainingChars(0), invalidChars(0), d(0) { state_data[0] = state_data[1] = state_data[2] = 0; }
+        ~ConverterState() { }
+        ConversionFlags flags;
+        int remainingChars;
+        int invalidChars;
+        uint state_data[3];
+        void *d;
+    private:
+        Q_DISABLE_COPY(ConverterState)
+    };
 };
 
 #endif //QT_NO_TEXTCODEC
