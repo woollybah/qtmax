@@ -74,9 +74,11 @@ Type QObject Extends QCoreObjectPtr
 	End Method
 	
 	Method startTimer:Int(interval:Int)
+		Return bmx_qt_qobject_starttimer(qObjectPtr, interval)
 	End Method
 	
 	Method killTimer(id:Int)
+		bmx_qt_qobject_killtimer(qObjectPtr, id)
 	End Method
 	
 	Method timerEvent(event:QTimerEvent)

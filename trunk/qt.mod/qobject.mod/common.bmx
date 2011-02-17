@@ -53,5 +53,7 @@ Extern
 	Function bmx_qt_qobject_setparent(handle:Byte Ptr, parent:Byte Ptr)
 	Function bmx_qt_qobject_blocksignals:Int(handle:Byte Ptr, block:Int)
 	Function bmx_qt_qobject_signalsblocked:Int(handle:Byte Ptr)
+	Function bmx_qt_qobject_starttimer:Int(handle:Byte Ptr, interval:Int)
+	Function bmx_qt_qobject_killtimer(handle:Byte Ptr, id:Int)
 
 End Extern
