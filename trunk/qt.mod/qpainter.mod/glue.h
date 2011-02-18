@@ -29,6 +29,7 @@
 #include "../qgradient.mod/glue.h"
 #include "../qpainterpath.mod/glue.h"
 #include "../qimage.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
 #include <QPainter>
 #include <QWidget>
@@ -79,6 +80,10 @@ extern "C" {
 	void bmx_qt_qpainter_drawtiledpixmap(QPainter * painter, int x, int y, int width, int height, MaxQPixmap * pixmap, int sx, int sy);
 	void bmx_qt_qpainter_drawimage(QPainter * painter, int x, int y, MaxQImage * image);
 	void bmx_qt_qpainter_setcliprect(QPainter * painter, int x, int y, int width, int height, int operation);
+	void bmx_qt_qpainter_setfont(QPainter * painter, MaxQFont * font);
+	void bmx_qt_qpainter_setclipping(QPainter * painter, int enable);
+	void bmx_qt_qpainter_setcompositionmode(QPainter * painter, int mode);
+	void bmx_qt_qpainter_setopacity(QPainter * painter, double opacity);
 
 }
 

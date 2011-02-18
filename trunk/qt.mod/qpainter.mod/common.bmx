@@ -25,6 +25,9 @@ Import Qt.QBrush
 Import Qt.QPen
 Import Qt.QFont
 Import Qt.QImage
+Import Qt.QFontInfo
+Import Qt.QFontMetrics
+Import Qt.QWidget
 Import BRL.Blitz
 
 
@@ -88,5 +91,9 @@ Extern
 	Function bmx_qt_qpainter_drawtiledpixmap(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, pixmap:Byte Ptr, sx:Int, sy:Int)
 	Function bmx_qt_qpainter_drawimage(handle:Byte Ptr, x:Int, y:Int, image:Byte Ptr)
 	Function bmx_qt_qpainter_setcliprect(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, operation:Int)
+	Function bmx_qt_qpainter_setfont(handle:Byte Ptr, font:Byte Ptr)
+	Function bmx_qt_qpainter_setclipping(handle:Byte Ptr, enable:Int)
+	Function bmx_qt_qpainter_setcompositionmode(handle:Byte Ptr, _mode:Int)
+	Function bmx_qt_qpainter_setopacity(handle:Byte Ptr, opacity:Double)
 
 End Extern

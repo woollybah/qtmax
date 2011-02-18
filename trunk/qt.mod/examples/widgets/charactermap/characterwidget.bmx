@@ -99,7 +99,7 @@ Type CharacterWidget Extends QWidget
 		Local endRow:Int = redrawRect.bottom() / squareSize
 		Local beginColumn:Int = redrawRect.Left() / squareSize
 		Local endColumn:Int = redrawRect.Right() / squareSize
-		
+
 		painter.setPen(New QPen.CreateWithGlobalColor(Qt_gray))
 		For Local row:Int = beginRow To endRow
 			For Local column:Int = beginColumn To endColumn
@@ -120,7 +120,8 @@ Type CharacterWidget Extends QWidget
 					painter.fillRectBrush(column * squareSize + 1, row * squareSize + 1, squareSize, squareSize, New QBrush.CreateWithGlobalColor(Qt_red))
 				End If
 		
-				painter.DrawText(column * squareSize + (squareSize / 2) - fontMetrics.width(key)/2, row * squareSize + 4 + fontMetrics.ascent(), Chr(key))
+'				painter.DrawText(column * squareSize + (squareSize / 2) - fontMetrics.width(key)/2, row * squareSize + 4 + fontMetrics.ascent(), Chr(key))
+				painter.DrawText(column * squareSize + (squareSize / 3), row * squareSize + fontMetrics.ascent(), Chr(key))
 			Next
 		Next
 		
