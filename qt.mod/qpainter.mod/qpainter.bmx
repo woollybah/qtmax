@@ -30,7 +30,49 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
-
+Rem
+bbdoc: Performs low-level painting on widgets and other paint devices.
+about: QPainter provides highly optimized functions to do most of the drawing GUI programs require. It can draw everything
+from simple lines to complex shapes like pies and chords. It can also draw aligned text and pixmaps. Normally, it draws in a
+"natural" coordinate system, but it can also do view and world transformation.
+<p>
+The common use of QPainter is inside a widget's paint event: Construct and customize (e.g. set the pen or the brush) the painter.
+Then draw. Remember to destroy the QPainter object after drawing. For example:
+<pre>
+Method paintEvent(event:QPaintEvent)
+     Local painter:QPainter = New QPainter.Create(Self)
+     painter.setPen(New QPen.CreateWithGlobalColor(Qt_blue))
+     painter.setFont(New QFont.Create("Arial", 30))
+     Local rect:QRect = rect()
+     painter.drawText(rect.x(), rect.y(), Qt_AlignCenter, "Qt")
+     painter.doEnd()
+End Method
+</pre>
+</p>
+<p>
+The core functionality of QPainter is drawing, but the class also provide several functions that allows you to customize QPainter's settings
+and its rendering quality, and others that enable clipping. In addition you can control how different shapes are merged together by specifying
+the painter's composition mode.
+</p>
+<p>
+The isActive() method indicates whether the painter is active. A painter is activated by the doBegin() method, but usually by the Create() constructor.
+The doEnd() method deactivates it, and must be called before leaving paintEvent().
+</p>
+<p>
+Together with the QPaintDevice and QPaintEngine classes, QPainter form the basis for Qt's paint system. QPainter is the class used
+to perform drawing operations. QPaintDevice represents a device that can be painted on using a QPainter. QPaintEngine provides
+the interface that the painter uses to draw onto different types of devices. If the painter is active, device() returns the paint
+device on which the painter paints, and paintEngine() returns the paint engine that the painter is currently operating on.
+</p>
+<p>
+Sometimes it is desirable to make someone else paint on an unusual QPaintDevice. QPainter supports a static function to do this, setRedirected().
+</p>
+<p>
+Warning: When the paintdevice is a widget, QPainter can only be used inside a paintEvent() function or in a function called by
+paintEvent(); that is unless the Qt_WA_PaintOutsidePaintEvent widget attribute is set. On Mac OS X and Windows, you can only
+paint in a paintEvent() method regardless of this attribute's setting.
+</p>
+End Rem
 Type QPainter
 
 	Rem
@@ -218,6 +260,9 @@ Type QPainter
 		End If
 	End Function
 
+	Rem
+	bbdoc: 
+	End Rem
 	Function CreatePainter:QPainter(device:Object = Null)
 		Return New QPainter.Create(device)
 	End Function
@@ -341,6 +386,46 @@ Type QPainter
 		bmx_qt_qpainter_fillrectrectbrush(qObjectPtr, rectangle.qObjectPtr, brush.qObjectPtr)
 	End Method
 	
+	Method font:QFont()
+		DebugLog "TODO font"
+	End Method
+	
+	Method fontInfo:QFontInfo()
+		DebugLog "TODO fontInfo"
+	End Method
+	
+	Method fontMetrics:QFontMetrics()
+		DebugLog "TODO fontMetrics"
+	End Method
+	
+	Method hasClipping:Int()
+		DebugLog "TODO hasClipping"
+	End Method
+	
+	Method initFrom(widget:QWidget)
+		DebugLog "TODO initFrom"
+	End Method
+	
+	Method isActive:Int()
+		DebugLog "TODO isActive"
+	End Method
+	
+	Method layoutDirection:Int()
+		DebugLog "TODO layoutDirection"
+	End Method
+	
+	Method opacity:Double()
+		DebugLog "TODO opacity"
+	End Method
+	
+	Method pen:QPen()
+		DebugLog "TODO pen"
+	End Method
+	
+	Method renderHints:Int()
+		DebugLog "TODO renderHints"
+	End Method
+	
 	Method resetMatrix()
 		bmx_qt_qpainter_resetmatrix(qObjectPtr)
 	End Method
@@ -366,11 +451,11 @@ Type QPainter
 	End Method
 
 	Method setBackground(brush:QBrush)
-	' TODO
+		DebugLog "TODO setBackground"
 	End Method
 	
 	Method setBackgroundMode(Mode:Int)
-	' TODO
+		DebugLog "TODO setBackgroundMode"
 	End Method
 	
 	Method setBrush(brush:QBrush)
@@ -386,7 +471,7 @@ Type QPainter
 	End Method
 	
 	Method setBrushStyle(style:Int)
-	' TODO
+		DebugLog "TODO setBrushStyle"
 	End Method
 
 	Method setClipRect(x:Int, y:Int, width:Int, height:Int, operation:Int = Qt_ReplaceClip)
@@ -394,31 +479,31 @@ Type QPainter
 	End Method
 	
 	Method setClipRectRect(rectangle:QRect, operation:Int = Qt_ReplaceClip)
-	' TODO
+		DebugLog "TODO setClipRectRect"
 	End Method
 
 	Method setClipping(enable:Int)
-	' TODO
+		bmx_qt_qpainter_setclipping(qObjectPtr, enable)
 	End Method
 	
-	Method setCompositionMode(Mode:Int)
-	' TODO
+	Method setCompositionMode(_mode:Int)
+		bmx_qt_qpainter_setcompositionmode(qObjectPtr, _mode)
 	End Method
 	
 	Method setFont(font:QFont)
-	' TODO
+		bmx_qt_qpainter_setfont(qObjectPtr, font.qObjectPtr)
 	End Method
 	
 	Method setLayoutDirection(direction:Int)
-	' TODO
+		DebugLog "TODO setLayoutDirection"
 	End Method
 	
 	Method setOpacity(opacity:Double)
-	' TODO
+		bmx_qt_qpainter_setopacity(qObjectPtr, opacity)
 	End Method
 	
 	Method setPen(pen:QPen)
-	' TODO
+		DebugLog "TODO setPen"
 	End Method
 	
 	Method setPenColor(color:QColor)
