@@ -237,4 +237,12 @@ Extern
 	Function bmx_qt_qlinef_translated:Byte Ptr(handle:Byte Ptr, dx:Double, dy:Double)
 	Function bmx_qt_qlinef_unitvector:Byte Ptr(handle:Byte Ptr)
 
+	Function bmx_qt_variant_free(handle:Byte Ptr)
+	Function bmx_qt_qintvariant_create:Byte Ptr(value:Int)
+	Function bmx_qt_qintvariant_value:Int(handle:Byte Ptr)
+	Function bmx_qt_qdoublevariant_create:Byte Ptr(value:Double)
+	Function bmx_qt_qdoublevariant_value:Double(handle:Byte Ptr)
+	Function bmx_qt_qfloatvariant_create:Byte Ptr(value:Float)
+	Function bmx_qt_qfloatvariant_value:Double(handle:Byte Ptr)
+
 End Extern

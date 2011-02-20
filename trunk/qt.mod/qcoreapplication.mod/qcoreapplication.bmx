@@ -104,4 +104,17 @@ Type QCoreApplication Extends QObject
 
 End Type
 
+Rem
+bbdoc: Marks the string literal @text for dynamic translation in the current context (class), i.e the stored @text will not be altered.
+End Rem
+Function QT_TR_NOOP:String(text:String)
+	Return bmx_qt_qcoreapplication_translate("", text, "", 0)
+End Function
 
+Rem
+bbdoc: Marks the string literal @text for dynamic translation in the given @context; i.e, the stored sourceText will not be altered.
+about: The context is typically a class and also needs to be specified as string literal.
+End Rem
+Function QT_TRANSLATE_NOOP:String(context:String, text:String)
+	Return bmx_qt_qcoreapplication_translate(context, text, "", 0)
+End Function

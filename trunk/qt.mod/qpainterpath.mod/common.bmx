@@ -23,6 +23,7 @@ SuperStrict
 Import Qt.Core
 Import Qt.QFont
 Import Qt.QRegion
+Import Qt.QTransform
 Import BRL.Blitz
 
 

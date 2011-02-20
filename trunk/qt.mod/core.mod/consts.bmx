@@ -20,6 +20,8 @@
 ' 
 SuperStrict
 
+Import "key_consts.bmx"
+
 Rem
 bbdoc: Aligns with the Left edge.
 End Rem
@@ -947,3 +949,282 @@ bbdoc: Indicates that updates are blocked (including the system background).
 about: This flag is set or cleared by the Qt kernel.
 end rem
 Const Qt_WA_UpdatesDisabled:Int = 10
+
+Rem
+bbdoc: The X axis.
+End Rem
+Const Qt_XAxis:Int = 0
+Rem
+bbdoc: The Y axis.
+End Rem
+Const Qt_YAxis:Int = 1
+Rem
+bbdoc: The Z axis.
+End Rem
+Const Qt_ZAxis:Int = 2
+
+
+Rem
+bbdoc: 'void' Meta Type.
+End Rem
+Const QMetaType_Void:Int = 0
+Rem
+bbdoc: 'bool' Meta Type.
+End Rem
+Const QMetaType_Bool:Int = 1
+Rem
+bbdoc: 'int' Meta Type.
+End Rem
+Const QMetaType_Int:Int = 2
+Rem
+bbdoc: 'unsigned int' Meta Type.
+End Rem
+Const QMetaType_UInt:Int = 3
+Rem
+bbdoc: 'double' Meta Type.
+End Rem
+Const QMetaType_Double:Int = 6
+Rem
+bbdoc: 'QChar' Meta Type.
+End Rem
+Const QMetaType_QChar:Int = 7
+Rem
+bbdoc: 'QString' Meta Type.
+End Rem
+Const QMetaType_QString:Int = 10
+Rem
+bbdoc: 'QByteArray' Meta Type.
+End Rem
+Const QMetaType_QByteArray:Int = 12
+Rem
+bbdoc: 'void *' Meta Type.
+End Rem
+Const QMetaType_VoidStar:Int = 128
+Rem
+bbdoc: 'long' Meta Type.
+End Rem
+Const QMetaType_Long:Int = 129
+Rem
+bbdoc: 'LongLong' Meta Type.
+End Rem
+Const QMetaType_LongLong:Int = 4
+Rem
+bbdoc: 'short' Meta Type.
+End Rem
+Const QMetaType_Short:Int = 130
+Rem
+bbdoc: 'char' Meta Type.
+End Rem
+Const QMetaType_Char:Int = 131
+Rem
+bbdoc: 'unsigned long' Meta Type.
+End Rem
+Const QMetaType_ULong:Int = 132
+Rem
+bbdoc: 'ULongLong' Meta Type.
+End Rem
+Const QMetaType_ULongLong:Int = 5
+Rem
+bbdoc: 'unsigned short' Meta Type.
+End Rem
+Const QMetaType_UShort:Int = 133
+Rem
+bbdoc: 'unsigned char' Meta Type.
+End Rem
+Const QMetaType_UChar:Int = 134
+Rem
+bbdoc: 'float' Meta Type.
+End Rem
+Const QMetaType_Float:Int = 135
+Rem
+bbdoc: 'QObject *' Meta Type.
+End Rem
+Const QMetaType_QObjectStar:Int = 136
+Rem
+bbdoc: 'QWidget *' Meta Type.
+End Rem
+Const QMetaType_QWidgetStar:Int = 137
+Rem
+bbdoc: 'QVariant' Meta Type.
+End Rem
+Const QMetaType_QVariant:Int = 138
+Rem
+bbdoc: 'QColorGroup' Meta Type.
+End Rem
+Const QMetaType_QColorGroup:Int = 63
+Rem
+bbdoc: 'QCursor' Meta Type.
+End Rem
+Const QMetaType_QCursor:Int = 74
+Rem
+bbdoc: 'QDate' Meta Type.
+End Rem
+Const QMetaType_QDate:Int = 14
+Rem
+bbdoc: 'QSize' Meta Type.
+End Rem
+Const QMetaType_QSize:Int = 21
+Rem
+bbdoc: 'QTime' Meta Type.
+End Rem
+Const QMetaType_QTime:Int = 15
+Rem
+bbdoc: 'QVariantList' Meta Type.
+End Rem
+Const QMetaType_QVariantList:Int = 9
+Rem
+bbdoc: 'QPolygon' Meta Type.
+End Rem
+Const QMetaType_QPolygon:Int = 71
+Rem
+bbdoc: 'QColor' Meta Type.
+End Rem
+Const QMetaType_QColor:Int = 67
+Rem
+bbdoc: 'QSizeF' Meta Type.
+End Rem
+Const QMetaType_QSizeF:Int = 22
+Rem
+bbdoc: 'QRectF' Meta Type.
+End Rem
+Const QMetaType_QRectF:Int = 20
+Rem
+bbdoc: 'QLine' Meta Type.
+End Rem
+Const QMetaType_QLine:Int = 23
+Rem
+bbdoc: 'QTextLength' Meta Type.
+End Rem
+Const QMetaType_QTextLength:Int = 78
+Rem
+bbdoc: 'QStringList' Meta Type.
+End Rem
+Const QMetaType_QStringList:Int = 11
+Rem
+bbdoc: 'QVariantMap' Meta Type.
+End Rem
+Const QMetaType_QVariantMap:Int = 8
+Rem
+bbdoc: 'QVariantHash' Meta Type.
+End Rem
+Const QMetaType_QVariantHash:Int = 28
+Rem
+bbdoc: 'QIcon' Meta Type.
+End Rem
+Const QMetaType_QIcon:Int = 69
+Rem
+bbdoc: 'QPen' Meta Type.
+End Rem
+Const QMetaType_QPen:Int = 77
+Rem
+bbdoc: 'QLineF' Meta Type.
+End Rem
+Const QMetaType_QLineF:Int = 24
+Rem
+bbdoc: 'QTextFormat' Meta Type.
+End Rem
+Const QMetaType_QTextFormat:Int = 79
+Rem
+bbdoc: 'QRect' Meta Type.
+End Rem
+Const QMetaType_QRect:Int = 19
+Rem
+bbdoc: 'QPoint' Meta Type.
+End Rem
+Const QMetaType_QPoint:Int = 25
+Rem
+bbdoc: 'QUrl' Meta Type.
+End Rem
+Const QMetaType_QUrl:Int = 17
+Rem
+bbdoc: 'QRegExp' Meta Type.
+End Rem
+Const QMetaType_QRegExp:Int = 27
+Rem
+bbdoc: 'QDateTime' Meta Type.
+End Rem
+Const QMetaType_QDateTime:Int = 16
+Rem
+bbdoc: 'QPointF' Meta Type.
+End Rem
+Const QMetaType_QPointF:Int = 26
+Rem
+bbdoc: 'QPalette' Meta Type.
+End Rem
+Const QMetaType_QPalette:Int = 68
+Rem
+bbdoc: 'QFont' Meta Type.
+End Rem
+Const QMetaType_QFont:Int = 64
+Rem
+bbdoc: 'QBrush' Meta Type.
+End Rem
+Const QMetaType_QBrush:Int = 66
+Rem
+bbdoc: 'QRegion' Meta Type.
+End Rem
+Const QMetaType_QRegion:Int = 72
+Rem
+bbdoc: 'QBitArray' Meta Type.
+End Rem
+Const QMetaType_QBitArray:Int = 13
+Rem
+bbdoc: 'QImage' Meta Type.
+End Rem
+Const QMetaType_QImage:Int = 70
+Rem
+bbdoc: 'QKeySequence' Meta Type.
+End Rem
+Const QMetaType_QKeySequence:Int = 76
+Rem
+bbdoc: 'QSizePolicy' Meta Type.
+End Rem
+Const QMetaType_QSizePolicy:Int = 75
+Rem
+bbdoc: 'QPixmap' Meta Type.
+End Rem
+Const QMetaType_QPixmap:Int = 65
+Rem
+bbdoc: 'QLocale' Meta Type.
+End Rem
+Const QMetaType_QLocale:Int = 18
+Rem
+bbdoc: 'QBitmap' Meta Type.
+End Rem
+Const QMetaType_QBitmap:Int = 73
+Rem
+bbdoc: 'QMatrix' Meta Type.
+End Rem
+Const QMetaType_QMatrix:Int = 80
+Rem
+bbdoc: 'QTransform' Meta Type.
+End Rem
+Const QMetaType_QTransform:Int = 81
+Rem
+bbdoc: 'QMatrix4x4' Meta Type.
+End Rem
+Const QMetaType_QMatrix4x4:Int = 82
+Rem
+bbdoc: 'QVector2D' Meta Type.
+End Rem
+Const QMetaType_QVector2D:Int = 83
+Rem
+bbdoc: 'QVector3D' Meta Type.
+End Rem
+Const QMetaType_QVector3D:Int = 84
+Rem
+bbdoc: 'QVector4D' Meta Type.
+End Rem
+Const QMetaType_QVector4D:Int = 85
+Rem
+bbdoc: 'QQuaternion' Meta Type.
+End Rem
+Const QMetaType_QQuaternion:Int = 86
+Rem
+bbdoc: 'QEasingCurve' Meta Type.
+End Rem
+Const QMetaType_QEasingCurve:Int = 29
+Rem
+bbdoc: 'Base value for user types' Meta Type.
+End Rem
+Const QMetaType_User:Int = 256

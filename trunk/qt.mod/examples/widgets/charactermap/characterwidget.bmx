@@ -121,7 +121,7 @@ Type CharacterWidget Extends QWidget
 				End If
 		
 '				painter.DrawText(column * squareSize + (squareSize / 2) - fontMetrics.width(key)/2, row * squareSize + 4 + fontMetrics.ascent(), Chr(key))
-				painter.DrawText(column * squareSize + (squareSize / 3), row * squareSize + fontMetrics.ascent(), Chr(key))
+				painter.DrawText(column * squareSize + (squareSize / 3), row * squareSize + 4 + fontMetrics.ascent(), Chr(key))
 			Next
 		Next
 		

@@ -238,4 +238,3 @@ Type QChar
 	End Function
 
 End Type
-

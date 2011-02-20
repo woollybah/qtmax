@@ -476,6 +476,10 @@ Type QGraphicsScene Extends QObject
 		item._addToScene(qObjectPtr)
 		'bmx_qt_qgraphicsscene_additem(qObjectPtr, item.qObjectPtr)
 	End Method
+	
+	Method addPixmap:QGraphicsPixmapItem(pixmap:QPixmap)
+		Return QGraphicsPixmapItem._create(bmx_qt_qgraphicsscene_addpixmap(qObjectPtr, pixmap.qObjectPtr))
+	End Method
 
 	Method hasFocus:Int()
 		Return bmx_qt_qgraphicsscene_hasfocus(qObjectPtr)
@@ -1123,6 +1127,10 @@ Type QGraphicsItem
 		End If
 	End Function
 	
+	Method graphicsEffect:QGraphicsEffect()
+		Return QGraphicsEffect._find(bmx_qt_qgraphicsitem_graphicseffect(qObjectPtr))
+	End Method
+	
 	Method isSelected:Int()
 		Return bmx_qt_qgraphicsitem_isselected(qObjectPtr)
 	End Method
@@ -1252,6 +1260,10 @@ Type QGraphicsItem
 	
 	Method SetFocus(focusReason:Int = Qt_OtherFocusReason)
 		bmx_qt_qgraphicsitem_setfocus(qObjectPtr, focusReason)
+	End Method
+	
+	Method setGraphicsEffect(effect:QGraphicsEffect)
+		bmx_qt_qgraphicsitem_setgraphicseffect(qObjectPtr, effect.qObjectPtr)
 	End Method
 	
 	Method setGroup(group:QGraphicsItemGroup)
@@ -1496,6 +1508,72 @@ Type QGraphicsWidget Extends QGraphicsObjectItem
 
 
 End Type
+
+
+Type QGraphicsPixmapItem Extends QGraphicsItem
+
+	Rem
+	bbdoc: The shape is determined by calling QPixmap::mask().
+	about: This shape includes only the opaque pixels of the pixmap. Because the shape is more complex, however,
+	it can be slower than the other modes, and uses more memory.
+	End Rem
+	Const MaskShape:Int = 0
+	Rem
+	bbdoc: The shape is determined by tracing the outline of the pixmap.
+	about: This is the fastest shape mode, but it does not take into account any transparent areas on the pixmap.
+	End Rem
+	Const BoundingRectShape:Int = 1
+	Rem
+	bbdoc: The shape is determine by calling QPixmap::createHeuristicMask().
+	about: The performance and memory consumption is similar to MaskShape.
+	End Rem
+	Const HeuristicMaskShape:Int = 2
+
+	Function _create:QGraphicsPixmapItem(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QGraphicsPixmapItem = New QGraphicsPixmapItem
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+	Function CreatePixmapItem:QGraphicsPixmapItem(pixmap:QPixmap, parent:QGraphicsItem = Null)
+		Return New QGraphicsPixmapItem.Create(pixmap, parent)
+	End Function
+
+	Method Create:QGraphicsPixmapItem(pixmap:QPixmap, parent:QGraphicsItem = Null)
+		If parent Then
+			qObjectPtr = bmx_qt_qgraphicspixmapitem_create(Self, pixmap.qObjectPtr, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qgraphicspixmapitem_create(Self, pixmap.qObjectPtr, Null)
+		End If
+		OnInit()
+		Return Self
+	End Method
+	
+	Method offset(x:Double Var, y:Double Var)
+	End Method	
+	
+	Method pixmap:QPixmap()
+	End Method
+	
+	Method setOffset(x:Double, y:Double)
+	End Method
+	
+	Method setPixmap(pixmap:QPixmap)
+	End Method
+	
+	Method setShapeMode(_mode:Int)
+	End Method
+	
+	Method shapeMode:Int()
+	End Method
+	
+	Method transformationMode:Int()
+	End Method
+	
+End Type
+
 
 
 Extern

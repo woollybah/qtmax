@@ -1,6 +1,6 @@
 
 # path to moc
-MOC=/Volumes/MiscData/programming/qt-mac-opensource-src-4.5.2/bin/moc 
+MOC=/Volumes/MiscData/programming/qt-everywhere-opensource-src-4.7.1/bin/moc
 
 for i in `find . -name "*.mod"`
 do

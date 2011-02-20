@@ -28,6 +28,30 @@
 
 // *********************************************
 
+int bmx_qt_qkeyevent_count(QKeyEvent * event) {
+	return event->count();
+}
+
+int bmx_qt_qkeyevent_isautorepeat(QKeyEvent * event) {
+	return static_cast<int>(event->isAutoRepeat());
+}
+
+int bmx_qt_qkeyevent_key(QKeyEvent * event) {
+	return event->key();
+}
+
+int bmx_qt_qkeyevent_nativemodifiers(QKeyEvent * event) {
+	return event->nativeModifiers();
+}
+
+int bmx_qt_qkeyevent_nativescancode(QKeyEvent * event) {
+	return event->nativeScanCode();
+}
+
+int bmx_qt_qkeyevent_nativevirtualkey(QKeyEvent * event) {
+	return event->nativeVirtualKey();
+}
+
 
 
 // NOTES :

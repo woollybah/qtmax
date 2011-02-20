@@ -54,21 +54,6 @@ QPainterPath::Element & MaxPathElement::Element() {
 
 // ---------------------------------------------------------------------------------------
 
-MaxQTransform::MaxQTransform(const QTransform & t)
-	: transform(t)
-{
-}
-
-MaxQTransform::~MaxQTransform()
-{
-}
-
-QTransform & MaxQTransform::Transform() {
-	return transform;
-}
-
-// ---------------------------------------------------------------------------------------
-
 MaxQMatrix::MaxQMatrix(const QMatrix & m)
 	: matrix(m)
 {

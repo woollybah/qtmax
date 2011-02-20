@@ -44,6 +44,7 @@ extern "C" {
 	BBString * bmx_qt_qcoreapplication_applicationname();
 	void bmx_qt_qcoreapplication_applicationpid(BBInt64 * pid);
 	void bmx_qt_qcoreapplication_flush();
+	BBString * bmx_qt_qcoreapplication_translate(BBString * context, BBString * text, BBString * disambiguation, int encoding);
 
 	void bmx_qt_qcoreapplication_quit(QCoreApplication * app);
 

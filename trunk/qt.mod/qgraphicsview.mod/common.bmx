@@ -26,6 +26,7 @@ Import Qt.QBrush
 Import Qt.QPainter
 Import Qt.QPalette
 Import Qt.QStyle
+Import Qt.QTransform
 Import Qt.QGraphicsSceneContextMenuEvent
 Import Qt.QGraphicsSceneDragDropEvent
 Import Qt.QGraphicsSceneHelpEvent
@@ -34,6 +35,7 @@ Import Qt.QGraphicsSceneWheelEvent
 Import Qt.QGraphicsSceneHoverEvent
 Import Qt.QCursor
 Import Qt.QStyleOptionGraphicsItem
+Import Qt.QGraphicsEffect
 Import BRL.Blitz
 
 
@@ -150,6 +152,7 @@ Extern
 	Function bmx_qt_qgraphicsscene_palette:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_removeitem(handle:Byte Ptr, item:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_items:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsscene_addpixmap:Byte Ptr(handle:Byte Ptr, pixmap:Byte Ptr)
 
 	Function bmx_qt_qgraphicsscene_defaultdrawbackground(handle:Byte Ptr, painter:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsscene_defaultdrawforeground(handle:Byte Ptr, painter:Byte Ptr, rect:Byte Ptr)
@@ -215,6 +218,8 @@ Extern
 	Function bmx_qt_qgraphicsitem_update(handle:Byte Ptr, rect:Byte Ptr)
 	Function bmx_qt_qgraphicsitem_mapfromitem(handle:Byte Ptr, item:Byte Ptr, x:Double, y:Double, x1:Double Ptr, y1:Double Ptr)
 	Function bmx_qt_qgraphicsitem_preparegeometrychange(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_graphicseffect:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qgraphicsitem_setgraphicseffect(handle:Byte Ptr, effect:Byte Ptr)
 
 	Function bmx_qt_qgraphicsitem_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 
@@ -244,5 +249,7 @@ Extern
 	Function bmx_qt_qgraphicsitemlist_hasnext:Int(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsitemlist_nextobject:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qgraphicsitemlist_reset(handle:Byte Ptr)
+
+	Function bmx_qt_qgraphicspixmapitem_create:Byte Ptr(handle:Object, pixmap:Byte Ptr, parent:Byte Ptr)
 
 End Extern

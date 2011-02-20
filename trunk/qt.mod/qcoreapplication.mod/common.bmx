@@ -52,6 +52,7 @@ Extern
 	Function bmx_qt_qcoreapplication_applicationname:String()
 	Function bmx_qt_qcoreapplication_applicationpid(pid:Long Ptr)
 	Function bmx_qt_qcoreapplication_flush()
+	Function bmx_qt_qcoreapplication_translate:String(context:String, text:String, disambiguation:String, encoding:Int)
 
 	Function bmx_qt_qcoreapplication_quit(handle:Byte Ptr)
 
