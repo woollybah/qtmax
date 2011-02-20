@@ -46,4 +46,11 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qkeyevent_count:Int(handle:Byte Ptr)
+	Function bmx_qt_qkeyevent_isautorepeat:Int(handle:Byte Ptr)
+	Function bmx_qt_qkeyevent_key:Int(handle:Byte Ptr)
+	Function bmx_qt_qkeyevent_nativemodifiers:Int(handle:Byte Ptr)
+	Function bmx_qt_qkeyevent_nativescancode:Int(handle:Byte Ptr)
+	Function bmx_qt_qkeyevent_nativevirtualkey:Int(handle:Byte Ptr)
+
 End Extern

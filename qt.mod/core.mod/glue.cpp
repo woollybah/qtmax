@@ -138,6 +138,17 @@ QLineF & MaxQLineF::Line() {
 	return line;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQVariant::MaxQVariant(const QVariant & v)
+	: variant(v)
+{
+}
+
+QVariant & MaxQVariant::Variant() {
+	return variant;
+}
+
 // *********************************************
 
 typedef std::map<QObject*, BBObject*> QObjectPeerMap;
@@ -1121,6 +1132,36 @@ MaxQLineF * bmx_qt_qlinef_unitvector(MaxQLineF * line) {
 
 int bmx_qt_qchar_category(int c) {
 	return QChar(c).category();
+}
+
+// *********************************************
+
+void bmx_qt_variant_free(MaxQVariant * variant) {
+	delete variant;
+}
+
+MaxQVariant * bmx_qt_qintvariant_create(int value) {
+	return new MaxQVariant(QVariant(value));
+}
+
+int bmx_qt_qintvariant_value(MaxQVariant * variant) {
+	return variant->Variant().toInt();
+}
+
+MaxQVariant * bmx_qt_qdoublevariant_create(double value) {
+	return new MaxQVariant(QVariant(value));
+}
+
+double bmx_qt_qdoublevariant_value(MaxQVariant * variant) {
+	return variant->Variant().toDouble();
+}
+
+MaxQVariant * bmx_qt_qfloatvariant_create(float value) {
+	return new MaxQVariant(QVariant(value));
+}
+
+float bmx_qt_qfloatvariant_value(MaxQVariant * variant) {
+	return variant->Variant().toFloat();
 }
 
 // *********************************************

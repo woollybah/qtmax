@@ -40,5 +40,29 @@ Type QKeyEvent Extends QInputEvent
 		End If
 	End Function
 
+	Method count:Int()
+		Return bmx_qt_qkeyevent_count(qObjectPtr)
+	End Method
+	
+	Method isAutoRepeat:Int()
+		Return bmx_qt_qkeyevent_isautorepeat(qObjectPtr)
+	End Method
+	
+	Method key:Int()
+		Return bmx_qt_qkeyevent_key(qObjectPtr)
+	End Method
+	
+	Method nativeModifiers:Int()
+		Return bmx_qt_qkeyevent_nativemodifiers(qObjectPtr)
+	End Method
+	
+	Method nativeScanCode:Int()
+		Return bmx_qt_qkeyevent_nativescancode(qObjectPtr)
+	End Method
+	
+	Method nativeVirtualKey:Int()
+		Return bmx_qt_qkeyevent_nativevirtualkey(qObjectPtr)
+	End Method
+	
 End Type
 

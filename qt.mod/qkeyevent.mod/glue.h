@@ -25,11 +25,18 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QKeyEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
+	int bmx_qt_qkeyevent_count(QKeyEvent * event);
+	int bmx_qt_qkeyevent_isautorepeat(QKeyEvent * event);
+	int bmx_qt_qkeyevent_key(QKeyEvent * event);
+	int bmx_qt_qkeyevent_nativemodifiers(QKeyEvent * event);
+	int bmx_qt_qkeyevent_nativescancode(QKeyEvent * event);
+	int bmx_qt_qkeyevent_nativevirtualkey(QKeyEvent * event);
 
 }
 

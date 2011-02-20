@@ -40,6 +40,7 @@ class MaxQRectF;
 class MaxQDate;
 class MaxQDateTime;
 class MaxQLineF;
+class MaxQVariant;
 
 class MaxQObjectWrapper;
 
@@ -48,6 +49,7 @@ extern "C" {
 #include <blitz.h>
 
 	void _qt_qobject_QObject__Free(BBObject * handle);
+	BBObject * _qt_core_QVariant__CreateVariant(int type, MaxQVariant * variant);
 
 	void qbind( QObject *obj, BBObject *peer );
 	void qunbind(QObject *obj);
@@ -257,6 +259,14 @@ extern "C" {
 	MaxQLineF * bmx_qt_qlinef_translated(MaxQLineF * line, double dx, double dy);
 	MaxQLineF * bmx_qt_qlinef_unitvector(MaxQLineF * line);
 
+	void bmx_qt_variant_free(MaxQVariant * variant);
+	MaxQVariant * bmx_qt_qintvariant_create(int value);
+	int bmx_qt_qintvariant_value(MaxQVariant * variant);
+	MaxQVariant * bmx_qt_qdoublevariant_create(double value);
+	double bmx_qt_qdoublevariant_value(MaxQVariant * variant);
+	MaxQVariant * bmx_qt_qfloatvariant_create(float value);
+	float bmx_qt_qfloatvariant_value(MaxQVariant * variant);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -365,6 +375,18 @@ public:
 
 private:
 	QLineF line;
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQVariant
+{
+public:
+	MaxQVariant(const QVariant & v);
+	QVariant & Variant();
+
+private:
+	QVariant variant;
 };
 
 #endif

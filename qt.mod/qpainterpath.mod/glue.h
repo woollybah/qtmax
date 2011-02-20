@@ -26,14 +26,13 @@
 #include "../core.mod/glue.h"
 #include "../qfont.mod/glue.h"
 #include "../qregion.mod/glue.h"
+#include "../qtransform.mod/glue.h"
 #include <QtCore>
 #include <QPainterPath>
 #include <QMatrix>
-#include <QTransform>
 
 class MaxQPainterPath;
 class MaxPathElement;
-class MaxQTransform;
 class MaxQMatrix;
 
 extern "C" {
@@ -108,20 +107,6 @@ public:
 
 private:
 	QPainterPath::Element element;
-};
-
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-class MaxQTransform
-{
-public:
-	MaxQTransform(const QTransform & t);
-	~MaxQTransform();
-	
-	QTransform & Transform();
-
-private:
-	QTransform transform;
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

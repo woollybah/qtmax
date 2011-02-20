@@ -263,17 +263,3 @@ Type QMatrix
 
 End Type
 
-
-Type QTransform
-
-	Field qObjectPtr:Byte Ptr
-
-	Function _create:QTransform(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QTransform = New QTransform
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
-	End Function
-
-End Type

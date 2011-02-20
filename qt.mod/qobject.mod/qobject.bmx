@@ -37,23 +37,37 @@ Type QObject Extends QCoreObjectPtr
 
 	Field _connections:TMap = New TMap
 	
-	
+	Rem
+	bbdoc: 
+	End Rem
 	Function tr:String(sourceText:String, disambiguation:String = Null, n:Int = -1)
 		Return bmx_qt_qobject_tr(sourceText, disambiguation, n)
 	End Function
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Function tr_arg:String(sourceText:String, args:String[])
 		Return bmx_qt_qobject_trarg(sourceText, args)
 	End Function
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Method blockSignals:Int(block:Int)
 		Return bmx_qt_qobject_blocksignals(qObjectPtr, block)
 	End Method
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Method signalsBlocked:Int()
 		Return bmx_qt_qobject_signalsblocked(qObjectPtr)
 	End Method
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Function connect:Int(sender:QObject, signal:String, receiver:QObject, slot:String)
 		Return sender.doConnect(signal, receiver, slot)
 	End Function
@@ -73,14 +87,23 @@ Type QObject Extends QCoreObjectPtr
 		bmx_qt_qobject_setparent(qObjectPtr, parent.qObjectPtr)
 	End Method
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Method startTimer:Int(interval:Int)
 		Return bmx_qt_qobject_starttimer(qObjectPtr, interval)
 	End Method
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Method killTimer(id:Int)
 		bmx_qt_qobject_killtimer(qObjectPtr, id)
 	End Method
 	
+	Rem
+	bbdoc: 
+	End Rem
 	Method timerEvent(event:QTimerEvent)
 	End Method
 	
@@ -151,4 +174,5 @@ Type TSignalSlotConnection
 	End Method
 	
 End Type
+
 
