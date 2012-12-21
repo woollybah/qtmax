@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -162,27 +162,27 @@ inline void QBezier::coefficients(qreal t, qreal &a, qreal &b, qreal &c, qreal &
 
 inline QPointF QBezier::pointAt(qreal t) const
 {
-#if 1
-    qreal a, b, c, d;
-    coefficients(t, a, b, c, d);
-    return QPointF(a*x1 + b*x2 + c*x3 + d*x4, a*y1 + b*y2 + c*y3 + d*y4);
-#else
     // numerically more stable:
+    qreal x, y;
+
     qreal m_t = 1. - t;
-    qreal a = x1*m_t + x2*t;
-    qreal b = x2*m_t + x3*t;
-    qreal c = x3*m_t + x4*t;
-    a = a*m_t + b*t;
-    b = b*m_t + c*t;
-    qreal x = a*m_t + b*t;
-    qreal a = y1*m_t + y2*t;
-    qreal b = y2*m_t + y3*t;
-    qreal c = y3*m_t + y4*t;
-    a = a*m_t + b*t;
-    b = b*m_t + c*t;
-    qreal y = a*m_t + b*t;
+    {
+        qreal a = x1*m_t + x2*t;
+        qreal b = x2*m_t + x3*t;
+        qreal c = x3*m_t + x4*t;
+        a = a*m_t + b*t;
+        b = b*m_t + c*t;
+        x = a*m_t + b*t;
+    }
+    {
+        qreal a = y1*m_t + y2*t;
+        qreal b = y2*m_t + y3*t;
+        qreal c = y3*m_t + y4*t;
+        a = a*m_t + b*t;
+        b = b*m_t + c*t;
+        y = a*m_t + b*t;
+    }
     return QPointF(x, y);
-#endif
 }
 
 inline QPointF QBezier::normalVector(qreal t) const

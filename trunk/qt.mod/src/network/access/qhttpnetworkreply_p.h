@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -125,12 +125,23 @@ public:
 
     qint64 bytesAvailable() const;
     qint64 bytesAvailableNextBlock() const;
+    bool readAnyAvailable() const;
     QByteArray readAny();
+    QByteArray readAll();
+    QByteArray read(qint64 amount);
+    qint64 sizeNextBlock();
     void setDownstreamLimited(bool t);
+    void setReadBufferSize(qint64 size);
+
+    bool supportsUserProvidedDownloadBuffer();
+    void setUserProvidedDownloadBuffer(char*);
+    char* userProvidedDownloadBuffer();
 
     bool isFinished() const;
 
     bool isPipeliningUsed() const;
+
+    QHttpNetworkConnection* connection();
 
 #ifndef QT_NO_OPENSSL
     QSslConfiguration sslConfiguration() const;
@@ -147,9 +158,14 @@ Q_SIGNALS:
     void finished();
     void finishedWithError(QNetworkReply::NetworkError errorCode, const QString &detail = QString());
     void headerChanged();
+    // FIXME we need to change this to qint64!
     void dataReadProgress(int done, int total);
     void dataSendProgress(qint64 done, qint64 total);
-
+    void cacheCredentials(const QHttpNetworkRequest &request, QAuthenticator *authenticator);
+#ifndef QT_NO_NETWORKPROXY
+    void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator);
+#endif
+    void authenticationRequired(const QHttpNetworkRequest &request, QAuthenticator *authenticator);
 private:
     Q_DECLARE_PRIVATE(QHttpNetworkReply)
     friend class QHttpNetworkConnection;
@@ -168,15 +184,16 @@ public:
     qint64 readHeader(QAbstractSocket *socket);
     void parseHeader(const QByteArray &header);
     qint64 readBody(QAbstractSocket *socket, QByteDataBuffer *out);
+    qint64 readBodyVeryFast(QAbstractSocket *socket, char *b);
     qint64 readBodyFast(QAbstractSocket *socket, QByteDataBuffer *rb);
     bool findChallenge(bool forProxy, QByteArray &challenge) const;
     QAuthenticatorPrivate::Method authenticationMethod(bool isProxy) const;
     void clear();
     void clearHttpLayerInformation();
 
-    qint64 readReplyBodyRaw(QIODevice *in, QByteDataBuffer *out, qint64 size);
-    qint64 readReplyBodyChunked(QIODevice *in, QByteDataBuffer *out);
-    qint64 getChunkSize(QIODevice *in, qint64 *chunkSize);
+    qint64 readReplyBodyRaw(QAbstractSocket *in, QByteDataBuffer *out, qint64 size);
+    qint64 readReplyBodyChunked(QAbstractSocket *in, QByteDataBuffer *out);
+    qint64 getChunkSize(QAbstractSocket *in, qint64 *chunkSize);
 
     void appendUncompressedReplyData(QByteArray &qba);
     void appendUncompressedReplyData(QByteDataBuffer &data);
@@ -193,6 +210,7 @@ public:
 #ifndef QT_NO_COMPRESS
     bool gzipCheckHeader(QByteArray &content, int &pos);
     int gunzipBodyPartially(QByteArray &compressed, QByteArray &inflated);
+    void gunzipBodyPartiallyEnd();
 #endif
     void removeAutoDecompressHeader();
 
@@ -205,6 +223,7 @@ public:
     } state;
 
     QHttpNetworkRequest request;
+    bool ssl;
     int statusCode;
     int majorVersion;
     int minorVersion;
@@ -217,8 +236,10 @@ public:
     bool chunkedTransferEncoding;
     bool connectionCloseEnabled;
     bool forceConnectionCloseEnabled;
+    bool lastChunkRead;
     qint64 currentChunkSize;
     qint64 currentChunkRead;
+    qint64 readBufferMaxSize;
     QPointer<QHttpNetworkConnection> connection;
     QPointer<QHttpNetworkConnectionChannel> connectionChannel;
     bool initInflate;
@@ -234,6 +255,8 @@ public:
 
     bool pipeliningUsed;
     bool downstreamLimited;
+
+    char* userProvidedDownloadBuffer;
 };
 
 

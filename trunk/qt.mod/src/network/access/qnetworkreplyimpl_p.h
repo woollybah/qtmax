@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -62,6 +62,7 @@
 #include "QtCore/qbuffer.h"
 #include "private/qringbuffer_p.h"
 #include "private/qbytedata_p.h"
+#include <QSharedPointer>
 
 QT_BEGIN_NAMESPACE
 
@@ -103,6 +104,7 @@ public:
     Q_PRIVATE_SLOT(d_func(), void _q_networkSessionConnected())
     Q_PRIVATE_SLOT(d_func(), void _q_networkSessionFailed())
 #endif
+    Q_PRIVATE_SLOT(d_func(), void _q_cacheDestroyed())
 };
 
 class QNetworkReplyImplPrivate: public QNetworkReplyPrivate
@@ -139,6 +141,7 @@ public:
     void _q_networkSessionConnected();
     void _q_networkSessionFailed();
 #endif
+    void _q_cacheDestroyed();
 
     void setup(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                QIODevice *outgoingData);
@@ -163,17 +166,19 @@ public:
     void appendDownstreamData(QIODevice *data);
     void appendDownstreamData(const QByteArray &data);
 
+    void setDownloadBuffer(QSharedPointer<char> sp, qint64 size);
+    char* getDownloadBuffer(qint64 size);
+    void appendDownstreamDataDownloadBuffer(qint64, qint64);
+
     void finished();
     void error(QNetworkReply::NetworkError code, const QString &errorString);
     void metaDataChanged();
     void redirectionRequested(const QUrl &target);
     void sslErrors(const QList<QSslError> &errors);
 
-    bool isFinished() const;
-
     QNetworkAccessBackend *backend;
     QIODevice *outgoingData;
-    QRingBuffer *outgoingDataBuffer;
+    QSharedPointer<QRingBuffer> outgoingDataBuffer;
     QIODevice *copyDevice;
     QAbstractNetworkCache *networkCache() const;
 
@@ -191,6 +196,7 @@ public:
     QList<QNetworkProxy> proxyList;
 #endif
 
+    // Used for normal downloading. For "zero copy" the downloadBuffer is used
     QByteDataBuffer readBuffer;
     qint64 bytesDownloaded;
     qint64 lastBytesDownloaded;
@@ -201,6 +207,14 @@ public:
     int httpStatusCode;
 
     State state;
+
+    // only used when the "zero copy" style is used. Else readBuffer is used.
+    // Please note that the whole "zero copy" download buffer API is private right now. Do not use it.
+    qint64 downloadBufferReadPosition;
+    qint64 downloadBufferCurrentSize;
+    qint64 downloadBufferMaximumSize;
+    QSharedPointer<char> downloadBufferPointer;
+    char* downloadBuffer;
 
     Q_DECLARE_PUBLIC(QNetworkReplyImpl)
 };

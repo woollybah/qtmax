@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtOpenGL module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -148,7 +148,7 @@ static const char* const qglslAffinePositionWithPatternBrushVertexShader
                  = qglslPositionWithPatternBrushVertexShader;
 
 static const char* const qglslPatternBrushSrcFragmentShader = "\n\
-    uniform   lowp    sampler2D brushTexture; \n\
+    uniform           sampler2D brushTexture; \n\
     uniform   lowp    vec4      patternColor; \n\
     varying   highp   vec2      patternTexCoords;\n\
     lowp vec4 srcPixel() \n\
@@ -183,7 +183,7 @@ static const char* const qglslAffinePositionWithLinearGradientBrushVertexShader
                  = qglslPositionWithLinearGradientBrushVertexShader;
 
 static const char* const qglslLinearGradientBrushSrcFragmentShader = "\n\
-    uniform   lowp    sampler2D brushTexture; \n\
+    uniform           sampler2D brushTexture; \n\
     varying   mediump float     index; \n\
     lowp vec4 srcPixel() \n\
     { \n\
@@ -218,7 +218,7 @@ static const char* const qglslAffinePositionWithConicalGradientBrushVertexShader
 
 static const char* const qglslConicalGradientBrushSrcFragmentShader = "\n\
     #define INVERSE_2PI 0.1591549430918953358 \n\
-    uniform   lowp    sampler2D brushTexture; \n\
+    uniform           sampler2D brushTexture; \n\
     uniform   mediump float     angle; \n\
     varying   highp   vec2      A; \n\
     lowp vec4 srcPixel() \n\
@@ -241,6 +241,7 @@ static const char* const qglslPositionWithRadialGradientBrushVertexShader = "\n\
     uniform   mediump vec2      halfViewportSize; \n\
     uniform   highp   mat3      brushTransform; \n\
     uniform   highp   vec2      fmp; \n\
+    uniform   highp   vec3      bradius; \n\
     varying   highp   float     b; \n\
     varying   highp   vec2      A; \n\
     void setPosition(void) \n\
@@ -253,23 +254,32 @@ static const char* const qglslPositionWithRadialGradientBrushVertexShader = "\n\
         mediump float invertedHTexCoordsZ = 1.0 / hTexCoords.z; \n\
         gl_Position = vec4(gl_Position.xy * invertedHTexCoordsZ, 0.0, invertedHTexCoordsZ); \n\
         A = hTexCoords.xy * invertedHTexCoordsZ; \n\
-        b = 2.0 * dot(A, fmp); \n\
+        b = bradius.x + 2.0 * dot(A, fmp); \n\
     }\n";
 
 static const char* const qglslAffinePositionWithRadialGradientBrushVertexShader
                  = qglslPositionWithRadialGradientBrushVertexShader;
 
 static const char* const qglslRadialGradientBrushSrcFragmentShader = "\n\
-    uniform   lowp    sampler2D brushTexture; \n\
+    uniform           sampler2D brushTexture; \n\
     uniform   highp   float     fmp2_m_radius2; \n\
     uniform   highp   float     inverse_2_fmp2_m_radius2; \n\
+    uniform   highp   float     sqrfr; \n\
     varying   highp   float     b; \n\
     varying   highp   vec2      A; \n\
+    uniform   highp   vec3      bradius; \n\
     lowp vec4 srcPixel() \n\
     { \n\
-        highp float c = -dot(A, A); \n\
-        highp vec2 val = vec2((-b + sqrt(b*b - 4.0*fmp2_m_radius2*c)) * inverse_2_fmp2_m_radius2, 0.5); \n\
-        return texture2D(brushTexture, val); \n\
+        highp float c = sqrfr-dot(A, A); \n\
+        highp float det = b*b - 4.0*fmp2_m_radius2*c; \n\
+        lowp vec4 result = vec4(0.0); \n\
+        if (det >= 0.0) { \n\
+            highp float detSqrt = sqrt(det); \n\
+            highp float w = max((-b - detSqrt) * inverse_2_fmp2_m_radius2, (-b + detSqrt) * inverse_2_fmp2_m_radius2); \n\
+            if (bradius.y + w * bradius.z >= 0.0) \n\
+                result = texture2D(brushTexture, vec2(w, 0.5)); \n\
+        } \n\
+        return result; \n\
     }\n";
 
 
@@ -304,14 +314,14 @@ static const char* const qglslAffinePositionWithTextureBrushVertexShader
 // TODO: Special case POT textures which don't need this emulation
 static const char* const qglslTextureBrushSrcFragmentShader = "\n\
     varying highp   vec2      brushTextureCoords; \n\
-    uniform lowp    sampler2D brushTexture; \n\
+    uniform         sampler2D brushTexture; \n\
     lowp vec4 srcPixel() { \n\
         return texture2D(brushTexture, fract(brushTextureCoords)); \n\
     }\n";
 #else
 static const char* const qglslTextureBrushSrcFragmentShader = "\n\
     varying   highp   vec2      brushTextureCoords; \n\
-    uniform   lowp    sampler2D brushTexture; \n\
+    uniform           sampler2D brushTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n\
         return texture2D(brushTexture, brushTextureCoords); \n\
@@ -321,7 +331,7 @@ static const char* const qglslTextureBrushSrcFragmentShader = "\n\
 static const char* const qglslTextureBrushSrcWithPatternFragmentShader = "\n\
     varying   highp   vec2      brushTextureCoords; \n\
     uniform   lowp    vec4      patternColor; \n\
-    uniform   lowp    sampler2D brushTexture; \n\
+    uniform           sampler2D brushTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n\
         return patternColor * (1.0 - texture2D(brushTexture, brushTextureCoords).r); \n\
@@ -337,20 +347,15 @@ static const char* const qglslSolidBrushSrcFragmentShader = "\n\
 
 static const char* const qglslImageSrcFragmentShader = "\n\
     varying   highp   vec2      textureCoords; \n\
-    uniform   lowp    sampler2D imageTexture; \n\
+    uniform           sampler2D imageTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n"
-#ifdef QT_OPENGL_ES_2
-        // work-around for driver bug
-        "return 1.0 * texture2D(imageTexture, textureCoords); \n"
-#else
         "return texture2D(imageTexture, textureCoords); \n"
-#endif
     "}\n";
 
 static const char* const qglslCustomSrcFragmentShader = "\n\
     varying   highp   vec2      textureCoords; \n\
-    uniform   lowp    sampler2D imageTexture; \n\
+    uniform           sampler2D imageTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n\
         return customShader(imageTexture, textureCoords); \n\
@@ -359,7 +364,7 @@ static const char* const qglslCustomSrcFragmentShader = "\n\
 static const char* const qglslImageSrcWithPatternFragmentShader = "\n\
     varying   highp   vec2      textureCoords; \n\
     uniform   lowp    vec4      patternColor; \n\
-    uniform   lowp    sampler2D imageTexture; \n\
+    uniform           sampler2D imageTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n\
         return patternColor * (1.0 - texture2D(imageTexture, textureCoords).r); \n\
@@ -367,7 +372,7 @@ static const char* const qglslImageSrcWithPatternFragmentShader = "\n\
 
 static const char* const qglslNonPremultipliedImageSrcFragmentShader = "\n\
     varying   highp   vec2      textureCoords; \n\
-    uniform   lowp    sampler2D imageTexture; \n\
+    uniform          sampler2D imageTexture; \n\
     lowp vec4 srcPixel() \n\
     { \n\
         lowp vec4 sample = texture2D(imageTexture, textureCoords); \n\
@@ -459,7 +464,7 @@ static const char* const qglslMainFragmentShader = "\n\
 
 static const char* const qglslMaskFragmentShader = "\n\
     varying   highp   vec2      textureCoords;\n\
-    uniform   lowp    sampler2D maskTexture;\n\
+    uniform           sampler2D maskTexture;\n\
     lowp vec4 applyMask(lowp vec4 src) \n\
     {\n\
         lowp vec4 mask = texture2D(maskTexture, textureCoords); \n\
@@ -483,7 +488,7 @@ static const char* const qglslMaskFragmentShader = "\n\
 
 static const char* const qglslRgbMaskFragmentShaderPass1 = "\n\
     varying   highp   vec2      textureCoords;\n\
-    uniform   lowp    sampler2D maskTexture;\n\
+    uniform           sampler2D maskTexture;\n\
     lowp vec4 applyMask(lowp vec4 src) \n\
     { \n\
         lowp vec4 mask = texture2D(maskTexture, textureCoords); \n\
@@ -492,7 +497,7 @@ static const char* const qglslRgbMaskFragmentShaderPass1 = "\n\
 
 static const char* const qglslRgbMaskFragmentShaderPass2 = "\n\
     varying   highp   vec2      textureCoords;\n\
-    uniform   lowp    sampler2D maskTexture;\n\
+    uniform           sampler2D maskTexture;\n\
     lowp vec4 applyMask(lowp vec4 src) \n\
     { \n\
         lowp vec4 mask = texture2D(maskTexture, textureCoords); \n\

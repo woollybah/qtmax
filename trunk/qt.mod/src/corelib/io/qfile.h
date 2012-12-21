@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -45,6 +45,9 @@
 #include <QtCore/qiodevice.h>
 #include <QtCore/qstring.h>
 #include <stdio.h>
+#ifdef Q_OS_SYMBIAN
+#include <f32file.h>
+#endif
 
 #ifdef open
 #error qfile.h must be included before any header file that defines open
@@ -97,6 +100,12 @@ public:
     };
     Q_DECLARE_FLAGS(Permissions, Permission)
 
+    enum FileHandleFlag {
+        AutoCloseHandle = 0x0001,
+        DontCloseHandle = 0
+    };
+    Q_DECLARE_FLAGS(FileHandleFlags, FileHandleFlag)
+
     QFile();
     QFile(const QString &name);
 #ifndef QT_NO_QOBJECT
@@ -145,6 +154,11 @@ public:
     bool open(OpenMode flags);
     bool open(FILE *f, OpenMode flags);
     bool open(int fd, OpenMode flags);
+#ifdef Q_OS_SYMBIAN
+    bool open(const RFile &f, OpenMode flags, FileHandleFlags handleFlags = DontCloseHandle);
+#endif
+    bool open(FILE *f, OpenMode ioFlags, FileHandleFlags handleFlags);
+    bool open(int fd, OpenMode ioFlags, FileHandleFlags handleFlags);
     virtual void close();
 
     qint64 size() const;

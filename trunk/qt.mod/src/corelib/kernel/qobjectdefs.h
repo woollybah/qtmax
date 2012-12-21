@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,7 +55,7 @@ class QByteArray;
 class QString;
 
 #ifndef Q_MOC_OUTPUT_REVISION
-#define Q_MOC_OUTPUT_REVISION 62
+#define Q_MOC_OUTPUT_REVISION 63
 #endif
 
 // The following macros are our "extensions" to C++
@@ -79,6 +79,7 @@ class QString;
 #define Q_INTERFACES(x)
 #define Q_PROPERTY(text)
 #define Q_PRIVATE_PROPERTY(d, text)
+#define Q_REVISION(v)
 #define Q_OVERRIDE(text)
 #define Q_ENUMS(x)
 #define Q_FLAGS(x)
@@ -117,7 +118,7 @@ class QString;
 # define QT_TR_FUNCTIONS
 #endif
 
-#if defined(QT_NO_MEMBER_TEMPLATES) || defined(QT_NO_QOBJECT_CHECK)
+#if defined(QT_NO_QOBJECT_CHECK)
 /* tmake ignore Q_OBJECT */
 #define Q_OBJECT_CHECK
 #else
@@ -144,7 +145,7 @@ inline int qYouForgotTheQ_OBJECT_Macro(T, T) { return 0; }
 
 template <typename T1, typename T2>
 inline void qYouForgotTheQ_OBJECT_Macro(T1, T2) {}
-#endif // QT_NO_MEMBER_TEMPLATES
+#endif // QT_NO_QOBJECT_CHECK
 
 #ifdef Q_NO_DATA_RELOCATION
 #define Q_OBJECT_GETSTATICMETAOBJECT static const QMetaObject &getStaticMetaObject();
@@ -162,7 +163,10 @@ public: \
     virtual void *qt_metacast(const char *); \
     QT_TR_FUNCTIONS \
     virtual int qt_metacall(QMetaObject::Call, int, void **); \
-private:
+private: \
+    Q_DECL_HIDDEN static const QMetaObjectExtraData staticMetaObjectExtraData; \
+    Q_DECL_HIDDEN static void qt_static_metacall(QObject *, QMetaObject::Call, int, void **);
+
 /* tmake ignore Q_OBJECT */
 #define Q_OBJECT_FAKE Q_OBJECT
 /* tmake ignore Q_GADGET */
@@ -180,6 +184,7 @@ private:
 #define Q_INTERFACES(x) Q_INTERFACES(x)
 #define Q_PROPERTY(text) Q_PROPERTY(text)
 #define Q_PRIVATE_PROPERTY(d, text) Q_PRIVATE_PROPERTY(d, text)
+#define Q_REVISION(v) Q_REVISION(v)
 #define Q_OVERRIDE(text) Q_OVERRIDE(text)
 #define Q_ENUMS(x) Q_ENUMS(x)
 #define Q_FLAGS(x) Q_FLAGS(x)
@@ -214,12 +219,16 @@ Q_CORE_EXPORT const char *qFlagLocation(const char *method);
 #define QTOSTRING_HELPER(s) #s
 #define QTOSTRING(s) QTOSTRING_HELPER(s)
 #ifndef QT_NO_DEBUG
-# define QLOCATION "\0"__FILE__":"QTOSTRING(__LINE__)
-# define METHOD(a)   qFlagLocation("0"#a QLOCATION)
+# define QLOCATION "\0" __FILE__ ":" QTOSTRING(__LINE__)
+# ifndef QT_NO_KEYWORDS
+#  define METHOD(a)   qFlagLocation("0"#a QLOCATION)
+# endif
 # define SLOT(a)     qFlagLocation("1"#a QLOCATION)
 # define SIGNAL(a)   qFlagLocation("2"#a QLOCATION)
 #else
-# define METHOD(a)   "0"#a
+# ifndef QT_NO_KEYWORDS
+#  define METHOD(a)   "0"#a
+# endif
 # define SLOT(a)     "1"#a
 # define SIGNAL(a)   "2"#a
 #endif
@@ -298,6 +307,7 @@ struct Q_CORE_EXPORT QMetaObject
     const QMetaObject *superClass() const;
 
     QObject *cast(QObject *obj) const;
+    const QObject *cast(const QObject *obj) const;
 
 #ifndef QT_NO_TRANSLATION
     // ### Qt 4: Merge overloads
@@ -461,7 +471,6 @@ struct Q_CORE_EXPORT QMetaObject
         const uint *data;
         const void *extradata;
     } d;
-
 };
 
 typedef const QMetaObject& (*QMetaObjectAccessor)();
@@ -473,7 +482,10 @@ struct QMetaObjectExtraData
 #else
     const QMetaObject **objects;
 #endif
-    int (*static_metacall)(QMetaObject::Call, int, void **);
+
+    typedef void (*StaticMetacallFunction)(QObject *, QMetaObject::Call, int, void **); //from revision 6
+    //typedef int (*StaticMetaCall)(QMetaObject::Call, int, void **); //used from revison 2 until revison 5
+    StaticMetacallFunction static_metacall;
 };
 
 inline const char *QMetaObject::className() const

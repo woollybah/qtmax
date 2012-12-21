@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -107,7 +107,6 @@ template <class Key> inline bool qMapLessThanKey(const Key &key1, const Key &key
     return key1 < key2;
 }
 
-#ifndef QT_NO_PARTIAL_TEMPLATE_SPECIALIZATION
 template <class Ptr> inline bool qMapLessThanKey(Ptr *key1, Ptr *key2)
 {
     Q_ASSERT(sizeof(quintptr) == sizeof(Ptr *));
@@ -119,7 +118,6 @@ template <class Ptr> inline bool qMapLessThanKey(const Ptr *key1, const Ptr *key
     Q_ASSERT(sizeof(quintptr) == sizeof(const Ptr *));
     return quintptr(key1) < quintptr(key2);
 }
-#endif // QT_NO_PARTIAL_TEMPLATE_SPECIALIZATION
 
 template <class Key, class T>
 struct QMapNode {
@@ -187,6 +185,11 @@ public:
     inline ~QMap() { if (!d) return; if (!d->ref.deref()) freeData(d); }
 
     QMap<Key, T> &operator=(const QMap<Key, T> &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    inline QMap<Key, T> &operator=(QMap<Key, T> &&other)
+    { qSwap(d, other.d); return *this; }
+#endif
+    inline void swap(QMap<Key, T> &other) { qSwap(d, other.d); }
 #ifndef QT_NO_STL
     explicit QMap(const typename std::map<Key, T> &other);
     std::map<Key, T> toStdMap() const;
@@ -631,6 +634,10 @@ Q_INLINE_TEMPLATE QMap<Key, T> &QMap<Key, T>::unite(const QMap<Key, T> &other)
     return *this;
 }
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4189)
+#endif
 template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE void QMap<Key, T>::freeData(QMapData *x)
 {
@@ -640,19 +647,16 @@ Q_OUTOFLINE_TEMPLATE void QMap<Key, T>::freeData(QMapData *x)
         while (next != x) {
             cur = next;
             next = cur->forward[0];
-#if defined(_MSC_VER) && (_MSC_VER >= 1300)
-#pragma warning(disable:4189)
-#endif
             Node *concreteNode = concrete(reinterpret_cast<QMapData::Node *>(cur));
             concreteNode->key.~Key();
             concreteNode->value.~T();
-#if defined(_MSC_VER) && (_MSC_VER >= 1300)
-#pragma warning(default:4189)
-#endif
         }
     }
     x->continueFreeData(payload());
 }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 template <class Key, class T>
 Q_OUTOFLINE_TEMPLATE int QMap<Key, T>::remove(const Key &akey)
@@ -971,6 +975,7 @@ class QMultiMap : public QMap<Key, T>
 public:
     QMultiMap() {}
     QMultiMap(const QMap<Key, T> &other) : QMap<Key, T>(other) {}
+    inline void swap(QMultiMap<Key, T> &other) { QMap<Key, T>::swap(other); }
 
     inline typename QMap<Key, T>::iterator replace(const Key &key, const T &value)
     { return QMap<Key, T>::insert(key, value); }

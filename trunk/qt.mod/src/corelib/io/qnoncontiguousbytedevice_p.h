@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -57,6 +57,7 @@
 #include <QtCore/qbytearray.h>
 #include <QtCore/qbuffer.h>
 #include <QtCore/qiodevice.h>
+#include <QtCore/QSharedPointer>
 #include "private/qringbuffer_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -70,6 +71,7 @@ public:
     virtual bool atEnd() = 0;
     virtual bool reset() = 0;
     void disableReset();
+    bool isResetDisabled() { return resetDisabled; }
     virtual qint64 size() = 0;
 
     virtual ~QNonContiguousByteDevice();
@@ -89,7 +91,7 @@ class Q_CORE_EXPORT QNonContiguousByteDeviceFactory
 public:
     static QNonContiguousByteDevice* create(QIODevice *device);
     static QNonContiguousByteDevice* create(QByteArray *byteArray);
-    static QNonContiguousByteDevice* create(QRingBuffer *ringBuffer);
+    static QNonContiguousByteDevice* create(QSharedPointer<QRingBuffer> ringBuffer);
     static QIODevice* wrap(QNonContiguousByteDevice* byteDevice);
 };
 
@@ -114,7 +116,7 @@ protected:
 class QNonContiguousByteDeviceRingBufferImpl : public QNonContiguousByteDevice
 {
 public:
-    QNonContiguousByteDeviceRingBufferImpl(QRingBuffer *rb);
+    QNonContiguousByteDeviceRingBufferImpl(QSharedPointer<QRingBuffer> rb);
     ~QNonContiguousByteDeviceRingBufferImpl();
     const char* readPointer(qint64 maximumLength, qint64 &len);
     bool advanceReadPointer(qint64 amount);
@@ -122,13 +124,14 @@ public:
     bool reset();
     qint64 size();
 protected:
-    QRingBuffer* ringBuffer;
+    QSharedPointer<QRingBuffer> ringBuffer;
     qint64 currentPosition;
 };
 
 
 class QNonContiguousByteDeviceIoDeviceImpl : public QNonContiguousByteDevice
 {
+    Q_OBJECT
 public:
     QNonContiguousByteDeviceIoDeviceImpl(QIODevice *d);
     ~QNonContiguousByteDeviceIoDeviceImpl();
@@ -143,13 +146,14 @@ protected:
     qint64 currentReadBufferSize;
     qint64 currentReadBufferAmount;
     qint64 currentReadBufferPosition;
-    qint64 totalAdvancements;
+    qint64 totalAdvancements; //progress counter used for emitting the readProgress signal
     bool eof;
     qint64 initialPosition;
 };
 
 class QNonContiguousByteDeviceBufferImpl : public QNonContiguousByteDevice
 {
+    Q_OBJECT
 public:
     QNonContiguousByteDeviceBufferImpl(QBuffer *b);
     ~QNonContiguousByteDeviceBufferImpl();

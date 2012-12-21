@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -51,6 +51,18 @@
 #ifdef truncate
 #error qbytearray.h must be included before any header file that defines truncate
 #endif
+
+#if defined(Q_CC_GNU) && (__GNUC__ == 4 && __GNUC_MINOR__ == 0)
+//There is a bug in GCC 4.0 that tries to instantiate template of annonymous enum
+#  ifdef QT_USE_FAST_OPERATOR_PLUS
+#    undef QT_USE_FAST_OPERATOR_PLUS
+#  endif
+#  ifdef QT_USE_QSTRINGBUILDER
+#    undef QT_USE_QSTRINGBUILDER
+#  endif
+
+#endif
+
 
 QT_BEGIN_HEADER
 
@@ -144,6 +156,12 @@ public:
 
     QByteArray &operator=(const QByteArray &);
     QByteArray &operator=(const char *str);
+#ifdef Q_COMPILER_RVALUE_REFS
+    inline QByteArray &operator=(QByteArray &&other)
+    { qSwap(d, other.d); return *this; }
+#endif
+
+    inline void swap(QByteArray &other) { qSwap(d, other.d); }
 
     inline int size() const;
     bool isEmpty() const;
@@ -393,9 +411,9 @@ inline const char QByteArray::operator[](uint i) const
 { Q_ASSERT(i < uint(size())); return d->data[i]; }
 #else
 inline char QByteArray::at(int i) const
-{ Q_ASSERT(i >= 0 && i < size()); return d->data[i]; }
+{ Q_ASSERT(uint(i) < uint(size())); return d->data[i]; }
 inline char QByteArray::operator[](int i) const
-{ Q_ASSERT(i >= 0 && i < size()); return d->data[i]; }
+{ Q_ASSERT(uint(i) < uint(size())); return d->data[i]; }
 inline char QByteArray::operator[](uint i) const
 { Q_ASSERT(i < uint(size())); return d->data[i]; }
 #endif
@@ -542,6 +560,7 @@ inline bool operator>=(const QByteArray &a1, const char *a2)
 { return qstrcmp(a1, a2) >= 0; }
 inline bool operator>=(const char *a1, const QByteArray &a2)
 { return qstrcmp(a1, a2) >= 0; }
+#if !defined(QT_USE_QSTRINGBUILDER)
 inline const QByteArray operator+(const QByteArray &a1, const QByteArray &a2)
 { return QByteArray(a1) += a2; }
 inline const QByteArray operator+(const QByteArray &a1, const char *a2)
@@ -552,6 +571,7 @@ inline const QByteArray operator+(const char *a1, const QByteArray &a2)
 { return QByteArray(a1) += a2; }
 inline const QByteArray operator+(char a1, const QByteArray &a2)
 { return QByteArray(&a1, 1) += a2; }
+#endif // QT_USE_QSTRINGBUILDER
 inline QBool QByteArray::contains(const char *c) const
 { return QBool(indexOf(c) != -1); }
 inline QByteArray &QByteArray::replace(char before, const char *c)
@@ -593,5 +613,9 @@ Q_DECLARE_SHARED(QByteArray)
 QT_END_NAMESPACE
 
 QT_END_HEADER
+
+#ifdef QT_USE_QSTRINGBUILDER
+#include <QtCore/qstring.h>
+#endif
 
 #endif // QBYTEARRAY_H

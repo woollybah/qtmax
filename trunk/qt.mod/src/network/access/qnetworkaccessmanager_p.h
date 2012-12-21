@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -59,6 +59,7 @@
 #include "private/qobject_p.h"
 #include "QtNetwork/qnetworkproxy.h"
 #include "QtNetwork/qnetworksession.h"
+#include "qnetworkaccessauthenticationmanager_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -72,16 +73,19 @@ class QNetworkAccessManagerPrivate: public QObjectPrivate
 public:
     QNetworkAccessManagerPrivate()
         : networkCache(0), cookieJar(0),
+          httpThread(0),
 #ifndef QT_NO_NETWORKPROXY
           proxyFactory(0),
 #endif
 #ifndef QT_NO_BEARERMANAGEMENT
-          networkSession(0),
+          lastSessionState(QNetworkSession::Invalid),
           networkAccessible(QNetworkAccessManager::Accessible),
+          activeReplyCount(0),
           online(false),
           initializeSession(true),
 #endif
-          cookieJarCreated(false)
+          cookieJarCreated(false),
+          authenticationManager(new QNetworkAccessAuthenticationManager)
     { }
     ~QNetworkAccessManagerPrivate();
 
@@ -91,15 +95,15 @@ public:
     void createCookieJar() const;
 
     void authenticationRequired(QNetworkAccessBackend *backend, QAuthenticator *authenticator);
-    void addCredentials(const QUrl &url, const QAuthenticator *auth);
+    void cacheCredentials(const QUrl &url, const QAuthenticator *auth);
     QNetworkAuthenticationCredential *fetchCachedCredentials(const QUrl &url,
                                                              const QAuthenticator *auth = 0);
 
 #ifndef QT_NO_NETWORKPROXY
     void proxyAuthenticationRequired(QNetworkAccessBackend *backend, const QNetworkProxy &proxy,
                                      QAuthenticator *authenticator);
-    void addCredentials(const QNetworkProxy &proxy, const QAuthenticator *auth);
-    QNetworkAuthenticationCredential *fetchCachedCredentials(const QNetworkProxy &proxy,
+    void cacheProxyCredentials(const QNetworkProxy &proxy, const QAuthenticator *auth);
+    QNetworkAuthenticationCredential *fetchCachedProxyCredentials(const QNetworkProxy &proxy,
                                                              const QAuthenticator *auth = 0);
     QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery &query);
 #endif
@@ -108,6 +112,7 @@ public:
 
 #ifndef QT_NO_BEARERMANAGEMENT
     void createSession(const QNetworkConfiguration &config);
+    QSharedPointer<QNetworkSession> getNetworkSession() const;
 
     void _q_networkSessionClosed();
     void _q_networkSessionNewConfigurationActivated();
@@ -116,10 +121,14 @@ public:
     void _q_networkSessionStateChanged(QNetworkSession::State state);
 #endif
 
+    QNetworkRequest prepareMultipart(const QNetworkRequest &request, QHttpMultiPart *multiPart);
+
     // this is the cache for storing downloaded files
     QAbstractNetworkCache *networkCache;
 
     QNetworkCookieJar *cookieJar;
+
+    QThread *httpThread;
 
 
 #ifndef QT_NO_NETWORKPROXY
@@ -128,14 +137,20 @@ public:
 #endif
 
 #ifndef QT_NO_BEARERMANAGEMENT
-    QNetworkSession *networkSession;
+    QSharedPointer<QNetworkSession> networkSessionStrongRef;
+    QWeakPointer<QNetworkSession> networkSessionWeakRef;
+    QNetworkSession::State lastSessionState;
     QString networkConfiguration;
     QNetworkAccessManager::NetworkAccessibility networkAccessible;
+    int activeReplyCount;
     bool online;
     bool initializeSession;
 #endif
 
     bool cookieJarCreated;
+
+    // The cache with authorization data:
+    QSharedPointer<QNetworkAccessAuthenticationManager> authenticationManager;
 
     // this cache can be used by individual backends to cache e.g. their TCP connections to a server
     // and use the connections for multiple requests.

@@ -1,1 +1,1 @@
-#include "../../../src/declarative/qml/qdeclarativeenginedebug_p.h"
+#include "../../../src/declarative/debugger/qdeclarativeenginedebug_p.h"

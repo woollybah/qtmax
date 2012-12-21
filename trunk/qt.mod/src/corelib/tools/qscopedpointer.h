@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -54,7 +54,7 @@ struct QScopedPointerDeleter
     static inline void cleanup(T *pointer)
     {
         // Enforce a complete type.
-        // If you get a compile error here, read the secion on forward declared
+        // If you get a compile error here, read the section on forward declared
         // classes in the QScopedPointer documentation.
         typedef char IsIncompleteType[ sizeof(T) ? 1 : -1 ];
         (void) sizeof(IsIncompleteType);
@@ -69,7 +69,7 @@ struct QScopedPointerArrayDeleter
     static inline void cleanup(T *pointer)
     {
         // Enforce a complete type.
-        // If you get a compile error here, read the secion on forward declared
+        // If you get a compile error here, read the section on forward declared
         // classes in the QScopedPointer documentation.
         typedef char IsIncompleteType[ sizeof(T) ? 1 : -1 ];
         (void) sizeof(IsIncompleteType);
@@ -186,11 +186,32 @@ template <class T, class Cleanup>
 Q_INLINE_TEMPLATE void qSwap(QScopedPointer<T, Cleanup> &p1, QScopedPointer<T, Cleanup> &p2)
 { p1.swap(p2); }
 
+#ifndef QT_NO_STL
+QT_END_NAMESPACE
+namespace std {
+    template <class T, class Cleanup>
+    Q_INLINE_TEMPLATE void swap(QT_PREPEND_NAMESPACE(QScopedPointer)<T, Cleanup> &p1, QT_PREPEND_NAMESPACE(QScopedPointer)<T, Cleanup> &p2)
+    { p1.swap(p2); }
+}
+QT_BEGIN_NAMESPACE
+#endif
+
+
+
+namespace QtPrivate {
+    template <typename X, typename Y> struct QScopedArrayEnsureSameType;
+    template <typename X> struct QScopedArrayEnsureSameType<X,X> { typedef X* Type; };
+    template <typename X> struct QScopedArrayEnsureSameType<const X, X> { typedef X* Type; };
+}
+
 template <typename T, typename Cleanup = QScopedPointerArrayDeleter<T> >
 class QScopedArrayPointer : public QScopedPointer<T, Cleanup>
 {
 public:
-    explicit inline QScopedArrayPointer(T *p = 0)
+    inline QScopedArrayPointer() : QScopedPointer<T, Cleanup>(0) {}
+
+    template <typename D>
+    explicit inline QScopedArrayPointer(D *p, typename QtPrivate::QScopedArrayEnsureSameType<T,D>::Type = 0)
         : QScopedPointer<T, Cleanup>(p)
     {
     }
@@ -206,6 +227,17 @@ public:
     }
 
 private:
+    explicit inline QScopedArrayPointer(void *) {
+        // Enforce the same type.
+
+        // If you get a compile error here, make sure you declare
+        // QScopedArrayPointer with the same template type as you pass to the
+        // constructor. See also the QScopedPointer documentation.
+
+        // Storing a scalar array as a pointer to a different type is not
+        // allowed and results in undefined behavior.
+    }
+
     Q_DISABLE_COPY(QScopedArrayPointer)
 };
 

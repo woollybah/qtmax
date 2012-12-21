@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,6 +61,8 @@
 
 #include "QtCore/qpointer.h"
 #include "QtCore/qdatetime.h"
+#include "QtCore/qsharedpointer.h"
+#include "qatomic.h"
 
 #ifndef QT_NO_HTTP
 
@@ -79,10 +81,11 @@ public:
 
     virtual void open();
     virtual void closeDownstreamChannel();
-    virtual bool waitForDownstreamReadyRead(int msecs);
 
     virtual void downstreamReadyWrite();
     virtual void setDownstreamLimited(bool b);
+    virtual void setReadBufferSize(qint64 size);
+    virtual void emitReadBufferFreed(qint64 size);
 
     virtual void copyFinished(QIODevice *);
 #ifndef QT_NO_OPENSSL
@@ -100,21 +103,46 @@ public:
     bool canResume() const;
     void setResumeOffset(quint64 offset);
 
+signals:
+    // To HTTP thread:
+    void startHttpRequest();
+    void abortHttpRequest();
+    void readBufferSizeChanged(qint64 size);
+    void readBufferFreed(qint64 size);
+
+    void startHttpRequestSynchronously();
+
+    void haveUploadData(QByteArray dataArray, bool dataAtEnd, qint64 dataSize);
 private slots:
-    void replyReadyRead();
+    // From HTTP thread:
+    void replyDownloadData(QByteArray);
     void replyFinished();
-    void replyHeaderChanged();
+    void replyDownloadMetaData(QList<QPair<QByteArray,QByteArray> >,int,QString,bool,QSharedPointer<char>,qint64);
+    void replyDownloadProgressSlot(qint64,qint64);
     void httpAuthenticationRequired(const QHttpNetworkRequest &request, QAuthenticator *auth);
-    void httpCacheCredentials(const QHttpNetworkRequest &request, QAuthenticator *auth);
     void httpError(QNetworkReply::NetworkError error, const QString &errorString);
+#ifndef QT_NO_OPENSSL
+    void replySslErrors(const QList<QSslError> &, bool *, QList<QSslError> *);
+    void replySslConfigurationChanged(const QSslConfiguration&);
+#endif
+
+    // From QNonContiguousByteDeviceThreadForwardImpl in HTTP thread:
+    void resetUploadDataSlot(bool *r);
+    void wantUploadDataSlot(qint64);
+    void sentUploadDataSlot(qint64);
+
     bool sendCacheContents(const QNetworkCacheMetaData &metaData);
-    void finished(); // override
 
 private:
-    QHttpNetworkReply *httpReply;
-    QPointer<QNetworkAccessCachedHttpConnection> http;
-    QByteArray cacheKey;
-    QNetworkAccessBackendUploadIODevice *uploadDevice;
+    QHttpNetworkRequest httpRequest; // There is also a copy in the HTTP thread
+    int statusCode;
+    QString reasonPhrase;
+    // Will be increased by HTTP thread:
+    QSharedPointer<QAtomicInt> pendingDownloadDataEmissions;
+    QSharedPointer<QAtomicInt> pendingDownloadProgressEmissions;
+    bool loadingFromCache;
+    QByteDataBuffer pendingDownloadData;
+    bool usingZerocopyDownloadBuffer;
 
 #ifndef QT_NO_OPENSSL
     QSslConfiguration *pendingSslConfiguration;
@@ -124,9 +152,7 @@ private:
 
     quint64 resumeOffset;
 
-    void disconnectFromHttp();
-    void setupConnection();
-    void validateCache(QHttpNetworkRequest &httpRequest, bool &loadedFromCache);
+    bool loadFromCacheIfAllowed(QHttpNetworkRequest &httpRequest);
     void invalidateCache();
     void postRequest();
     void readFromHttp();

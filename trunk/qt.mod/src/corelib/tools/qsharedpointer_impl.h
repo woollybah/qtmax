@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,7 +44,17 @@
 #ifndef QSHAREDPOINTER_H
 #error Do not include qsharedpointer_impl.h directly
 #endif
+
 #if 0
+// These macros are duplicated here to make syncqt not complain a about
+// this header, as we have a "qt_sync_stop_processing" below, which in turn
+// is here because this file contains a template mess and duplicates the
+// classes found in qsharedpointer.h
+QT_BEGIN_HEADER
+QT_BEGIN_NAMESPACE
+QT_MODULE(Core)
+QT_END_NAMESPACE
+QT_END_HEADER
 #pragma qt_sync_stop_processing
 #endif
 
@@ -109,7 +119,6 @@ namespace QtSharedPointer {
     template <class T> inline void normalDeleter(T *t) { delete t; }
 
     // this uses partial template specialization
-    // the only compilers that didn't support this were MSVC 6.0 and 2002
     template <class T> struct RemovePointer;
     template <class T> struct RemovePointer<T *> { typedef T Type; };
     template <class T> struct RemovePointer<QSharedPointer<T> > { typedef T Type; };
@@ -323,7 +332,6 @@ namespace QtSharedPointer {
     protected:
         typedef ExternalRefCountData Data;
 
-        inline void ref() const { d->weakref.ref(); d->strongref.ref(); }
         inline void deref()
         { deref(d, this->value); }
         static inline void deref(Data *d, T *value)
@@ -370,14 +378,21 @@ namespace QtSharedPointer {
         inline void internalFinishConstruction(T *ptr)
         {
             Basic<T>::internalConstruct(ptr);
-            if (ptr) d->setQObjectShared(ptr, true);
 #ifdef QT_SHAREDPOINTER_TRACK_POINTERS
             if (ptr) internalSafetyCheckAdd2(d, ptr);
 #endif
+            if (ptr) d->setQObjectShared(ptr, true);
         }
 
         inline ExternalRefCount() : d(0) { }
         inline ExternalRefCount(Qt::Initialization i) : Basic<T>(i) { }
+
+        inline ExternalRefCount(T *ptr) : Basic<T>(Qt::Uninitialized) // throws
+        { internalConstruct(ptr); }
+        template <typename Deleter>
+        inline ExternalRefCount(T *ptr, Deleter deleter) : Basic<T>(Qt::Uninitialized) // throws
+        { internalConstruct(ptr, deleter); }
+
         inline ExternalRefCount(const ExternalRefCount<T> &other) : Basic<T>(other), d(other.d)
         { if (d) ref(); }
         template <class X>
@@ -388,7 +403,13 @@ namespace QtSharedPointer {
         template <class X>
         inline void internalCopy(const ExternalRefCount<X> &other)
         {
-            internalSet(other.d, other.data());
+            Data *o = other.d;
+            T *actual = other.value;
+            if (o)
+                other.ref();
+            qSwap(d, o);
+            qSwap(this->value, actual);
+            deref(o, actual);
         }
 
         inline void internalSwap(ExternalRefCount &other)
@@ -404,6 +425,7 @@ namespace QtSharedPointer {
         template <class X> friend class QT_PREPEND_NAMESPACE(QWeakPointer);
         template <class X, class Y> friend QSharedPointer<X> copyAndSetPointer(X * ptr, const QSharedPointer<Y> &src);
 #endif
+        inline void ref() const { d->weakref.ref(); d->strongref.ref(); }
 
         inline void internalSet(Data *o, T *actual)
         {
@@ -448,11 +470,12 @@ public:
     inline QSharedPointer() { }
     // inline ~QSharedPointer() { }
 
-    inline explicit QSharedPointer(T *ptr) : BaseClass(Qt::Uninitialized)
-    { BaseClass::internalConstruct(ptr); }
+    inline explicit QSharedPointer(T *ptr) : BaseClass(ptr) // throws
+    { }
 
     template <typename Deleter>
-    inline QSharedPointer(T *ptr, Deleter d) { BaseClass::internalConstruct(ptr, d); }
+    inline QSharedPointer(T *ptr, Deleter d) : BaseClass(ptr, d) // throws
+    { }
 
     inline QSharedPointer(const QSharedPointer<T> &other) : BaseClass(other) { }
     inline QSharedPointer<T> &operator=(const QSharedPointer<T> &other)
@@ -460,6 +483,13 @@ public:
         BaseClass::internalCopy(other);
         return *this;
     }
+#ifdef Q_COMPILER_RVALUE_REFS
+    inline QSharedPointer<T> &operator=(QSharedPointer<T> &&other)
+    {
+        QSharedPointer<T>::internalSwap(other);
+        return *this;
+    }
+#endif
 
     template <class X>
     inline QSharedPointer(const QSharedPointer<X> &other) : BaseClass(other)
@@ -562,7 +592,7 @@ public:
 #ifndef QT_NO_QOBJECT
     // special constructor that is enabled only if X derives from QObject
     template <class X>
-    inline QWeakPointer(X *ptr) : d(ptr ? d->getAndRef(ptr) : 0), value(ptr)
+    inline QWeakPointer(X *ptr) : d(ptr ? Data::getAndRef(ptr) : 0), value(ptr)
     { }
 #endif
     template <class X>
@@ -764,6 +794,16 @@ inline void qSwap(QSharedPointer<T> &p1, QSharedPointer<T> &p2)
     p1.swap(p2);
 }
 
+#ifndef QT_NO_STL
+QT_END_NAMESPACE
+namespace std {
+    template <class T>
+    inline void swap(QT_PREPEND_NAMESPACE(QSharedPointer)<T> &p1, QT_PREPEND_NAMESPACE(QSharedPointer)<T> &p2)
+    { p1.swap(p2); }
+}
+QT_BEGIN_NAMESPACE
+#endif
+
 namespace QtSharedPointer {
 // helper functions:
     template <class X, class T>
@@ -844,8 +884,12 @@ qobject_cast(const QWeakPointer<T> &src)
 {
     return qSharedPointerObjectCast<typename QtSharedPointer::RemovePointer<X>::Type, T>(src);
 }
-
 #endif
+
+
+template<typename T> Q_DECLARE_TYPEINFO_BODY(QWeakPointer<T>, Q_MOVABLE_TYPE);
+template<typename T> Q_DECLARE_TYPEINFO_BODY(QSharedPointer<T>, Q_MOVABLE_TYPE);
+
 
 QT_END_NAMESPACE
 

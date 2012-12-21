@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -70,21 +70,17 @@
 
 QT_BEGIN_NAMESPACE
 
-struct QEditorInfo
-{
-    QEditorInfo() : isStatic(false)
-    {
-    }
+struct QEditorInfo {
+    QEditorInfo(QWidget *e, bool s): widget(QWeakPointer<QWidget>(e)), isStatic(s) {}
+    QEditorInfo(): isStatic(false) {}
 
-    QEditorInfo(const QPersistentModelIndex &i, QWidget *e, bool b) : index(i), editor(e), isStatic(b)
-    {
-    }
-
-    QPersistentModelIndex index;
-    QPointer<QWidget> editor;
-    bool isStatic; //true when called from setIndexWidget
-
+    QWeakPointer<QWidget> widget;
+    bool isStatic;
 };
+
+//  Fast associativity between Persistent editors and indices.
+typedef QHash<QWidget *, QPersistentModelIndex> QEditorIndexHash;
+typedef QHash<QPersistentModelIndex, QEditorInfo> QIndexEditorHash;
 
 typedef QPair<QRect, QModelIndex> QItemViewPaintPair;
 typedef QList<QItemViewPaintPair> QItemViewPaintPairs;
@@ -112,6 +108,7 @@ public:
     void init();
 
     virtual void _q_rowsRemoved(const QModelIndex &parent, int start, int end);
+    virtual void _q_rowsInserted(const QModelIndex &parent, int start, int end);
     virtual void _q_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
     virtual void _q_columnsRemoved(const QModelIndex &parent, int start, int end);
     virtual void _q_columnsInserted(const QModelIndex &parent, int start, int end);
@@ -135,8 +132,9 @@ public:
     }
     void stopAutoScroll() { autoScrollTimer.stop(); autoScrollCount = 0;}
 
-
-    bool dropOn(QDropEvent *event, int *row, int *col, QModelIndex *index);
+#ifndef QT_NO_DRAGANDDROP
+    virtual bool dropOn(QDropEvent *event, int *row, int *col, QModelIndex *index);
+#endif
     bool droppingOnItself(QDropEvent *event, const QModelIndex &index);
 
     QWidget *editor(const QModelIndex &index, const QStyleOptionViewItem &options);
@@ -195,6 +193,8 @@ public:
 
 #endif
     virtual QItemViewPaintPairs draggablePaintPairs(const QModelIndexList &indexes, QRect *r) const;
+    // reimplemented in subclasses
+    virtual void adjustViewOptionsForIndex(QStyleOptionViewItemV4*, const QModelIndex&) const {}
 
     inline void releaseEditor(QWidget *editor) const {
         if (editor) {
@@ -247,9 +247,9 @@ public:
                       : q->horizontalOffset(), q->verticalOffset());
     }
 
-    QEditorInfo editorForIndex(const QModelIndex &index) const;
+    const QEditorInfo &editorForIndex(const QModelIndex &index) const;
     inline bool hasEditor(const QModelIndex &index) const {
-        return editorForIndex(index).editor != 0;
+        return indexEditorHash.find(index) != indexEditorHash.constEnd();
     }
 
     QModelIndex indexForEditor(QWidget *editor) const;
@@ -261,10 +261,17 @@ public:
     }
 
     inline QAbstractItemDelegate *delegateForIndex(const QModelIndex &index) const {
-	QAbstractItemDelegate *del;
-	if ((del = rowDelegates.value(index.row(), 0))) return del;
-	if ((del = columnDelegates.value(index.column(), 0))) return del;
-	return itemDelegate;
+        QMap<int, QPointer<QAbstractItemDelegate> >::ConstIterator it;
+
+        it = rowDelegates.find(index.row());
+        if (it != rowDelegates.end())
+            return it.value();
+
+        it = columnDelegates.find(index.column());
+        if (it != columnDelegates.end())
+            return it.value();
+
+        return itemDelegate;
     }
 
     inline bool isIndexValid(const QModelIndex &index) const {
@@ -352,7 +359,8 @@ public:
     QAbstractItemView::SelectionMode selectionMode;
     QAbstractItemView::SelectionBehavior selectionBehavior;
 
-    QList<QEditorInfo> editors;
+    QEditorIndexHash editorIndexHash;
+    QIndexEditorHash indexEditorHash;
     QSet<QWidget*> persistent;
     QWidget *currentlyCommittingEditor;
 
@@ -367,6 +375,7 @@ public:
     bool viewportEnteredNeeded;
 
     QAbstractItemView::State state;
+    QAbstractItemView::State stateBeforeAnimation;
     QAbstractItemView::EditTriggers editTriggers;
     QAbstractItemView::EditTrigger lastTrigger;
 

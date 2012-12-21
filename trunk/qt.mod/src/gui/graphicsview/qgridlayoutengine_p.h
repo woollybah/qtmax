@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -89,6 +89,14 @@ enum LayoutSide {
     Top,
     Right,
     Bottom
+};
+
+enum {
+    NoConstraint,
+    HorizontalConstraint,   // Width depends on the height
+    VerticalConstraint,     // Height depends on the width
+    UnknownConstraint,      // need to update cache
+    UnfeasibleConstraint    // not feasible, it be has some items with Vertical and others with Horizontal constraints
 };
 
 template <typename T>
@@ -216,13 +224,16 @@ public:
 
 typedef QMap<QPair<int, int>, QGridLayoutMultiCellData> MultiCellMap;
 
+class QGridLayoutRowInfo;
+
 class QGridLayoutRowData
 {
 public:
     void reset(int count);
-    void distributeMultiCells();
+    void distributeMultiCells(const QGridLayoutRowInfo &rowInfo);
     void calculateGeometries(int start, int end, qreal targetSize, qreal *positions, qreal *sizes,
-                             qreal *descents, const QGridLayoutBox &totalBox);
+                             qreal *descents, const QGridLayoutBox &totalBox,
+                             const QGridLayoutRowInfo &rowInfo);
     QGridLayoutBox totalBox(int start, int end) const;
     void stealBox(int start, int end, int which, qreal *positions, qreal *sizes);
 
@@ -270,6 +281,10 @@ public:
     inline void setAlignment(Qt::Alignment alignment) { q_alignment = alignment; }
 
     QSizePolicy::Policy sizePolicy(Qt::Orientation orientation) const;
+
+    bool hasDynamicConstraint() const;
+    Qt::Orientation dynamicConstraintOrientation() const;
+
     QSizePolicy::ControlTypes controlTypes(LayoutSide side) const;
     QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const;
     QGridLayoutBox box(Qt::Orientation orientation, qreal constraint = -1.0) const;
@@ -280,7 +295,7 @@ public:
     void setGeometry(const QRectF &rect);
     void transpose();
     void insertOrRemoveRows(int row, int delta, Qt::Orientation orientation = Qt::Vertical);
-    QSizeF effectiveMaxSize() const;
+    QSizeF effectiveMaxSize(const QSizeF &constraint) const;
 
 #ifdef QT_DEBUG
     void dump(int indent = 0) const;
@@ -326,6 +341,7 @@ public:
     // returns the number of items inserted, which may be less than (rowCount * columnCount)
     int itemCount() const;
     QGridLayoutItem *itemAt(int index) const;
+    int indexOf(QGraphicsLayoutItem *item) const;
 
     int effectiveFirstRow(Qt::Orientation orientation = Qt::Vertical) const;
     int effectiveLastRow(Qt::Orientation orientation = Qt::Vertical) const;
@@ -372,6 +388,14 @@ public:
                     int column, int rowSpan, int columnSpan) const;
     QSizeF sizeHint(const QLayoutStyleInfo &styleInfo, Qt::SizeHint which,
                     const QSizeF &constraint) const;
+
+    // heightForWidth / widthForHeight support
+    QSizeF dynamicallyConstrainedSizeHint(Qt::SizeHint which, const QSizeF &constraint) const;
+    bool ensureDynamicConstraint() const;
+    bool hasDynamicConstraint() const;
+    Qt::Orientation constraintOrientation() const;
+
+
     QSizePolicy::ControlTypes controlTypes(LayoutSide side) const;
     void transpose();
     void setVisualDirection(Qt::LayoutDirection direction);
@@ -390,9 +414,14 @@ private:
     void setItemAt(int row, int column, QGridLayoutItem *item);
     void insertOrRemoveRows(int row, int delta, Qt::Orientation orientation = Qt::Vertical);
     void fillRowData(QGridLayoutRowData *rowData, const QLayoutStyleInfo &styleInfo,
-                     Qt::Orientation orientation = Qt::Vertical) const;
+                                    qreal *colPositions, qreal *colSizes,
+                                    Qt::Orientation orientation = Qt::Vertical) const;
     void ensureEffectiveFirstAndLastRows() const;
-    void ensureColumnAndRowData(const QLayoutStyleInfo &styleInfo) const;
+    void ensureColumnAndRowData(QGridLayoutRowData *rowData, QGridLayoutBox *totalBox,
+                                            const QLayoutStyleInfo &styleInfo,
+                                            qreal *colPositions, qreal *colSizes,
+                                            Qt::Orientation orientation) const;
+
     void ensureGeometries(const QLayoutStyleInfo &styleInfo, const QSizeF &size) const;
 
     // User input
@@ -405,6 +434,7 @@ private:
     // Lazily computed from the above user input
     mutable int q_cachedEffectiveFirstRows[NOrientations];
     mutable int q_cachedEffectiveLastRows[NOrientations];
+    mutable quint8 q_cachedConstraintOrientation : 3;
 
     // Layout item input
     mutable QLayoutStyleInfo q_cachedDataForStyleInfo;

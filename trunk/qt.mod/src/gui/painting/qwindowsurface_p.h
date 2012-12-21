@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -63,11 +63,20 @@ class QRect;
 class QPoint;
 class QImage;
 class QWindowSurfacePrivate;
+class QPlatformWindow;
 
 class Q_GUI_EXPORT QWindowSurface
 {
 public:
-    QWindowSurface(QWidget *window);
+    enum WindowSurfaceFeature {
+        PartialUpdates               = 0x00000001, // Supports doing partial updates.
+        PreservedContents            = 0x00000002, // Supports doing flush without first doing a repaint.
+        StaticContents               = 0x00000004, // Supports having static content regions when being resized.
+        AllFeatures                  = 0xffffffff  // For convenience
+    };
+    Q_DECLARE_FLAGS(WindowSurfaceFeatures, WindowSurfaceFeature)
+
+    QWindowSurface(QWidget *window, bool setDefaultSurface = true);
     virtual ~QWindowSurface();
 
     QWidget *window() const;
@@ -79,8 +88,14 @@ public:
     // can be larger than just the offset from the top-level widget as there may also be window
     // decorations which are painted into the window surface.
     virtual void flush(QWidget *widget, const QRegion &region, const QPoint &offset) = 0;
+#if !defined(Q_WS_QPA)
     virtual void setGeometry(const QRect &rect);
     QRect geometry() const;
+#else
+    virtual void resize(const QSize &size);
+    QSize size() const;
+    inline QRect geometry() const { return QRect(QPoint(), size()); }     //### cleanup before Qt 5
+#endif
 
     virtual bool scroll(const QRegion &area, int dx, int dy);
 
@@ -93,24 +108,29 @@ public:
     virtual QPoint offset(const QWidget *widget) const;
     inline QRect rect(const QWidget *widget) const;
 
-    bool hasStaticContentsSupport() const;
-    bool hasPartialUpdateSupport() const;
+    bool hasFeature(WindowSurfaceFeature feature) const;
+    virtual WindowSurfaceFeatures features() const;
 
     void setStaticContents(const QRegion &region);
     QRegion staticContents() const;
 
 protected:
     bool hasStaticContents() const;
-    void setStaticContentsSupport(bool enable);
-    void setPartialUpdateSupport(bool enable);
 
 private:
     QWindowSurfacePrivate *d_ptr;
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(QWindowSurface::WindowSurfaceFeatures)
+
 inline QRect QWindowSurface::rect(const QWidget *widget) const
 {
     return widget->rect().translated(offset(widget));
+}
+
+inline bool QWindowSurface::hasFeature(WindowSurfaceFeature feature) const
+{
+    return (features() & feature) != 0;
 }
 
 QT_END_NAMESPACE

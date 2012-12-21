@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -642,7 +642,15 @@ const QWSKeyboard::Mapping QWSKbPrivate::s_keymap_default[] = {
     { 111, 0xffff, 0x01000007, 0x00, 0x00, 0x0000 },
     { 111, 0xffff, 0x01000000, 0x06, 0x08, 0x0200 },
     { 111, 0xffff, 0x01000000, 0x0c, 0x08, 0x0200 },
+    { 113, 0xffff, 0x01000071, 0x00, 0x00, 0x0000 },
+    { 114, 0xffff, 0x01000070, 0x00, 0x00, 0x0000 },
+    { 115, 0xffff, 0x01000072, 0x00, 0x00, 0x0000 },
+    { 116, 0xffff, 0x0100010b, 0x00, 0x00, 0x0000 },
     { 119, 0xffff, 0x01000008, 0x00, 0x00, 0x0000 },
+    { 138, 0xffff, 0x01000058, 0x00, 0x00, 0x0000 },
+    { 139, 0xffff, 0x01000055, 0x00, 0x00, 0x0000 },
+    { 152, 0xffff, 0x010000ba, 0x00, 0x00, 0x0000 },
+
 };
 
 const QWSKeyboard::Composing QWSKbPrivate::s_keycompose_default[] = {

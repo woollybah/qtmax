@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -78,7 +78,7 @@ QT_BEGIN_NAMESPACE
     pixelVectorAG = _mm_mullo_epi16(pixelVectorAG, alphaChannel); \
     pixelVectorRB = _mm_mullo_epi16(pixelVectorRB, alphaChannel); \
  \
-    /* 3. devide by 255, that's the tricky part. \
+    /* 3. divide by 255, that's the tricky part. \
        we do it like for BYTE_MUL(), with bit shift: X/255 ~= (X + X/256 + rounding)/256 */ \
     /** so first (X + X/256 + rounding) */\
     pixelVectorRB = _mm_add_epi16(pixelVectorRB, _mm_srli_epi16(pixelVectorRB, 8)); \
@@ -86,7 +86,7 @@ QT_BEGIN_NAMESPACE
     pixelVectorAG = _mm_add_epi16(pixelVectorAG, _mm_srli_epi16(pixelVectorAG, 8)); \
     pixelVectorAG = _mm_add_epi16(pixelVectorAG, half); \
  \
-    /** second devide by 256 */\
+    /** second divide by 256 */\
     pixelVectorRB = _mm_srli_epi16(pixelVectorRB, 8); \
     /** for AG, we could >> 8 to divide followed by << 8 to put the \
         bytes in the correct position. By masking instead, we execute \
@@ -129,7 +129,7 @@ QT_BEGIN_NAMESPACE
 }
 
 // Basically blend src over dst with the const alpha defined as constAlphaVector.
-// nullVector, half, one, colorMask are constant accross the whole image/texture, and should be defined as:
+// nullVector, half, one, colorMask are constant across the whole image/texture, and should be defined as:
 //const __m128i nullVector = _mm_set1_epi32(0);
 //const __m128i half = _mm_set1_epi16(0x80);
 //const __m128i one = _mm_set1_epi16(0xff);
@@ -186,7 +186,7 @@ QT_BEGIN_NAMESPACE
 }
 
 // Basically blend src over dst with the const alpha defined as constAlphaVector.
-// nullVector, half, one, colorMask are constant accross the whole image/texture, and should be defined as:
+// nullVector, half, one, colorMask are constant across the whole image/texture, and should be defined as:
 //const __m128i nullVector = _mm_set1_epi32(0);
 //const __m128i half = _mm_set1_epi16(0x80);
 //const __m128i one = _mm_set1_epi16(0xff);

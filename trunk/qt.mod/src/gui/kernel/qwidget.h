@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,6 +55,10 @@
 #include <QtGui/qbrush.h>
 #include <QtGui/qcursor.h>
 #include <QtGui/qkeysequence.h>
+
+#ifdef Q_WS_QPA //should this go somewhere else?
+#include <QtGui/qplatformwindowformat_qpa.h>
+#endif
 
 #ifdef QT_INCLUDE_COMPAT
 #include <QtGui/qevent.h>
@@ -94,9 +98,12 @@ class QHideEvent;
 class QInputContext;
 class QIcon;
 class QWindowSurface;
+class QPlatformWindow;
 class QLocale;
 class QGraphicsProxyWidget;
 class QGraphicsEffect;
+class QRasterWindowSurface;
+class QUnifiedToolbarSurface;
 #if defined(Q_WS_X11)
 class QX11Info;
 #endif
@@ -627,6 +634,16 @@ public:
     void setWindowSurface(QWindowSurface *surface);
     QWindowSurface *windowSurface() const;
 
+#if defined(Q_WS_QPA)
+    void setPlatformWindow(QPlatformWindow *window);
+    QPlatformWindow *platformWindow() const;
+
+    void setPlatformWindowFormat(const QPlatformWindowFormat &format);
+    QPlatformWindowFormat platformWindowFormat() const;
+
+    friend class QDesktopScreenWidget;
+#endif
+
 Q_SIGNALS:
     void customContextMenuRequested(const QPoint &pos);
 
@@ -758,6 +775,8 @@ private:
     friend OSViewRef qt_mac_nativeview_for(const QWidget *w);
     friend void qt_event_request_window_change(QWidget *widget);
     friend bool qt_mac_sendMacEventToWidget(QWidget *widget, EventRef ref);
+    friend class QRasterWindowSurface;
+    friend class QUnifiedToolbarSurface;
 #endif
 #ifdef Q_WS_QWS
     friend class QWSBackingStore;
@@ -787,7 +806,7 @@ private:
     Q_DISABLE_COPY(QWidget)
     Q_PRIVATE_SLOT(d_func(), void _q_showIfNotHidden())
 #ifdef Q_OS_SYMBIAN
-    Q_PRIVATE_SLOT(d_func(), void _q_delayedDestroy(WId winId))
+    Q_PRIVATE_SLOT(d_func(), void void _q_cleanupWinIds())
 #endif
 
     QWidgetData *data;
@@ -898,13 +917,6 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QWidget::RenderFlags)
 
-#if defined Q_CC_MSVC && _MSC_VER < 1300
-template <> inline QWidget *qobject_cast_helper<QWidget*>(QObject *o, QWidget *)
-{
-    if (!o || !o->isWidgetType()) return 0;
-    return (QWidget*)(o);
-}
-#else
 template <> inline QWidget *qobject_cast<QWidget*>(QObject *o)
 {
     if (!o || !o->isWidgetType()) return 0;
@@ -915,7 +927,6 @@ template <> inline const QWidget *qobject_cast<const QWidget*>(const QObject *o)
     if (!o || !o->isWidgetType()) return 0;
     return static_cast<const QWidget*>(o);
 }
-#endif
 
 inline QWidget *QWidget::childAt(int ax, int ay) const
 { return childAt(QPoint(ax, ay)); }

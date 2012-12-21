@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -61,10 +61,12 @@
 #include "QtGui/qtextlayout.h"
 #include "QtGui/qstyleoption.h"
 #include "QtCore/qpointer.h"
-#include "QtGui/qlineedit.h"
 #include "QtGui/qclipboard.h"
 #include "QtCore/qpoint.h"
 #include "QtGui/qcompleter.h"
+#include "QtGui/qaccessible.h"
+
+#include "qplatformdefs.h"
 
 QT_BEGIN_HEADER
 
@@ -85,6 +87,9 @@ public:
         m_ascent(0), m_maxLength(32767), m_lastCursorPos(-1),
         m_tripleClickTimer(0), m_maskData(0), m_modifiedState(0), m_undoState(0),
         m_selstart(0), m_selend(0), m_passwordEchoEditing(false)
+#ifdef QT_GUI_PASSWORD_ECHO_DELAY
+        , m_passwordEchoTimer(0)
+#endif
     {
         init(txt);
     }
@@ -108,8 +113,8 @@ public:
         return (c != -1 ? c : 0);
     }
 
-    bool isUndoAvailable() const { return !m_readOnly && m_undoState; }
-    bool isRedoAvailable() const { return !m_readOnly && m_undoState < (int)m_history.size(); }
+    bool isUndoAvailable() const;
+    bool isRedoAvailable() const;
     void clearUndo() { m_history.clear(); m_modifiedState = m_undoState = 0; }
 
     bool isModified() const { return m_modifiedState != m_undoState; }
@@ -160,6 +165,8 @@ public:
     int cursorWidth() const { return m_cursorWidth; }
     void setCursorWidth(int value) { m_cursorWidth = value; }
 
+    Qt::CursorMoveStyle cursorMoveStyle() const { return m_textLayout.cursorMoveStyle(); }
+    void setCursorMoveStyle(Qt::CursorMoveStyle style) { m_textLayout.setCursorMoveStyle(style); }
 
     void moveCursor(int pos, bool mark = false);
     void cursorForward(bool mark, int steps)
@@ -167,10 +174,12 @@ public:
         int c = m_cursor;
         if (steps > 0) {
             while (steps--)
-                c = m_textLayout.nextCursorPosition(c);
+                c = cursorMoveStyle() == Qt::VisualMoveStyle ? m_textLayout.rightCursorPosition(c)
+                                                             : m_textLayout.nextCursorPosition(c);
         } else if (steps < 0) {
             while (steps++)
-                c = m_textLayout.previousCursorPosition(c);
+                c = cursorMoveStyle() == Qt::VisualMoveStyle ? m_textLayout.leftCursorPosition(c)
+                                                             : m_textLayout.previousCursorPosition(c);
         }
         moveCursor(c, mark);
     }
@@ -218,6 +227,7 @@ public:
     uint echoMode() const { return m_echoMode; }
     void setEchoMode(uint mode)
     {
+        cancelPasswordEchoTimer();
         m_echoMode = mode;
         m_passwordEchoEditing = false;
         updateDisplayText();
@@ -239,7 +249,7 @@ public:
 
 #ifndef QT_NO_COMPLETER
     QCompleter *completer() const { return m_completer; }
-    /* Note that you must set the widget for the completer seperately */
+    /* Note that you must set the widget for the completer separately */
     void setCompleter(const QCompleter *c) { m_completer = const_cast<QCompleter*>(c); }
     void complete(int key);
 #endif
@@ -267,7 +277,13 @@ public:
     QString preeditAreaText() const { return m_textLayout.preeditAreaText(); }
 
     void updatePasswordEchoEditing(bool editing);
-    bool passwordEchoEditing() const { return m_passwordEchoEditing; }
+    bool passwordEchoEditing() const {
+#ifdef QT_GUI_PASSWORD_ECHO_DELAY
+        if (m_passwordEchoTimer != 0)
+            return true;
+#endif
+        return m_passwordEchoEditing ;
+    }
 
     QChar passwordCharacter() const { return m_passwordCharacter; }
     void setPasswordCharacter(const QChar &character) { m_passwordCharacter = character; updateDisplayText(); }
@@ -296,6 +312,7 @@ public:
 
     int cursorBlinkPeriod() const { return m_blinkPeriod; }
     void setCursorBlinkPeriod(int msec);
+    void resetCursorBlinkTimer();
 
     QString cancelText() const { return m_cancelText; }
     void setCancelText(const QString &text) { m_cancelText = text; }
@@ -414,6 +431,18 @@ private:
 
     bool m_passwordEchoEditing;
     QChar m_passwordCharacter;
+#ifdef QT_GUI_PASSWORD_ECHO_DELAY
+    int m_passwordEchoTimer;
+#endif
+    void cancelPasswordEchoTimer()
+    {
+#ifdef QT_GUI_PASSWORD_ECHO_DELAY
+        if (m_passwordEchoTimer != 0) {
+            killTimer(m_passwordEchoTimer);
+            m_passwordEchoTimer = 0;
+        }
+#endif
+    }
 
 Q_SIGNALS:
     void cursorPositionChanged(int, int);
@@ -424,6 +453,7 @@ Q_SIGNALS:
     void textEdited(const QString &);
 
     void resetInputContext();
+    void updateMicroFocus();
 
     void accepted();
     void editingFinished();

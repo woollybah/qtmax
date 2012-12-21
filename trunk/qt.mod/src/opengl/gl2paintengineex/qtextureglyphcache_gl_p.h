@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtOpenGL module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -56,67 +56,114 @@
 #include <private/qtextureglyphcache_p.h>
 #include <private/qgl_p.h>
 #include <qglshaderprogram.h>
+#include <qglframebufferobject.h>
 
+// #define QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
 
 QT_BEGIN_NAMESPACE
 
 class QGL2PaintEngineExPrivate;
 
-class Q_OPENGL_EXPORT QGLTextureGlyphCache : public QObject, public QImageTextureGlyphCache
+struct QGLGlyphTexture
 {
-    Q_OBJECT
+    QGLGlyphTexture(const QGLContext *ctx)
+        : m_fbo(0)
+        , m_width(0)
+        , m_height(0)
+    {
+        if (ctx && QGLFramebufferObject::hasOpenGLFramebufferObjects() && !ctx->d_ptr->workaround_brokenFBOReadBack)
+            glGenFramebuffers(1, &m_fbo);
+
+#ifdef QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
+        qDebug(" -> QGLGlyphTexture() %p for context %p.", this, ctx);
+#endif
+    }
+
+    ~QGLGlyphTexture() {
+        const QGLContext *ctx = QGLContext::currentContext();
+#ifdef QT_GL_TEXTURE_GLYPH_CACHE_DEBUG
+        qDebug("~QGLGlyphTexture() %p for context %p.", this, ctx);
+#endif
+        // At this point, the context group is made current, so it's safe to
+        // release resources without a makeCurrent() call
+        if (ctx) {
+            if (m_fbo)
+                glDeleteFramebuffers(1, &m_fbo);
+            if (m_width || m_height)
+                glDeleteTextures(1, &m_texture);
+        }
+    }
+
+    GLuint m_texture;
+    GLuint m_fbo;
+    int m_width;
+    int m_height;
+};
+
+class Q_OPENGL_EXPORT QGLTextureGlyphCache : public QImageTextureGlyphCache, public QGLContextGroupResourceBase
+{
 public:
-    QGLTextureGlyphCache(QGLContext *context, QFontEngineGlyphCache::Type type, const QTransform &matrix);
+    QGLTextureGlyphCache(const QGLContext *context, QFontEngineGlyphCache::Type type, const QTransform &matrix);
     ~QGLTextureGlyphCache();
 
     virtual void createTextureData(int width, int height);
     virtual void resizeTextureData(int width, int height);
-    virtual void fillTexture(const Coord &c, glyph_t glyph);
+    virtual void fillTexture(const Coord &c, glyph_t glyph, QFixed subPixelPosition);
     virtual int glyphPadding() const;
     virtual int maxTextureWidth() const;
     virtual int maxTextureHeight() const;
 
-    inline GLuint texture() const { return m_texture; }
+    inline GLuint texture() const {
+        QGLTextureGlyphCache *that = const_cast<QGLTextureGlyphCache *>(this);
+        QGLGlyphTexture *glyphTexture = that->m_textureResource.value(ctx);
+        return glyphTexture ? glyphTexture->m_texture : 0;
+    }
 
-    inline int width() const { return m_width; }
-    inline int height() const { return m_height; }
+    inline int width() const {
+        QGLTextureGlyphCache *that = const_cast<QGLTextureGlyphCache *>(this);
+        QGLGlyphTexture *glyphTexture = that->m_textureResource.value(ctx);
+        return glyphTexture ? glyphTexture->m_width : 0;
+    }
+    inline int height() const {
+        QGLTextureGlyphCache *that = const_cast<QGLTextureGlyphCache *>(this);
+        QGLGlyphTexture *glyphTexture = that->m_textureResource.value(ctx);
+        return glyphTexture ? glyphTexture->m_height : 0;
+    }
 
     inline void setPaintEnginePrivate(QGL2PaintEngineExPrivate *p) { pex = p; }
 
+    void setContext(const QGLContext *context);
+    inline const QGLContext *context() const { return ctx; }
 
-public Q_SLOTS:
-    void contextDestroyed(const QGLContext *context) {
-        if (context == ctx) {
-            const QGLContext *nextCtx = qt_gl_transfer_context(ctx);
-            if (!nextCtx) {
-                // the context may not be current, so we cannot directly
-                // destroy the fbo and texture here, but since the context
-                // is about to be destroyed, the GL server will do the
-                // clean up for us anyway
-                m_fbo = 0;
-                m_texture = 0;
-                ctx = 0;
-            } else {
-                // since the context holding the texture is shared, and
-                // about to be destroyed, we have to transfer ownership
-                // of the texture to one of the share contexts
-                ctx = const_cast<QGLContext *>(nextCtx);
-            }
-        }
+    inline int serialNumber() const { return m_serialNumber; }
+
+    enum FilterMode {
+        Nearest,
+        Linear
+    };
+    FilterMode filterMode() const { return m_filterMode; }
+    void setFilterMode(FilterMode m) { m_filterMode = m; }
+
+    void clear();
+
+    void contextDeleted(const QGLContext *context) {
+        if (ctx == context)
+            ctx = 0;
     }
+    void freeResource(void *) { ctx = 0; }
 
 private:
-    QGLContext *ctx;
+    QGLContextGroupResource<QGLGlyphTexture> m_textureResource;
 
+    const QGLContext *ctx;
     QGL2PaintEngineExPrivate *pex;
+    QGLShaderProgram *m_blitProgram;
+    FilterMode m_filterMode;
 
-    GLuint m_texture;
-    GLuint m_fbo;
+    GLfloat m_vertexCoordinateArray[8];
+    GLfloat m_textureCoordinateArray[8];
 
-    int m_width;
-    int m_height;
-
-    QGLShaderProgram *m_program;
+    int m_serialNumber;
 };
 
 QT_END_NAMESPACE

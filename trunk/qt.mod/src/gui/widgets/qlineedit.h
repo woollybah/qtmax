@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -43,6 +43,7 @@
 #define QLINEEDIT_H
 
 #include <QtGui/qframe.h>
+#include <QtGui/qtextcursor.h>
 #include <QtCore/qstring.h>
 #include <QtCore/qmargins.h>
 
@@ -84,6 +85,7 @@ class Q_GUI_EXPORT QLineEdit : public QWidget
     Q_PROPERTY(bool redoAvailable READ isRedoAvailable)
     Q_PROPERTY(bool acceptableInput READ hasAcceptableInput)
     Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText)
+    Q_PROPERTY(Qt::CursorMoveStyle cursorMoveStyle READ cursorMoveStyle WRITE setCursorMoveStyle)
 
 public:
     explicit QLineEdit(QWidget* parent=0);
@@ -157,6 +159,9 @@ public:
 
     void setDragEnabled(bool b);
     bool dragEnabled() const;
+
+    void setCursorMoveStyle(Qt::CursorMoveStyle style);
+    Qt::CursorMoveStyle cursorMoveStyle() const;
 
     QString inputMask() const;
     void setInputMask(const QString &inputMask);
@@ -268,6 +273,7 @@ Q_SIGNALS:
 
 private:
     friend class QAbstractSpinBox;
+    friend class QAccessibleLineEdit;
 #ifdef QT_KEYPAD_NAVIGATION
     friend class QDateTimeEdit;
 #endif
@@ -283,6 +289,7 @@ private:
     Q_PRIVATE_SLOT(d_func(), void _q_editFocusChange(bool))
 #endif
     Q_PRIVATE_SLOT(d_func(), void _q_selectionChanged())
+    Q_PRIVATE_SLOT(d_func(), void _q_updateNeeded(const QRect &))
 };
 
 #endif // QT_NO_LINEEDIT

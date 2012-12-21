@@ -51,6 +51,9 @@ extern "C" {
 	BBString * bmx_qt_qcombobox_currenttext(QComboBox * cb);
 	int bmx_qt_qcombobox_findtext(QComboBox * cb, BBString * text, int flags);
 	void bmx_qt_qcombobox_setcurrentindex(QComboBox * cb, int index);
+	int bmx_qt_qcombobox_duplicatesenabled(QComboBox * cb);
+	int bmx_qt_qcombobox_hasframe(QComboBox * cb);
+	void bmx_qt_qcombobox_hidepopup(QComboBox * cb);
 
 }
 

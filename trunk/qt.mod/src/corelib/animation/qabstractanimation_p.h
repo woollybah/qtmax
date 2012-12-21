@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -58,6 +58,7 @@
 #include <QtCore/qtimer.h>
 #include <QtCore/qelapsedtimer.h>
 #include <private/qobject_p.h>
+#include <qabstractanimation.h>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -114,30 +115,47 @@ private:
     Q_DECLARE_PUBLIC(QAbstractAnimation)
 };
 
+
+class QUnifiedTimer;
+class QDefaultAnimationDriver : public QAnimationDriver
+{
+    Q_OBJECT
+public:
+    QDefaultAnimationDriver(QUnifiedTimer *timer);
+    void timerEvent(QTimerEvent *e);
+
+    void started();
+    void stopped();
+
+private:
+    QBasicTimer m_timer;
+    QUnifiedTimer *m_unified_timer;
+};
+
+class Q_CORE_EXPORT QAnimationDriverPrivate : public QObjectPrivate
+{
+public:
+    QAnimationDriverPrivate() : running(false) {}
+    bool running;
+};
+
 typedef QElapsedTimer ElapsedTimer;
 
-class QUnifiedTimer : public QObject
+class Q_CORE_EXPORT QUnifiedTimer : public QObject
 {
 private:
     QUnifiedTimer();
 
 public:
     //XXX this is needed by dui
-    static Q_CORE_EXPORT QUnifiedTimer *instance();
+    static QUnifiedTimer *instance();
     static QUnifiedTimer *instance(bool create);
 
     static void registerAnimation(QAbstractAnimation *animation, bool isTopLevel);
     static void unregisterAnimation(QAbstractAnimation *animation);
 
     //defines the timing interval. Default is DEFAULT_TIMER_INTERVAL
-    void setTimingInterval(int interval)
-    {
-        timingInterval = interval;
-        if (animationTimer.isActive() && !isPauseTimerActive) {
-            //we changed the timing interval
-            animationTimer.start(timingInterval, this);
-        }
-    }
+    void setTimingInterval(int interval);
 
     /*
        this allows to have a consistent timer interval at each tick from the timer
@@ -161,11 +179,23 @@ public:
     */
     static void updateAnimationTimer();
 
+    void installAnimationDriver(QAnimationDriver *driver);
+
+    void restartAnimationTimer();
+    void updateAnimationsTime();
+
+    //useful for profiling/debugging
+    int runningAnimationCount() { return animations.count(); }
+
 protected:
     void timerEvent(QTimerEvent *);
 
 private:
-    // timer used for all active (running) animations
+    friend class QDefaultAnimationDriver;
+
+    QAnimationDriver *driver;
+    QDefaultAnimationDriver defaultDriver;
+
     QBasicTimer animationTimer;
     // timer used to delay the check if we should start/stop the animation timer
     QBasicTimer startStopAnimationTimer;
@@ -175,6 +205,7 @@ private:
     qint64 lastTick;
     int timingInterval;
     int currentAnimationIdx;
+    bool insideTick;
     bool consistentTiming;
     bool slowMode;
 
@@ -195,9 +226,6 @@ private:
     void registerRunningAnimation(QAbstractAnimation *animation);
     void unregisterRunningAnimation(QAbstractAnimation *animation);
 
-    void restartAnimationTimer();
-
-    void updateAnimationsTime();
     int closestPauseAnimationTimeToFinish();
 };
 

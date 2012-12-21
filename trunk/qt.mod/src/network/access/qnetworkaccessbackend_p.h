@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -70,7 +70,6 @@ class QNetworkAccessManagerPrivate;
 class QNetworkReplyImplPrivate;
 class QAbstractNetworkCache;
 class QNetworkCacheMetaData;
-class QNetworkAccessBackendUploadIODevice;
 class QNonContiguousByteDevice;
 
 // Should support direct file upload from disk or download to disk.
@@ -111,15 +110,14 @@ public:
     //   socket).
 
     virtual void open() = 0;
-#ifndef QT_NO_BEARERMANAGEMENT
     virtual bool start();
-#endif
     virtual void closeDownstreamChannel() = 0;
-    virtual bool waitForDownstreamReadyRead(int msecs) = 0;
 
     // slot-like:
     virtual void downstreamReadyWrite();
     virtual void setDownstreamLimited(bool b);
+    virtual void setReadBufferSize(qint64 size);
+    virtual void emitReadBufferFreed(qint64 size);
     virtual void copyFinished(QIODevice *);
     virtual void ignoreSslErrors();
     virtual void ignoreSslErrors(const QList<QSslError> &errors);
@@ -158,6 +156,9 @@ public:
     QVariant attribute(QNetworkRequest::Attribute code) const;
     void setAttribute(QNetworkRequest::Attribute code, const QVariant &value);
 
+    bool isSynchronous() { return synchronous; }
+    void setSynchronous(bool sync) { synchronous = sync; }
+
     // return true if the QNonContiguousByteDevice of the upload
     // data needs to support reset(). Currently needed for HTTP.
     // This will possibly enable buffering of the upload data.
@@ -167,15 +168,22 @@ public:
     virtual bool canResume() const { return false; }
     virtual void setResumeOffset(quint64 offset) { Q_UNUSED(offset); }
 
+    virtual bool processRequestSynchronously() { return false; }
+
 protected:
     // Create the device used for reading the upload data
     QNonContiguousByteDevice* createUploadByteDevice();
-
 
     // these functions control the downstream mechanism
     // that is, data that has come via the connection and is going out the backend
     qint64 nextDownstreamBlockSize() const;
     void writeDownstreamData(QByteDataBuffer &list);
+
+    // not actually appending data, it was already written to the user buffer
+    void writeDownstreamDataDownloadBuffer(qint64, qint64);
+    char* getDownloadBuffer(qint64);
+
+    QSharedPointer<QNonContiguousByteDevice> uploadByteDevice;
 
 public slots:
     // for task 251801, needs to be a slot to be called asynchronously
@@ -188,19 +196,23 @@ protected slots:
     void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth);
 #endif
     void authenticationRequired(QAuthenticator *auth);
-    void cacheCredentials(QAuthenticator *auth);
     void metaDataChanged();
     void redirectionRequested(const QUrl &destination);
     void sslErrors(const QList<QSslError> &errors);
     void emitReplyUploadProgress(qint64 bytesSent, qint64 bytesTotal);
 
+protected:
+    // FIXME In the long run we should get rid of our QNAM architecture
+    // and scrap this ReplyImpl/Backend distinction.
+    QNetworkAccessManagerPrivate *manager;
+    QNetworkReplyImplPrivate *reply;
+
 private:
     friend class QNetworkAccessManager;
     friend class QNetworkAccessManagerPrivate;
-    friend class QNetworkAccessBackendUploadIODevice;
     friend class QNetworkReplyImplPrivate;
-    QNetworkAccessManagerPrivate *manager;
-    QNetworkReplyImplPrivate *reply;
+
+    bool synchronous;
 };
 
 class QNetworkAccessBackendFactory

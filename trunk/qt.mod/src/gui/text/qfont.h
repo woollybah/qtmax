@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -93,6 +93,13 @@ public:
         NoFontMerging       = 0x8000
     };
 
+    enum HintingPreference {
+        PreferDefaultHinting        = 0,
+        PreferNoHinting             = 1,
+        PreferVerticalHinting       = 2,
+        PreferFullHinting           = 3
+    };
+
     enum Weight {
         Light    = 25,
         Normal   = 50,
@@ -133,22 +140,24 @@ public:
     };
 
     enum ResolveProperties {
-        FamilyResolved         = 0x0001,
-        SizeResolved           = 0x0002,
-        StyleHintResolved      = 0x0004,
-        StyleStrategyResolved  = 0x0008,
-        WeightResolved         = 0x0010,
-        StyleResolved          = 0x0020,
-        UnderlineResolved      = 0x0040,
-        OverlineResolved       = 0x0080,
-        StrikeOutResolved      = 0x0100,
-        FixedPitchResolved     = 0x0200,
-        StretchResolved        = 0x0400,
-        KerningResolved        = 0x0800,
-        CapitalizationResolved = 0x1000,
-        LetterSpacingResolved  = 0x2000,
-        WordSpacingResolved    = 0x4000,
-        AllPropertiesResolved  = 0x7fff
+        FamilyResolved              = 0x0001,
+        SizeResolved                = 0x0002,
+        StyleHintResolved           = 0x0004,
+        StyleStrategyResolved       = 0x0008,
+        WeightResolved              = 0x0010,
+        StyleResolved               = 0x0020,
+        UnderlineResolved           = 0x0040,
+        OverlineResolved            = 0x0080,
+        StrikeOutResolved           = 0x0100,
+        FixedPitchResolved          = 0x0200,
+        StretchResolved             = 0x0400,
+        KerningResolved             = 0x0800,
+        CapitalizationResolved      = 0x1000,
+        LetterSpacingResolved       = 0x2000,
+        WordSpacingResolved         = 0x4000,
+        HintingPreferenceResolved   = 0x8000,
+        StyleNameResolved           = 0x10000,
+        AllPropertiesResolved       = 0x1ffff
     };
 
     QFont();
@@ -159,6 +168,9 @@ public:
 
     QString family() const;
     void setFamily(const QString &);
+
+    QString styleName() const;
+    void setStyleName(const QString &);
 
     int pointSize() const;
     void setPointSize(int);
@@ -213,6 +225,9 @@ public:
     void setCapitalization(Capitalization);
     Capitalization capitalization() const;
 
+    void setHintingPreference(HintingPreference hintingPreference);
+    HintingPreference hintingPreference() const;
+
     // is raw mode still needed?
     bool rawMode() const;
     void setRawMode(bool);
@@ -226,7 +241,10 @@ public:
     bool operator<(const QFont &) const;
     operator QVariant() const;
     bool isCopyOf(const QFont &) const;
-
+#ifdef Q_COMPILER_RVALUE_REFS
+    inline QFont &operator=(QFont &&other)
+    { qSwap(d, other.d); qSwap(resolve_mask, other.resolve_mask);  return *this; }
+#endif
 
 #ifdef Q_WS_WIN
     HFONT handle() const;
@@ -315,6 +333,7 @@ private:
     friend class QPainterReplayer;
     friend class QPaintBufferEngine;
     friend class QCommandLinkButtonPrivate;
+    friend class QFontEngine;
 
 #ifndef QT_NO_DATASTREAM
     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QFont &);

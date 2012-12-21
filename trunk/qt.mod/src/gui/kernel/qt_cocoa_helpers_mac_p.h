@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -103,6 +103,7 @@
 #include <qtimer.h>
 #include <qtooltip.h>
 #include <private/qeffects_p.h>
+#include <private/qwidget_p.h>
 #include <qtextdocument.h>
 #include <qdebug.h>
 #include <qpoint.h>
@@ -144,18 +145,14 @@ bool qt_mac_checkForNativeSizeGrip(const QWidget *widget);
 void qt_dispatchTabletProximityEvent(void * /*NSEvent * */ tabletEvent);
 #ifdef QT_MAC_USE_COCOA
 bool qt_dispatchKeyEventWithCocoa(void * /*NSEvent * */ keyEvent, QWidget *widgetToGetEvent);
-void qt_cocoaChangeOverrideCursor(const QCursor &cursor);
 // These methods exists only for supporting unified mode.
 void macDrawRectOnTop(void * /*OSWindowRef */ window);
 void macSyncDrawingOnFirstInvocation(void * /*OSWindowRef */window);
 void qt_cocoaStackChildWindowOnTopOfOtherChildren(QWidget *widget);
-#endif
 void qt_mac_menu_collapseSeparators(void * /*NSMenu */ menu, bool collapse);
+#endif
 bool qt_dispatchKeyEvent(void * /*NSEvent * */ keyEvent, QWidget *widgetToGetEvent);
 void qt_dispatchModifiersChanged(void * /*NSEvent * */flagsChangedEvent, QWidget *widgetToGetEvent);
-void qt_mac_dispatchNCMouseMessage(void */* NSWindow* */eventWindow, void */* NSEvent* */mouseEvent, 
-                                   QWidget *widgetToGetEvent, bool &leftButtonIsRightButton);
-bool qt_mac_handleMouseEvent(void * /*QCocoaView * */view, void * /*NSEvent * */event, QEvent::Type eventType, Qt::MouseButton button);
 bool qt_mac_handleTabletEvent(void * /*QCocoaView * */view, void * /*NSEvent * */event);
 inline QApplication *qAppInstance() { return static_cast<QApplication *>(QCoreApplication::instance()); }
 struct ::TabletProximityRec;
@@ -165,6 +162,29 @@ Qt::KeyboardModifiers qt_cocoaDragOperation2QtModifiers(uint dragOperations);
 QPixmap qt_mac_convert_iconref(const IconRef icon, int width, int height);
 void qt_mac_constructQIconFromIconRef(const IconRef icon, const IconRef overlayIcon, QIcon *retIcon,
                                       QStyle::StandardPixmap standardIcon = QStyle::SP_CustomBase);
+
+#if QT_MAC_USE_COCOA && __OBJC__
+struct DnDParams
+{
+    NSView *view;
+    NSEvent *theEvent;
+    QPoint globalPoint;
+    NSDragOperation performedAction;
+};
+
+DnDParams *macCurrentDnDParameters();
+NSDragOperation qt_mac_mapDropAction(Qt::DropAction action);
+NSDragOperation qt_mac_mapDropActions(Qt::DropActions actions);
+Qt::DropAction qt_mac_mapNSDragOperation(NSDragOperation nsActions);
+Qt::DropActions qt_mac_mapNSDragOperations(NSDragOperation nsActions);
+
+QWidget *qt_mac_getTargetForKeyEvent(QWidget *widgetThatReceivedEvent);
+QWidget *qt_mac_getTargetForMouseEvent(NSEvent *event, QEvent::Type eventType,
+    QPoint &returnLocalPoint, QPoint &returnGlobalPoint, QWidget *nativeWidget, QWidget **returnWidgetUnderMouse);
+bool qt_mac_handleMouseEvent(NSEvent *event, QEvent::Type eventType, Qt::MouseButton button, QWidget *nativeWidget, bool fakeEvent = false);
+void qt_mac_handleNonClientAreaMouseEvent(NSWindow *window, NSEvent *event);
+#endif
+
 inline int flipYCoordinate(int y)
 {
     return QApplication::desktop()->screenGeometry(0).height() - y;    
@@ -195,29 +215,125 @@ inline QString qt_mac_NSStringToQString(const NSString *nsstr)
 { return QCFString::toQString(reinterpret_cast<const CFStringRef>(nsstr)); }
 
 inline NSString *qt_mac_QStringToNSString(const QString &qstr)
-{ return [reinterpret_cast<const NSString *>(QCFString::toCFStringRef(qstr)) autorelease]; }
+{ return [const_cast<NSString *>(reinterpret_cast<const NSString *>(QCFString::toCFStringRef(qstr))) autorelease]; }
 
 #ifdef QT_MAC_USE_COCOA
 class QCocoaPostMessageArgs {
 public:
     id target;
     SEL selector;
-    QCocoaPostMessageArgs(id target, SEL selector) : target(target), selector(selector)
+    int argCount;
+    id arg1;
+    id arg2;
+    QCocoaPostMessageArgs(id target, SEL selector, int argCount=0, id arg1=0, id arg2=0)
+        : target(target), selector(selector), argCount(argCount), arg1(arg1), arg2(arg2)
     {
         [target retain];
+        [arg1 retain];
+        [arg2 retain];
     }
 
     ~QCocoaPostMessageArgs()
     {
+        [arg2 release];
+        [arg1 release];
         [target release];
     }
 };
-bool qt_cocoaPostMessage(id target, SEL selector);
+void qt_cocoaPostMessage(id target, SEL selector, int argCount=0, id arg1=0, id arg2=0);
+void qt_cocoaPostMessageAfterEventLoopExit(id target, SEL selector, int argCount=0, id arg1=0, id arg2=0);
 #endif
 
 #endif
+
+class QMacScrollOptimization {
+    // This class is made to optimize for the case when the user
+    // scrolls both horizontally and vertically at the same
+    // time. This will result in two QWheelEvents (one for each
+    // direction), which will typically result in two calls to
+    // QWidget::_scroll_sys. Rather than copying pixels twize on
+    // screen because of this, we add this helper class to try to
+    // get away with only one blit.
+    static QWidgetPrivate *_target;
+    static bool _inWheelEvent;
+    static int _dx;
+    static int _dy;
+    static QRect _scrollRect;
+
+public:
+    static void initDelayedScroll()
+    {
+        _inWheelEvent = true;
+    }
+
+    static bool delayScroll(QWidgetPrivate *target, int dx, int dy, const QRect &scrollRect)
+    {
+        if (!_inWheelEvent)
+            return false;
+        if (_target && _target != target)
+            return false;
+        if (_scrollRect.width() != -1 && _scrollRect != scrollRect)
+            return false;
+
+        _target = target;
+        _dx += dx;
+        _dy += dy;
+        _scrollRect = scrollRect;
+        return true;
+    }
+
+    static void performDelayedScroll()
+    {
+        if (!_inWheelEvent)
+            return;
+        _inWheelEvent = false;
+        if (!_target)
+            return;
+
+        _target->scroll_sys(_dx, _dy, _scrollRect);
+
+        _target = 0;
+        _dx = 0;
+        _dy = 0;
+        _scrollRect = QRect(0, 0, -1, -1);
+    }
+};
 
 void qt_mac_post_retranslateAppMenu();
+
+#ifdef QT_MAC_USE_COCOA
+void qt_mac_display(QWidget *widget);
+void qt_mac_setNeedsDisplay(QWidget *widget);
+void qt_mac_setNeedsDisplayInRect(QWidget *widget, QRegion region);
+#endif // QT_MAC_USE_COCOA
+
+
+// Utility functions to ease the use of Core Graphics contexts.
+
+inline void qt_mac_retain_graphics_context(CGContextRef context)
+{
+    CGContextRetain(context);
+    CGContextSaveGState(context);
+}
+
+inline void qt_mac_release_graphics_context(CGContextRef context)
+{
+    CGContextRestoreGState(context);
+    CGContextRelease(context);
+}
+
+inline void qt_mac_draw_image(CGContextRef context, CGContextRef imageContext, CGRect area, CGRect drawingArea)
+{
+    CGImageRef image = CGBitmapContextCreateImage(imageContext);
+    CGImageRef subImage = CGImageCreateWithImageInRect(image, area);
+
+    CGContextTranslateCTM (context, 0, drawingArea.origin.y + CGRectGetMaxY(drawingArea));
+    CGContextScaleCTM(context, 1, -1);
+    CGContextDrawImage(context, drawingArea, subImage);
+
+    CGImageRelease(subImage);
+    CGImageRelease(image);
+}
 
 QT_END_NAMESPACE
 
