@@ -16,7 +16,7 @@
 #if defined(__SYMBIAN32__)
 # define QT_BUILD_KEY "Symbian full-config"
 #else
-# if (!QT_NO_DEBUG)
+# if !defined(QT_NO_DEBUG)
 #  if (defined(WIN64) || defined(_WIN64) || defined(__WIN64__))
 #   define QT_BUILD_KEY "Windows x64 mingw debug full-config"
 #  else
@@ -50,6 +50,12 @@
 # define QT_NO_DBUS
 #endif
 
+#if defined(QT_NO_FONTCONFIG) && defined(QT_FONTCONFIG)
+# undef QT_NO_FONTCONFIG
+#elif !defined(QT_NO_FONTCONFIG)
+# define QT_NO_FONTCONFIG
+#endif
+
 #if defined(QT_NO_FREETYPE) && defined(QT_FREETYPE)
 # undef QT_NO_FREETYPE
 #elif !defined(QT_NO_FREETYPE)
@@ -72,6 +78,12 @@
 # undef QT_NO_IMAGEFORMAT_TIFF
 #elif !defined(QT_NO_IMAGEFORMAT_TIFF)
 # define QT_NO_IMAGEFORMAT_TIFF
+#endif
+
+#if defined(QT_NO_NIS) && defined(QT_NIS)
+# undef QT_NO_NIS
+#elif !defined(QT_NO_NIS)
+# define QT_NO_NIS
 #endif
 
 #if defined(QT_NO_OPENSSL) && defined(QT_OPENSSL)
