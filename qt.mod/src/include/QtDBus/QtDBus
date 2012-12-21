@@ -18,4 +18,6 @@
 #include "qdbusreply.h"
 #include "qdbusserver.h"
 #include "qdbusservicewatcher.h"
+#include "qdbusunixfiledescriptor.h"
+#include "qdbusvirtualobject.h"
 #endif

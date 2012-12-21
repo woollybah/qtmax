@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -49,6 +49,10 @@
 #ifndef QT_NO_STL
 #include <iterator>
 #include <list>
+#endif
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+#include <iterator>
+#include <initializer_list>
 #endif
 
 #include <new>
@@ -118,6 +122,15 @@ public:
     inline QList(const QList<T> &l) : d(l.d) { d->ref.ref(); if (!d->sharable) detach_helper(); }
     ~QList();
     QList<T> &operator=(const QList<T> &l);
+#ifdef Q_COMPILER_RVALUE_REFS
+    inline QList &operator=(QList &&other)
+    { qSwap(d, other.d); return *this; }
+#endif
+    inline void swap(QList<T> &other) { qSwap(d, other.d); }
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+    inline QList(std::initializer_list<T> args) : d(&QListData::shared_null)
+    { d->ref.ref(); qCopy(args.begin(), args.end(), std::back_inserter(*this)); }
+#endif
     bool operator==(const QList<T> &l) const;
     inline bool operator!=(const QList<T> &l) const { return !(*this == l); }
 
@@ -628,6 +641,8 @@ Q_OUTOFLINE_TEMPLATE QList<T> QList<T>::mid(int pos, int alength) const
     if (pos == 0 && alength == size())
         return *this;
     QList<T> cpy;
+    if (alength <= 0)
+        return cpy;
     cpy.reserve(alength);
     cpy.d->end = alength;
     QT_TRY {
@@ -713,7 +728,7 @@ Q_OUTOFLINE_TEMPLATE void QList<T>::detach_helper()
 template <typename T>
 Q_OUTOFLINE_TEMPLATE QList<T>::~QList()
 {
-    if (d && !d->ref.deref())
+    if (!d->ref.deref())
         free(d);
 }
 
@@ -741,8 +756,7 @@ Q_OUTOFLINE_TEMPLATE void QList<T>::free(QListData::Data *data)
 {
     node_destruct(reinterpret_cast<Node *>(data->array + data->begin),
                   reinterpret_cast<Node *>(data->array + data->end));
-    if (data->ref == 0)
-        qFree(data);
+    qFree(data);
 }
 
 
@@ -755,25 +769,32 @@ Q_OUTOFLINE_TEMPLATE void QList<T>::clear()
 template <typename T>
 Q_OUTOFLINE_TEMPLATE int QList<T>::removeAll(const T &_t)
 {
-    detachShared();
+    int index = indexOf(_t);
+    if (index == -1)
+        return 0;
+
     const T t = _t;
-    int removedCount=0, i=0;
-    Node *n;
-    while (i < p.size())
-        if ((n = reinterpret_cast<Node *>(p.at(i)))->t() == t) {
-            node_destruct(n);
-            p.remove(i);
-            ++removedCount;
-        } else {
-            ++i;
-        }
+    detach();
+
+    Node *i = reinterpret_cast<Node *>(p.at(index));
+    Node *e = reinterpret_cast<Node *>(p.end());
+    Node *n = i;
+    node_destruct(i);
+    while (++i != e) {
+        if (i->t() == t)
+            node_destruct(i);
+        else
+            *n++ = *i;
+    }
+
+    int removedCount = e - n;
+    d->end -= removedCount;
     return removedCount;
 }
 
 template <typename T>
 Q_OUTOFLINE_TEMPLATE bool QList<T>::removeOne(const T &_t)
 {
-    detachShared();
     int index = indexOf(_t);
     if (index != -1) {
         removeAt(index);

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,8 +55,15 @@
 
 #include "qnetworksession.h"
 #include "qnetworkconfiguration_p.h"
+#include "QtCore/qsharedpointer.h"
 
 #ifndef QT_NO_BEARERMANAGEMENT
+
+#ifdef Q_OS_SYMBIAN
+class RConnection;
+class RSocket;
+class RHostResolver;
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -67,14 +74,11 @@ class Q_NETWORK_EXPORT QNetworkSessionPrivate : public QObject
     friend class QNetworkSession;
 
 public:
-    QNetworkSessionPrivate()
-    :   state(QNetworkSession::Invalid), isOpen(false)
-    {
-    }
-
+    QNetworkSessionPrivate() : QObject(),
+        state(QNetworkSession::Invalid), isOpen(false), mutex(QMutex::Recursive)
+    {}
     virtual ~QNetworkSessionPrivate()
-    {
-    }
+    {}
 
     //called by QNetworkSession constructor and ensures
     //that the state is immediately updated (w/o actually opening
@@ -85,14 +89,14 @@ public:
 #ifndef QT_NO_NETWORKINTERFACE
     virtual QNetworkInterface currentInterface() const = 0;
 #endif
-    virtual QVariant sessionProperty(const QString& key) const = 0;
-    virtual void setSessionProperty(const QString& key, const QVariant& value) = 0;
+    virtual QVariant sessionProperty(const QString &key) const = 0;
+    virtual void setSessionProperty(const QString &key, const QVariant &value) = 0;
 
     virtual void open() = 0;
     virtual void close() = 0;
     virtual void stop() = 0;
 
-    virtual void setALREnabled(bool /*enabled*/) { }
+    virtual void setALREnabled(bool /*enabled*/) {}
     virtual void migrate() = 0;
     virtual void accept() = 0;
     virtual void ignore() = 0;
@@ -105,6 +109,15 @@ public:
     virtual quint64 bytesReceived() const = 0;
     virtual quint64 activeTime() const = 0;
 
+#ifdef Q_OS_SYMBIAN
+    // get internal RConnection (not thread safe, call only from thread that owns the QNetworkSession)
+    static RConnection* nativeSession(QNetworkSession&);
+    virtual RConnection* nativeSession() = 0;
+    // open socket using the internal RConnection (thread safe)
+    static TInt nativeOpenSocket(QNetworkSession& session, RSocket& socket, TUint family, TUint type, TUint protocol);
+    // open host resolver using the internal RConnection (thread safe)
+    static TInt nativeOpenHostResolver(QNetworkSession& session, RHostResolver& resolver, TUint family, TUint protocol);
+#endif
 protected:
     inline QNetworkConfigurationPrivatePointer privateConfiguration(const QNetworkConfiguration &config) const
     {
@@ -144,11 +157,14 @@ protected:
 
     QNetworkSession::State state;
     bool isOpen;
+
+    QMutex mutex;
 };
 
 QT_END_NAMESPACE
 
+Q_DECLARE_METATYPE(QSharedPointer<QNetworkSession>)
+
 #endif // QT_NO_BEARERMANAGEMENT
 
-#endif //QNETWORKSESSIONPRIVATE_H
-
+#endif // QNETWORKSESSIONPRIVATE_H

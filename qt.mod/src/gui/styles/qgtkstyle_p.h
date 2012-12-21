@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -174,8 +174,9 @@ typedef GtkWidget* (*Ptr_gtk_frame_new)(const gchar *);
 typedef GtkWidget* (*Ptr_gtk_expander_new)(const gchar*);
 typedef GtkWidget* (*Ptr_gtk_statusbar_new)(void);
 typedef GtkSettings* (*Ptr_gtk_settings_get_default)(void);
+typedef GtkAdjustment* (*Ptr_gtk_range_get_adjustment)(GtkRange *);
 typedef void (*Ptr_gtk_range_set_adjustment)(GtkRange *, GtkAdjustment *);
-typedef void (*Ptr_gtk_progress_set_adjustment)(GtkProgress *, GtkAdjustment *);
+typedef void (*Ptr_gtk_progress_configure)(GtkProgress *, double, double, double);
 typedef void (*Ptr_gtk_range_set_inverted)(GtkRange*, bool);
 typedef void (*Ptr_gtk_container_add)(GtkContainer *container, GtkWidget *widget);
 typedef GtkIconSet* (*Ptr_gtk_icon_factory_lookup_default) (const gchar*);
@@ -198,6 +199,7 @@ typedef void  (*Ptr_gtk_paint_arrow) (GtkStyle*,GdkWindow*, GtkStateType, GtkSha
 typedef void  (*Ptr_gtk_paint_option) (GtkStyle*,GdkWindow*, GtkStateType, GtkShadowType, const GdkRectangle *, GtkWidget *, const gchar *, gint , gint , gint , gint);
 typedef void  (*Ptr_gtk_paint_flat_box) (GtkStyle*,GdkWindow*, GtkStateType, GtkShadowType, const GdkRectangle *, GtkWidget *, const gchar *, gint , gint , gint , gint);
 typedef void (*Ptr_gtk_paint_extension) (GtkStyle *, GdkWindow *, GtkStateType, GtkShadowType, const GdkRectangle *, GtkWidget *, const gchar *, gint, gint, gint, gint, GtkPositionType);
+typedef void (*Ptr_gtk_adjustment_configure) (GtkAdjustment *, double, double, double, double, double, double);
 typedef GtkObject* (*Ptr_gtk_adjustment_new) (double, double, double, double, double, double);
 typedef void   (*Ptr_gtk_paint_hline) (GtkStyle *, GdkWindow *, GtkStateType, const GdkRectangle *, GtkWidget *, const gchar *, gint, gint, gint y);
 typedef void   (*Ptr_gtk_paint_vline) (GtkStyle *, GdkWindow *, GtkStateType, const GdkRectangle *, GtkWidget *, const gchar *, gint, gint, gint);
@@ -393,7 +395,8 @@ public:
     static Ptr_gtk_progress_bar_new gtk_progress_bar_new;
     static Ptr_gtk_container_add gtk_container_add;
     static Ptr_gtk_menu_shell_append gtk_menu_shell_append;
-    static Ptr_gtk_progress_set_adjustment gtk_progress_set_adjustment;
+    static Ptr_gtk_progress_configure gtk_progress_configure;
+    static Ptr_gtk_range_get_adjustment gtk_range_get_adjustment;
     static Ptr_gtk_range_set_adjustment gtk_range_set_adjustment;
     static Ptr_gtk_range_set_inverted gtk_range_set_inverted;
     static Ptr_gtk_icon_factory_lookup_default gtk_icon_factory_lookup_default;
@@ -416,6 +419,7 @@ public:
     static Ptr_gtk_paint_arrow gtk_paint_arrow;
     static Ptr_gtk_paint_handle gtk_paint_handle;
     static Ptr_gtk_paint_expander gtk_paint_expander;
+    static Ptr_gtk_adjustment_configure gtk_adjustment_configure;
     static Ptr_gtk_adjustment_new gtk_adjustment_new;
     static Ptr_gtk_paint_vline gtk_paint_vline;
     static Ptr_gtk_paint_hline gtk_paint_hline;
@@ -502,6 +506,7 @@ protected:
     static void addWidgetToMap(GtkWidget* widget);
     static void addAllSubWidgets(GtkWidget *widget, gpointer v = 0);
     static void addWidget(GtkWidget *widget);
+    static void removeWidgetFromMap(const QHashableLatin1Literal &path);
 
     virtual void init();
 

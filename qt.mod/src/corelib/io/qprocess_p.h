@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -81,20 +81,118 @@ class QTimer;
 class RProcess;
 #endif
 
+#ifdef Q_OS_WIN
+class QProcEnvKey : public QString
+{
+public:
+    QProcEnvKey() {}
+    explicit QProcEnvKey(const QString &other) : QString(other) {}
+    QProcEnvKey(const QProcEnvKey &other) : QString(other) {}
+    bool operator==(const QProcEnvKey &other) const { return !compare(other, Qt::CaseInsensitive); }
+};
+inline uint qHash(const QProcEnvKey &key) { return qHash(key.toCaseFolded()); }
+
+typedef QString QProcEnvValue;
+#else
+class QProcEnvKey
+{
+public:
+    QProcEnvKey() : hash(0) {}
+    explicit QProcEnvKey(const QByteArray &other) : key(other), hash(qHash(key)) {}
+    QProcEnvKey(const QProcEnvKey &other) { *this = other; }
+    bool operator==(const QProcEnvKey &other) const { return key == other.key; }
+
+    QByteArray key;
+    uint hash;
+};
+inline uint qHash(const QProcEnvKey &key) { return key.hash; }
+
+class QProcEnvValue
+{
+public:
+    QProcEnvValue() {}
+    QProcEnvValue(const QProcEnvValue &other) { *this = other; }
+    explicit QProcEnvValue(const QString &value) : stringValue(value) {}
+    explicit QProcEnvValue(const QByteArray &value) : byteValue(value) {}
+    bool operator==(const QProcEnvValue &other) const
+    {
+        return byteValue.isEmpty() && other.byteValue.isEmpty()
+                ? stringValue == other.stringValue
+                : bytes() == other.bytes();
+    }
+    QByteArray bytes() const
+    {
+        if (byteValue.isEmpty() && !stringValue.isEmpty())
+            byteValue = stringValue.toLocal8Bit();
+        return byteValue;
+    }
+    QString string() const
+    {
+        if (stringValue.isEmpty() && !byteValue.isEmpty())
+            stringValue = QString::fromLocal8Bit(byteValue);
+        return stringValue;
+    }
+
+    mutable QByteArray byteValue;
+    mutable QString stringValue;
+};
+Q_DECLARE_TYPEINFO(QProcEnvValue, Q_MOVABLE_TYPE);
+#endif
+Q_DECLARE_TYPEINFO(QProcEnvKey, Q_MOVABLE_TYPE);
+
 class QProcessEnvironmentPrivate: public QSharedData
 {
 public:
+    typedef QProcEnvKey Key;
+    typedef QProcEnvValue Value;
 #ifdef Q_OS_WIN
-    typedef QString Unit;
+    inline Key prepareName(const QString &name) const { return Key(name); }
+    inline QString nameToString(const Key &name) const { return name; }
+    inline Value prepareValue(const QString &value) const { return value; }
+    inline QString valueToString(const Value &value) const { return value; }
 #else
-    typedef QByteArray Unit;
+    inline Key prepareName(const QString &name) const
+    {
+        Key &ent = nameMap[name];
+        if (ent.key.isEmpty())
+            ent = Key(name.toLocal8Bit());
+        return ent;
+    }
+    inline QString nameToString(const Key &name) const
+    {
+        const QString sname = QString::fromLocal8Bit(name.key);
+        nameMap[sname] = name;
+        return sname;
+    }
+    inline Value prepareValue(const QString &value) const { return Value(value); }
+    inline QString valueToString(const Value &value) const { return value.string(); }
 #endif
-    typedef QHash<Unit, Unit> Hash;
+
+    typedef QHash<Key, Value> Hash;
     Hash hash;
+
+#ifdef Q_OS_UNIX
+    typedef QHash<QString, Key> NameHash;
+    mutable NameHash nameMap;
+#endif
 
     static QProcessEnvironment fromList(const QStringList &list);
     QStringList toList() const;
+    QStringList keys() const;
+    void insert(const QProcessEnvironmentPrivate &other);
 };
+
+template<> Q_INLINE_TEMPLATE void QSharedDataPointer<QProcessEnvironmentPrivate>::detach()
+{
+    if (d && d->ref == 1)
+        return;
+    QProcessEnvironmentPrivate *x = (d ? new QProcessEnvironmentPrivate(*d)
+                                     : new QProcessEnvironmentPrivate);
+    x->ref.ref();
+    if (d && !d->ref.deref())
+        delete d;
+    d = x;
+}
 
 class QProcessPrivate : public QIODevicePrivate
 {
@@ -203,8 +301,10 @@ public:
     QWinEventNotifier *processFinishedNotifier;
 
     void startProcess();
-#if defined(Q_OS_UNIX) && !defined(Q_OS_SYMBIAN)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_SYMBIAN) && !defined(Q_OS_QNX)
     void execChild(const char *workingDirectory, char **path, char **argv, char **envp);
+#elif defined(Q_OS_QNX)
+    pid_t spawnChild(const char *workingDirectory, char **argv, char **envp);
 #endif
     bool processStarted();
     void terminateProcess();

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtOpenGL module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -48,6 +48,10 @@
 #include <QtCore/qmap.h>
 #include <QtCore/qscopedpointer.h>
 
+#ifdef Q_WS_QPA
+#include <QtGui/QPlatformWindowFormat>
+#endif
+
 QT_BEGIN_HEADER
 
 #if defined(Q_WS_WIN)
@@ -56,28 +60,32 @@ QT_BEGIN_HEADER
 
 #if defined(Q_WS_MAC)
 # include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
 #elif defined(QT_OPENGL_ES_1)
-# include <GLES/gl.h>
-#ifndef GL_DOUBLE
-# define GL_DOUBLE GL_FLOAT
-#endif
-#ifndef GLdouble
+# if defined(Q_OS_MAC)
+#  include <OpenGLES/ES1/gl.h>
+# else
+#  include <GLES/gl.h>
+# endif
+# ifndef GL_DOUBLE
+#  define GL_DOUBLE GL_FLOAT
+# endif
+# ifndef GLdouble
 typedef GLfloat GLdouble;
-#endif
+# endif
 #elif defined(QT_OPENGL_ES_2)
-# include <GLES2/gl2.h>
-#ifndef GL_DOUBLE
-# define GL_DOUBLE GL_FLOAT
-#endif
-#ifndef GLdouble
+# if defined(Q_OS_MAC)
+#  include <OpenGLES/ES2/gl.h>
+# else
+#  include <GLES2/gl2.h>
+# endif
+# ifndef GL_DOUBLE
+#  define GL_DOUBLE GL_FLOAT
+# endif
+# ifndef GLdouble
 typedef GLfloat GLdouble;
-#endif
+# endif
 #else
 # include <GL/gl.h>
-# ifndef QT_LINUXBASE
-#   include <GL/glu.h>
-# endif
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -274,6 +282,10 @@ public:
 
     static OpenGLVersionFlags openGLVersionFlags();
 
+#if defined(Q_WS_QPA)
+    static QGLFormat fromPlatformWindowFormat(const QPlatformWindowFormat &format);
+    static QPlatformWindowFormat toPlatformWindowFormat(const QGLFormat &format);
+#endif
 private:
     QGLFormatPrivate *d;
 
@@ -379,13 +391,16 @@ public:
 
     static const QGLContext* currentContext();
 
+#ifdef Q_WS_QPA
+    static QGLContext *fromPlatformGLContext(QPlatformGLContext *platformContext);
+#endif
 protected:
     virtual bool chooseContext(const QGLContext* shareContext = 0);
 
 #if defined(Q_WS_WIN)
     virtual int choosePixelFormat(void* pfd, HDC pdc);
 #endif
-#if defined(Q_WS_X11) && defined(QT_NO_EGL)
+#if defined(Q_WS_X11)
     virtual void* tryVisual(const QGLFormat& f, int bufDepth = 1);
     virtual void* chooseVisual();
 #endif
@@ -408,6 +423,10 @@ protected:
     static QGLContext* currentCtx;
 
 private:
+#ifdef Q_WS_QPA
+    QGLContext(QPlatformGLContext *platformContext);
+#endif
+
     QScopedPointer<QGLContextPrivate> d_ptr;
 
     friend class QGLPixelBuffer;
@@ -424,10 +443,12 @@ private:
     friend class QGLPixmapData;
     friend class QGLPixmapFilterBase;
     friend class QGLTextureGlyphCache;
+    friend struct QGLGlyphTexture;
     friend class QGLContextGroup;
     friend class QGLSharedResourceGuard;
     friend class QGLPixmapBlurFilter;
     friend class QGLExtensions;
+    friend class QGLTexture;
     friend QGLFormat::OpenGLVersionFlags QGLFormat::openGLVersionFlags();
 #ifdef Q_WS_MAC
 public:
@@ -443,6 +464,7 @@ private:
     friend class QGLWidgetGLPaintDevice;
     friend class QX11GLPixmapData;
     friend class QX11GLSharedContexts;
+    friend class QGLContextResourceBase;
 private:
     Q_DISABLE_COPY(QGLContext)
 };

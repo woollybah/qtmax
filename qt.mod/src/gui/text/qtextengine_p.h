@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -64,6 +64,7 @@
 #include "QtGui/qpaintengine.h"
 #include "QtGui/qtextobject.h"
 #include "QtGui/qtextoption.h"
+#include "QtGui/qtextcursor.h"
 #include "QtCore/qset.h"
 #include "QtCore/qdebug.h"
 #ifndef QT_BUILD_COMPAT_LIB
@@ -128,7 +129,7 @@ struct Q_AUTOTEST_EXPORT QScriptAnalysis
         TabOrObject = Tab,
         Object = 7
     };
-    unsigned short script    : 8;
+    unsigned short script    : 7;
     unsigned short bidiLevel : 6;  // Unicode Bidi algorithm embedding level (0-61)
     unsigned short flags     : 3;
     inline bool operator == (const QScriptAnalysis &other) const {
@@ -311,11 +312,13 @@ public:
           logClusters(0), f(0), fontEngine(0)
     {}
     QTextItemInt(const QScriptItem &si, QFont *font, const QTextCharFormat &format = QTextCharFormat());
-    QTextItemInt(const QGlyphLayout &g, QFont *font, const QChar *chars, int numChars, QFontEngine *fe);
+    QTextItemInt(const QGlyphLayout &g, QFont *font, const QChar *chars, int numChars, QFontEngine *fe,
+                 const QTextCharFormat &format = QTextCharFormat());
 
     /// copy the structure items, adjusting the glyphs arrays to the right subarrays.
     /// the width of the returned QTextItemInt is not adjusted, for speed reasons
     QTextItemInt midItem(QFontEngine *fontEngine, int firstGlyphIndex, int numGlyphs) const;
+    void initWithScriptItem(const QScriptItem &si);
 
     QFixed descent;
     QFixed ascent;
@@ -373,7 +376,7 @@ struct Q_AUTOTEST_EXPORT QScriptLine
 {
     // created and filled in QTextLine::layout_helper
     QScriptLine()
-        : from(0), length(0),
+        : from(0), trailingSpaces(0), length(0),
         justified(0), gridfitted(0),
         hasTrailingSpaces(0), leadingIncluded(0) {}
     QFixed descent;
@@ -385,7 +388,8 @@ struct Q_AUTOTEST_EXPORT QScriptLine
     QFixed textWidth;
     QFixed textAdvance;
     int from;
-    signed int length : 29;
+    unsigned short trailingSpaces;
+    signed int length : 28;
     mutable uint justified : 1;
     mutable uint gridfitted : 1;
     uint hasTrailingSpaces : 1;
@@ -435,7 +439,7 @@ public:
         uint hasBidi : 1;
         uint layoutState : 2;
         uint memory_on_stack : 1;
-        bool haveCharAttributes;
+        uint haveCharAttributes : 1;
         QString string;
         bool reallocate(int totalGlyphs);
     };
@@ -471,6 +475,7 @@ public:
     void shape(int item) const;
 
     void justify(const QScriptLine &si);
+    QFixed alignLine(const QScriptLine &line);
 
     QFixed width(int charFrom, int numChars) const;
     glyph_metrics_t boundingBox(int from,  int len) const;
@@ -556,6 +561,23 @@ public:
 
     mutable QScriptLineArray lines;
 
+    struct FontEngineCache {
+        FontEngineCache();
+        mutable QFontEngine *prevFontEngine;
+        mutable QFontEngine *prevScaledFontEngine;
+        mutable int prevScript;
+        mutable int prevPosition;
+        mutable int prevLength;
+        inline void reset() {
+            prevFontEngine = 0;
+            prevScaledFontEngine = 0;
+            prevScript = -1;
+            prevPosition = -1;
+            prevLength = -1;
+        }
+    };
+    mutable FontEngineCache feCache;
+
     QString text;
     QFont fnt;
     QTextBlock block;
@@ -569,12 +591,18 @@ public:
     uint cacheGlyphs : 1;
     uint stackEngine : 1;
     uint forceJustification : 1;
+    uint visualMovement : 1;
 
     int *underlinePositions;
 
     mutable LayoutData *layoutData;
 
     inline bool hasFormats() const { return (block.docHandle() || specialData); }
+    inline bool visualCursorMovement() const
+    {
+        return (visualMovement ||
+                (block.docHandle() ? block.docHandle()->defaultCursorMoveStyle == Qt::VisualMoveStyle : false));
+    }
 
     struct SpecialData {
         int preeditPosition;
@@ -592,6 +620,16 @@ public:
     QString elidedText(Qt::TextElideMode mode, const QFixed &width, int flags = 0) const;
 
     void shapeLine(const QScriptLine &line);
+    QFixed leadingSpaceWidth(const QScriptLine &line);
+
+    QFixed offsetInLigature(const QScriptItem *si, int pos, int max, int glyph_pos);
+    int positionInLigature(const QScriptItem *si, int end, QFixed x, QFixed edge, int glyph_pos, bool cursorOnCharacter);
+    int previousLogicalPosition(int oldPos) const;
+    int nextLogicalPosition(int oldPos) const;
+    int lineNumberForTextPosition(int pos);
+    int positionAfterVisualMovement(int oldPos, QTextCursor::MoveOperation op);
+    void insertionPointsForLine(int lineNum, QVector<int> &insertionPoints);
+    void resetFontEngineCache();
 
 private:
     void setBoundary(int strPos) const;
@@ -607,6 +645,9 @@ private:
     void splitItem(int item, int pos) const;
 
     void resolveAdditionalFormats() const;
+    int endOfLine(int lineNum);
+    int beginningOfLine(int lineNum);
+    int getClusterLength(unsigned short *logClusters, const HB_CharAttributes *attributes, int from, int to, int glyph_pos, int *start);
 };
 
 class QStackTextEngine : public QTextEngine {
@@ -617,6 +658,49 @@ public:
     void *_memory[MemSize];
 };
 
+struct QTextLineItemIterator
+{
+    QTextLineItemIterator(QTextEngine *eng, int lineNum, const QPointF &pos = QPointF(),
+                          const QTextLayout::FormatRange *_selection = 0);
+
+    inline bool atEnd() const { return logicalItem >= nItems - 1; }
+    inline bool atBeginning() const { return logicalItem <= 0; }
+    QScriptItem &next();
+
+    bool getSelectionBounds(QFixed *selectionX, QFixed *selectionWidth) const;
+    inline bool isOutsideSelection() const {
+        QFixed tmp1, tmp2;
+        return !getSelectionBounds(&tmp1, &tmp2);
+    }
+
+    QTextEngine *eng;
+
+    QFixed x;
+    QFixed pos_x;
+    const QScriptLine &line;
+    QScriptItem *si;
+
+    int lineNum;
+    int lineEnd;
+    int firstItem;
+    int lastItem;
+    int nItems;
+    int logicalItem;
+    int item;
+    int itemLength;
+
+    int glyphsStart;
+    int glyphsEnd;
+    int itemStart;
+    int itemEnd;
+
+    QFixed itemWidth;
+
+    QVarLengthArray<int> visualOrder;
+    QVarLengthArray<uchar> levels;
+
+    const QTextLayout::FormatRange *selection;
+};
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QTextEngine::ShaperFlags)
 

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -275,8 +275,8 @@ void qt_transform_image_rasterize(DestT *destPixels, int dbpl,
     qreal rightSlope = (bottomRight.x - topRight.x) / (bottomRight.y - topRight.y);
     int dx_l = int(leftSlope * 0x10000);
     int dx_r = int(rightSlope * 0x10000);
-    int x_l = int((topLeft.x + (0.5 + fromY - topLeft.y) * leftSlope + 0.5) * 0x10000);
-    int x_r = int((topRight.x + (0.5 + fromY - topRight.y) * rightSlope + 0.5) * 0x10000);
+    int x_l = int((topLeft.x + (qreal(0.5) + fromY - topLeft.y) * leftSlope + qreal(0.5)) * 0x10000);
+    int x_r = int((topRight.x + (qreal(0.5) + fromY - topRight.y) * rightSlope + qreal(0.5)) * 0x10000);
 
     int fromX, toX, x1, x2, u, v, i, ii;
     DestT *line;
@@ -471,8 +471,8 @@ void qt_transform_image(DestT *destPixels, int dbpl,
     int dvdx = int(m21 * 0x10000);
     int dudy = int(m12 * 0x10000);
     int dvdy = int(m22 * 0x10000);
-    int u0 = qCeil((0.5 * m11 + 0.5 * m12 + mdx) * 0x10000) - 1;
-    int v0 = qCeil((0.5 * m21 + 0.5 * m22 + mdy) * 0x10000) - 1;
+    int u0 = qCeil((qreal(0.5) * m11 + qreal(0.5) * m12 + mdx) * 0x10000) - 1;
+    int v0 = qCeil((qreal(0.5) * m21 + qreal(0.5) * m22 + mdy) * 0x10000) - 1;
 
     int x1 = qFloor(sourceRect.left());
     int y1 = qFloor(sourceRect.top());

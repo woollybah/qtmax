@@ -74,7 +74,7 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method duplicatesEnabled:Int()
-	' TODO
+		Return bmx_qt_qcombobox_duplicatesenabled(qObjectPtr)
 	End Method
 	
 	Method findText:Int(text:String, flags:Int = Qt_MatchExactly | Qt_MatchCaseSensitive)
@@ -82,11 +82,11 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method hasFrame:Int()
-	' TODO
+		Return bmx_qt_qcombobox_hasframe(qObjectPtr)
 	End Method
 
 	Method hidePopup()
-	' TODO
+		bmx_qt_qcombobox_hidepopup(qObjectPtr)
 	End Method
 
 	Method iconSize(w:Int Var, h:Int Var)

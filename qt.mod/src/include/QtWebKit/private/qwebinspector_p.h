@@ -1,1 +1,1 @@
-#include "../../../src/3rdparty/webkit/WebCore/../WebKit/qt/Api/qwebinspector_p.h"
+#include "../../../src/3rdparty/webkit/Source/WebKit/qt/Api/qwebinspector_p.h"

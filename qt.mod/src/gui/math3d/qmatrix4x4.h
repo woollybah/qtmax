@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -69,10 +69,10 @@ public:
                       qreal m21, qreal m22, qreal m23, qreal m24,
                       qreal m31, qreal m32, qreal m33, qreal m34,
                       qreal m41, qreal m42, qreal m43, qreal m44);
-#if !defined(QT_NO_MEMBER_TEMPLATES) || defined(Q_QDOC)
+
     template <int N, int M>
     explicit QMatrix4x4(const QGenericMatrix<N, M, qreal>& matrix);
-#endif
+
     QMatrix4x4(const qreal *values, int cols, int rows);
     QMatrix4x4(const QTransform& transform);
     QMatrix4x4(const QMatrix& matrix);
@@ -169,14 +169,12 @@ public:
     QRect mapRect(const QRect& rect) const;
     QRectF mapRect(const QRectF& rect) const;
 
-#if !defined(QT_NO_MEMBER_TEMPLATES) || defined(Q_QDOC)
     template <int N, int M>
     QGenericMatrix<N, M, qreal> toGenericMatrix() const;
-#endif
 
     inline qreal *data();
-    inline const qreal *data() const { return m[0]; }
-    inline const qreal *constData() const { return m[0]; }
+    inline const qreal *data() const { return *m; }
+    inline const qreal *constData() const { return *m; }
 
     void optimize();
 
@@ -223,8 +221,6 @@ inline QMatrix4x4::QMatrix4x4
     flagBits = General;
 }
 
-#if !defined(QT_NO_MEMBER_TEMPLATES)
-
 template <int N, int M>
 Q_INLINE_TEMPLATE QMatrix4x4::QMatrix4x4
     (const QGenericMatrix<N, M, qreal>& matrix)
@@ -260,8 +256,6 @@ QGenericMatrix<N, M, qreal> QMatrix4x4::toGenericMatrix() const
     }
     return result;
 }
-
-#endif
 
 inline const qreal& QMatrix4x4::operator()(int aRow, int aColumn) const
 {
@@ -980,7 +974,7 @@ inline qreal *QMatrix4x4::data()
     // We have to assume that the caller will modify the matrix elements,
     // so we flip it over to "General" mode.
     flagBits = General;
-    return m[0];
+    return *m;
 }
 
 #ifndef QT_NO_DEBUG_STREAM
@@ -992,14 +986,15 @@ Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QMatrix4x4 &);
 Q_GUI_EXPORT QDataStream &operator>>(QDataStream &, QMatrix4x4 &);
 #endif
 
+#ifdef QT_DEPRECATED
 template <int N, int M>
-QMatrix4x4 qGenericMatrixToMatrix4x4(const QGenericMatrix<N, M, qreal>& matrix)
+QT_DEPRECATED QMatrix4x4 qGenericMatrixToMatrix4x4(const QGenericMatrix<N, M, qreal>& matrix)
 {
     return QMatrix4x4(matrix.constData(), N, M);
 }
 
 template <int N, int M>
-QGenericMatrix<N, M, qreal> qGenericMatrixFromMatrix4x4(const QMatrix4x4& matrix)
+QT_DEPRECATED QGenericMatrix<N, M, qreal> qGenericMatrixFromMatrix4x4(const QMatrix4x4& matrix)
 {
     QGenericMatrix<N, M, qreal> result;
     const qreal *m = matrix.constData();
@@ -1016,6 +1011,7 @@ QGenericMatrix<N, M, qreal> qGenericMatrixFromMatrix4x4(const QMatrix4x4& matrix
     }
     return result;
 }
+#endif
 
 #endif
 

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -63,13 +63,40 @@
 
 #include <fepbase.h>
 #include <aknedsts.h>
+#include <eikccpu.h>
+#include <eikedwin.h>
+#include <aknedformaccessor.h>
+
+class CAknExtendedInputCapabilities;
 
 QT_BEGIN_NAMESPACE
+
+class QCoeFepInputMaskHandler
+{
+public:
+    QCoeFepInputMaskHandler(const QString &mask);
+    ~QCoeFepInputMaskHandler();
+    bool canPasteClipboard(const QString &text);
+private:
+    bool isValidInput(QChar key, QChar mask) const;
+private:
+    struct MaskInputData {
+        enum Casemode { NoCaseMode, Upper, Lower };
+        QChar maskChar;
+        bool separator;
+        Casemode caseMode;
+    };
+    int m_maxLength;
+    QChar m_blank;
+    MaskInputData *m_maskData;
+};
 
 class Q_AUTOTEST_EXPORT QCoeFepInputContext : public QInputContext,
                                               public MCoeFepAwareTextEditor,
                                               public MCoeFepAwareTextEditor_Extension1,
-                                              public MObjectProvider
+                                              public MObjectProvider,
+                                              public MEikCcpuEditor
+
 {
     Q_OBJECT
 
@@ -93,6 +120,9 @@ public:
 
     TCoeInputCapabilities inputCapabilities();
 
+    void resetSplitViewWidget(bool keepInputWidget = false);
+    void ensureFocusWidgetVisible(QWidget *widget);
+
 protected:
     void timerEvent(QTimerEvent *timerEvent);
 
@@ -104,9 +134,14 @@ private:
     void queueInputCapabilitiesChanged();
     bool needsInputPanel();
     void commitTemporaryPreeditString();
+    bool isWidgetVisible(QWidget *widget, int offset = 0);
+    bool isPartialKeyboardSupported();
+    bool vietCharConversion(const QEvent *event);
 
 private Q_SLOTS:
     void ensureInputCapabilitiesChanged();
+    void translateInputWidget();
+    void ensureWidgetVisibility();
 
     // From MCoeFepAwareTextEditor
 public:
@@ -129,6 +164,27 @@ private:
     void DoCommitFepInlineEditL();
     MCoeFepAwareTextEditor_Extension1* Extension1(TBool& aSetToTrue);
     void ReportAknEdStateEvent(MAknEdStateObserver::EAknEdwinStateEvent aEventType);
+    void enableSymbianCcpuSupport();
+    void changeCBA(bool showCopyAndOrPaste);
+    void copyOrCutTextToClipboard(const char *operation);
+    void getScreenCoordinatesForFepX(TPoint& aLeftSideOfBaseLine, TInt& aHeight, TInt& aAscent,
+            TInt aDocumentPosition) const;
+
+    //From MEikCcpuEditor interface
+public:
+    TBool CcpuIsFocused() const;
+    TBool CcpuCanCut() const;
+    void CcpuCutL();
+    TBool CcpuCanCopy() const;
+    void CcpuCopyL();
+    TBool CcpuCanPaste() const;
+    void CcpuPasteL();
+    TBool CcpuCanUndo() const;
+    void CcpuUndoL();
+
+private slots:
+    void copy();
+    void paste();
 
     // From MCoeFepAwareTextEditor_Extension1
 public:
@@ -148,15 +204,38 @@ private:
     TUint m_textCapabilities;
     bool m_inDestruction;
     bool m_pendingInputCapabilitiesChanged;
+    bool m_pendingTransactionCancel;
     int m_cursorVisibility;
     int m_inlinePosition;
     MFepInlineTextFormatRetriever *m_formatRetriever;
     MFepPointerEventHandlerDuringInlineEdit *m_pointerHandler;
     QBasicTimer m_tempPreeditStringTimeout;
     bool m_hasTempPreeditString;
+    QString m_cachedPreeditString;
+    int m_cachedCursorAndAnchorPosition;
+
+    int m_splitViewResizeBy;
+    Qt::WindowStates m_splitViewPreviousWindowStates;
+    QRectF m_transformation;
+    QGraphicsItem *m_splitViewPreviousFocusItem; //can't use QPointer<> since QGraphicsItem is not a QObject.
+
+    CAknCcpuSupport *m_ccpu;
+    QAction *m_copyAction;
+    QAction *m_pasteAction;
+    QPointer<QWidget> m_lastFocusedEditor;
+    QPointer<QObject> m_lastFocusedObject;
+
+    CAknExtendedInputCapabilities *m_extendedInputCapabilities;
+
+    QScopedPointer<CAknEdwinFormAccessor> m_formAccessor;
+    QScopedPointer<CEikEdwin> m_dummyEditor;
 
     friend class tst_QInputContext;
 };
+
+Q_GUI_EXPORT void qt_s60_setPartialScreenInputMode(bool enable);
+Q_GUI_EXPORT void qt_s60_setPartialScreenAutomaticTranslation(bool enable);
+Q_GUI_EXPORT void qt_s60_setEditorFlags(int flags);
 
 QT_END_NAMESPACE
 

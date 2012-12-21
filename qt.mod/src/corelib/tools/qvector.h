@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -53,6 +53,9 @@
 #endif
 #include <stdlib.h>
 #include <string.h>
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+#include <initializer_list>
+#endif
 
 QT_BEGIN_HEADER
 
@@ -112,12 +115,22 @@ class QVector
     };
 
 public:
+    // ### Qt 5: Consider making QVector non-shared to get at least one
+    // "really fast" container. See tests/benchmarks/corelib/tools/qvector/
     inline QVector() : d(&QVectorData::shared_null) { d->ref.ref(); }
     explicit QVector(int size);
     QVector(int size, const T &t);
     inline QVector(const QVector<T> &v) : d(v.d) { d->ref.ref(); if (!d->sharable) detach_helper(); }
     inline ~QVector() { if (!d) return; if (!d->ref.deref()) free(p); }
     QVector<T> &operator=(const QVector<T> &v);
+#ifdef Q_COMPILER_RVALUE_REFS
+    inline QVector<T> operator=(QVector<T> &&other)
+    { qSwap(p, other.p); return *this; }
+#endif
+    inline void swap(QVector<T> &other) { qSwap(d, other.d); }
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+    inline QVector(std::initializer_list<T> args);
+#endif
     bool operator==(const QVector<T> &v) const;
     inline bool operator!=(const QVector<T> &v) const { return !(*this == v); }
 
@@ -293,11 +306,10 @@ public:
 
 #ifndef QT_NO_STL
     static inline QVector<T> fromStdVector(const std::vector<T> &vector)
-    { QVector<T> tmp; tmp.reserve(vector.size()); qCopy(vector.begin(), vector.end(), std::back_inserter(tmp)); return tmp; }
+    { QVector<T> tmp; tmp.reserve(int(vector.size())); qCopy(vector.begin(), vector.end(), std::back_inserter(tmp)); return tmp; }
     inline std::vector<T> toStdVector() const
     { std::vector<T> tmp; tmp.reserve(size()); qCopy(constBegin(), constEnd(), std::back_inserter(tmp)); return tmp; }
 #endif
-
 private:
     friend class QRegion; // Optimization for QRegion::rects()
 
@@ -425,6 +437,22 @@ QVector<T>::QVector(int asize, const T &t)
     while (i != p->array)
         new (--i) T(t);
 }
+
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+template <typename T>
+QVector<T>::QVector(std::initializer_list<T> args)
+{
+    d = malloc(int(args.size()));
+    d->ref = 1;
+    d->alloc = d->size = int(args.size());
+    d->sharable = true;
+    d->capacity = false;
+    T* i = p->array + d->size;
+    auto it = args.end();
+    while (i != p->array)
+        new (--i) T(*(--it));
+}
+#endif
 
 template <typename T>
 void QVector<T>::free(Data *x)
@@ -790,11 +818,8 @@ QT_END_INCLUDE_NAMESPACE
 #else
 #define Q_TEMPLATE_EXTERN extern
 #endif
-# pragma warning(push)          /* MSVC 6.0 doesn't care about the disabling in qglobal.h (why?), so do it here */
-# pragma warning(disable: 4231) /* nonstandard extension used : 'extern' before template explicit instantiation */
 Q_TEMPLATE_EXTERN template class Q_CORE_EXPORT QVector<QPointF>;
 Q_TEMPLATE_EXTERN template class Q_CORE_EXPORT QVector<QPoint>;
-# pragma warning(pop)
 #endif
 
 QT_END_NAMESPACE

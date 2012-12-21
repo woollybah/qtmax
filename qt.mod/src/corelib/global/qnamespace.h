@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -94,6 +94,7 @@ Qt {
     Q_ENUMS(GestureState)
     Q_ENUMS(GestureType)
 #endif
+    Q_ENUMS(CursorMoveStyle)
 #endif // (defined(Q_MOC_RUN) || defined(QT_JAMBI_RUN))
 
 #if defined(Q_MOC_RUN)
@@ -511,13 +512,22 @@ public:
 #if 0 // these values are reserved for Maemo5 - do not re-use them
         WA_Maemo5NonComposited = 126,
         WA_Maemo5StackedWindow = 127,
-        WA_Maemo5PortraitOrientation = 128,
-        WA_Maemo5LandscapeOrientation = 129,
-        WA_Maemo5AutoOrientation = 130,
+#endif
+
+        WA_LockPortraitOrientation = 128,
+        WA_LockLandscapeOrientation = 129,
+        WA_AutoOrientation = 130,
+
+#if 0 // these values are reserved for Maemo5 - do not re-use them
+        WA_Maemo5PortraitOrientation = WA_LockPortraitOrientation,
+        WA_Maemo5LandscapeOrientation = WA_LockLandscapeOrientation,
+        WA_Maemo5AutoOrientation = WA_AutoOrientation,
         WA_Maemo5ShowProgressIndicator = 131,
 #endif
 
         WA_X11DoNotAcceptFocus = 132,
+        WA_SymbianNoSystemRotation = 133,
+        WA_MacNoShadow = 134,
 
         // Add new attributes before this line
         WA_AttributeCount
@@ -534,6 +544,9 @@ public:
         AA_DontUseNativeMenuBar = 6,
         AA_MacDontSwapCtrlAndMeta = 7,
         AA_S60DontConstructApplicationPanes = 8,
+        AA_S60DisablePartialScreenInputMode = 9,
+        AA_X11InitThreads = 10,
+        AA_CaptureMultimediaKeys = 11,
 
         // Add new attributes before this line
         AA_AttributeCount
@@ -567,7 +580,8 @@ public:
         PreferDither            = 0x00000040,
         AvoidDither             = 0x00000080,
 
-        NoOpaqueDetection       = 0x00000100
+        NoOpaqueDetection       = 0x00000100,
+        NoFormatConversion      = 0x00000200
     };
     Q_DECLARE_FLAGS(ImageConversionFlags, ImageConversionFlag)
 
@@ -1616,6 +1630,7 @@ public:
         AccessibleDescriptionRole = 12,
         // More general purpose
         SizeHintRole = 13,
+        InitialSortOrderRole = 14,
         // Internal UiLib roles. Start worrying when public roles go that high.
         DisplayPropertyRole = 27,
         DecorationPropertyRole = 28,
@@ -1658,7 +1673,7 @@ public:
     typedef void *HANDLE;
 #elif defined(Q_WS_X11)
     typedef unsigned long HANDLE;
-#elif defined(Q_WS_QWS)
+#elif defined(Q_WS_QWS) || defined(Q_WS_QPA)
     typedef void * HANDLE;
 #elif defined(Q_OS_SYMBIAN)
     typedef unsigned long int HANDLE; // equivalent to TUint32
@@ -1770,6 +1785,11 @@ public:
         NavigationModeKeypadDirectional,
         NavigationModeCursorAuto,
         NavigationModeCursorForceVisible
+    };
+
+    enum CursorMoveStyle {
+        LogicalMoveStyle,
+        VisualMoveStyle
     };
 }
 #ifdef Q_MOC_RUN

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,11 +55,14 @@
 
 #include "QtCore/qobject.h"
 #include "QtCore/qpointer.h"
+#include "QtCore/qsharedpointer.h"
 #include "QtCore/qcoreevent.h"
 #include "QtCore/qlist.h"
 #include "QtCore/qvector.h"
 #include "QtCore/qreadwritelock.h"
 #include "QtCore/qvariant.h"
+#include "QtCore/qmetaobject.h"
+#include "QtCore/qvarlengtharray.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -89,6 +92,7 @@ class Q_CORE_EXPORT QAbstractDeclarativeData
 public:
     static void (*destroyed)(QAbstractDeclarativeData *, QObject *);
     static void (*parentChanged)(QAbstractDeclarativeData *, QObject *, QObject *);
+    static void (*objectNameChanged)(QAbstractDeclarativeData *, QObject *);
 };
 
 class Q_CORE_EXPORT QObjectPrivate : public QObjectData
@@ -106,19 +110,23 @@ public:
         QList<QVariant> propertyValues;
     };
 
+    typedef void (*StaticMetaCallFunction)(QObject *, QMetaObject::Call, int, void **);
     struct Connection
     {
         QObject *sender;
         QObject *receiver;
-        int method;
-        uint connectionType : 3; // 0 == auto, 1 == direct, 2 == queued, 4 == blocking
-        QBasicAtomicPointer<int> argumentTypes;
+        StaticMetaCallFunction callFunction;
         // The next pointer for the singly-linked ConnectionList
         Connection *nextConnectionList;
         //senders linked list
         Connection *next;
         Connection **prev;
+        QBasicAtomicPointer<int> argumentTypes;
+        ushort method_offset;
+        ushort method_relative;
+        ushort connectionType : 3; // 0 == auto, 1 == direct, 2 == queued, 4 == blocking
         ~Connection();
+        int method() const { return method_offset + method_relative; }
     };
     // ConnectionList is a singly-linked list
     struct ConnectionList {
@@ -153,7 +161,6 @@ public:
 
 #ifdef QT3_SUPPORT
     void sendPendingChildInsertedEvents();
-    void removePendingChildInsertedEvents(QObject *child);
 #endif
 
     static inline Sender *setCurrentSender(QObject *receiver,
@@ -161,8 +168,10 @@ public:
     static inline void resetCurrentSender(QObject *receiver,
                                    Sender *currentSender,
                                    Sender *previousSender);
+#ifdef QT_JAMBI_BUILD
     static int *setDeleteWatch(QObjectPrivate *d, int *newWatch);
     static void resetDeleteWatch(QObjectPrivate *d, int *oldWatch, int deleteWatch);
+#endif
     static void clearGuards(QObject *);
 
     static QObjectPrivate *get(QObject *o) {
@@ -171,6 +180,14 @@ public:
 
     int signalIndex(const char *signalName) const;
     inline bool isSignalConnected(uint signalIdx) const;
+
+    // To allow arbitrary objects to call connectNotify()/disconnectNotify() without making
+    // the API public in QObject. This is used by QDeclarativeNotifierEndpoint.
+    inline void connectNotify(const char *signal);
+    inline void disconnectNotify(const char *signal);
+
+    static inline void signalSignature(const QMetaMethod &signal,
+                                       QVarLengthArray<char> *result);
 
 public:
     QString objectName;
@@ -184,7 +201,7 @@ public:
     mutable quint32 connectedSignals[2];
 
 #ifdef QT3_SUPPORT
-    QList<QObject *> pendingChildInsertedEvents;
+    QVector< QWeakPointer<QObject> > pendingChildInsertedEvents;
 #else
     // preserve binary compatibility with code compiled without Qt 3 support
     // keeping the binary layout stable helps the Qt Creator debugger
@@ -200,7 +217,9 @@ public:
     // these objects are all used to indicate that a QObject was deleted
     // plus QPointer, which keeps a separate list
     QAtomicPointer<QtSharedPointer::ExternalRefCountData> sharedRefcount;
+#ifdef QT_JAMBI_BUILD
     int *deleteWatch;
+#endif
 };
 
 
@@ -218,6 +237,30 @@ inline bool QObjectPrivate::isSignalConnected(uint signal_index) const
         || (connectedSignals[signal_index >> 5] & (1 << (signal_index & 0x1f))
         || qt_signal_spy_callback_set.signal_begin_callback
         || qt_signal_spy_callback_set.signal_end_callback);
+}
+
+inline void QObjectPrivate::connectNotify(const char *signal)
+{
+    q_ptr->connectNotify(signal);
+}
+
+inline void QObjectPrivate::disconnectNotify(const char *signal)
+{
+    q_ptr->disconnectNotify(signal);
+}
+
+inline void QObjectPrivate::signalSignature(const QMetaMethod &signal,
+                                                  QVarLengthArray<char> *result)
+{
+    Q_ASSERT(result);
+    const int signatureLength = qstrlen(signal.signature());
+    if (signatureLength == 0) {
+        result->append((char)0);
+        return;
+    }
+    result->reserve(signatureLength + 2);
+    result->append((char)(QSIGNAL_CODE + '0'));
+    result->append(signal.signature(), signatureLength + 1);
 }
 
 inline QObjectPrivate::Sender *QObjectPrivate::setCurrentSender(QObject *receiver,
@@ -248,25 +291,27 @@ class QSemaphore;
 class Q_CORE_EXPORT QMetaCallEvent : public QEvent
 {
 public:
-    QMetaCallEvent(int id, const QObject *sender, int signalId,
+    QMetaCallEvent(ushort method_offset, ushort method_relative, QObjectPrivate::StaticMetaCallFunction callFunction , const QObject *sender, int signalId,
                    int nargs = 0, int *types = 0, void **args = 0, QSemaphore *semaphore = 0);
     ~QMetaCallEvent();
 
-    inline int id() const { return id_; }
+    inline int id() const { return method_offset_ + method_relative_; }
     inline const QObject *sender() const { return sender_; }
     inline int signalId() const { return signalId_; }
     inline void **args() const { return args_; }
 
-    virtual int placeMetaCall(QObject *object);
+    virtual void placeMetaCall(QObject *object);
 
 private:
-    int id_;
     const QObject *sender_;
     int signalId_;
     int nargs_;
     int *types_;
     void **args_;
     QSemaphore *semaphore_;
+    QObjectPrivate::StaticMetaCallFunction callFunction_;
+    ushort method_offset_;
+    ushort method_relative_;
 };
 
 class QBoolBlocker

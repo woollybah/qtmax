@@ -1,1 +1,1 @@
-#include "../../src/3rdparty/webkit/WebCore/../WebKit/qt/Api/qwebsettings.h"
+#include "../../src/3rdparty/webkit/Source/WebKit/qt/Api/qwebsettings.h"

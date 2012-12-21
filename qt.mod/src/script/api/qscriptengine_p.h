@@ -1,8 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtScript module of the Qt Toolkit.
 **
@@ -16,7 +15,8 @@
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
 ** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** us via http://www.qt-project.org/.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -50,12 +50,14 @@
 #include "bridge/qscriptobject_p.h"
 #include "bridge/qscriptqobject_p.h"
 #include "bridge/qscriptvariant_p.h"
+#include "bridge/qscriptactivationobject_p.h"
 
 #include "DateConstructor.h"
 #include "DateInstance.h"
 #include "Debugger.h"
 #include "ErrorInstance.h"
 #include "JSArray.h"
+#include "Executable.h"
 #include "Lexer.h"
 #include "RefPtr.h"
 #include "RegExpConstructor.h"
@@ -87,6 +89,7 @@ class QScriptEngineAgent;
 class QScriptEnginePrivate;
 class QScriptSyntaxCheckResult;
 class QScriptEngine;
+class QScriptProgramPrivate;
 
 namespace QScript
 {
@@ -230,6 +233,8 @@ public:
     static inline JSC::ExecState *frameForContext(QScriptContext *context);
     static inline const JSC::ExecState *frameForContext(const QScriptContext *context);
 
+    static inline bool hasValidCodeBlockRegister(JSC::ExecState *frame);
+
     JSC::JSGlobalObject *originalGlobalObject() const;
     JSC::JSObject *getOriginalGlobalObjectProxy();
     JSC::JSObject *customGlobalObject() const;
@@ -272,6 +277,10 @@ public:
 
     static QScriptSyntaxCheckResult checkSyntax(const QString &program);
     static bool canEvaluate(const QString &program);
+
+    inline void registerScriptProgram(QScriptProgramPrivate *program);
+    inline void unregisterScriptProgram(QScriptProgramPrivate *program);
+    void detachAllRegisteredScriptPrograms();
 
     inline QScriptValuePrivate *allocateScriptValuePrivate(size_t);
     inline void freeScriptValuePrivate(QScriptValuePrivate *p);
@@ -368,6 +377,7 @@ public:
     static const int maxFreeScriptValues = 256;
     int freeScriptValuesCount;
     QScriptStringPrivate *registeredScriptStrings;
+    QSet<QScriptProgramPrivate*> registeredScriptPrograms;
     QHash<int, QScriptTypeInfo*> m_typeInfos;
     int processEventsInterval;
     QScriptValue abortResult;
@@ -565,6 +575,18 @@ inline QByteArray convertToLatin1(const JSC::UString &str)
 }
 
 } // namespace QScript
+
+inline void QScriptEnginePrivate::registerScriptProgram(QScriptProgramPrivate *program)
+{
+    Q_ASSERT(!registeredScriptPrograms.contains(program));
+    registeredScriptPrograms.insert(program);
+}
+
+inline void QScriptEnginePrivate::unregisterScriptProgram(QScriptProgramPrivate *program)
+{
+    Q_ASSERT(registeredScriptPrograms.contains(program));
+    registeredScriptPrograms.remove(program);
+}
 
 inline QScriptValuePrivate *QScriptEnginePrivate::allocateScriptValuePrivate(size_t size)
 {
@@ -844,6 +866,21 @@ inline const JSC::ExecState *QScriptEnginePrivate::frameForContext(const QScript
     return reinterpret_cast<const JSC::ExecState*>(context);
 }
 
+inline bool QScriptEnginePrivate::hasValidCodeBlockRegister(JSC::ExecState *frame)
+{
+#if ENABLE(JIT)
+    // Frames created by the VM don't have their CodeBlock register
+    // initialized. We can detect such frames by checking if the
+    // callee is a host JSFunction.
+    JSC::JSObject *callee = frame->callee();
+    return !(callee && callee->inherits(&JSC::JSFunction::info)
+             && JSC::asFunction(callee)->isHostFunction());
+#else
+    Q_UNUSED(frame);
+    return true;
+#endif
+}
+
 inline JSC::ExecState *QScriptEnginePrivate::globalExec() const
 {
     return originalGlobalObject()->globalExec();
@@ -982,6 +1019,8 @@ inline quint16 QScriptEnginePrivate::toUInt16(JSC::ExecState *exec, JSC::JSValue
 
 inline JSC::UString QScriptEnginePrivate::toString(JSC::ExecState *exec, JSC::JSValue value)
 {
+    if (!value)
+        return JSC::UString();
     JSC::JSValue savedException;
     saveException(exec, &savedException);
     JSC::UString str = value.toString(exec);
@@ -1022,6 +1061,9 @@ inline QObject *QScriptEnginePrivate::toQObject(JSC::ExecState *exec, JSC::JSVal
             if ((type == QMetaType::QObjectStar) || (type == QMetaType::QWidgetStar))
                 return *reinterpret_cast<QObject* const *>(var.constData());
         }
+    } else if (isObject(value) && value.inherits(&QScript::QScriptActivationObject::info)) {
+        QScript::QScriptActivationObject *proxy = static_cast<QScript::QScriptActivationObject *>(JSC::asObject(value));
+        return toQObject(exec, proxy->delegate());
     }
 #endif
     return 0;

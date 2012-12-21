@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -79,6 +79,8 @@ template <typename T> class QList;
 class QLocale;
 #if defined(Q_WS_QWS)
 class QDecoration;
+#elif defined(Q_WS_QPA)
+class QPlatformNativeInterface;
 #endif
 #if defined(Q_OS_SYMBIAN)
 class QSymbianEvent;
@@ -123,15 +125,15 @@ public:
 #endif
 
 #ifndef qdoc
-    QApplication(int &argc, char **argv, int = QT_VERSION);
-    QApplication(int &argc, char **argv, bool GUIenabled, int = QT_VERSION);
-    QApplication(int &argc, char **argv, Type, int = QT_VERSION);
+    QApplication(int &argc, char **argv, int = ApplicationFlags);
+    QApplication(int &argc, char **argv, bool GUIenabled, int = ApplicationFlags);
+    QApplication(int &argc, char **argv, Type, int = ApplicationFlags);
 #if defined(Q_WS_X11)
-    QApplication(Display* dpy, Qt::HANDLE visual = 0, Qt::HANDLE cmap = 0, int = QT_VERSION);
-    QApplication(Display *dpy, int &argc, char **argv, Qt::HANDLE visual = 0, Qt::HANDLE cmap= 0, int = QT_VERSION);
+    QApplication(Display* dpy, Qt::HANDLE visual = 0, Qt::HANDLE cmap = 0, int = ApplicationFlags);
+    QApplication(Display *dpy, int &argc, char **argv, Qt::HANDLE visual = 0, Qt::HANDLE cmap= 0, int = ApplicationFlags);
 #endif
 #if defined(Q_OS_SYMBIAN)
-    QApplication(QApplication::QS60MainApplicationFactory factory, int &argc, char **argv, int = QT_VERSION);
+    QApplication(QApplication::QS60MainApplicationFactory factory, int &argc, char **argv, int = ApplicationFlags);
 #endif
 #endif
     virtual ~QApplication();
@@ -196,6 +198,7 @@ public:
     static void alert(QWidget *widget, int duration = 0);
 
     static Qt::KeyboardModifiers keyboardModifiers();
+    static Qt::KeyboardModifiers queryKeyboardModifiers();
     static Qt::MouseButtons mouseButtons();
 
     static void setDesktopSettingsAware(bool);
@@ -254,6 +257,10 @@ public:
 #endif
 #endif
 
+#if defined(Q_WS_QPA)
+    static QPlatformNativeInterface *platformNativeInterface();
+#endif
+
 
 #if defined(Q_WS_WIN)
     void winFocus(QWidget *, bool);
@@ -297,6 +304,10 @@ Q_SIGNALS:
 #ifndef QT_NO_SESSIONMANAGER
     void commitDataRequest(QSessionManager &sessionManager);
     void saveStateRequest(QSessionManager &sessionManager);
+#endif
+#ifdef Q_OS_SYMBIAN
+    void aboutToReleaseGpuResources();
+    void aboutToUseGpuResources();
 #endif
 
 public:

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -101,6 +101,30 @@ public:
         { return (tl == other.tl && br == other.br); }
     inline bool operator!=(const QItemSelectionRange &other) const
         { return !operator==(other); }
+    inline bool operator<(const QItemSelectionRange &other) const
+        {
+            // Comparing parents will compare the models, but if two equivalent ranges
+            // in two different models have invalid parents, they would appear the same
+            if (other.tl.model() == tl.model()) {
+                // parent has to be calculated, so we only do so once.
+                const QModelIndex topLeftParent = tl.parent();
+                const QModelIndex otherTopLeftParent = other.tl.parent();
+                if (topLeftParent == otherTopLeftParent) {
+                    if (other.tl.row() == tl.row()) {
+                        if (other.tl.column() == tl.column()) {
+                            if (other.br.row() == br.row()) {
+                                return br.column() < other.br.column();
+                            }
+                            return br.row() < other.br.row();
+                        }
+                        return tl.column() < other.tl.column();
+                    }
+                    return tl.row() < other.tl.row();
+                }
+                return topLeftParent < otherTopLeftParent;
+            }
+            return tl.model() < other.tl.model();
+        }
 
     inline bool isValid() const
     {

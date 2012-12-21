@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -62,6 +62,7 @@
 #include "qgraphicssceneevent.h"
 #include <QtGui/qstyleoption.h>
 #include <private/qabstractscrollarea_p.h>
+#include <private/qapplication_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -180,21 +181,24 @@ public:
 
     inline void dispatchPendingUpdateRequests()
     {
-#ifndef Q_WS_MAC
-        // QWidget::update() works slightly different on the Mac; it's not part of
-        // our backing store so it needs special threatment.
-        if (qt_widget_private(viewport)->paintOnScreen())
-            QCoreApplication::sendPostedEvents(viewport, QEvent::UpdateRequest);
-        else
-            QCoreApplication::sendPostedEvents(viewport->window(), QEvent::UpdateRequest);
-#else
-        // At this point either HIViewSetNeedsDisplay (Carbon) or setNeedsDisplay: YES (Cocoa)
-        // is called, which means there's a pending update request. We want to dispatch it
-        // now because otherwise graphics view updates would require two
-        // round-trips in the event loop before the item is painted.
-        extern void qt_mac_dispatchPendingUpdateRequests(QWidget *);
-        qt_mac_dispatchPendingUpdateRequests(viewport->window());
-#endif
+#ifdef Q_WS_MAC
+        // QWidget::update() works slightly different on the Mac without the raster engine;
+        // it's not part of our backing store so it needs special threatment.
+        if (QApplicationPrivate::graphics_system_name != QLatin1String("raster")) {
+            // At this point either HIViewSetNeedsDisplay (Carbon) or setNeedsDisplay: YES (Cocoa)
+            // is called, which means there's a pending update request. We want to dispatch it
+            // now because otherwise graphics view updates would require two
+            // round-trips in the event loop before the item is painted.
+            extern void qt_mac_dispatchPendingUpdateRequests(QWidget *);
+            qt_mac_dispatchPendingUpdateRequests(viewport->window());
+        } else
+#endif // !Q_WS_MAC
+        {
+            if (qt_widget_private(viewport)->paintOnScreen())
+                QCoreApplication::sendPostedEvents(viewport, QEvent::UpdateRequest);
+            else
+                QCoreApplication::sendPostedEvents(viewport->window(), QEvent::UpdateRequest);
+        }
     }
 
     void setUpdateClip(QGraphicsItem *);

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -49,6 +49,8 @@
 #include <QtCore/qobject.h>
 #include <QtGui/qevent.h>
 #include <QtGui/qtextformat.h>
+#include <QtGui/qglyphrun.h>
+#include <QtGui/qtextcursor.h>
 
 QT_BEGIN_HEADER
 
@@ -135,6 +137,9 @@ public:
     void setCacheEnabled(bool enable);
     bool cacheEnabled() const;
 
+    void setCursorMoveStyle(Qt::CursorMoveStyle style);
+    Qt::CursorMoveStyle cursorMoveStyle() const;
+
     void beginLayout();
     void endLayout();
     void clearLayout();
@@ -152,6 +157,8 @@ public:
     bool isValidCursorPosition(int pos) const;
     int nextCursorPosition(int oldPos, CursorMode mode = SkipCharacters) const;
     int previousCursorPosition(int oldPos, CursorMode mode = SkipCharacters) const;
+    int leftCursorPosition(int oldPos) const;
+    int rightCursorPosition(int oldPos) const;
 
     void draw(QPainter *p, const QPointF &pos, const QVector<FormatRange> &selections = QVector<FormatRange>(),
               const QRectF &clip = QRectF()) const;
@@ -165,6 +172,10 @@ public:
 
     qreal minimumWidth() const;
     qreal maximumWidth() const;
+
+#if !defined(QT_NO_RAWFONT)
+    QList<QGlyphRun> glyphRuns() const;
+#endif
 
     QTextEngine *engine() const { return d; }
     void setFlags(int flags);
@@ -236,7 +247,13 @@ public:
 private:
     QTextLine(int line, QTextEngine *e) : i(line), eng(e) {}
     void layout_helper(int numGlyphs);
+
+#if !defined(QT_NO_RAWFONT)
+    QList<QGlyphRun> glyphs(int from, int length) const;
+#endif
+
     friend class QTextLayout;
+    friend class QTextFragment;
     int i;
     QTextEngine *eng;
 };

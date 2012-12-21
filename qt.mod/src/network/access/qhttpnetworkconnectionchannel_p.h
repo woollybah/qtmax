@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -95,10 +95,11 @@ public:
         WritingState = 2,       // writing the data
         WaitingState = 4,       // waiting for reply
         ReadingState = 8,       // reading the reply
-        Wait4AuthState = 0x10,  // blocked for send till the current authentication slot is done
-        BusyState = (ConnectingState|WritingState|WaitingState|ReadingState|Wait4AuthState)
+        ClosingState = 16,
+        BusyState = (ConnectingState|WritingState|WaitingState|ReadingState|ClosingState)
     };
     QAbstractSocket *socket;
+    bool ssl;
     ChannelState state;
     QHttpNetworkRequest request; // current request
     QHttpNetworkReply *reply; // current reply for this request
@@ -108,13 +109,18 @@ public:
     int lastStatus; // last status received on this channel
     bool pendingEncrypt; // for https (send after encrypted)
     int reconnectAttempts; // maximum 2 reconnection attempts
-    QAuthenticatorPrivate::Method authMehtod;
-    QAuthenticatorPrivate::Method proxyAuthMehtod;
+    QAuthenticatorPrivate::Method authMethod;
+    QAuthenticatorPrivate::Method proxyAuthMethod;
     QAuthenticator authenticator;
     QAuthenticator proxyAuthenticator;
+    bool authenticationCredentialsSent;
+    bool proxyCredentialsSent;
 #ifndef QT_NO_OPENSSL
     bool ignoreAllSslErrors;
     QList<QSslError> ignoreSslErrorsList;
+#endif
+#ifndef QT_NO_BEARERMANAGEMENT
+    QSharedPointer<QNetworkSession> networkSession;
 #endif
 
     // HTTP pipelining -> http://en.wikipedia.org/wiki/Http_pipelining
@@ -125,7 +131,11 @@ public:
     };
     PipeliningSupport pipeliningSupported;
     QList<HttpMessagePair> alreadyPipelinedRequests;
-
+    QByteArray pipeline; // temporary buffer that gets sent to socket in pipelineFlush
+    void pipelineInto(HttpMessagePair &pair);
+    void pipelineFlush();
+    void requeueCurrentlyPipelinedRequests();
+    void detectPipeliningSupport();
 
     QHttpNetworkConnectionChannel();
     
@@ -145,19 +155,15 @@ public:
 
     bool resetUploadData(); // return true if resetting worked or there is no upload data
 
-    void pipelineInto(HttpMessagePair &pair);
-    void requeueCurrentlyPipelinedRequests();
-    void detectPipeliningSupport();
-
     void handleUnexpectedEOF();
     void closeAndResendCurrentRequest();
-
-    void eatWhitespace();
 
     bool isSocketBusy() const;
     bool isSocketWriting() const;
     bool isSocketWaiting() const;
     bool isSocketReading() const;
+
+    friend class QNetworkAccessHttpBackend;
 
     protected slots:
     void _q_receiveReply();

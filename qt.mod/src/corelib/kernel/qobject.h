@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -77,19 +77,9 @@ class QObjectUserData;
 
 typedef QList<QObject*> QObjectList;
 
-#if defined Q_CC_MSVC && _MSC_VER < 1300
-template<typename T> inline T qFindChild(const QObject *o, const QString &name = QString(), T = 0);
-template<typename T> inline QList<T> qFindChildren(const QObject *o, const QString &name = QString(), T = 0);
-# ifndef QT_NO_REGEXP
-template<typename T> inline QList<T> qFindChildren(const QObject *o, const QRegExp &re, T = 0);
-# endif
-#else
-template<typename T> inline T qFindChild(const QObject *, const QString & = QString());
-template<typename T> inline QList<T> qFindChildren(const QObject *, const QString & = QString());
-# ifndef QT_NO_REGEXP
-template<typename T> inline QList<T> qFindChildren(const QObject *, const QRegExp &);
-# endif
-#endif
+Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QString &name, const QRegExp *re,
+                                           const QMetaObject &mo, QList<void *> *list);
+Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString &name, const QMetaObject &mo);
 
 class
 #if defined(__INTEL_COMPILER) && defined(Q_OS_WIN)
@@ -109,7 +99,7 @@ public:
     uint ownObjectName : 1;
     uint sendChildEvents : 1;
     uint receiveChildEvents : 1;
-    uint inEventHandler : 1;
+    uint inEventHandler : 1; //only used if QT_JAMBI_BUILD
     uint inThreadChangeEvent : 1;
     uint hasGuards : 1; //true iff there is one or more QPointer attached to this object
     uint unused : 22;
@@ -164,20 +154,36 @@ public:
     int startTimer(int interval);
     void killTimer(int id);
 
-#ifndef QT_NO_MEMBER_TEMPLATES
     template<typename T>
     inline T findChild(const QString &aName = QString()) const
-    { return qFindChild<T>(this, aName); }
+    { return static_cast<T>(qt_qFindChild_helper(this, aName, reinterpret_cast<T>(0)->staticMetaObject)); }
 
     template<typename T>
     inline QList<T> findChildren(const QString &aName = QString()) const
-    { return qFindChildren<T>(this, aName); }
+    {
+        QList<T> list;
+        union {
+            QList<T> *typedList;
+            QList<void *> *voidList;
+        } u;
+        u.typedList = &list;
+        qt_qFindChildren_helper(this, aName, 0, reinterpret_cast<T>(0)->staticMetaObject, u.voidList);
+        return list;
+    }
 
 #ifndef QT_NO_REGEXP
     template<typename T>
     inline QList<T> findChildren(const QRegExp &re) const
-    { return qFindChildren<T>(this, re); }
-#endif
+    {
+        QList<T> list;
+        union {
+            QList<T> *typedList;
+            QList<void *> *voidList;
+        } u;
+        u.typedList = &list;
+        qt_qFindChildren_helper(this, QString(), &re, reinterpret_cast<T>(0)->staticMetaObject, u.voidList);
+        return list;
+    }
 #endif
 
 #ifdef QT3_SUPPORT
@@ -207,6 +213,21 @@ public:
 #endif
 #endif
         );
+        
+    static bool connect(const QObject *sender, const QMetaMethod &signal,
+                        const QObject *receiver, const QMetaMethod &method,
+                        Qt::ConnectionType type = 
+#ifdef qdoc
+                        Qt::AutoConnection
+#else
+#ifdef QT3_SUPPORT
+                        Qt::AutoCompatConnection
+#else
+                        Qt::AutoConnection
+#endif
+#endif
+        );
+
     inline bool connect(const QObject *sender, const char *signal,
                         const char *member, Qt::ConnectionType type =
 #ifdef qdoc
@@ -222,6 +243,8 @@ public:
 
     static bool disconnect(const QObject *sender, const char *signal,
                            const QObject *receiver, const char *member);
+    static bool disconnect(const QObject *sender, const QMetaMethod &signal,
+                           const QObject *receiver, const QMetaMethod &member);
     inline bool disconnect(const char *signal = 0,
                            const QObject *receiver = 0, const char *member = 0)
         { return disconnect(this, signal, receiver, member); }
@@ -257,6 +280,7 @@ public Q_SLOTS:
 
 protected:
     QObject *sender() const;
+    int senderSignalIndex() const;
     int receivers(const char* signal) const;
 
     virtual void timerEvent(QTimerEvent *);
@@ -321,62 +345,48 @@ public:
 };
 #endif
 
-Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QString &name, const QRegExp *re,
-                                           const QMetaObject &mo, QList<void *> *list);
-Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString &name, const QMetaObject &mo);
+#ifdef qdoc
+T qFindChild(const QObject *o, const QString &name = QString());
+QList<T> qFindChildren(const QObject *oobj, const QString &name = QString());
+QList<T> qFindChildren(const QObject *o, const QRegExp &re);
+#endif
+#ifdef QT_DEPRECATED
+template<typename T>
+inline QT_DEPRECATED T qFindChild(const QObject *o, const QString &name = QString())
+{ return o->findChild<T>(name); }
 
 template<typename T>
-inline T qFindChild(const QObject *o, const QString &name)
-{ return static_cast<T>(qt_qFindChild_helper(o, name, reinterpret_cast<T>(0)->staticMetaObject)); }
-
-template<typename T>
-inline QList<T> qFindChildren(const QObject *o, const QString &name)
+inline QT_DEPRECATED QList<T> qFindChildren(const QObject *o, const QString &name = QString())
 {
-    QList<T> list;
-    union {
-        QList<T> *typedList;
-        QList<void *> *voidList;
-    } u;
-    u.typedList = &list;
-    qt_qFindChildren_helper(o, name, 0, reinterpret_cast<T>(0)->staticMetaObject, u.voidList);
-    return list;
+    return o->findChildren<T>(name);
 }
 
 #ifndef QT_NO_REGEXP
 template<typename T>
-inline QList<T> qFindChildren(const QObject *o, const QRegExp &re)
+inline QT_DEPRECATED QList<T> qFindChildren(const QObject *o, const QRegExp &re)
 {
-    QList<T> list;
-    union {
-        QList<T> *typedList;
-        QList<void *> *voidList;
-    } u;
-    u.typedList = &list;
-    qt_qFindChildren_helper(o, QString(), &re, reinterpret_cast<T>(0)->staticMetaObject, u.voidList);
-    return list;
+    return o->findChildren<T>(re);
 }
 #endif
+
+#endif //QT_DEPRECATED
 
 template <class T>
 inline T qobject_cast(QObject *object)
 {
-#if !defined(QT_NO_MEMBER_TEMPLATES) && !defined(QT_NO_QOBJECT_CHECK)
-    reinterpret_cast<T>(0)->qt_check_for_QOBJECT_macro(*reinterpret_cast<T>(object));
+#if !defined(QT_NO_QOBJECT_CHECK)
+    reinterpret_cast<T>(object)->qt_check_for_QOBJECT_macro(*reinterpret_cast<T>(object));
 #endif
-    return static_cast<T>(reinterpret_cast<T>(0)->staticMetaObject.cast(object));
+    return static_cast<T>(reinterpret_cast<T>(object)->staticMetaObject.cast(object));
 }
 
 template <class T>
 inline T qobject_cast(const QObject *object)
 {
-    // this will cause a compilation error if T is not const
-    register T ptr = static_cast<T>(object);
-    Q_UNUSED(ptr);
-
-#if !defined(QT_NO_MEMBER_TEMPLATES) && !defined(QT_NO_QOBJECT_CHECK)
-    reinterpret_cast<T>(0)->qt_check_for_QOBJECT_macro(*reinterpret_cast<T>(const_cast<QObject *>(object)));
+#if !defined(QT_NO_QOBJECT_CHECK)
+    reinterpret_cast<T>(object)->qt_check_for_QOBJECT_macro(*reinterpret_cast<T>(const_cast<QObject *>(object)));
 #endif
-    return static_cast<T>(const_cast<QObject *>(reinterpret_cast<T>(0)->staticMetaObject.cast(const_cast<QObject *>(object))));
+    return static_cast<T>(reinterpret_cast<T>(object)->staticMetaObject.cast(object));
 }
 
 

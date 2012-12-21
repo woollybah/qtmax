@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -70,22 +70,30 @@ public:
 
     QPoint &operator+=(const QPoint &p);
     QPoint &operator-=(const QPoint &p);
-    QPoint &operator*=(qreal c);
+
+    QPoint &operator*=(float c);
+    QPoint &operator*=(double c);
+    QPoint &operator*=(int c);
+
     QPoint &operator/=(qreal c);
 
     friend inline bool operator==(const QPoint &, const QPoint &);
     friend inline bool operator!=(const QPoint &, const QPoint &);
     friend inline const QPoint operator+(const QPoint &, const QPoint &);
     friend inline const QPoint operator-(const QPoint &, const QPoint &);
-    friend inline const QPoint operator*(const QPoint &, qreal);
-    friend inline const QPoint operator*(qreal, const QPoint &);
+    friend inline const QPoint operator*(const QPoint &, float);
+    friend inline const QPoint operator*(float, const QPoint &);
+    friend inline const QPoint operator*(const QPoint &, double);
+    friend inline const QPoint operator*(double, const QPoint &);
+    friend inline const QPoint operator*(const QPoint &, int);
+    friend inline const QPoint operator*(int, const QPoint &);
     friend inline const QPoint operator-(const QPoint &);
     friend inline const QPoint operator/(const QPoint &, qreal);
 
 private:
     friend class QTransform;
     // ### Qt 5;  remove the ifdef and just have the same order on all platforms.
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MAC) && !defined(Q_OS_IOS)
     int yp;
     int xp;
 #else
@@ -141,8 +149,14 @@ inline QPoint &QPoint::operator+=(const QPoint &p)
 inline QPoint &QPoint::operator-=(const QPoint &p)
 { xp-=p.xp; yp-=p.yp; return *this; }
 
-inline QPoint &QPoint::operator*=(qreal c)
+inline QPoint &QPoint::operator*=(float c)
 { xp = qRound(xp*c); yp = qRound(yp*c); return *this; }
+
+inline QPoint &QPoint::operator*=(double c)
+{ xp = qRound(xp*c); yp = qRound(yp*c); return *this; }
+
+inline QPoint &QPoint::operator*=(int c)
+{ xp = xp*c; yp = yp*c; return *this; }
 
 inline bool operator==(const QPoint &p1, const QPoint &p2)
 { return p1.xp == p2.xp && p1.yp == p2.yp; }
@@ -156,11 +170,23 @@ inline const QPoint operator+(const QPoint &p1, const QPoint &p2)
 inline const QPoint operator-(const QPoint &p1, const QPoint &p2)
 { return QPoint(p1.xp-p2.xp, p1.yp-p2.yp); }
 
-inline const QPoint operator*(const QPoint &p, qreal c)
+inline const QPoint operator*(const QPoint &p, float c)
 { return QPoint(qRound(p.xp*c), qRound(p.yp*c)); }
 
-inline const QPoint operator*(qreal c, const QPoint &p)
+inline const QPoint operator*(const QPoint &p, double c)
 { return QPoint(qRound(p.xp*c), qRound(p.yp*c)); }
+
+inline const QPoint operator*(const QPoint &p, int c)
+{ return QPoint(p.xp*c, p.yp*c); }
+
+inline const QPoint operator*(float c, const QPoint &p)
+{ return QPoint(qRound(p.xp*c), qRound(p.yp*c)); }
+
+inline const QPoint operator*(double c, const QPoint &p)
+{ return QPoint(qRound(p.xp*c), qRound(p.yp*c)); }
+
+inline const QPoint operator*(int c, const QPoint &p)
+{ return QPoint(p.xp*c, p.yp*c); }
 
 inline const QPoint operator-(const QPoint &p)
 { return QPoint(-p.xp, -p.yp); }

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -55,6 +55,7 @@
 
 #include "QtCore/qcoreapplication.h"
 #include "QtCore/qtranslator.h"
+#include "QtCore/qsettings.h"
 #include "private/qobject_p.h"
 
 #ifdef Q_OS_SYMBIAN
@@ -65,8 +66,11 @@ QT_BEGIN_NAMESPACE
 
 typedef QList<QTranslator*> QTranslatorList;
 
-#if defined(Q_OS_SYMBIAN) && !defined(QT_NO_SYSTEMLOCALE)
+#if defined(Q_OS_SYMBIAN)
+#  if !defined(QT_NO_SYSTEMLOCALE)
 class QEnvironmentChangeNotifier;
+#  endif
+class CApaCommandLine;
 #endif
 class QAbstractEventDispatcher;
 
@@ -75,7 +79,7 @@ class Q_CORE_EXPORT QCoreApplicationPrivate : public QObjectPrivate
     Q_DECLARE_PUBLIC(QCoreApplication)
 
 public:
-    QCoreApplicationPrivate(int &aargc,  char **aargv);
+    QCoreApplicationPrivate(int &aargc,  char **aargv, uint flags);
     ~QCoreApplicationPrivate();
 
     bool sendThroughApplicationEventFilters(QObject *, QEvent *);
@@ -104,6 +108,9 @@ public:
     int &argc;
     char **argv;
     void appendApplicationPathToLibraryPaths(void);
+    void processCommandLineArguments();
+
+    static QString qmljsDebugArguments(); // access arguments from other libraries
 
 #ifndef QT_NO_TRANSLATION
     QTranslatorList translators;
@@ -116,9 +123,15 @@ public:
     bool aboutToQuitEmitted;
     QString cachedApplicationDirPath;
     QString cachedApplicationFilePath;
-#if defined(Q_OS_SYMBIAN) && !defined(QT_NO_SYSTEMLOCALE)
+#if defined(Q_OS_SYMBIAN)
+#  if !defined(QT_NO_SYSTEMLOCALE)
     QScopedPointer<QEnvironmentChangeNotifier> environmentChangeNotifier;
     void symbianInit();
+#  endif
+    static CApaCommandLine* symbianCommandLine();
+#ifndef QT_NO_LIBRARY
+    static void rebuildInstallLibraryPaths();
+#endif
 #endif
 
     static bool isTranslatorInstalled(QTranslator *translator);
@@ -129,6 +142,11 @@ public:
 
     static uint attribs;
     static inline bool testAttribute(uint flag) { return attribs & (1 << flag); }
+    static int app_compile_version;
+#if defined(QT3_SUPPORT)
+    static bool useQt3Support;
+#endif
+    static QSettings *trolltechConf();
 };
 
 QT_END_NAMESPACE

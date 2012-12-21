@@ -8,8 +8,8 @@
 /* Machine byte-order */
 #define Q_BIG_ENDIAN 4321
 #define Q_LITTLE_ENDIAN 1234
-#define QT_BUILD_KEY "macosx macx-cocoa g++-4 full-config"
-#define QT_BUILD_KEY_COMPAT "i386 Darwin g++-4 full-config"
+#define QT_BUILD_KEY "macosx macx-cocoa g++-4 no-pkg-config"
+#define QT_BUILD_KEY_COMPAT "x86_64 Darwin g++-4 no-pkg-config"
 
 #ifdef QT_BOOTSTRAPPED
 #if defined(__BIG_ENDIAN__)
@@ -91,12 +91,6 @@
 # undef QT_NO_GSTREAMER
 #elif !defined(QT_NO_GSTREAMER) && !defined(QT_GSTREAMER)
 # define QT_NO_GSTREAMER
-#endif
-
-#if defined(QT_NO_GUI) && defined(QT_GUI)
-# undef QT_NO_GUI
-#elif !defined(QT_NO_GUI) && !defined(QT_GUI)
-# define QT_NO_GUI
 #endif
 
 #if defined(QT_NO_ICD) && defined(QT_ICD)

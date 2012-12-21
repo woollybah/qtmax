@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -60,19 +60,27 @@
 #include "QtCore/qwaitcondition.h"
 #include "QtCore/qobject.h"
 #include "QtCore/qpointer.h"
-
-#ifndef QT_NO_THREAD
 #include "QtCore/qthread.h"
 #include "QtCore/qthreadpool.h"
 #include "QtCore/qmutex.h"
 #include "QtCore/qrunnable.h"
 #include "QtCore/qlist.h"
 #include "QtCore/qqueue.h"
-#include <QTime>
+#include <QElapsedTimer>
 #include <QCache>
+
+#include <QNetworkSession>
+#include <QSharedPointer>
+
+#ifdef Q_OS_SYMBIAN
+// Symbian Headers
+#include <es_sock.h>
+#include <in_sock.h>
 #endif
 
+
 QT_BEGIN_NAMESPACE
+
 
 class QHostInfoResult : public QObject
 {
@@ -93,6 +101,14 @@ class QHostInfoAgent : public QObject
     Q_OBJECT
 public:
     static QHostInfo fromName(const QString &hostName);
+#ifndef QT_NO_BEARERMANAGEMENT
+    static QHostInfo fromName(const QString &hostName, QSharedPointer<QNetworkSession> networkSession);
+#endif
+
+#ifdef Q_OS_SYMBIAN
+    static int lookupHost(const QString &name, QObject *receiver, const char *member);
+    static void abortHostLookup(int lookupId);
+#endif
 };
 
 class QHostInfoPrivate
@@ -104,6 +120,10 @@ public:
           lookupId(0)
     {
     }
+#ifndef QT_NO_BEARERMANAGEMENT
+    //not a public API yet
+    static QHostInfo fromName(const QString &hostName, QSharedPointer<QNetworkSession> networkSession);
+#endif
 
     QHostInfo::HostInfoError err;
     QString errorStr;
@@ -112,7 +132,6 @@ public:
     int lookupId;
 };
 
-#ifndef QT_NO_THREAD
 // These functions are outside of the QHostInfo class and strictly internal.
 // Do NOT use them outside of QAbstractSocket.
 QHostInfo Q_NETWORK_EXPORT qt_qhostinfo_lookup(const QString &name, QObject *receiver, const char *member, bool *valid, int *id);
@@ -135,7 +154,7 @@ private:
     bool enabled;
     struct QHostInfoCacheElement {
         QHostInfo info;
-        QTime age;
+        QElapsedTimer age;
     };
     QCache<QString,QHostInfoCacheElement> cache;
     QMutex mutex;
@@ -154,7 +173,25 @@ public:
     QHostInfoResult resultEmitter;
 };
 
-class QHostInfoLookupManager : public QObject
+
+class QAbstractHostInfoLookupManager : public QObject
+{
+    Q_OBJECT
+
+public:
+    ~QAbstractHostInfoLookupManager() {}
+    virtual void clear() = 0;
+
+    QHostInfoCache cache;
+
+protected:
+     QAbstractHostInfoLookupManager() {}
+     static QAbstractHostInfoLookupManager* globalInstance();
+
+};
+
+#ifndef Q_OS_SYMBIAN
+class QHostInfoLookupManager : public QAbstractHostInfoLookupManager
 {
     Q_OBJECT
 public:
@@ -171,8 +208,6 @@ public:
     // called from QHostInfoRunnable
     void lookupFinished(QHostInfoRunnable *r);
     bool wasAborted(int id);
-
-    QHostInfoCache cache;
 
     friend class QHostInfoRunnable;
 protected:
@@ -192,7 +227,94 @@ private slots:
     void waitForThreadPoolDone() { threadPool.waitForDone(); }
 };
 
+#else
+
+class QSymbianHostResolver : public CActive
+{
+public:
+    QSymbianHostResolver(const QString &hostName, int id, QSharedPointer<QNetworkSession> networkSession);
+    ~QSymbianHostResolver();
+
+    void requestHostLookup();
+    void abortHostLookup();
+    int id();
+
+    void returnResults();
+
+    QHostInfoResult resultEmitter;
+
+private:
+    void DoCancel();
+    void RunL();
+    void run();
+    TInt RunError(TInt aError);
+
+    void processNameResult();
+    void nextNameResult();
+    void processAddressResult();
+
+private:
+    int iId;
+
+    const QString iHostName;
+    QString iEncodedHostName;
+    TPtrC iHostNamePtr;
+
+    RSocketServ& iSocketServ;
+    RHostResolver iHostResolver;
+    QSharedPointer<QNetworkSession> iNetworkSession;
+
+    TNameEntry iNameResult;
+    TInetAddr IpAdd;
+
+    QHostAddress iAddress;
+
+    QHostInfo iResults;
+
+    QList<QHostAddress> iHostAddresses;
+
+    enum {
+        EIdle,
+        EGetByName,
+        EGetByAddress,
+        ECompleteFromCache,
+        EError
+    } iState;
+};
+
+class QSymbianHostInfoLookupManager : public QAbstractHostInfoLookupManager
+{
+    Q_OBJECT
+public:
+    QSymbianHostInfoLookupManager();
+    ~QSymbianHostInfoLookupManager();
+
+    static QSymbianHostInfoLookupManager* globalInstance();
+
+    int id();
+    void clear();
+
+    // called from QHostInfo
+    void scheduleLookup(QSymbianHostResolver *r);
+    void abortLookup(int id);
+
+    // called from QSymbianHostResolver
+    void lookupFinished(QSymbianHostResolver *r);
+
+private:
+    void runNextLookup();
+
+    // this is true for single threaded use, with multiple threads the max is ((number of threads) + KMaxConcurrentLookups - 1)
+    static const int KMaxConcurrentLookups = 5;
+
+    QList<QSymbianHostResolver*> iCurrentLookups;
+    QList<QSymbianHostResolver*> iScheduledLookups;
+
+    QMutex mutex;
+};
 #endif
+
+
 
 QT_END_NAMESPACE
 

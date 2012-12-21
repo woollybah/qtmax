@@ -60,5 +60,8 @@ Extern
 	Function bmx_qt_qcombobox_currenttext:String(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_findtext:Int(handle:Byte Ptr, text:String, flags:Int)
 	Function bmx_qt_qcombobox_setcurrentindex(handle:Byte Ptr, index:Int)
+	Function bmx_qt_qcombobox_duplicatesenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qcombobox_hasframe:Int(handle:Byte Ptr)
+	Function bmx_qt_qcombobox_hidepopup(handle:Byte Ptr)
 
 End Extern

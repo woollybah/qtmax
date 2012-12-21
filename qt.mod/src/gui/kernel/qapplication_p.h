@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -65,14 +65,21 @@
 #include "QtCore/qhash.h"
 #include "QtCore/qpointer.h"
 #include "private/qcoreapplication_p.h"
-#include "private/qshortcutmap_p.h"
+#include "QtGui/private/qshortcutmap_p.h"
 #include <private/qthread_p.h>
+#include "QtCore/qpoint.h"
+#include <QTime>
 #ifdef Q_WS_QWS
 #include "QtGui/qscreen_qws.h"
 #include <private/qgraphicssystem_qws_p.h>
 #endif
 #ifdef Q_OS_SYMBIAN
 #include <w32std.h>
+#endif
+#ifdef Q_WS_QPA
+#include <QWindowSystemInterface>
+#include "qwindowsysteminterface_qpa_p.h"
+#include "QtGui/qplatformintegration_qpa.h"
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -270,17 +277,6 @@ typedef struct tagGESTURECONFIG
 
 #endif // Q_WS_WIN
 
-class QScopedLoopLevelCounter
-{
-    QThreadData *threadData;
-public:
-    QScopedLoopLevelCounter(QThreadData *threadData)
-        : threadData(threadData)
-    { ++threadData->loopLevel; }
-    ~QScopedLoopLevelCounter()
-    { --threadData->loopLevel; }
-};
-
 typedef QHash<QByteArray, QFont> FontHash;
 FontHash *qt_app_fonts_hash();
 
@@ -291,7 +287,7 @@ class Q_GUI_EXPORT QApplicationPrivate : public QCoreApplicationPrivate
 {
     Q_DECLARE_PUBLIC(QApplication)
 public:
-    QApplicationPrivate(int &argc, char **argv, QApplication::Type type);
+    QApplicationPrivate(int &argc, char **argv, QApplication::Type type, int flags);
     ~QApplicationPrivate();
 
 #if defined(Q_WS_X11)
@@ -312,10 +308,18 @@ public:
     static QString desktopStyleKey();
 
     static QGraphicsSystem *graphicsSystem()
-#if !defined(Q_WS_QWS)
-    { return graphics_system; }
-#else
+#if defined(Q_WS_QWS)
     { return QScreen::instance()->graphicsSystem(); }
+#else
+    { return graphics_system; }
+#endif
+
+#if defined(Q_WS_QPA)
+    static QPlatformIntegration *platformIntegration()
+    { return platform_integration; }
+
+    static QAbstractEventDispatcher *qt_qpa_core_dispatcher()
+    { return QCoreApplication::instance()->d_func()->threadData->eventDispatcher; }
 #endif
 
     void createEventDispatcher();
@@ -404,7 +408,9 @@ public:
     }
 #endif
     static QInputContext *inputContext;
-
+#ifdef Q_OS_SYMBIAN
+    static bool inputContextBeingCreated;
+#endif
     static Qt::MouseButtons mouse_buttons;
     static Qt::KeyboardModifiers modifier_buttons;
 
@@ -418,6 +424,9 @@ public:
     static QGraphicsSystem *graphics_system;
     static QString graphics_system_name;
     static bool runtime_graphics_system;
+#ifdef Q_WS_QPA
+    static QPlatformIntegration *platform_integration;
+#endif
 
 private:
     static QFont *app_font; // private for a reason! Always use QApplication::font() instead!
@@ -446,8 +455,6 @@ public:
     static bool animate_toolbox;
     static bool widgetCount; // Coupled with -widgetcount switch
     static bool load_testability; // Coupled with -testability switch
-    static QString qmljs_debug_arguments; // a string containing arguments for js/qml debugging.
-    static QString qmljsDebugArgumentsString(); // access string from other libraries
 
 #ifdef Q_WS_MAC
     static bool native_modal_dialog_active;
@@ -471,10 +478,35 @@ public:
 #ifdef QT_MAC_USE_COCOA
     static void qt_initAfterNSAppStarted();
     static void setupAppleEvents();
-    static void updateOverrideCursor();
-    static void disableUsageOfCursorRects(bool disable);
 #endif
     static bool qt_mac_apply_settings();
+#endif
+
+#ifdef Q_WS_QPA
+    static void processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent *e);
+    static void processKeyEvent(QWindowSystemInterfacePrivate::KeyEvent *e);
+    static void processWheelEvent(QWindowSystemInterfacePrivate::WheelEvent *e);
+    static void processTouchEvent(QWindowSystemInterfacePrivate::TouchEvent *e);
+    static void processPlatformPanelEvent(QWindowSystemInterfacePrivate::PlatformPanelEvent *e);
+
+    static void processCloseEvent(QWindowSystemInterfacePrivate::CloseEvent *e);
+
+    static void processGeometryChangeEvent(QWindowSystemInterfacePrivate::GeometryChangeEvent *e);
+
+    static void processEnterEvent(QWindowSystemInterfacePrivate::EnterEvent *e);
+    static void processLeaveEvent(QWindowSystemInterfacePrivate::LeaveEvent *e);
+
+    static void processActivatedEvent(QWindowSystemInterfacePrivate::ActivatedWindowEvent *e);
+
+    static void processWindowSystemEvent(QWindowSystemInterfacePrivate::WindowSystemEvent *e);
+
+//    static void reportScreenCount(int count);
+    static void reportScreenCount(QWindowSystemInterfacePrivate::ScreenCountEvent *e);
+//    static void reportGeometryChange(int screenIndex);
+    static void reportGeometryChange(QWindowSystemInterfacePrivate::ScreenGeometryEvent *e);
+//    static void reportAvailableGeometryChange(int screenIndex);
+    static void reportAvailableGeometryChange(QWindowSystemInterfacePrivate::ScreenAvailableGeometryEvent *e);
+    static void reportLocaleChange();
 #endif
 
 #ifdef Q_WS_QWS
@@ -491,8 +523,6 @@ public:
     static QApplicationPrivate *instance() { return self; }
 
     static QString styleOverride;
-
-    static int app_compile_version;
 
 #ifdef QT_KEYPAD_NAVIGATION
     static QWidget *oldEditFocus;
@@ -521,21 +551,25 @@ public:
     int symbianProcessWsEvent(const QSymbianEvent *symbianEvent);
     int symbianHandleCommand(const QSymbianEvent *symbianEvent);
     int symbianResourceChange(const QSymbianEvent *symbianEvent);
+    void symbianHandleLiteModeStartup();
 
     void _q_aboutToQuit();
+
+    void emitAboutToReleaseGpuResources();
+    void emitAboutToUseGpuResources();
 #endif
-#if defined(Q_WS_WIN) || defined(Q_WS_X11) || defined (Q_WS_QWS) || defined(Q_WS_MAC)
+#if defined(Q_WS_WIN) || defined(Q_WS_X11) || defined (Q_WS_QWS) || defined(Q_WS_MAC) || defined(Q_WS_QPA)
     void sendSyntheticEnterLeave(QWidget *widget);
 #endif
 
 #ifndef QT_NO_GESTURES
     QGestureManager *gestureManager;
     QWidget *gestureWidget;
+#endif
 #if defined(Q_WS_X11) || defined(Q_WS_WIN)
     QPixmap *move_cursor;
     QPixmap *copy_cursor;
     QPixmap *link_cursor;
-#endif
 #endif
 #if defined(Q_WS_WIN)
     QPixmap *ignore_cursor;
@@ -599,6 +633,8 @@ public:
     int pressureSupported;
     int maxTouchPressure;
     QList<QTouchEvent::TouchPoint> appAllTouchPoints;
+
+    bool useTranslucentEGLSurfaces;
 #endif
 
 private:
@@ -632,6 +668,8 @@ Q_GUI_EXPORT void qt_translateRawTouchEvent(QWidget *window,
   extern void qt_x11_enforce_cursor(QWidget *);
 #elif defined(Q_OS_SYMBIAN)
   extern void qt_symbian_set_cursor(QWidget *, bool);
+#elif defined (Q_WS_QPA)
+  extern void qt_qpa_set_cursor(QWidget *, bool);
 #endif
 
 QT_END_NAMESPACE

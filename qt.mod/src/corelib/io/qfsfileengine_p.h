@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -56,7 +56,19 @@
 #include "qplatformdefs.h"
 #include "QtCore/qfsfileengine.h"
 #include "private/qabstractfileengine_p.h"
+#include <QtCore/private/qfilesystementry_p.h>
+#include <QtCore/private/qfilesystemmetadata_p.h>
 #include <qhash.h>
+
+#ifdef Q_OS_SYMBIAN
+#include <f32file.h>
+//This macro will be defined if the OS supports memory mapped files
+#if defined (SYMBIAN_FILE_MAPPING_SUPPORTED) && !defined (WINS)
+//simpler define to check in sources
+#define QT_SYMBIAN_USE_NATIVE_FILEMAP
+#include <f32filemap.h>
+#endif
+#endif
 
 #ifndef QT_NO_FSFILEENGINE
 
@@ -74,13 +86,10 @@ public:
 #ifdef Q_WS_WIN
     static QString longFileName(const QString &path);
 #endif
-    static QString canonicalized(const QString &path);
 
-    QString filePath;
-    QByteArray nativeFilePath;
+    QFileSystemEntry fileEntry;
     QIODevice::OpenMode openMode;
 
-    void nativeInitFileName();
     bool nativeOpen(QIODevice::OpenMode openMode);
     bool openFh(QIODevice::OpenMode flags, FILE *fh);
     bool openFd(QIODevice::OpenMode flags, int fd);
@@ -89,7 +98,9 @@ public:
     bool nativeFlush();
     bool flushFh();
     qint64 nativeSize() const;
+#ifndef Q_OS_WIN
     qint64 sizeFdFh() const;
+#endif
     qint64 nativePos() const;
     qint64 posFdFh() const;
     bool nativeSeek(qint64);
@@ -102,12 +113,44 @@ public:
     qint64 writeFdFh(const char *data, qint64 len);
     int nativeHandle() const;
     bool nativeIsSequential() const;
+#ifndef Q_OS_WIN
     bool isSequentialFdFh() const;
+#endif
 
     uchar *map(qint64 offset, qint64 size, QFile::MemoryMapFlags flags);
     bool unmap(uchar *ptr);
 
+    mutable QFileSystemMetaData metaData;
+
     FILE *fh;
+#ifdef Q_OS_SYMBIAN
+#ifdef  SYMBIAN_ENABLE_64_BIT_FILE_SERVER_API
+    RFile64 symbianFile;
+    TInt64 symbianFilePos;
+#else
+    RFile symbianFile;
+    
+    /**
+     * The cursor position in the underlying file.  This differs
+     * from devicePos because the latter is updated on calls to
+     * writeData, even if no data was physically transferred to
+     * the file, but instead stored in the write buffer.
+     * 
+     * iFilePos is updated on calls to RFile::Read and
+     * RFile::Write.  It is also updated on calls to seek() but
+     * RFile::Seek is not called when that happens because
+     * Symbian supports positioned reads and writes, saving a file
+     * server call, and because Symbian does not support seeking
+     * past the end of a file.  
+     */
+    TInt symbianFilePos;
+#endif
+#ifndef QT_SYMBIAN_USE_NATIVE_FILEMAP
+    mutable int fileHandleForMaps;
+    int getMapHandle();
+#endif
+#endif
+
 #ifdef Q_WS_WIN
     HANDLE fileHandle;
     HANDLE mapHandle;
@@ -118,9 +161,10 @@ public:
 #endif
 
     mutable DWORD fileAttrib;
+#elif defined (QT_SYMBIAN_USE_NATIVE_FILEMAP)
+    QHash<uchar *, RFileMap> maps;
 #else
     QHash<uchar *, QPair<int /*offset % PageSize*/, size_t /*length + offset % PageSize*/> > maps;
-    mutable QT_STATBUF st;
 #endif
     int fd;
 
@@ -142,21 +186,15 @@ public:
     mutable uint is_link : 1;
 #endif
 
-    bool doStat() const;
+#if defined(Q_OS_WIN)
+    bool doStat(QFileSystemMetaData::MetaDataFlags flags) const;
+#else
+    bool doStat(QFileSystemMetaData::MetaDataFlags flags = QFileSystemMetaData::PosixStatFlags) const;
+#endif
     bool isSymlink() const;
 
 #if defined(Q_OS_WIN32)
     int sysOpen(const QString &, int flags);
-#endif
-
-#if defined(Q_OS_WIN32) || defined(Q_OS_WINCE)
-    static void resolveLibs();
-    static bool resolveUNCLibs();
-    static bool uncListSharesOnServer(const QString &server, QStringList *list);
-#endif
-
-#ifdef Q_OS_SYMBIAN
-    void setSymbianError(int symbianError, QFile::FileError defaultError, QString defaultString);
 #endif
 
 protected:

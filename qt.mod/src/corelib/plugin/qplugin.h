@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -101,20 +101,31 @@ void Q_CORE_EXPORT qRegisterStaticPluginInstanceFunction(QtPluginInstanceFunctio
 // NOTE: if you change pattern, you MUST change the pattern in
 // qlibrary.cpp as well.  changing the pattern will break all
 // backwards compatibility as well (no old plugins will be loaded).
+// QT5: should probably remove the entire pattern thing and do the section
+//      trick for all platforms. for now, keep it and fallback to scan for it.
 #  ifdef QPLUGIN_DEBUG_STR
 #    undef QPLUGIN_DEBUG_STR
 #  endif
 #  ifdef QT_NO_DEBUG
 #    define QPLUGIN_DEBUG_STR "false"
+#    define QPLUGIN_SECTION_DEBUG_STR ""
 #  else
 #    define QPLUGIN_DEBUG_STR "true"
+#    define QPLUGIN_SECTION_DEBUG_STR ".debug"
 #  endif
 #  define Q_PLUGIN_VERIFICATION_DATA \
     static const char qt_plugin_verification_data[] = \
-      "pattern=""QT_PLUGIN_VERIFICATION_DATA""\n" \
-      "version="QT_VERSION_STR"\n" \
-      "debug="QPLUGIN_DEBUG_STR"\n" \
-      "buildkey="QT_BUILD_KEY;
+      "pattern=QT_PLUGIN_VERIFICATION_DATA\n" \
+      "version=" QT_VERSION_STR "\n" \
+      "debug=" QPLUGIN_DEBUG_STR "\n" \
+      "buildkey=" QT_BUILD_KEY;
+
+#  if defined (Q_OF_ELF) && defined (Q_CC_GNU)
+#  define Q_PLUGIN_VERIFICATION_SECTION \
+    __attribute__ ((section (".qtplugin"))) __attribute__((used))
+#  else
+#  define Q_PLUGIN_VERIFICATION_SECTION
+#  endif
 
 #  if defined (Q_OS_WIN32) && defined(Q_CC_BOR)
 #     define Q_STANDARD_CALL __stdcall
@@ -123,7 +134,7 @@ void Q_CORE_EXPORT qRegisterStaticPluginInstanceFunction(QtPluginInstanceFunctio
 #  endif
 
 #  define Q_EXPORT_PLUGIN2(PLUGIN, PLUGINCLASS)      \
-            Q_PLUGIN_VERIFICATION_DATA \
+            Q_PLUGIN_VERIFICATION_SECTION Q_PLUGIN_VERIFICATION_DATA \
             Q_EXTERN_C Q_DECL_EXPORT \
             const char * Q_STANDARD_CALL qt_plugin_query_verification_data() \
             { return qt_plugin_verification_data; } \

@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,7 +44,10 @@
 
 #include <QtCore/qcontainerfwd.h>
 #include <QtCore/qglobal.h>
+#include <QtCore/qalgorithms.h>
+
 #include <new>
+#include <string.h>
 
 QT_BEGIN_HEADER
 
@@ -123,6 +126,18 @@ public:
         }
     }
     void append(const T *buf, int size);
+    inline QVarLengthArray<T, Prealloc> &operator<<(const T &t)
+    { append(t); return *this; }
+    inline QVarLengthArray<T, Prealloc> &operator+=(const T &t)
+    { append(t); return *this; }
+
+    void prepend(const T &t);
+    void insert(int i, const T &t);
+    void insert(int i, int n, const T &t);
+    void replace(int i, const T &t);
+    void remove(int i);
+    void remove(int i, int n);
+
 
     inline T *data() { return ptr; }
     inline const T *data() const { return ptr; }
@@ -134,6 +149,21 @@ public:
     typedef value_type &reference;
     typedef const value_type &const_reference;
     typedef qptrdiff difference_type;
+
+
+    typedef T* iterator;
+    typedef const T* const_iterator;
+
+    inline iterator begin() { return ptr; }
+    inline const_iterator begin() const { return ptr; }
+    inline const_iterator constBegin() const { return ptr; }
+    inline iterator end() { return ptr + s; }
+    inline const_iterator end() const { return ptr + s; }
+    inline const_iterator constEnd() const { return ptr + s; }
+    iterator insert(iterator before, int n, const T &x);
+    inline iterator insert(iterator before, const T &x) { return insert(before, 1, x); }
+    iterator erase(iterator begin, iterator end);
+    inline iterator erase(iterator pos) { return erase(pos, pos+1); }
 
 private:
     friend class QPodList<T, Prealloc>;
@@ -272,6 +302,100 @@ Q_OUTOFLINE_TEMPLATE T QVarLengthArray<T, Prealloc>::value(int i, const T &defau
     return (i < 0 || i >= size()) ? defaultValue : at(i);
 }
 
+template <class T, int Prealloc>
+inline void QVarLengthArray<T, Prealloc>::insert(int i, const T &t)
+{ Q_ASSERT_X(i >= 0 && i <= s, "QVarLengthArray::insert", "index out of range");
+  insert(begin() + i, 1, t); }
+template <class T, int Prealloc>
+inline void QVarLengthArray<T, Prealloc>::insert(int i, int n, const T &t)
+{ Q_ASSERT_X(i >= 0 && i <= s, "QVarLengthArray::insert", "index out of range");
+  insert(begin() + i, n, t); }
+template <class T, int Prealloc>
+inline void QVarLengthArray<T, Prealloc>::remove(int i, int n)
+{ Q_ASSERT_X(i >= 0 && n >= 0 && i + n <= s, "QVarLengthArray::remove", "index out of range");
+  erase(begin() + i, begin() + i + n); }
+template <class T, int Prealloc>
+inline void QVarLengthArray<T, Prealloc>::remove(int i)
+{ Q_ASSERT_X(i >= 0 && i < s, "QVarLengthArray::remove", "index out of range");
+  erase(begin() + i, begin() + i + 1); }
+template <class T, int Prealloc>
+inline void QVarLengthArray<T, Prealloc>::prepend(const T &t)
+{ insert(begin(), 1, t); }
+
+template <class T, int Prealloc>
+inline void QVarLengthArray<T, Prealloc>::replace(int i, const T &t)
+{
+    Q_ASSERT_X(i >= 0 && i < s, "QVarLengthArray::replace", "index out of range");
+    const T copy(t);
+    data()[i] = copy;
+}
+
+
+template <class T, int Prealloc>
+Q_OUTOFLINE_TEMPLATE typename QVarLengthArray<T, Prealloc>::iterator QVarLengthArray<T, Prealloc>::insert(iterator before, size_type n, const T &t)
+{
+    int offset = int(before - ptr);
+    if (n != 0) {
+        resize(s + n);
+        const T copy(t);
+        if (QTypeInfo<T>::isStatic) {
+            T *b = ptr + offset;
+            T *j = ptr + s;
+            T *i = j - n;
+            while (i != b)
+                *--j = *--i;
+            i = b + n;
+            while (i != b)
+                *--i = copy;
+        } else {
+            T *b = ptr + offset;
+            T *i = b + n;
+            memmove(i, b, (s - offset - n) * sizeof(T));
+            while (i != b)
+                new (--i) T(copy);
+        }
+    }
+    return ptr + offset;
+}
+
+template <class T, int Prealloc>
+Q_OUTOFLINE_TEMPLATE typename QVarLengthArray<T, Prealloc>::iterator QVarLengthArray<T, Prealloc>::erase(iterator abegin, iterator aend)
+{
+    int f = int(abegin - ptr);
+    int l = int(aend - ptr);
+    int n = l - f;
+    if (QTypeInfo<T>::isComplex) {
+        qCopy(ptr + l, ptr + s, ptr + f);
+        T *i = ptr + s;
+        T *b = ptr + s - n;
+        while (i != b) {
+            --i;
+            i->~T();
+        }
+    } else {
+        memmove(ptr + f, ptr + l, (s - l) * sizeof(T));
+    }
+    s -= n;
+    return ptr + f;
+}
+
+template <typename T, int Prealloc1, int Prealloc2>
+bool operator==(const QVarLengthArray<T, Prealloc1> &l, const QVarLengthArray<T, Prealloc2> &r)
+{
+    if (l.size() != r.size())
+        return false;
+    for (int i = 0; i < l.size(); i++) {
+        if (l.at(i) != r.at(i))
+            return false;
+    }
+    return true;
+}
+
+template <typename T, int Prealloc1, int Prealloc2>
+bool operator!=(const QVarLengthArray<T, Prealloc1> &l, const QVarLengthArray<T, Prealloc2> &r)
+{
+    return !(l == r);
+}
 
 QT_END_NAMESPACE
 

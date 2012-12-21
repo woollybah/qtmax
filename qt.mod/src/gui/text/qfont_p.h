@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -72,7 +72,7 @@ struct QFontDef
         : pointSize(-1.0), pixelSize(-1),
           styleStrategy(QFont::PreferDefault), styleHint(QFont::AnyStyle),
           weight(50), fixedPitch(false), style(QFont::StyleNormal), stretch(100),
-          ignorePitch(true)
+          ignorePitch(true), hintingPreference(QFont::PreferDefaultHinting)
 #ifdef Q_WS_MAC
           ,fixedPitchComputed(false)
 #endif
@@ -80,6 +80,7 @@ struct QFontDef
     }
 
     QString family;
+    QString styleName;
 
 #ifdef Q_WS_X11
     QString addStyle;
@@ -97,8 +98,9 @@ struct QFontDef
     uint stretch    : 12; // 0-400
 
     uint ignorePitch : 1;
+    uint hintingPreference : 2;
     uint fixedPitchComputed : 1; // for Mac OS X only
-    int reserved   : 16; // for future extensions
+    int reserved   : 14; // for future extensions
 
     bool exactMatch(const QFontDef &other) const;
     bool operator==(const QFontDef &other) const
@@ -111,6 +113,8 @@ struct QFontDef
                     && styleStrategy == other.styleStrategy
                     && ignorePitch == other.ignorePitch && fixedPitch == other.fixedPitch
                     && family == other.family
+                    && (styleName.isEmpty() || other.styleName.isEmpty() || styleName == other.styleName)
+                    && hintingPreference == other.hintingPreference
 #ifdef Q_WS_X11
                     && addStyle == other.addStyle
 #endif
@@ -125,6 +129,9 @@ struct QFontDef
         if (styleHint != other.styleHint) return styleHint < other.styleHint;
         if (styleStrategy != other.styleStrategy) return styleStrategy < other.styleStrategy;
         if (family != other.family) return family < other.family;
+        if (!styleName.isEmpty() && !other.styleName.isEmpty() && styleName != other.styleName)
+            return styleName < other.styleName;
+        if (hintingPreference != other.hintingPreference) return hintingPreference < other.hintingPreference;
 
 #ifdef Q_WS_X11
         if (addStyle != other.addStyle) return addStyle < other.addStyle;
@@ -191,6 +198,11 @@ public:
     mutable QFontPrivate *scFont;
     QFont smallCapsFont() const { return QFont(smallCapsFontPrivate()); }
     QFontPrivate *smallCapsFontPrivate() const;
+
+    static QFontPrivate *get(const QFont &font)
+    {
+        return font.d.data();
+    }
 
     void resolve(uint mask, const QFontPrivate *other);
 private:
@@ -272,6 +284,10 @@ public:
     bool fast;
     int timer_id;
 };
+
+Q_GUI_EXPORT int qt_defaultDpiX();
+Q_GUI_EXPORT int qt_defaultDpiY();
+Q_GUI_EXPORT int qt_defaultDpi();
 
 QT_END_NAMESPACE
 

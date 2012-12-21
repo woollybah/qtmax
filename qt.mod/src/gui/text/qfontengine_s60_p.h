@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -58,13 +58,11 @@
 #include "qsize.h"
 #include <openfont.h>
 
-#ifdef SYMBIAN_GDI_GLYPHDATA
-#define Q_SYMBIAN_HAS_FONTTABLE_API
-#endif
-
-#ifdef Q_SYMBIAN_HAS_FONTTABLE_API
+// The glyph outline code is intentionally disabled. It will be reactivated as
+// soon as the glyph outline API is backported from Symbian(^4) to Symbian(^3).
+#if 0
 #define Q_SYMBIAN_HAS_GLYPHOUTLINE_API
-#endif // Q_SYMBIAN_HAS_FONTTABLE_API
+#endif
 
 class CFont;
 
@@ -82,15 +80,19 @@ public:
     const uchar *cmap() const;
     CFont *fontOwner() const;
     bool isSymbolCMap() const;
+    QFixed unitsPerEm() const;
+    static bool symbianFontTableApiAvailable();
 
 private:
     CFont* m_cFont;
     mutable bool m_symbolCMap;
     mutable QByteArray m_cmapTable;
-#ifndef Q_SYMBIAN_HAS_FONTTABLE_API
+    mutable QFixed m_unitsPerEm;
+
+    // m_openFont and m_openFont are used if Symbian does not provide
+    // the Font Table API
     COpenFont *m_openFont;
     mutable MOpenFontTrueTypeExtension *m_trueTypeExtension;
-#endif // Q_SYMBIAN_HAS_FONTTABLE_API
 };
 
 class QFontEngineS60 : public QFontEngine
@@ -99,6 +101,7 @@ public:
     QFontEngineS60(const QFontDef &fontDef, const QSymbianTypeFaceExtras *extras);
     ~QFontEngineS60();
 
+    QFixed emSquareSize() const;
     bool stringToCMap(const QChar *str, int len, QGlyphLayout *glyphs, int *nglyphs, QTextEngine::ShaperFlags flags) const;
     void recalcAdvances(QGlyphLayout *glyphs, QTextEngine::ShaperFlags flags) const;
 

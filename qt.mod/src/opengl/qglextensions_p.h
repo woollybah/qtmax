@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtOpenGL module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -332,6 +332,8 @@ struct QGLExtensionFuncs
         qt_glMapBufferARB = 0;
         qt_glUnmapBufferARB = 0;
 
+        qt_bufferFuncsResolved = false;
+
         qt_glProgramParameteriEXT = 0;
         qt_glFramebufferTextureEXT = 0;
         qt_glFramebufferTextureLayerEXT = 0;
@@ -457,6 +459,8 @@ struct QGLExtensionFuncs
     _glMapBufferARB qt_glMapBufferARB;
     _glUnmapBufferARB qt_glUnmapBufferARB;
 
+    bool qt_bufferFuncsResolved;
+
     // Geometry shaders...
     _glProgramParameteriEXT qt_glProgramParameteriEXT;
     _glFramebufferTextureEXT qt_glFramebufferTextureEXT;
@@ -472,11 +476,18 @@ struct QGLExtensionFuncs
     _glEGLImageTargetTexture2DOES qt_glEGLImageTargetTexture2DOES;
     _glEGLImageTargetRenderbufferStorageOES qt_glEGLImageTargetRenderbufferStorageOES;
 #endif
-
 };
 
 
 // OpenGL constants
+
+#ifndef FRAMEBUFFER_SRGB_CAPABLE_EXT
+#define FRAMEBUFFER_SRGB_CAPABLE_EXT 0x8DBA
+#endif
+
+#ifndef FRAMEBUFFER_SRGB_EXT
+#define FRAMEBUFFER_SRGB_EXT 0x8DB9
+#endif
 
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER                   0x8892
@@ -562,6 +573,14 @@ struct QGLExtensionFuncs
 
 #ifndef GL_TEXTURE1
 #define GL_TEXTURE1 0x84C1
+#endif
+
+#ifndef GL_DEPTH_COMPONENT16
+#define GL_DEPTH_COMPONENT16 0x81A5
+#endif
+
+#ifndef GL_DEPTH_COMPONENT24_OES
+#define GL_DEPTH_COMPONENT24_OES 0x81A6
 #endif
 
 #ifndef GL_EXT_framebuffer_object
@@ -872,10 +891,10 @@ struct QGLExtensionFuncs
 #endif
 
 extern bool qt_resolve_framebufferobject_extensions(QGLContext *ctx);
-bool qt_resolve_buffer_extensions(QGLContext *ctx);
+bool Q_OPENGL_EXPORT qt_resolve_buffer_extensions(QGLContext *ctx);
 
 bool qt_resolve_version_1_3_functions(QGLContext *ctx);
-bool qt_resolve_version_2_0_functions(QGLContext *ctx);
+bool Q_OPENGL_EXPORT qt_resolve_version_2_0_functions(QGLContext *ctx);
 bool qt_resolve_stencil_face_extension(QGLContext *ctx);
 bool qt_resolve_frag_program_extensions(QGLContext *ctx);
 

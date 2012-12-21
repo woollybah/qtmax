@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -44,9 +44,8 @@
 
 #include <QtCore/qglobal.h>
 
-#ifdef Q_OS_LINUX
-# include <features.h>
-#endif
+// include stdlib.h and hope that it defines __GLIBC__ for glibc-based systems
+#include <stdlib.h>
 
 #ifdef __GLIBC__
 #include <byteswap.h>
@@ -89,7 +88,7 @@ template <typename T> inline void qToUnaligned(const T src, uchar *dest)
  * and return the value in host-endian encoding.
  * There is no requirement that \a src must be aligned.
 */
-#if defined Q_CC_MSVC && _MSC_VER < 1300 || defined Q_CC_SUN
+#if defined Q_CC_SUN
 inline quint64 qFromLittleEndian_helper(const uchar *src, quint64 *dest)
 {
     return 0
@@ -177,7 +176,7 @@ template <> inline qint16 qFromLittleEndian<qint16>(const uchar *src)
  * and return the value in host-endian encoding.
  * There is no requirement that \a src must be aligned.
 */
-#if defined Q_CC_MSVC && _MSC_VER < 1300 || defined Q_CC_SUN
+#if defined Q_CC_SUN
 inline quint64 qFromBigEndian_helper(const uchar *src, quint64 *dest)
 {
     return 0
@@ -363,6 +362,11 @@ template <typename T> inline void qToLittleEndian(T src, uchar *dest)
 { qToUnaligned<T>(src, dest); }
 
 #endif // Q_BYTE_ORDER == Q_BIG_ENDIAN
+
+template <> inline quint8 qbswap<quint8>(quint8 source)
+{
+    return source;
+}
 
 QT_END_NAMESPACE
 

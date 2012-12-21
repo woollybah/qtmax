@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -71,6 +71,7 @@ class QNetworkSessionPrivate;
 class QNetworkSessionExport QNetworkSession : public QObject
 {
     Q_OBJECT
+
 public:
     enum State {
         Invalid = 0,
@@ -89,7 +90,8 @@ public:
         OperationNotSupportedError,
         InvalidConfigurationError
     };
-	explicit QNetworkSession(const QNetworkConfiguration& connConfig, QObject* parent =0);
+
+    explicit QNetworkSession(const QNetworkConfiguration &connConfig, QObject *parent = 0);
     virtual ~QNetworkSession();
 
     bool isOpen() const;
@@ -101,8 +103,8 @@ public:
     State state() const;
     SessionError error() const;
     QString errorString() const;
-    QVariant sessionProperty(const QString& key) const;
-    void setSessionProperty(const QString& key, const QVariant& value);
+    QVariant sessionProperty(const QString &key) const;
+    void setSessionProperty(const QString &key, const QVariant &value);
 
     quint64 bytesWritten() const;
     quint64 bytesReceived() const;
@@ -121,13 +123,12 @@ public Q_SLOTS:
     void accept();
     void reject();
 
-
 Q_SIGNALS:
     void stateChanged(QNetworkSession::State);
     void opened();
     void closed();
     void error(QNetworkSession::SessionError);
-    void preferredConfigurationChanged(const QNetworkConfiguration& config, bool isSeamless);
+    void preferredConfigurationChanged(const QNetworkConfiguration &config, bool isSeamless);
     void newConfigurationActivated();
 
 protected:
@@ -135,12 +136,14 @@ protected:
     virtual void disconnectNotify(const char *signal);
 
 private:
-    QNetworkSessionPrivate* d;
     friend class QNetworkSessionPrivate;
-    };
+    QNetworkSessionPrivate *d;
+};
 
 #ifndef QT_MOBILITY_BEARER
 QT_END_NAMESPACE
+Q_DECLARE_METATYPE(QNetworkSession::State)
+Q_DECLARE_METATYPE(QNetworkSession::SessionError)
 #else
 QTM_END_NAMESPACE
 #endif
@@ -149,4 +152,4 @@ QT_END_HEADER
 
 #endif // QT_NO_BEARERMANAGEMENT
 
-#endif //QNETWORKSESSION_H
+#endif // QNETWORKSESSION_H

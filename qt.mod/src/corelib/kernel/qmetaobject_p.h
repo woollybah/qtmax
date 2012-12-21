@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -78,7 +78,8 @@ enum PropertyFlags  {
     ResolveEditable = 0x00080000,
     User = 0x00100000,
     ResolveUser = 0x00200000,
-    Notify = 0x00400000
+    Notify = 0x00400000,
+    Revisioned = 0x00800000
 };
 
 enum MethodFlags  {
@@ -95,7 +96,8 @@ enum MethodFlags  {
 
     MethodCompatibility = 0x10,
     MethodCloned = 0x20,
-    MethodScriptable = 0x40
+    MethodScriptable = 0x40,
+    MethodRevisioned = 0x80
 };
 
 enum MetaObjectFlags {
@@ -116,6 +118,7 @@ struct QMetaObjectPrivate
     int flags; //since revision 3
     int signalCount; //since revision 4
     // revision 5 introduces changes in normalized signatures, no new members
+    // revision 6 added qt_static_metacall as a member of each Q_OBJECT and inside QMetaObject itself
 
     static inline const QMetaObjectPrivate *get(const QMetaObject *metaobject)
     { return reinterpret_cast<const QMetaObjectPrivate*>(metaobject->d.data); }
@@ -123,7 +126,7 @@ struct QMetaObjectPrivate
     static int indexOfSignalRelative(const QMetaObject **baseObject,
                                      const char* name,
                                      bool normalizeStringData);
-    static int indexOfSlot(const QMetaObject *m,
+    static int indexOfSlotRelative(const QMetaObject **m,
                            const char *slot,
                            bool normalizeStringData);
     static int originalClone(const QMetaObject *obj, int local_method_index);
@@ -131,8 +134,11 @@ struct QMetaObjectPrivate
 #ifndef QT_NO_QOBJECT
     //defined in qobject.cpp
     enum DisconnectType { DisconnectAll, DisconnectOne };
+    static void memberIndexes(const QObject *obj, const QMetaMethod &member,
+                              int *signalIndex, int *methodIndex);
     static bool connect(const QObject *sender, int signal_index,
-                        const QObject *receiver, int method_index,
+                        const QObject *receiver, int method_index_relative,
+                        const QMetaObject *rmeta = 0,
                         int type = 0, int *types = 0);
     static bool disconnect(const QObject *sender, int signal_index,
                            const QObject *receiver, int method_index,

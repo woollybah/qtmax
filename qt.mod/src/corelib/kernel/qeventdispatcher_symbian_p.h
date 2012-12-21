@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -63,6 +63,7 @@
 #include <qwaitcondition.h>
 #include <qsocketnotifier.h>
 #include <qdatetime.h>
+#include <qelapsedtimer.h>
 
 #include <e32base.h>
 
@@ -76,18 +77,18 @@ QT_BEGIN_NAMESPACE
 class QEventDispatcherSymbian;
 class QTimerActiveObject;
 
-class QActiveObject : public CActive
+class Q_CORE_EXPORT QActiveObject : public CActive
 {
 public:
     QActiveObject(TInt priority, QEventDispatcherSymbian *dispatcher);
     ~QActiveObject();
 
-    bool okToRun();
-
+    bool maybeDeferSocketEvent();
+    bool maybeQueueForLater();
     void reactivateAndComplete();
-
 protected:
     QEventDispatcherSymbian *m_dispatcher;
+    QThreadData *m_threadData;
 
 private:
     bool m_hasAlreadyRun : 1;
@@ -109,6 +110,7 @@ protected:
 
 private:
     QEventDispatcherSymbian *m_dispatcher;
+    TThreadId m_hostThreadId;
 };
 
 struct SymbianTimerInfo : public QSharedData
@@ -146,6 +148,8 @@ private:
 
 private:
     SymbianTimerInfo *m_timerInfo;
+    QElapsedTimer m_timeoutTimer;
+    int m_expectedTimeSinceLastEvent;
     RTimer m_rTimer;
 };
 
@@ -176,6 +180,7 @@ public:
 protected:
     void DoCancel();
     void RunL();
+    void run();
 
 private:
     QSocketNotifier *m_notifier;
@@ -243,19 +248,24 @@ public:
     void startingUp();
     void closingDown();
 
-    void timerFired(int timerId);
-    void socketFired(QSocketActiveObject *socketAO);
-    void wakeUpWasCalled();
+    void timerFired(int timerId, QTimerActiveObject *ao);
+    void wakeUpWasCalled(QWakeUpActiveObject *ao);
     void reactivateSocketNotifier(QSocketNotifier *notifier);
 
     void addDeferredActiveObject(QActiveObject *object);
     void removeDeferredActiveObject(QActiveObject *object);
-    void reactivateDeferredActiveObjects();
-
+    void queueDeferredActiveObjectsCompletion();
+    // Can be overridden to activate local active objects too, but do call baseclass!
+    virtual void reactivateDeferredActiveObjects();
     inline int iterationCount() const { return m_iterationCount; }
+
+    void addDeferredSocketActiveObject(QActiveObject *object);
+    inline bool areSocketEventsBlocked() const { return m_noSocketEvents; }
 
     static void RequestComplete(TRequestStatus *&status, TInt reason);
     static void RequestComplete(RThread &threadHandle, TRequestStatus *&status, TInt reason);
+
+    void activeObjectError(int error);
 
 private:
     bool sendPostedEvents();
@@ -277,14 +287,18 @@ private:
     QAtomicInt m_wakeUpDone;
 
     unsigned char m_iterationCount;
+    bool m_insideTimerEvent;
     bool m_noSocketEvents;
-    QList<QSocketActiveObject *> m_deferredSocketEvents;
+    //deferred until socket events are enabled
+    QList<QActiveObject *> m_deferredSocketEvents;
 
     QList<QActiveObject *> m_deferredActiveObjects;
 
     int m_delay;
     int m_avgEventTime;
-    QTime m_lastIdleRequestTimer;
+    QElapsedTimer m_lastIdleRequestTimer;
+    int m_oomErrorCount;
+    QElapsedTimer m_oomErrorTimer;
 };
 
 #ifdef QT_DEBUG

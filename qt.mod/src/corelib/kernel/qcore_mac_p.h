@@ -1,17 +1,18 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtCore module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
 ** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,8 +22,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
@@ -33,8 +34,7 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+**
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -68,7 +68,15 @@
 #  undef qDebug
 #endif
 
+#if defined(QT_BUILD_QMAKE) || defined(QT_BOOTSTRAPPED)
 #include <ApplicationServices/ApplicationServices.h>
+#else
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
+#if !defined(Q_OS_IOS)
+#include <CoreServices/CoreServices.h>
+#endif
 
 #undef DEBUG
 #ifdef OLD_DEBUG
@@ -139,6 +147,16 @@ public:
 private:
     QString string;
 };
+
+
+#if !defined(Q_OS_IOS)
+Q_CORE_EXPORT void qt_mac_to_pascal_string(const QString &s, Str255 str, TextEncoding encoding = 0, int len = -1);
+Q_CORE_EXPORT QString qt_mac_from_pascal_string(const Str255 pstr);
+
+Q_CORE_EXPORT OSErr qt_mac_create_fsref(const QString &file, FSRef *fsref);
+// Don't use this function, it won't work in 10.5 (Leopard) and up
+Q_CORE_EXPORT OSErr qt_mac_create_fsspec(const QString &file, FSSpec *spec);
+#endif // !defined(Q_OS_IOS)
 
 QT_END_NAMESPACE
 
