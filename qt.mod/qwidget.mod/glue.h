@@ -194,6 +194,28 @@ extern "C" {
 	void bmx_qt_qwidget_sizeincrement(QWidget * widget, int * w, int * h);
 	int bmx_qt_qwidget_winid(QWidget * widget);
 	void bmx_qt_qwidget_setparent(QWidget * widget, QWidget * parent);
+	int bmx_qt_qwidget_hasfocus(QWidget * widget);
+	int bmx_qt_qwidget_hasmousetracking(QWidget * widget);
+	int bmx_qt_qwidget_isactivewindow(QWidget * widget);
+	int bmx_qt_qwidget_isenabled(QWidget * widget);
+	int bmx_qt_qwidget_isfullscreen(QWidget * widget);
+	int bmx_qt_qwidget_ishidden(QWidget * widget);
+	int bmx_qt_qwidget_ismaximized(QWidget * widget);
+	int bmx_qt_qwidget_isminimized(QWidget * widget);
+	int bmx_qt_qwidget_ismodal(QWidget * widget);
+	int bmx_qt_qwidget_isvisible(QWidget * widget);
+	int bmx_qt_qwidget_iswindow(QWidget * widget);
+	int bmx_qt_qwidget_iswindowmodified(QWidget * widget);
+	void bmx_qt_qwidget_setmaximumheight(QWidget * widget, int maxh);
+	void bmx_qt_qwidget_setmaximumsize(QWidget * widget, int w, int h);
+	void bmx_qt_qwidget_setmaximumwidth(QWidget * widget, int maxw);
+	void bmx_qt_qwidget_setminimumheight(QWidget * widget, int minh);
+	void bmx_qt_qwidget_setminimumsize(QWidget * widget, int w, int h);
+	void bmx_qt_qwidget_setminimumwidth(QWidget * widget, int minw);
+	void bmx_qt_qwidget_setmousetracking(QWidget * widget, int enable);
+	void bmx_qt_qwidget_setshortcutautorepeat(QWidget * widget, int id, int enable);
+	void bmx_qt_qwidget_setshortcutenabled(QWidget * widget, int id, int enable);
+	void bmx_qt_qwidget_setsizeincrement(QWidget * widget, int w, int h);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

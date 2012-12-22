@@ -1,0 +1,104 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'glue.h'
+**
+** Created: Sat Dec 22 15:10:54 2012
+**      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include "glue.h"
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'glue.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 63
+#error "This file was generated using the moc from 4.8.4. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+static const uint qt_meta_data_MaxQMessageBox[] = {
+
+ // content:
+       6,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       5,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: signature, parameters, type, tag, flags
+      23,   16,   15,   15, 0x08,
+      57,   15,   15,   15, 0x08,
+      77,   70,   15,   15, 0x08,
+      93,   15,   15,   15, 0x08,
+     110,  106,   15,   15, 0x08,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_MaxQMessageBox[] = {
+    "MaxQMessageBox\0\0button\0"
+    "onButtonClicked(QAbstractButton*)\0"
+    "onAccepted()\0result\0onFinished(int)\0"
+    "onRejected()\0pos\0onCustomContextMenuRequested(QPoint)\0"
+};
+
+void MaxQMessageBox::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
+        MaxQMessageBox *_t = static_cast<MaxQMessageBox *>(_o);
+        switch (_id) {
+        case 0: _t->onButtonClicked((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 1: _t->onAccepted(); break;
+        case 2: _t->onFinished((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 3: _t->onRejected(); break;
+        case 4: _t->onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        default: ;
+        }
+    }
+}
+
+const QMetaObjectExtraData MaxQMessageBox::staticMetaObjectExtraData = {
+    0,  qt_static_metacall 
+};
+
+const QMetaObject MaxQMessageBox::staticMetaObject = {
+    { &QMessageBox::staticMetaObject, qt_meta_stringdata_MaxQMessageBox,
+      qt_meta_data_MaxQMessageBox, &staticMetaObjectExtraData }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MaxQMessageBox::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *MaxQMessageBox::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *MaxQMessageBox::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQMessageBox))
+        return static_cast<void*>(const_cast< MaxQMessageBox*>(this));
+    return QMessageBox::qt_metacast(_clname);
+}
+
+int MaxQMessageBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QMessageBox::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 5)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 5;
+    }
+    return _id;
+}
+QT_END_MOC_NAMESPACE

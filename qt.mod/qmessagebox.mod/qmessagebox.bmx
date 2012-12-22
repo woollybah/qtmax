@@ -172,7 +172,80 @@ Type QMessageBox Extends QDialog
 	bbdoc: An invalid button.
 	end rem
 	Const Button_NoButton:Int = $00000000
+
+	Function CreateMessageBox:QMessageBox(parent:QWidget = Null)
+		Return New QMessageBox.Create(parent)
+	End Function
+
+	Method Create:QMessageBox(parent:QWidget = Null, flags:Int = 0)
+		If parent Then
+			qObjectPtr = bmx_qt_qmessagebox_create(Self, parent.qObjectPtr)
+		Else
+			qObjectPtr = bmx_qt_qmessagebox_create(Self, Null)
+		End If
+		OnInit()
+		Return Self
+	End Method
 	
+	Method OnInit()
+	End Method
+	
+	Method removeButton(button:QAbstractButton)
+		bmx_qt_qmessagebox_removebutton(qObjectPtr, button.qObjectPtr)
+	End Method
+	
+	Method setDefaultButton(button:QPushButton)
+		bmx_qt_qmessagebox_setdefaultbutton(qObjectPtr, button)
+	End Method
+	
+	Method setDefaultButtonType(button:Int)
+		bmx_qt_qmessagebox_setdefaultbuttontype(qObjectPtr, button)
+	End Method
+	
+	Method setDetailedText(text:String)
+		bmx_qt_qmessagebox_setdetailedtext(qObjectPtr, text)
+	End Method
+	
+	Method setEscapeButton(button:QAbstractButton)
+		bmx_qt_qmessagebox_setescapebutton(qObjectPtr, button.qObjectPtr)
+	End Method
+	
+	Method setEscapeButtonType(button:Int)
+		bmx_qt_qmessagebox_setescapebuttontype(qObjectPtr, button)
+	End Method
+	
+	Method setIcon(icon:QIcon)
+	' TODO
+	End Method
+	
+	Method setIconPixmap(pixmap:QPixmap)
+	' TODO
+	End Method
+	
+	Method setInformativeText(text:String)
+		bmx_qt_qmessagebox_setinformativetext(qObjectPtr, text)
+	End Method
+	
+	Method setStandardButtons(buttons:Int)
+		bmx_qt_qmessagebox_setstandardbuttons(qObjectPtr, buttons)
+	End Method
+	
+	Method setText(text:String)
+		bmx_qt_qmessagebox_settext(qObjectPtr, text)
+	End Method
+
+	Method setTextFormat(format:Int)
+		bmx_qt_qmessagebox_settextformat(qObjectPtr, format)
+	End Method
+	
+	Method setWindowModality(windowModality:Int)
+		bmx_qt_qmessagebox_setwindowmodality(qObjectPtr, windowModality)
+	End Method
+	
+	Method setWindowTitle(title:String)
+		bmx_qt_qmessagebox_setwindowtitle(qObjectPtr, title)
+	End Method
+
 	Function about(parent:QWidget, title:String, text:String)
 		bmx_qt_qmessagebox_about(parent.qObjectPtr, title, text)
 	End Function
@@ -195,6 +268,11 @@ Type QMessageBox Extends QDialog
 
 	Function warning:Int(parent:QWidget, title:String, text:String, buttons:Int = Button_Ok, defaultButton:Int = Button_NoButton)
 		Return bmx_qt_qmessagebox_warning(parent.qObjectPtr, title, text, buttons, defaultButton)
+	End Function
+
+	' SIGNAL : buttonClicked
+	Function _OnButtonClicked(obj:QMessageBox, button:Byte Ptr)
+		obj._InvokeSignals("buttonClicked", [QAbstractButton._find(button)])
 	End Function
 
 End Type

@@ -24,12 +24,30 @@
 #define MAX_QT_QMESSAGEBOX
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qdialog.mod/glue.h"
 #include <QtCore>
 #include <QMessageBox>
 
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qmessagebox_QMessageBox__OnButtonClicked(BBObject * handle, QAbstractButton * button);
+
+	QMessageBox * bmx_qt_qmessagebox_create(BBObject * handle, QWidget * parent);
+	void bmx_qt_qmessagebox_removebutton(QMessageBox * messageBox, QAbstractButton * button);
+	void bmx_qt_qmessagebox_setdefaultbutton(QMessageBox * messageBox, QPushButton * button);
+	void bmx_qt_qmessagebox_setdefaultbuttontype(QMessageBox * messageBox, int button);
+	void bmx_qt_qmessagebox_setdetailedtext(QMessageBox * messageBox, BBString * text);
+	void bmx_qt_qmessagebox_setescapebutton(QMessageBox * messageBox, QAbstractButton * button);
+	void bmx_qt_qmessagebox_setescapebuttontype(QMessageBox * messageBox, int button);
+	void bmx_qt_qmessagebox_setinformativetext(QMessageBox * messageBox, BBString * text);
+	void bmx_qt_qmessagebox_setstandardbuttons(QMessageBox * messageBox, int buttons);
+	void bmx_qt_qmessagebox_settext(QMessageBox * messageBox, BBString * text);
+	void bmx_qt_qmessagebox_settextformat(QMessageBox * messageBox, int format);
+	void bmx_qt_qmessagebox_setwindowmodality(QMessageBox * messageBox, int windowModality);
+	void bmx_qt_qmessagebox_setwindowtitle(QMessageBox * messageBox, BBString * text);
 
 	void bmx_qt_qmessagebox_about(QWidget * parent, BBString * title, BBString * text);
 	void bmx_qt_qmessagebox_aboutqt(QWidget * parent, BBString * title);
@@ -42,5 +60,26 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQMessageBox : public QMessageBox
+{
+	Q_OBJECT
+	
+public:
+	MaxQMessageBox(BBObject * handle, QWidget * parent);
+	~MaxQMessageBox();
+
+private:
+	BBObject * maxHandle;
+
+private slots:
+	void onButtonClicked(QAbstractButton * button);
+	void onAccepted();
+	void onFinished(int result);
+	void onRejected();
+	void onCustomContextMenuRequested(const QPoint & pos);
+
+protected:
+	void timerEvent(QTimerEvent * event);
+};
 
 #endif

@@ -34,6 +34,11 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 Rem
+bbdoc: A global referring to the unique application object.
+End Rem
+Global qApp:QCoreApplication
+
+Rem
 bbdoc: 
 End Rem
 Type QCoreApplication Extends QObject
@@ -44,6 +49,7 @@ Type QCoreApplication Extends QObject
 	
 	Method Create:QCoreApplication()
 		qObjectPtr = bmx_qt_qcoreapplication_create(Self)
+		qApp = Self
 		Return Self
 	End Method
 

@@ -43,8 +43,60 @@ Type QTextStream
 		Return Self
 	End Method
 
+	Method atEnd:Int()
+	' TODO
+	End Method
+	
+	Method autoDetectUnicode:Int()
+	' TODO
+	End Method
+
+	Method fieldAlignment:Int()
+	' TODO
+	End Method
+	
+	Method fieldWidth:Int()
+	' TODO
+	End Method
+	
+	Method flush()
+		bmx_qt_qtextstream_flush(qObjectPtr)
+	End Method
+	
+	Method generateByteOrderMark:Int()
+	' TODO
+	End Method
+	
+	Method integerBase:Int()
+	' TODO
+	End Method
+	
+	Method locale:QLocale()
+	' TODO
+	End Method
+	
+	Method numberFlags:Int()
+	' TODO
+	End Method
+	
+	Method padChar:QChar()
+	' TODO
+	End Method
+	
+	Method pos:Long()
+	' TODO
+	End Method
+	
+	Method read:String(maxlen:Long)
+	' TODO
+	End Method
+	
 	Method readAll:String()
 		Return bmx_qt_qtextstream_readall(qObjectPtr)
+	End Method
+	
+	Method WriteString(text:String)
+		bmx_qt_qtextstream_writestring(qObjectPtr, text)
 	End Method
 	
 	Method Free()

@@ -36,6 +36,8 @@ extern "C" {
 	MaxQTextStream * bmx_qt_qtextstream_create(QIODevice * device);
 	BBString * bmx_qt_qtextstream_readall(MaxQTextStream * stream);
 	void bmx_qt_qtextstream_free(MaxQTextStream * stream);
+	void bmx_qt_qtextstream_writestring(MaxQTextStream * stream, BBString * text);
+	void bmx_qt_qtextstream_flush(MaxQTextStream * stream);
 
 }
 

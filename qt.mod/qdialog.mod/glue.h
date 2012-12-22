@@ -34,6 +34,10 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qdialog_QDialog__OnAccepted(BBObject * handle);
+	void _qt_qdialog_QDialog__OnFinished(BBObject * handle, int result);
+	void _qt_qdialog_QDialog__OnRejected(BBObject * handle);
+
 	QDialog * bmx_qt_qdialog_create(BBObject * handle, QWidget * parent, int flags);
 	int bmx_qt_qdialog_issizegripenabled(QDialog * dialog);
 	int bmx_qt_qdialog_result(QDialog * dialog);

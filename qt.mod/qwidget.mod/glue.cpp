@@ -686,6 +686,95 @@ void bmx_qt_qwidget_setparent(QWidget * widget, QWidget * parent) {
 	widget->setParent(parent);
 }
 
+int bmx_qt_qwidget_hasfocus(QWidget * widget) {
+	return static_cast<int>(widget->hasFocus());
+}
+
+int bmx_qt_qwidget_hasmousetracking(QWidget * widget) {
+	return static_cast<int>(widget->hasMouseTracking());
+}
+
+int bmx_qt_qwidget_isactivewindow(QWidget * widget) {
+	return static_cast<int>(widget->isActiveWindow());
+}
+
+int bmx_qt_qwidget_isenabled(QWidget * widget) {
+	return static_cast<int>(widget->isEnabled());
+}
+
+int bmx_qt_qwidget_isfullscreen(QWidget * widget) {
+	return static_cast<int>(widget->isFullScreen());
+}
+
+int bmx_qt_qwidget_ishidden(QWidget * widget) {
+	return static_cast<int>(widget->isHidden());
+}
+
+int bmx_qt_qwidget_ismaximized(QWidget * widget) {
+	return static_cast<int>(widget->isMaximized());
+}
+
+int bmx_qt_qwidget_isminimized(QWidget * widget) {
+	return static_cast<int>(widget->isMinimized());
+}
+
+int bmx_qt_qwidget_ismodal(QWidget * widget) {
+	return static_cast<int>(widget->isModal());
+}
+
+int bmx_qt_qwidget_isvisible(QWidget * widget) {
+	return static_cast<int>(widget->isVisible());
+}
+
+int bmx_qt_qwidget_iswindow(QWidget * widget) {
+	return static_cast<int>(widget->isWindow());
+}
+
+int bmx_qt_qwidget_iswindowmodified(QWidget * widget) {
+	return static_cast<int>(widget->isWindowModified());
+}
+
+void bmx_qt_qwidget_setmaximumheight(QWidget * widget, int maxh) {
+	widget->setMaximumHeight(maxh);
+}
+
+void bmx_qt_qwidget_setmaximumsize(QWidget * widget, int w, int h) {
+	widget->setMaximumSize(w, h);
+}
+
+void bmx_qt_qwidget_setmaximumwidth(QWidget * widget, int maxw) {
+	widget->setMaximumWidth(maxw);
+}
+
+void bmx_qt_qwidget_setminimumheight(QWidget * widget, int minh) {
+	widget->setMinimumHeight(minh);
+}
+
+void bmx_qt_qwidget_setminimumsize(QWidget * widget, int w, int h) {
+	widget->setMinimumSize(w, h);
+}
+
+void bmx_qt_qwidget_setminimumwidth(QWidget * widget, int minw) {
+	widget->setMinimumWidth(minw);
+}
+
+void bmx_qt_qwidget_setmousetracking(QWidget * widget, int enable) {
+	widget->setMouseTracking(static_cast<bool>(enable));
+}
+
+void bmx_qt_qwidget_setshortcutautorepeat(QWidget * widget, int id, int enable) {
+	widget->setShortcutAutoRepeat(id, static_cast<bool>(enable));
+}
+
+void bmx_qt_qwidget_setshortcutenabled(QWidget * widget, int id, int enable) {
+	widget->setShortcutEnabled(id, static_cast<bool>(enable));
+}
+
+void bmx_qt_qwidget_setsizeincrement(QWidget * widget, int w, int h) {
+	widget->setSizeIncrement(w, h);
+}
+
+
 // *********************************************
 
 void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event) {

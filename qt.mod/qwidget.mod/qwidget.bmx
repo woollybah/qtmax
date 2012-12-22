@@ -176,16 +176,12 @@ Type QWidget Extends QObject
 		Return QRect._create(bmx_qt_qwidget_geometry(qObjectPtr))
 	End Method
 	
-	Method hasEditFocus:Int()
-	' TODO
-	End Method
-	
 	Method hasFocus:Int()
-	' TODO
+		Return bmx_qt_qwidget_hasfocus(qObjectPtr)
 	End Method
 	
 	Method hasMouseTracking:Int()
-	' TODO
+		Return bmx_qt_qwidget_hasmousetracking(qObjectPtr)
 	End Method
 	
 	Method height:Int()
@@ -213,7 +209,7 @@ Type QWidget Extends QObject
 	'End Method
 
 	Method isActiveWindow:Int()
-	' TODO
+		Return bmx_qt_qwidget_isactivewindow(qObjectPtr)
 	End Method
 	
 	Method isAncestorOf:Int(child:QWidget)
@@ -221,7 +217,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method isEnabled:Int()
-	' TODO
+		Return bmx_qt_qwidget_isenabled(qObjectPtr)
 	End Method
 	
 	Method isEnabledTo:Int(ancestor:QWidget)
@@ -229,27 +225,27 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method isFullScreen:Int()
-	' TODO
+		Return bmx_qt_qwidget_isfullscreen(qObjectPtr)
 	End Method
 	
 	Method isHidden:Int()
-	' TODO
+		Return bmx_qt_qwidget_ishidden(qObjectPtr)
 	End Method
 	
 	Method isMaximized:Int()
-	' TODO
+		Return bmx_qt_qwidget_ismaximized(qObjectPtr)
 	End Method
 	
 	Method isMinimized:Int()
-	' TODO
+		Return bmx_qt_qwidget_isminimized(qObjectPtr)
 	End Method
 	
 	Method isModal:Int()
-	' TODO
+		Return bmx_qt_qwidget_ismodal(qObjectPtr)
 	End Method
 	
 	Method isVisible:Int()
-	' TODO
+		Return bmx_qt_qwidget_isvisible(qObjectPtr)
 	End Method
 	
 	Method isVisibleTo:Int(ancestor:QWidget)
@@ -257,11 +253,11 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method isWindow:Int()
-	' TODO
+		Return bmx_qt_qwidget_iswindow(qObjectPtr)
 	End Method
 	
 	Method isWindowModified:Int()
-	' TODO
+		Return bmx_qt_qwidget_iswindowmodified(qObjectPtr)
 	End Method
 
 
@@ -430,31 +426,31 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method setMaximumHeight(maxh:Int)
-	' TODO
+		bmx_qt_qwidget_setmaximumheight(qObjectPtr, maxh)
 	End Method
 	
 	Method setMaximumSize(w:Int, h:Int)
-	' TODO
+		bmx_qt_qwidget_setmaximumsize(qObjectPtr, w, h)
 	End Method
 	
 	Method setMaximumWidth(maxw:Int)
-	' TODO
+		bmx_qt_qwidget_setmaximumwidth(qObjectPtr, maxw)
 	End Method
 	
 	Method setMinimumHeight(minh:Int)
-	' TODO
+		bmx_qt_qwidget_setminimumheight(qObjectPtr, minh)
 	End Method
 	
 	Method setMinimumSize(w:Int, h:Int)
-	' TODO
+		bmx_qt_qwidget_setminimumsize(qObjectPtr, w, h)
 	End Method
 	
 	Method setMinimumWidth(minw:Int)
-	' TODO
+		bmx_qt_qwidget_setminimumwidth(qObjectPtr, minw)
 	End Method
 	
 	Method setMouseTracking(enable:Int)
-	' TODO
+		bmx_qt_qwidget_setmousetracking(qObjectPtr, enable)
 	End Method
 
 	'Method setPalette(p:QPalette)
@@ -468,15 +464,15 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method setShortcutAutoRepeat(id:Int, enable:Int = True)
-	' TODO
+		bmx_qt_qwidget_setshortcutautorepeat(qObjectPtr, id, enable)
 	End Method
 	
 	Method setShortcutEnabled(id:Int, enable:Int = True)
-	' TODO
+		bmx_qt_qwidget_setshortcutenabled(qObjectPtr, id, enable)
 	End Method
 	
 	Method setSizeIncrement(w:Int, h:Int)
-	' TODO
+		bmx_qt_qwidget_setsizeincrement(qObjectPtr, w, h)
 	End Method
 
 	Method setSizePolicy(policy:QSizePolicy)

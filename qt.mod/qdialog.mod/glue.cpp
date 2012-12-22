@@ -28,6 +28,10 @@ MaxQDialog::MaxQDialog(BBObject * handle, QWidget * parent, Qt::WindowFlags flag
 	: maxHandle(handle), QDialog(parent, flags)
 {
 	qbind(this, handle);
+
+	connect(this, SIGNAL(accepted()), SLOT(onAccepted()));
+	connect(this, SIGNAL(finished(int)), SLOT(onFinished(int)));
+	connect(this, SIGNAL(rejected()), SLOT(onRejected()));
 }
 
 MaxQDialog::~MaxQDialog()
@@ -36,19 +40,19 @@ MaxQDialog::~MaxQDialog()
 }
 
 void MaxQDialog::onAccepted() {
-
+	_qt_qdialog_QDialog__OnAccepted(maxHandle);
 }
 
 void MaxQDialog::onFinished(int result) {
-
+	_qt_qdialog_QDialog__OnFinished(maxHandle, result);
 }
 
 void MaxQDialog::onRejected() {
-
+	_qt_qdialog_QDialog__OnRejected(maxHandle);
 }
 
 void MaxQDialog::onCustomContextMenuRequested(const QPoint & pos) {
-
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
 void MaxQDialog::timerEvent(QTimerEvent * event) {
