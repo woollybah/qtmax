@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QIODevice
+Import Qt.QLocale
 Import BRL.Blitz
 
 
@@ -47,5 +48,7 @@ Extern
 	Function bmx_qt_qtextstream_create:Byte Ptr(device:Byte Ptr)
 	Function bmx_qt_qtextstream_readall:String(handle:Byte Ptr)
 	Function bmx_qt_qtextstream_free(handle:Byte Ptr)
+	Function bmx_qt_qtextstream_writestring(handle:Byte Ptr, text:String)
+	Function bmx_qt_qtextstream_flush(handle:Byte Ptr)
 
 End Extern

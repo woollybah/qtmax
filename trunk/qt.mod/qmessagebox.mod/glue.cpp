@@ -24,7 +24,45 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQMessageBox::MaxQMessageBox(BBObject * handle, QWidget * parent)
+	: maxHandle(handle), QMessageBox(parent)
+{
+	qbind(this, handle);
+	
+	connect(this, SIGNAL(buttonClicked(QAbstractButton *)), SLOT(onButtonClicked(QAbstractButton *)));
+	connect(this, SIGNAL(accepted()), SLOT(onAccepted()));
+	connect(this, SIGNAL(finished(int)), SLOT(onFinished(int)));
+	connect(this, SIGNAL(rejected()), SLOT(onRejected()));
+}
 
+MaxQMessageBox::~MaxQMessageBox()
+{
+	qunbind(this);
+}
+
+void MaxQMessageBox::onButtonClicked(QAbstractButton * button) {
+	_qt_qmessagebox_QMessageBox__OnButtonClicked(maxHandle, button);
+}
+
+void MaxQMessageBox::onAccepted() {
+	_qt_qdialog_QDialog__OnAccepted(maxHandle);
+}
+
+void MaxQMessageBox::onFinished(int result) {
+	_qt_qdialog_QDialog__OnFinished(maxHandle, result);
+}
+
+void MaxQMessageBox::onRejected() {
+	_qt_qdialog_QDialog__OnRejected(maxHandle);
+}
+
+void MaxQMessageBox::onCustomContextMenuRequested(const QPoint & pos) {
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
+}
+
+void MaxQMessageBox::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
 
 // *********************************************
 
@@ -167,6 +205,59 @@ int bmx_qt_standardButtonToInt(QMessageBox::StandardButton b) {
 
 
 // *********************************************
+
+QMessageBox * bmx_qt_qmessagebox_create(BBObject * handle, QWidget * parent) {
+	return new MaxQMessageBox(handle, parent);
+}
+
+void bmx_qt_qmessagebox_removebutton(QMessageBox * messageBox, QAbstractButton * button) {
+	messageBox->removeButton(button);
+}
+
+void bmx_qt_qmessagebox_setdefaultbutton(QMessageBox * messageBox, QPushButton * button) {
+	messageBox->setDefaultButton(button);
+}
+
+void bmx_qt_qmessagebox_setdefaultbuttontype(QMessageBox * messageBox, int button) {
+	messageBox->setDefaultButton(bmx_qt_intToStandardButton(button));
+}
+
+void bmx_qt_qmessagebox_setdetailedtext(QMessageBox * messageBox, BBString * text) {
+	messageBox->setDetailedText(qStringFromBBString(text));
+}
+
+void bmx_qt_qmessagebox_setescapebutton(QMessageBox * messageBox, QAbstractButton * button) {
+	messageBox->setEscapeButton(button);
+}
+
+void bmx_qt_qmessagebox_setescapebuttontype(QMessageBox * messageBox, int button) {
+	messageBox->setEscapeButton(bmx_qt_intToStandardButton(button));
+}
+
+void bmx_qt_qmessagebox_setinformativetext(QMessageBox * messageBox, BBString * text) {
+	messageBox->setInformativeText(qStringFromBBString(text));
+}
+
+void bmx_qt_qmessagebox_setstandardbuttons(QMessageBox * messageBox, int buttons) {
+	messageBox->setStandardButtons(bmx_qt_intToStandardButtons(buttons));
+}
+
+void bmx_qt_qmessagebox_settext(QMessageBox * messageBox, BBString * text) {
+	messageBox->setText(qStringFromBBString(text));
+}
+
+void bmx_qt_qmessagebox_settextformat(QMessageBox * messageBox, int format) {
+	messageBox->setTextFormat(static_cast<Qt::TextFormat>(format));
+}
+
+void bmx_qt_qmessagebox_setwindowmodality(QMessageBox * messageBox, int windowModality) {
+	messageBox->setWindowModality(static_cast<Qt::WindowModality>(windowModality));
+}
+
+void bmx_qt_qmessagebox_setwindowtitle(QMessageBox * messageBox, BBString * text) {
+	messageBox->setWindowTitle(qStringFromBBString(text));
+}
+
 
 void bmx_qt_qmessagebox_about(QWidget * parent, BBString * title, BBString * text) {
 	QMessageBox::about(parent, qStringFromBBString(title), qStringFromBBString(text));

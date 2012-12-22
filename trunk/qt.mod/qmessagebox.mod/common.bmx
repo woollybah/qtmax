@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QDialog
+Import Qt.QPushButton
 Import BRL.Blitz
 
 
@@ -45,6 +46,20 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qmessagebox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qmessagebox_removebutton(handle:Byte Ptr, button:Byte Ptr)
+	Function bmx_qt_qmessagebox_setdefaultbutton(handle:Byte Ptr, button:Byte Ptr)
+	Function bmx_qt_qmessagebox_setdefaultbuttontype(handle:Byte Ptr, button:Int)
+	Function bmx_qt_qmessagebox_setdetailedtext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qmessagebox_setescapebutton(handle:Byte Ptr, button:Byte Ptr)
+	Function bmx_qt_qmessagebox_setescapebuttontype(handle:Byte Ptr, button:Int)
+	Function bmx_qt_qmessagebox_setinformativetext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qmessagebox_setstandardbuttons(handle:Byte Ptr, buttons:Int)
+	Function bmx_qt_qmessagebox_settext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qmessagebox_settextformat(handle:Byte Ptr, format:Int)
+	Function bmx_qt_qmessagebox_setwindowmodality(handle:Byte Ptr, windowModality:Int)
+	Function bmx_qt_qmessagebox_setwindowtitle(handle:Byte Ptr, title:String)
 
 	Function bmx_qt_qmessagebox_about(parent:Byte Ptr, title:String, text:String)
 	Function bmx_qt_qmessagebox_aboutqt(parent:Byte Ptr, title:String)

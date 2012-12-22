@@ -39,6 +39,7 @@ Type QApplication Extends QCoreApplication
 	
 	Method Create:QApplication()
 		qObjectPtr = bmx_qt_qapplication_create(Self)
+		qApp = Self
 		Return Self
 	End Method
 
