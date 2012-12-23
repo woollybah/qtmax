@@ -103,6 +103,13 @@ Type QCoreApplication Extends QObject
 		bmx_qt_qcoreapplication_flush()
 	End Function
 
+	Method processEvents(flags:Int = QEventLoop.AllEvents)
+		bmx_qt_qcoreapplication_processevents(qObjectPtr, flags)
+	End Method
+	
+	Method processEventsTime(flags:Int, maxtime:Int)
+	End Method
+
 	' SIGNAL : aboutToQuit
 	Function _OnAboutToQuit(obj:QCoreApplication)
 		obj._InvokeSignals("aboutToQuit", Null)
