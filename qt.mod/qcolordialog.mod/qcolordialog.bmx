@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QColor
+Module Qt.QColorDialog
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,57 +30,27 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 Import "common.bmx"
 
+Type QColorDialog Extends QDialog
 
-Type QColor
 
-	Field qObjectPtr:Byte Ptr
-	
-
-	Function _Create:QColor(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QColor = New QColor
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
+	Function GetColorWithOptions:QColor(initial:QColor, parent:QWidget, title:String, options:Int = 0 )
+		Return QColor._Create(bmx_qt_qcolordialog_getcolorwithoptions(initial.qObjectPtr, parent.qObjectPtr, title, options))
 	End Function
 	
-	Method Create:QColor(r:Int, g:Int, b:Int, a:Int = 255)
-		qObjectPtr = bmx_qt_qcolor_create(r, g, b, a)
-		Return Self
-	End Method
-	
-	Method CreateWithGlobalColor:QColor(color:Int)
-		qObjectPtr = bmx_qt_qcolor_createwithglobalcolor(color)
-		Return Self
-	End Method
-	
-	Method getRgb(r:Int Var, g:Int Var, b:Int Var)
-		bmx_qt_qcolor_getrgb(qObjectPtr, Varptr r, Varptr g, Varptr b)
-	End Method 
-
-	Method getRgba(r:Int Var, g:Int Var, b:Int Var, a:Int Var)
-		bmx_qt_qcolor_getrgba(qObjectPtr, Varptr r, Varptr g, Varptr b, Varptr a)
-	End Method 
-	
-	Method isValid:Int()
-		Return bmx_qt_qcolor_isvalid(qObjectPtr)
-	End Method
-	
-	Method lighter:QColor(factor:Int = 150)
-		Return QColor._create(bmx_qt_qcolor_lighter(qObjectPtr, factor))
-	End Method
-	
-
-	Method Free()
-		If qObjectPtr Then
-			bmx_qt_qcolor_free(qObjectPtr)
-			qObjectPtr = Null
+	Function GetColor:QColor(initial:QColor = Null, parent:QWidget = Null )
+		If initial Then
+			If parent Then
+				Return QColor._Create(bmx_qt_qcolordialog_getcolor(initial.qObjectPtr, parent.qObjectPtr))
+			Else
+				Return QColor._Create(bmx_qt_qcolordialog_getcolor(initial.qObjectPtr, Null))
+			End If
+		Else
+			If parent Then
+				Return QColor._Create(bmx_qt_qcolordialog_getcolor(Null, parent.qObjectPtr))
+			Else
+				Return QColor._Create(bmx_qt_qcolordialog_getcolor(Null, Null))
+			End If
 		End If
-	End Method
-	
-	Method Delete()
-		Free()
-	End Method
+	End Function
 
 End Type
-

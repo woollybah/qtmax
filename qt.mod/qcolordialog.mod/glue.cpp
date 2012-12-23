@@ -24,47 +24,28 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQColor::MaxQColor(const QColor & c)
-	: color(c)
-{
-}
 
-MaxQColor::~MaxQColor()
-{
-}
-
-QColor & MaxQColor::Color() {
-	return color;
-}
 
 // *********************************************
 
-void bmx_qt_qcolor_free(MaxQColor * handle) {
-	delete handle;
+QColorDialog::ColorDialogOptions bmx_qt_getcolordialogoptions(int o) {
+	QColorDialog::ColorDialogOptions options;
+	
+	if (o & 0x01) options |= QColorDialog::ShowAlphaChannel;
+	if (o & 0x02) options |= QColorDialog::NoButtons;
+	if (o & 0x04) options |= QColorDialog::DontUseNativeDialog;
+	
+	return options;
 }
 
-MaxQColor * bmx_qt_qcolor_create(int r, int g, int b, int a) {
-	return new MaxQColor(QColor(r, g, b, a));
+MaxQColor * bmx_qt_qcolordialog_getcolorwithoptions(MaxQColor * initial, QWidget * parent, BBString * title, int options) {
+	QColor c = QColorDialog::getColor(initial->Color(), parent, qStringFromBBString(title), bmx_qt_getcolordialogoptions(options));
+	return new MaxQColor(c);
 }
 
-MaxQColor * bmx_qt_qcolor_createwithglobalcolor(int color) {
-	return new MaxQColor(QColor((Qt::GlobalColor)color));
-}
-
-MaxQColor * bmx_qt_qcolor_lighter(MaxQColor * color, int factor) {
-	return new MaxQColor(color->Color().lighter(factor));
-}
-
-void bmx_qt_qcolor_getrgb(MaxQColor * color, int * r, int * g, int * b) {
-	color->Color().getRgb(r, g, b, 0);
-}
-
-void bmx_qt_qcolor_getrgba(MaxQColor * color, int * r, int * g, int * b, int * a) {
-	color->Color().getRgb(r, g, b, a);
-}
-
-int bmx_qt_qcolor_isvalid(MaxQColor * color) {
-	return static_cast<int>(color->Color().isValid());
+MaxQColor * bmx_qt_qcolordialog_getcolor(MaxQColor * initial, QWidget * parent) {
+	QColor c = QColorDialog::getColor((initial) ? initial->Color() : Qt::white, parent);
+	return new MaxQColor(c);
 }
 
 
