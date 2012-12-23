@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sun Dec 23 00:29:03 2012
+** Created: Sun Dec 23 00:29:02 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQPropertyAnimation[] = {
+static const uint qt_meta_data_MaxQEventLoop[] = {
 
  // content:
        6,       // revision
@@ -33,11 +33,11 @@ static const uint qt_meta_data_MaxQPropertyAnimation[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQPropertyAnimation[] = {
-    "MaxQPropertyAnimation\0"
+static const char qt_meta_stringdata_MaxQEventLoop[] = {
+    "MaxQEventLoop\0"
 };
 
-void MaxQPropertyAnimation::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void MaxQEventLoop::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     Q_UNUSED(_o);
     Q_UNUSED(_id);
@@ -45,35 +45,35 @@ void MaxQPropertyAnimation::qt_static_metacall(QObject *_o, QMetaObject::Call _c
     Q_UNUSED(_a);
 }
 
-const QMetaObjectExtraData MaxQPropertyAnimation::staticMetaObjectExtraData = {
+const QMetaObjectExtraData MaxQEventLoop::staticMetaObjectExtraData = {
     0,  qt_static_metacall 
 };
 
-const QMetaObject MaxQPropertyAnimation::staticMetaObject = {
-    { &QVariantAnimation::staticMetaObject, qt_meta_stringdata_MaxQPropertyAnimation,
-      qt_meta_data_MaxQPropertyAnimation, &staticMetaObjectExtraData }
+const QMetaObject MaxQEventLoop::staticMetaObject = {
+    { &QEventLoop::staticMetaObject, qt_meta_stringdata_MaxQEventLoop,
+      qt_meta_data_MaxQEventLoop, &staticMetaObjectExtraData }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &MaxQPropertyAnimation::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &MaxQEventLoop::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *MaxQPropertyAnimation::metaObject() const
+const QMetaObject *MaxQEventLoop::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *MaxQPropertyAnimation::qt_metacast(const char *_clname)
+void *MaxQEventLoop::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQPropertyAnimation))
-        return static_cast<void*>(const_cast< MaxQPropertyAnimation*>(this));
-    return QVariantAnimation::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQEventLoop))
+        return static_cast<void*>(const_cast< MaxQEventLoop*>(this));
+    return QEventLoop::qt_metacast(_clname);
 }
 
-int MaxQPropertyAnimation::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQEventLoop::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QVariantAnimation::qt_metacall(_c, _id, _a);
+    _id = QEventLoop::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     return _id;

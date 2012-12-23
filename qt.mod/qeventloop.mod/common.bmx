@@ -20,8 +20,8 @@
 ' 
 SuperStrict
 
+Import Qt.Core
 Import Qt.QObject
-Import Qt.QEventLoop
 Import BRL.Blitz
 
 
@@ -40,22 +40,17 @@ Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
 ?
 
-
 Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qcoreapplication_create:Byte Ptr(handle:Object)
-
-	Function bmx_qt_qcoreapplication_addlibrarypath(path:String)
-	Function bmx_qt_qcoreapplication_applicationdirpath:String()
-	Function bmx_qt_qcoreapplication_applicationfilepath:String()
-	Function bmx_qt_qcoreapplication_applicationname:String()
-	Function bmx_qt_qcoreapplication_applicationpid(pid:Long Ptr)
-	Function bmx_qt_qcoreapplication_flush()
-	Function bmx_qt_qcoreapplication_translate:String(context:String, text:String, disambiguation:String, encoding:Int)
-
-	Function bmx_qt_qcoreapplication_quit(handle:Byte Ptr)
-	Function bmx_qt_qcoreapplication_processevents(handle:Byte Ptr, flags:Int)
+	Function bmx_qt_qeventloop_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qeventloop_exec:Int(handle:Byte Ptr, flags:Int)
+	Function bmx_qt_qeventloop_exit(handle:Byte Ptr, returnCode:Int)
+	Function bmx_qt_qeventloop_isrunning:Int(handle:Byte Ptr)
+	Function bmx_qt_qeventloop_processevents:Int(handle:Byte Ptr, flags:Int)
+	Function bmx_qt_qeventloop_processeventstime(handle:Byte Ptr, flags:Int, maxTime:Int)
+	Function bmx_qt_qeventloop_wakeup(handle:Byte Ptr)
+	Function bmx_qt_qeventloop_quit(handle:Byte Ptr)
 
 End Extern

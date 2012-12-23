@@ -20,58 +20,45 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCOREAPPLICATION
-#define MAX_QT_QCOREAPPLICATION
+#ifndef MAX_QT_QEVENTLOOP
+#define MAX_QT_QEVENTLOOP
 
 #include "../core.mod/glue.h"
-#include "../qobject.mod/glue.h"
-#include "../qeventloop.mod/glue.h"
 #include <QtCore>
+#include <QEventLoop>
 
-class MaxQCoreApplication;
+class MaxQEventLoop;
 
 extern "C" {
 
 #include <blitz.h>
+
+	QEventLoop * bmx_qt_qeventloop_create(BBObject * handle, QObject * parent);
 	
-	void _qt_qcoreapplication_QCoreApplication__OnAboutToQuit(BBObject * handle);
+	int bmx_qt_qeventloop_exec(QEventLoop * eventloop, int flags);
+	void bmx_qt_qeventloop_exit(QEventLoop * eventloop, int returnCode);
+	int bmx_qt_qeventloop_isrunning(QEventLoop * eventloop);
+	int bmx_qt_qeventloop_processevents(QEventLoop * eventloop, int flags);
+	void bmx_qt_qeventloop_processeventstime(QEventLoop * eventloop, int flags, int maxTime);
+	void bmx_qt_qeventloop_wakeup(QEventLoop * eventloop);
+	void bmx_qt_qeventloop_quit(QEventLoop * eventloop);
 
-
-	QCoreApplication * bmx_qt_qcoreapplication_create(BBObject * handle);
-
-	void bmx_qt_qcoreapplication_addlibrarypath(BBString * path);
-	BBString * bmx_qt_qcoreapplication_applicationdirpath();
-	BBString * bmx_qt_qcoreapplication_applicationfilepath();
-	BBString * bmx_qt_qcoreapplication_applicationname();
-	void bmx_qt_qcoreapplication_applicationpid(BBInt64 * pid);
-	void bmx_qt_qcoreapplication_flush();
-	BBString * bmx_qt_qcoreapplication_translate(BBString * context, BBString * text, BBString * disambiguation, int encoding);
-
-	void bmx_qt_qcoreapplication_quit(QCoreApplication * app);
-	void bmx_qt_qcoreapplication_processevents(QCoreApplication * app, int flags);
-
+	QEventLoop::ProcessEventsFlags bmx_qt_qeventloop_geteventflags(int f);
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQCoreApplication : public QCoreApplication
+class MaxQEventLoop : public QEventLoop
 {
-
 	Q_OBJECT
 	
 public:
-	MaxQCoreApplication(BBObject * handle, int & argc, char ** argv);
-	~MaxQCoreApplication();
+	MaxQEventLoop(BBObject * handle, QObject * parent);
+	~MaxQEventLoop();
 
 private:
 	BBObject * maxHandle;
-	
-private slots:
-	void onAboutToQuit();
 
-protected:
-	void timerEvent(QTimerEvent * event);
 };
-
 
 #endif
