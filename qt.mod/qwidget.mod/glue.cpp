@@ -151,6 +151,10 @@ void MaxQWidget::wheelEvent(QWheelEvent * event){
 	_qt_qwidget_QWidget__OnWheelEvent(maxHandle, event);
 }
 
+bool MaxQWidget::focusNextPrevChild(bool next){
+	return static_cast<bool>(_qt_qwidget_QWidget__OnFocusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
 void MaxQWidget::defaultActionEvent(QActionEvent * event) {
 	QWidget::actionEvent(event);
 }
@@ -269,6 +273,10 @@ void MaxQWidget::defaultMinimumSizeHint(int * w, int * h) {
 
 void MaxQWidget::timerEvent(QTimerEvent * event) {
 	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+bool MaxQWidget::defaultFocusNextPrevChild(bool next) {
+	return QWidget::focusNextPrevChild(next);
 }
 
 // ---------------------------------------------------------------------------------------
@@ -887,6 +895,10 @@ void bmx_qt_qwidget_default_sizehint(MaxQWidget * widget, int * w, int * h) {
 
 void bmx_qt_qwidget_default_minimumsizehint(MaxQWidget * widget, int * w, int * h) {
 	widget->defaultMinimumSizeHint(w, h);
+}
+
+int bmx_qt_qwidget_default_focusnextprevchild(MaxQWidget * widget, int next) {
+	return static_cast<int>(widget->defaultFocusNextPrevChild(static_cast<bool>(next)));
 }
 
 // *********************************************

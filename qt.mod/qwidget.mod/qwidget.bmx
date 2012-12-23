@@ -941,6 +941,14 @@ Type QWidget Extends QObject
 		obj.wheelEvent(QWheelEvent._create(event))
 	End Function
 	
+	Method focusNextPrevChild:Int(_next:Int)
+		Return bmx_qt_qwidget_default_focusnextprevchild(qObjectPtr, _next)
+	End Method
+
+	Function _OnFocusNextPrevChild:Int(obj:QWidget, _next:Int)
+		Return obj.focusNextPrevChild(_next)
+	End Function
+	
 	' SIGNAL : customContextMenuRequested
 	Function _OnCustomContextMenuRequested(obj:QWidget, x:Int, y:Int)
 		obj._InvokeSignals("customContextMenuRequested", [String(x), String(y)])
