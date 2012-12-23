@@ -20,27 +20,30 @@
 ' 
 SuperStrict
 
-Module Qt.QListView
-
-ModuleInfo "Version: 1.00"
-ModuleInfo "License: MIT"
-ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
+Import Qt.Core
+Import Qt.QWidget
+Import BRL.Blitz
 
 
-Import "common.bmx"
+' headers :-)
+?win32
+Import "../lib/win32/include/*.h"
+?macos
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+?linux
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+?
 
+Import "glue.cpp"
 
-Type QListView Extends QAbstractItemView
+Extern
 
-	Function CreateListView:QListView(parent:QWidget = Null)
-		Return New QListView.Create(parent)
-	End Function
-
-	Method Create:QListView(parent:QWidget = Null)
-		' TODO
-		Return Self
-	End Method
-	
-End Type
-
+End Extern

@@ -597,6 +597,18 @@ Qt::TextFormat bmx_qt_inttotextformat(int f) {
 	return Qt::PlainText;
 }
 
+Qt::Orientation bmx_qt_getorientation(int o) {
+
+	switch(o) {
+		case 1:
+			return Qt::Horizontal;
+		case 2:
+			return Qt::Vertical;
+	}
+	
+	return Qt::Horizontal;
+}
+
 // *********************************************
 
 void bmx_qt_qevent_accept(QEvent * event) {
