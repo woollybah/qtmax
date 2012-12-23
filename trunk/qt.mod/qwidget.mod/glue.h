@@ -75,6 +75,7 @@ extern "C" {
 	void _qt_qwidget_QWidget__OnShowEvent(BBObject * handle, QShowEvent * event);
 	void _qt_qwidget_QWidget__OnTabletEvent(BBObject * handle, QTabletEvent * event);
 	void _qt_qwidget_QWidget__OnWheelEvent(BBObject * handle, QWheelEvent * event);
+	int _qt_qwidget_QWidget__OnFocusNextPrevChild(BBObject * handle, int next);
 
 	void _qt_qwidget_QWidget__SizeHint(BBObject * handle, int * w, int * h);
 	void _qt_qwidget_QWidget__MinimumSizeHint(BBObject * handle, int * w, int * h);
@@ -167,6 +168,7 @@ extern "C" {
 	void bmx_qt_qwidget_default_showevent(MaxQWidget * widget, QShowEvent * event);
 	void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * event);
 	void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event);
+	int bmx_qt_qwidget_default_focusnextprevchild(MaxQWidget * widget, int next);
 
 	void bmx_qt_qwidget_default_sizehint(MaxQWidget * widget, int * w, int * h);
 	void bmx_qt_qwidget_default_minimumsizehint(MaxQWidget * widget, int * w, int * h);
@@ -331,6 +333,7 @@ public:
 	void defaultShowEvent(QShowEvent * event);
 	void defaultTabletEvent(QTabletEvent * event);
 	void defaultWheelEvent(QWheelEvent * event);
+	bool defaultFocusNextPrevChild(bool next);
 	
 protected:
 	void actionEvent(QActionEvent * event);
@@ -360,6 +363,7 @@ protected:
 	void tabletEvent(QTabletEvent * event);
 	void wheelEvent(QWheelEvent * event);
 	void timerEvent(QTimerEvent * event);
+	bool focusNextPrevChild(bool next);
 
 private:
 	BBObject * maxHandle;

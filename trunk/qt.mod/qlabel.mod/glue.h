@@ -88,6 +88,16 @@ private slots:
 
 protected:
 	void timerEvent(QTimerEvent * event);
+	void contextMenuEvent(QContextMenuEvent * ev);
+	void focusInEvent(QFocusEvent * ev);
+	bool focusNextPrevChild(bool next);
+	void focusOutEvent(QFocusEvent * ev);
+	void keyPressEvent(QKeyEvent * ev);
+	void mouseMoveEvent(QMouseEvent * ev);
+	void mousePressEvent(QMouseEvent * ev);
+	void mouseReleaseEvent(QMouseEvent * ev);
+	void enterEvent(QEvent * event);
+	void leaveEvent(QEvent * event);
 };
 
 

@@ -144,6 +144,7 @@ Extern
 	Function bmx_qt_qwidget_default_showevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
 
 	Function bmx_qt_qwidget_default_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 	Function bmx_qt_qwidget_default_minimumsizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)

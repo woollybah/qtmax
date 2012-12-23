@@ -55,6 +55,47 @@ void MaxQLabel::timerEvent(QTimerEvent * event) {
 	_qt_qobject_QObject__timerEvent(maxHandle, event);
 }
 
+void MaxQLabel::contextMenuEvent(QContextMenuEvent * ev) {
+	_qt_qwidget_QWidget__OnContextMenuEvent(maxHandle, ev);
+}
+
+void MaxQLabel::focusInEvent(QFocusEvent * ev) {
+	_qt_qwidget_QWidget__OnFocusInEvent(maxHandle, ev);
+}
+
+bool MaxQLabel::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__OnFocusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQLabel::focusOutEvent(QFocusEvent * ev) {
+	_qt_qwidget_QWidget__OnFocusOutEvent(maxHandle, ev);
+}
+
+void MaxQLabel::keyPressEvent(QKeyEvent * ev) {
+	_qt_qwidget_QWidget__OnKeyPressEvent(maxHandle, ev);
+}
+
+void MaxQLabel::mouseMoveEvent(QMouseEvent * ev) {
+	_qt_qwidget_QWidget__OnMouseMoveEvent(maxHandle, ev);
+}
+
+void MaxQLabel::mousePressEvent(QMouseEvent * ev) {
+	_qt_qwidget_QWidget__OnMousePressEvent(maxHandle, ev);
+}
+
+void MaxQLabel::mouseReleaseEvent(QMouseEvent * ev) {
+	_qt_qwidget_QWidget__OnMouseReleaseEvent(maxHandle, ev);
+}
+
+void MaxQLabel::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__OnEnterEvent(maxHandle, event);
+}
+
+void MaxQLabel::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__OnLeaveEvent(maxHandle, event);
+}
+
+
 // *********************************************
 
 QLabel * bmx_qt_qlabel_create(BBObject * handle, BBString * text, QWidget * parent, int f) {
