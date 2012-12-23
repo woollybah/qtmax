@@ -49,7 +49,11 @@ Extern
 
 	Function bmx_qt_qcolor_create:Byte Ptr(r:Int, g:Int, b:Int, a:Int)
 	Function bmx_qt_qcolor_createwithglobalcolor:Byte Ptr(color:Int)
-	Function bmx_qt_qcolor_lighter:Byte Ptr(handle:Byte Ptr, factor:int)
+	Function bmx_qt_qcolor_lighter:Byte Ptr(handle:Byte Ptr, factor:Int)
+
+	Function bmx_qt_qcolor_getrgb(handle:Byte Ptr, r:Int Ptr, g:Int Ptr, b:Int Ptr)
+	Function bmx_qt_qcolor_getrgba(handle:Byte Ptr, r:Int Ptr, g:Int Ptr, b:Int Ptr, a:Int Ptr)
+	Function bmx_qt_qcolor_isvalid:Int(handle:Byte Ptr)
 
 End Extern
 

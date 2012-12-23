@@ -166,6 +166,30 @@ Type QFrame Extends QWidget
 		bmx_qt_qframe_setmidlinewidth(qObjectPtr, width)
 	End Method
 
+
+	Method changeEvent(event:QEvent)
+		bmx_qt_qframe_default_changeevent(qObjectPtr, event.qObjectPtr)
+	End Method
 	
+	Function _OnChangeEvent(obj:QWidget, event:Byte Ptr)
+		QFrame(obj).changeEvent(QEvent._create(event))
+	End Function
+	
+	Method event:Int(ev:QEvent)
+		Return bmx_qt_qframe_default_event(qObjectPtr, ev.qObjectPtr)
+	End Method
+	
+	Function _OnEvent:Int(obj:QWidget, ev:Byte Ptr)
+		Return QFrame(obj).event(QEvent._create(ev))
+	End Function
+	
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qframe_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
+		QFrame(obj).paintEvent(QPaintEvent._create(event))
+	End Function
+
 End Type
 

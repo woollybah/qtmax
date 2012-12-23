@@ -20,43 +20,26 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QCOLOR
-#define MAX_QT_QCOLOR
+#ifndef MAX_QT_QCOLORDIALOG
+#define MAX_QT_QCOLORDIALOG
 
 #include "../core.mod/glue.h"
+#include "../qcolor.mod/glue.h"
 #include <QtCore>
-#include <QColor>
-
-class MaxQColor;
+#include <QColorDialog>
 
 extern "C" {
 
 #include <blitz.h>
 
-	void bmx_qt_qcolor_free(MaxQColor * handle);
-
-	MaxQColor * bmx_qt_qcolor_create(int r, int g, int b, int a);
-	MaxQColor * bmx_qt_qcolor_createwithglobalcolor(int color);
-	MaxQColor * bmx_qt_qcolor_lighter(MaxQColor * color, int factor);
-
-	void bmx_qt_qcolor_getrgb(MaxQColor * color, int * r, int * g, int * b);
-	void bmx_qt_qcolor_getrgba(MaxQColor * color, int * r, int * g, int * b, int * a);
-	int bmx_qt_qcolor_isvalid(MaxQColor * color);
+	QColorDialog::ColorDialogOptions bmx_qt_getcolordialogoptions(int o);
+	
+	MaxQColor * bmx_qt_qcolordialog_getcolorwithoptions(MaxQColor * initial, QWidget * parent, BBString * title, int options);
+	MaxQColor * bmx_qt_qcolordialog_getcolor(MaxQColor * initial, QWidget * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQColor
-{
-public:
-	MaxQColor(const QColor & c);
-	~MaxQColor();
-	
-	QColor & Color();
-
-private:
-	QColor color;
-};
 
 #endif
