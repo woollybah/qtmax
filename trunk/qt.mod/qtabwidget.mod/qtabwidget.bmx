@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QListView
+Module Qt.QTabWidget
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -31,16 +31,31 @@ ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 Import "common.bmx"
 
 
-Type QListView Extends QAbstractItemView
+Type QTabWidget Extends QWidget
 
-	Function CreateListView:QListView(parent:QWidget = Null)
-		Return New QListView.Create(parent)
+	Function CreateTabWidget:QTabWidget(parent:QWidget = Null)
+		Return New QTabWidget.Create(parent)
 	End Function
-
-	Method Create:QListView(parent:QWidget = Null)
-		' TODO
+	
+	Method Create:QTabWidget(parent:QWidget = Null)
+		If parent Then
+			'qObjectPtr = bmx_qt_qtabwidget_create(Self, parent.qObjectPtr)
+		Else
+			'qObjectPtr = bmx_qt_qtabwidget_create(Self, Null)
+		End If
+		OnInit()
 		Return Self
 	End Method
-	
+
+	' SIGNAL : currentChanged
+	Function _OnCurrentChanged(obj:QTabWidget, index:Int)
+		obj._InvokeSignals("currentChanged", [String(index)])
+	End Function
+
+	' SIGNAL : tabCloseRequested
+	Function _OnTabCloseRequested(obj:QTabWidget, index:Int)
+		obj._InvokeSignals("tabCloseRequested", [String(index)])
+	End Function
+
 End Type
 

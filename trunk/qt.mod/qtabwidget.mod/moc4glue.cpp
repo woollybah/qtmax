@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sun Dec 23 18:36:32 2012
+** Created: Sun Dec 23 18:36:33 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_MaxQMainWindow[] = {
+static const uint qt_meta_data_MaxQTabWidget[] = {
 
  // content:
        6,       // revision
@@ -31,63 +31,62 @@ static const uint qt_meta_data_MaxQMainWindow[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      25,   16,   15,   15, 0x08,
-      66,   50,   15,   15, 0x08,
-     116,  112,   15,   15, 0x08,
+      21,   15,   14,   14, 0x08,
+      43,   15,   14,   14, 0x08,
+      72,   68,   14,   14, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_MaxQMainWindow[] = {
-    "MaxQMainWindow\0\0iconSize\0"
-    "onIconSizeChanged(QSize)\0toolButtonStyle\0"
-    "onToolButtonStyleChanged(Qt::ToolButtonStyle)\0"
-    "pos\0onCustomContextMenuRequested(QPoint)\0"
+static const char qt_meta_stringdata_MaxQTabWidget[] = {
+    "MaxQTabWidget\0\0index\0onCurrentChanged(int)\0"
+    "onTabCloseRequested(int)\0pos\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
-void MaxQMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void MaxQTabWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         Q_ASSERT(staticMetaObject.cast(_o));
-        MaxQMainWindow *_t = static_cast<MaxQMainWindow *>(_o);
+        MaxQTabWidget *_t = static_cast<MaxQTabWidget *>(_o);
         switch (_id) {
-        case 0: _t->onIconSizeChanged((*reinterpret_cast< const QSize(*)>(_a[1]))); break;
-        case 1: _t->onToolButtonStyleChanged((*reinterpret_cast< Qt::ToolButtonStyle(*)>(_a[1]))); break;
+        case 0: _t->onCurrentChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: _t->onTabCloseRequested((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 2: _t->onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
     }
 }
 
-const QMetaObjectExtraData MaxQMainWindow::staticMetaObjectExtraData = {
+const QMetaObjectExtraData MaxQTabWidget::staticMetaObjectExtraData = {
     0,  qt_static_metacall 
 };
 
-const QMetaObject MaxQMainWindow::staticMetaObject = {
-    { &QMainWindow::staticMetaObject, qt_meta_stringdata_MaxQMainWindow,
-      qt_meta_data_MaxQMainWindow, &staticMetaObjectExtraData }
+const QMetaObject MaxQTabWidget::staticMetaObject = {
+    { &QTabWidget::staticMetaObject, qt_meta_stringdata_MaxQTabWidget,
+      qt_meta_data_MaxQTabWidget, &staticMetaObjectExtraData }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &MaxQMainWindow::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &MaxQTabWidget::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *MaxQMainWindow::metaObject() const
+const QMetaObject *MaxQTabWidget::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *MaxQMainWindow::qt_metacast(const char *_clname)
+void *MaxQTabWidget::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_MaxQMainWindow))
-        return static_cast<void*>(const_cast< MaxQMainWindow*>(this));
-    return QMainWindow::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_MaxQTabWidget))
+        return static_cast<void*>(const_cast< MaxQTabWidget*>(this));
+    return QTabWidget::qt_metacast(_clname);
 }
 
-int MaxQMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MaxQTabWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QMainWindow::qt_metacall(_c, _id, _a);
+    _id = QTabWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
