@@ -48,6 +48,10 @@ extern "C" {
 	void bmx_qt_qmessagebox_settextformat(QMessageBox * messageBox, int format);
 	void bmx_qt_qmessagebox_setwindowmodality(QMessageBox * messageBox, int windowModality);
 	void bmx_qt_qmessagebox_setwindowtitle(QMessageBox * messageBox, BBString * text);
+	int bmx_qt_qmessagebox_exec(QMessageBox * messageBox);
+	void bmx_qt_qmessagebox_free(QMessageBox * messageBox);
+	void bmx_qt_qmessagebox_seticon(QMessageBox * messageBox, int icon);
+	int bmx_qt_qmessagebox_icon(QMessageBox * messageBox);
 
 	void bmx_qt_qmessagebox_about(QWidget * parent, BBString * title, BBString * text);
 	void bmx_qt_qmessagebox_aboutqt(QWidget * parent, BBString * title);
@@ -56,6 +60,8 @@ extern "C" {
 	int bmx_qt_qmessagebox_question(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton);
 	int bmx_qt_qmessagebox_warning(QWidget * parent, BBString * title, BBString * text, int buttons, int defaultButton);
 
+	QMessageBox::Icon bmx_qt_messagebox_IntToIcon(int i);
+	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

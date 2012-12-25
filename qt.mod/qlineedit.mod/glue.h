@@ -98,6 +98,23 @@ extern "C" {
 	
 	void bmx_qt_qlineedit_setvalidator(QLineEdit * edit, QValidator * v);
 
+
+	void bmx_qt_qlineedit_default_mousedoubleclickevent(MaxQLineEdit * edit, QMouseEvent * event);
+	void bmx_qt_qlineedit_default_mousemoveevent(MaxQLineEdit * edit, QMouseEvent * event);
+	void bmx_qt_qlineedit_default_mousepressevent(MaxQLineEdit * edit, QMouseEvent * event);
+	void bmx_qt_qlineedit_default_mousereleaseevent(MaxQLineEdit * edit, QMouseEvent * event);
+	void bmx_qt_qlineedit_default_changeevent(MaxQLineEdit * edit, QEvent * event);
+	void bmx_qt_qlineedit_default_contextmenuevent(MaxQLineEdit * edit, QContextMenuEvent * event);
+	void bmx_qt_qlineedit_default_dragenterevent(MaxQLineEdit * edit, QDragEnterEvent * event);
+	void bmx_qt_qlineedit_default_dragleaveevent(MaxQLineEdit * edit, QDragLeaveEvent * event);
+	void bmx_qt_qlineedit_default_dragmoveevent(MaxQLineEdit * edit, QDragMoveEvent * event);
+	void bmx_qt_qlineedit_default_dropevent(MaxQLineEdit * edit, QDropEvent * event);
+	void bmx_qt_qlineedit_default_focusinevent(MaxQLineEdit * edit, QFocusEvent * event);
+	void bmx_qt_qlineedit_default_focusoutevent(MaxQLineEdit * edit, QFocusEvent * event);
+	void bmx_qt_qlineedit_default_inputmethodevent(MaxQLineEdit * edit, QInputMethodEvent * event);
+	void bmx_qt_qlineedit_default_keypressevent(MaxQLineEdit * edit, QKeyEvent * event);
+	void bmx_qt_qlineedit_default_paintevent(MaxQLineEdit * edit, QPaintEvent * event);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -113,6 +130,25 @@ public:
 private:
 	BBObject * maxHandle;
 
+public:
+	void defaultChangeEvent(QEvent * event);
+	void defaultContextMenuEvent(QContextMenuEvent * event);
+	void defaultDragEnterEvent(QDragEnterEvent * event);
+	void defaultDragLeaveEvent(QDragLeaveEvent * event);
+	void defaultDragMoveEvent(QDragMoveEvent * event);
+	void defaultDropEvent(QDropEvent * event);
+	void defaultFocusInEvent(QFocusEvent * event);
+	void defaultFocusOutEvent(QFocusEvent * event);
+	void defaultInputMethodEvent(QInputMethodEvent * event);
+	void defaultKeyPressEvent(QKeyEvent * event);
+	void defaultKeyReleaseEvent(QKeyEvent * event);
+	void defaultLeaveEvent(QEvent * event);
+	void defaultPaintEvent(QPaintEvent * event);
+	void defaultMouseDoubleClickEvent(QMouseEvent * event);
+	void defaultMouseMoveEvent(QMouseEvent * event);
+	void defaultMousePressEvent(QMouseEvent * event);
+	void defaultMouseReleaseEvent(QMouseEvent * event);
+
 private slots:
 	void onCursorPositionChanged(int oldPos, int newPos);
 	void onEditingFinished();
@@ -123,6 +159,21 @@ private slots:
 	void onCustomContextMenuRequested(const QPoint & pos);
 
 protected:
+	void changeEvent(QEvent * ev);
+	void contextMenuEvent(QContextMenuEvent * event);
+	void dragEnterEvent(QDragEnterEvent * e);
+	void dragLeaveEvent(QDragLeaveEvent * e);
+	void dragMoveEvent(QDragMoveEvent * e);
+	void dropEvent(QDropEvent * e);
+	void focusInEvent(QFocusEvent * e);
+	void focusOutEvent(QFocusEvent * e);
+	void inputMethodEvent(QInputMethodEvent * e);
+	void keyPressEvent(QKeyEvent * event);
+	void mouseDoubleClickEvent(QMouseEvent * e);
+	void mouseMoveEvent(QMouseEvent * e);
+	void mousePressEvent(QMouseEvent * e);
+	void mouseReleaseEvent(QMouseEvent * e);
+	void paintEvent(QPaintEvent *);
 	void timerEvent(QTimerEvent * event);
 };
 

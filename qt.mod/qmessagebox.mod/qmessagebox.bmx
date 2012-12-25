@@ -190,6 +190,21 @@ Type QMessageBox Extends QDialog
 	Method OnInit()
 	End Method
 	
+	Method exec:Int()
+		Return bmx_qt_qmessagebox_exec(qObjectPtr)
+	End Method
+	
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qmessagebox_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
 	Method removeButton(button:QAbstractButton)
 		bmx_qt_qmessagebox_removebutton(qObjectPtr, button.qObjectPtr)
 	End Method
@@ -214,8 +229,12 @@ Type QMessageBox Extends QDialog
 		bmx_qt_qmessagebox_setescapebuttontype(qObjectPtr, button)
 	End Method
 	
-	Method setIcon(icon:QIcon)
-	' TODO
+	Method setIcon(icon:Int)
+		bmx_qt_qmessagebox_seticon(qObjectPtr, icon)
+	End Method
+	
+	Method icon:Int()
+		Return bmx_qt_qmessagebox_icon(qObjectPtr)
 	End Method
 	
 	Method setIconPixmap(pixmap:QPixmap)

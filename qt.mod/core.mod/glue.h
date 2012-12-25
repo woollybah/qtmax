@@ -136,6 +136,8 @@ extern "C" {
 	Qt::TextInteractionFlags bmx_qt_inttotextinteractionflags(int f);
 	Qt::TextFormat bmx_qt_inttotextformat(int f);
 	Qt::Orientation bmx_qt_getorientation(int o);
+	Qt::ItemFlags bmx_qt_getitemflags(int f);
+	Qt::CheckState bmx_qt_getcheckstate(int s);
 
 	int bmx_qt_qtime_elapsed(MaxQTime * time);
 	int bmx_qt_qtime_hour(MaxQTime * time);

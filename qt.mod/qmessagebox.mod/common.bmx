@@ -60,6 +60,10 @@ Extern
 	Function bmx_qt_qmessagebox_settextformat(handle:Byte Ptr, format:Int)
 	Function bmx_qt_qmessagebox_setwindowmodality(handle:Byte Ptr, windowModality:Int)
 	Function bmx_qt_qmessagebox_setwindowtitle(handle:Byte Ptr, title:String)
+	Function bmx_qt_qmessagebox_exec:Int(handle:Byte Ptr)
+	Function bmx_qt_qmessagebox_free(handle:Byte Ptr)
+	Function bmx_qt_qmessagebox_seticon(handle:Byte Ptr, icon:Int)
+	Function bmx_qt_qmessagebox_icon:Int(handle:Byte Ptr)
 
 	Function bmx_qt_qmessagebox_about(parent:Byte Ptr, title:String, text:String)
 	Function bmx_qt_qmessagebox_aboutqt(parent:Byte Ptr, title:String)
