@@ -21,7 +21,10 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QIcon
+Import Qt.QBrush
 Import BRL.Blitz
+Import BRL.LinkedList
 
 
 ' headers :-)
@@ -44,5 +47,59 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qstandarditem_create:Byte Ptr(text:String, icon:Byte Ptr)
+	Function bmx_qt_qstandarditem_accessibledescription:String(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_accessibletext:String(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_appendrow(handle:Byte Ptr, item:Byte Ptr)
+	Function bmx_qt_qstandarditem_checkstate:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_column:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_columncount:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_data:Object(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_flags:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_haschildren:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_insertrow(handle:Byte Ptr, row:Int, item:Byte Ptr)
+	Function bmx_qt_qstandarditem_insertrows(handle:Byte Ptr, row:Int, count:Int)
+	Function bmx_qt_qstandarditem_ischeckable:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_isdragenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_isdropenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_iseditable:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_isenabled:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_isselectable:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_istristate:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_removecolumn(handle:Byte Ptr, column:Int)
+	Function bmx_qt_qstandarditem_removecolumns(handle:Byte Ptr, column:Int, count:Int)
+	Function bmx_qt_qstandarditem_removerow(handle:Byte Ptr, row:Int)
+	Function bmx_qt_qstandarditem_removerows(handle:Byte Ptr, row:Int, count:Int)
+	Function bmx_qt_qstandarditem_row:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_rowcount:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_setaccessibledescription(handle:Byte Ptr, accessibleDescription:String)
+	Function bmx_qt_qstandarditem_setaccessibletext(handle:Byte Ptr, accessibleText:String)
+	Function bmx_qt_qstandarditem_setcheckstate(handle:Byte Ptr, state:Int)
+	Function bmx_qt_qstandarditem_setcheckable(handle:Byte Ptr, checkable:Int)
+	Function bmx_qt_qstandarditem_setchildrc(handle:Byte Ptr, row:Int, column:Int, item:Byte Ptr)
+	Function bmx_qt_qstandarditem_setchild(handle:Byte Ptr, row:Int, item:Byte Ptr)
+	Function bmx_qt_qstandarditem_setcolumncount(handle:Byte Ptr, columns:Int)
+	Function bmx_qt_qstandarditem_setdata(handle:Byte Ptr, value:Object)
+	Function bmx_qt_qstandarditem_setdragenabled(handle:Byte Ptr, dragEnabled:Int)
+	Function bmx_qt_qstandarditem_setdropenabled(handle:Byte Ptr, dropEnabled:Int)
+	Function bmx_qt_qstandarditem_seteditable(handle:Byte Ptr, editable:Int)
+	Function bmx_qt_qstandarditem_setenabled(handle:Byte Ptr, enabled:Int)
+	Function bmx_qt_qstandarditem_setflags(handle:Byte Ptr, flags:Int)
+	Function bmx_qt_qstandarditem_setrowcount(handle:Byte Ptr, rows:Int)
+	Function bmx_qt_qstandarditem_setselectable(handle:Byte Ptr, selectable:Int)
+	Function bmx_qt_qstandarditem_setsizehint(handle:Byte Ptr, width:Int, height:Int)
+	Function bmx_qt_qstandarditem_setstatustip(handle:Byte Ptr, statustip:String)
+	Function bmx_qt_qstandarditem_settext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qstandarditem_settextalignment(handle:Byte Ptr, alignment:Int)
+	Function bmx_qt_qstandarditem_settooltip(handle:Byte Ptr, toolTip:String)
+	Function bmx_qt_qstandarditem_settristate(handle:Byte Ptr, tristate:Int)
+	Function bmx_qt_qstandarditem_setwhatsthis(handle:Byte Ptr, whatsThis:String)
+	Function bmx_qt_qstandarditem_statustip:String(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_text:String(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_textalignment:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_tooltip:String(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_type:Int(handle:Byte Ptr)
+	Function bmx_qt_qstandarditem_whatsthis:String(handle:Byte Ptr)
 
 End Extern

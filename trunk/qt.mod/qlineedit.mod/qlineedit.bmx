@@ -373,6 +373,67 @@ Type QLineEdit Extends QWidget
 		bmx_qt_qlineedit_undo(qObjectPtr)
 	End Method
 
+	' event overrides
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qlineedit_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qlineedit_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qlineedit_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qlineedit_default_mousepressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qlineedit_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method changeEvent(event:QEvent)
+		bmx_qt_qlineedit_default_changeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method contextMenuEvent(event:QContextMenuEvent)
+		bmx_qt_qlineedit_default_contextmenuevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragEnterEvent(event:QDragEnterEvent)
+		bmx_qt_qlineedit_default_dragenterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragLeaveEvent(event:QDragLeaveEvent)
+		bmx_qt_qlineedit_default_dragleaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragMoveEvent(event:QDragMoveEvent)
+		bmx_qt_qlineedit_default_dragmoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dropEvent(event:QDropEvent)
+		bmx_qt_qlineedit_default_dropevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusInEvent(event:QFocusEvent)
+		bmx_qt_qlineedit_default_focusinevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusOutEvent(event:QFocusEvent)
+		bmx_qt_qlineedit_default_focusoutevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method inputMethodEvent(event:QInputMethodEvent)
+		bmx_qt_qlineedit_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyPressEvent(event:QKeyEvent)
+		bmx_qt_qlineedit_default_keypressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
 
 	' SIGNAL : cursorPositionChanged
 	Function _OnCursorPositionChanged(obj:QLineEdit, oldPos:Int, newPos:Int)

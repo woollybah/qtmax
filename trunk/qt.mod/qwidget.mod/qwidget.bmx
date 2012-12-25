@@ -345,6 +345,10 @@ Type QWidget Extends QObject
 	' TODO
 	End Method
 	
+	Method palette:QPalette()
+		Return QPalette._create(bmx_qt_qwidget_palette(qObjectPtr))
+	End Method
+	
 	Method parentWidget:QWidget()
 		Return QWidget._find(bmx_qt_qwidget_parentwidget(qObjectPtr))
 	End Method
@@ -360,9 +364,37 @@ Type QWidget Extends QObject
 	Method resize(w:Int, h:Int)
 		bmx_qt_qwidget_resize(qObjectPtr, w, h)
 	End Method
+
+	Method scroll(dx:Int, dy:Int)
+	' TODO
+	End Method
 	
+	Method scrollRect(dx:Int, dy:Int, r:QRect)
+	' TODO
+	End Method
+	
+	Method setAcceptDrops(on:Int)
+	' TODO
+	End Method
+	
+	Method setAccessibleDescription(description:String)
+	' TODO
+	End Method
+	
+	Method setAccessibleName(name:String)
+	' TODO
+	End Method
+
 	Method setAttribute(attribute:Int, on:Int = True)
 		bmx_qt_qwidget_setattribute(qObjectPtr, attribute, on)
+	End Method
+
+	Method setAutoFillBackground(enabled:Int)
+		bmx_qt_qwidget_setautofillbackground(qObjectPtr, enabled)
+	End Method
+	
+	Method setBackgroundRole(role:Int)
+	' TODO
 	End Method
 	
 	Method setContextMenuPolicy(policy:Int)
@@ -398,7 +430,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method setGeometry(x:Int, y:Int, w:Int, h:Int)
-	' TODO
+		bmx_qt_qwidget_setgeometry(qObjectPtr, x, y, w, h)
 	End Method
 	
 	'Method setInputContext(context:QInputContext)
@@ -453,9 +485,9 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_setmousetracking(qObjectPtr, enable)
 	End Method
 
-	'Method setPalette(p:QPalette)
-	' TODO
-	'End Method
+	Method setPalette(p:QPalette)
+		bmx_qt_qwidget_setpalette(qObjectPtr, p.qObjectPtr)
+	End Method
 	
 	Method setParent(parent:QObject)
 		If QWidget(parent) Then
@@ -701,6 +733,7 @@ Type QWidget Extends QObject
 	bbdoc: 
 	End Rem
 	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qwidget_default_paintevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
@@ -737,7 +770,7 @@ Type QWidget Extends QObject
 	End Method
 
 	Function _OnMouseDoubleClickEvent(obj:QWidget, event:Byte Ptr)
-		obj.mouseMoveEvent(QMouseEvent._create(event))
+		obj.mouseDoubleClickEvent(QMouseEvent._create(event))
 	End Function
 
 	Rem

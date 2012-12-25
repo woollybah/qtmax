@@ -31,6 +31,7 @@
 #include "../qregion.mod/glue.h"
 #include "../qlocale.mod/glue.h"
 #include "../qobject.mod/glue.h"
+#include "../qpalette.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -142,7 +143,11 @@ extern "C" {
 	int bmx_qt_qwidget_x(QWidget * widget);
 	int bmx_qt_qwidget_y(QWidget * widget);
 	MaxQLocale * bmx_qt_qwidget_locale(QWidget * widget);
+	void bmx_qt_qwidget_setgeometry(QWidget * widget, int x, int y, int w, int h);
+	MaxQPalette * bmx_qt_qwidget_palette(QWidget * widget);
+	void bmx_qt_qwidget_setpalette(QWidget * widget, MaxQPalette * palette);
 
+	void bmx_qt_qwidget_default_paintevent(MaxQWidget * widget, QPaintEvent * event);
 	void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event);
 	void bmx_qt_qwidget_default_mousemoveevent(MaxQWidget * widget, QMouseEvent * event);
 	void bmx_qt_qwidget_default_mousepressevent(MaxQWidget * widget, QMouseEvent * event);
@@ -218,6 +223,7 @@ extern "C" {
 	void bmx_qt_qwidget_setshortcutautorepeat(QWidget * widget, int id, int enable);
 	void bmx_qt_qwidget_setshortcutenabled(QWidget * widget, int id, int enable);
 	void bmx_qt_qwidget_setsizeincrement(QWidget * widget, int w, int h);
+	void bmx_qt_qwidget_setautofillbackground(QWidget * widget, int enabled);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

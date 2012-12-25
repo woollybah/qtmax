@@ -203,6 +203,20 @@ int bmx_qt_standardButtonToInt(QMessageBox::StandardButton b) {
 	return 0;
 }
 
+QMessageBox::Icon bmx_qt_messagebox_IntToIcon(int i) {
+	switch (i) {
+		case 1:
+			return QMessageBox::Information;
+		case 2:
+			return QMessageBox::Warning;
+		case 3:
+			return QMessageBox::Critical;
+		case 4:
+			return QMessageBox::Question;
+	}
+	
+	return QMessageBox::NoIcon;
+}
 
 // *********************************************
 
@@ -258,6 +272,21 @@ void bmx_qt_qmessagebox_setwindowtitle(QMessageBox * messageBox, BBString * text
 	messageBox->setWindowTitle(qStringFromBBString(text));
 }
 
+int bmx_qt_qmessagebox_exec(QMessageBox * messageBox) {
+	return messageBox->exec();
+}
+
+void bmx_qt_qmessagebox_free(QMessageBox * messageBox) {
+	delete messageBox;
+}
+
+void bmx_qt_qmessagebox_seticon(QMessageBox * messageBox, int icon) {
+	messageBox->setIcon(bmx_qt_messagebox_IntToIcon(icon));
+}
+
+int bmx_qt_qmessagebox_icon(QMessageBox * messageBox) {
+	return messageBox->icon();
+}
 
 void bmx_qt_qmessagebox_about(QWidget * parent, BBString * title, BBString * text) {
 	QMessageBox::about(parent, qStringFromBBString(title), qStringFromBBString(text));

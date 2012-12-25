@@ -609,6 +609,35 @@ Qt::Orientation bmx_qt_getorientation(int o) {
 	return Qt::Horizontal;
 }
 
+Qt::ItemFlags bmx_qt_getitemflags(int f) {
+	Qt::ItemFlags flags;
+	
+	if (f & 0x0001) flags |= Qt::ItemIsSelectable;
+	if (f & 0x0002) flags |= Qt::ItemIsEditable;
+	if (f & 0x0004) flags |= Qt::ItemIsDragEnabled;
+	if (f & 0x0008) flags |= Qt::ItemIsDropEnabled;
+	if (f & 0x0010) flags |= Qt::ItemIsUserCheckable;
+	if (f & 0x0020) flags |= Qt::ItemIsEnabled;
+	if (f & 0x0040) flags |= Qt::ItemIsTristate;
+
+	return flags;
+}
+
+Qt::CheckState bmx_qt_getcheckstate(int s) {
+
+	switch(s) {
+		case 0:
+			return Qt::Unchecked;
+		case 1:
+			return Qt::PartiallyChecked;
+		case 2:
+			return Qt::Checked;
+	}
+	
+	return Qt::Unchecked;
+}
+
+
 // *********************************************
 
 void bmx_qt_qevent_accept(QEvent * event) {

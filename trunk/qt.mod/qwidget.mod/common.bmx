@@ -42,6 +42,7 @@ Import Qt.QSizePolicy
 Import Qt.QFont
 Import Qt.QFontMetrics
 Import Qt.QKeySequence
+Import Qt.QPalette
 Import BRL.Blitz
 
 
@@ -118,7 +119,11 @@ Extern
 	Function bmx_qt_qwidget_windowtype:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_x:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_y:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setgeometry(handle:Byte Ptr, x:Int, y:Int, w:Int, h:Int)
+	Function bmx_qt_qwidget_palette:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setpalette(handle:Byte Ptr, p:Byte Ptr)
 
+	Function bmx_qt_qwidget_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
@@ -195,7 +200,8 @@ Extern
 	Function bmx_qt_qwidget_setshortcutautorepeat(handle:Byte Ptr, id:Int, enable:Int)
 	Function bmx_qt_qwidget_setshortcutenabled(handle:Byte Ptr, id:Int, enable:Int)
 	Function bmx_qt_qwidget_setsizeincrement(handle:Byte Ptr, w:Int, h:Int)
-	
+	Function bmx_qt_qwidget_setautofillbackground(handle:Byte Ptr, enabled:Int)
+
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_setshortcut(handle:Byte Ptr, sequence:String)

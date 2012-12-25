@@ -782,6 +782,22 @@ void bmx_qt_qwidget_setsizeincrement(QWidget * widget, int w, int h) {
 	widget->setSizeIncrement(w, h);
 }
 
+void bmx_qt_qwidget_setgeometry(QWidget * widget, int x, int y, int w, int h) {
+	widget->setGeometry(x, y, w, h);
+}
+
+MaxQPalette * bmx_qt_qwidget_palette(QWidget * widget) {
+	QPalette p(widget->palette());
+	return new MaxQPalette(p);
+}
+
+void bmx_qt_qwidget_setpalette(QWidget * widget, MaxQPalette * palette) {
+	widget->setPalette(palette->Palette());
+}
+
+void bmx_qt_qwidget_setautofillbackground(QWidget * widget, int enabled) {
+	widget->setAutoFillBackground(static_cast<bool>(enabled));
+}
 
 // *********************************************
 
@@ -883,6 +899,10 @@ void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * even
 
 void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event) {
 	widget->defaultWheelEvent(event);
+}
+
+void bmx_qt_qwidget_default_paintevent(MaxQWidget * widget, QPaintEvent * event) {
+	widget->defaultPaintEvent(event);
 }
 
 int bmx_qt_qwidget_winid(QWidget * widget) {
