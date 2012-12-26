@@ -201,6 +201,8 @@ Extern
 	Function bmx_qt_qwidget_setshortcutenabled(handle:Byte Ptr, id:Int, enable:Int)
 	Function bmx_qt_qwidget_setsizeincrement(handle:Byte Ptr, w:Int, h:Int)
 	Function bmx_qt_qwidget_setautofillbackground(handle:Byte Ptr, enabled:Int)
+	Function bmx_qt_qwidget_setbasesize(handle:Byte Ptr, basew:Int, baseh:Int)
+	Function bmx_qt_qwidget_setcontentsmargins(handle:Byte Ptr, Left:Int, top:Int, Right:Int, bottom:Int)
 
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)

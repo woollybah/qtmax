@@ -45,4 +45,7 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qresizeevent_size(handle:Byte Ptr, width:Int Ptr, height:Int Ptr)
+	Function bmx_qt_qresizeevent_oldsize(handle:Byte Ptr, width:Int Ptr, height:Int Ptr)
+
 End Extern

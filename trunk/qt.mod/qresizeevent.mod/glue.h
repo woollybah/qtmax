@@ -25,11 +25,14 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QResizeEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qresizeevent_size(QResizeEvent * event, int * width, int * height);
+	void bmx_qt_qresizeevent_oldsize(QResizeEvent * event, int * width, int * height);
 
 }
 

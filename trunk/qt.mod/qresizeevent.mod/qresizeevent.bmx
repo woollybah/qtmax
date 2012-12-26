@@ -40,5 +40,13 @@ Type QResizeEvent Extends QEvent
 		End If
 	End Function
 
+	Method size(width:Int Var, height:Int Var)
+		bmx_qt_qresizeevent_size(qObjectPtr, Varptr width, Varptr height)
+	End Method
+
+	Method oldSize(width:Int Var, height:Int Var)
+		bmx_qt_qresizeevent_oldsize(qObjectPtr, Varptr width, Varptr height)
+	End Method
+	
 End Type
 
