@@ -35,7 +35,7 @@ extern "C" {
 
 	void _qt_qsocketnotifier_QSocketNotifier__OnActivated(BBObject * handle);
 	
-	QSocketNotifier * bmx_qt_qsocketnotified_create(BBObject * handle, int socket, int type, QObject * parent);
+	QSocketNotifier * bmx_qt_qsocketnotifier_create(BBObject * handle, int socket, int type, QObject * parent);
 
 }
 
