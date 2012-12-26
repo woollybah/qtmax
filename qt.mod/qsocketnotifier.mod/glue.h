@@ -49,6 +49,8 @@ public:
 	MaxQSocketNotifier(BBObject * handle, int socket, QSocketNotifier::Type type, QObject * parent = 0);
 	~MaxQSocketNotifier();
 
+	void onActivated();
+
 private:
 	BBObject * maxHandle;
 };
