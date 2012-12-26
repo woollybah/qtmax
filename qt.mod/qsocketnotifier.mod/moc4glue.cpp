@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Wed Dec 26 16:17:31 2012
+** Created: Wed Dec 26 16:38:28 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,26 +23,33 @@ static const uint qt_meta_data_MaxQSocketNotifier[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
+ // slots: signature, parameters, type, tag, flags
+      27,   20,   19,   19, 0x08,
+
        0        // eod
 };
 
 static const char qt_meta_stringdata_MaxQSocketNotifier[] = {
-    "MaxQSocketNotifier\0"
+    "MaxQSocketNotifier\0\0socket\0onActivated(int)\0"
 };
 
 void MaxQSocketNotifier::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    Q_UNUSED(_o);
-    Q_UNUSED(_id);
-    Q_UNUSED(_c);
-    Q_UNUSED(_a);
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
+        MaxQSocketNotifier *_t = static_cast<MaxQSocketNotifier *>(_o);
+        switch (_id) {
+        case 0: _t->onActivated((*reinterpret_cast< int(*)>(_a[1]))); break;
+        default: ;
+        }
+    }
 }
 
 const QMetaObjectExtraData MaxQSocketNotifier::staticMetaObjectExtraData = {
@@ -76,6 +83,11 @@ int MaxQSocketNotifier::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     _id = QSocketNotifier::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 1)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 1;
+    }
     return _id;
 }
 QT_END_MOC_NAMESPACE
