@@ -59,6 +59,9 @@ Type QSocketNotifier Extends QObject
 		OnInit()
 		Return Self
 	End Method
+	
+	Method OnInit()
+	End Method
 
 	' SIGNAL : activated
 	Function _OnActivated(obj:QSocketNotifier)

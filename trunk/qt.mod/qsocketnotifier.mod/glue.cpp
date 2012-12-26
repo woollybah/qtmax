@@ -51,7 +51,7 @@ QSocketNotifier::Type bmx_qt_notifiertypefromint(int t) {
 		case 1:
 			return QSocketNotifier::Write;
 		case 2:
-			return QSocketNotifier::Exception
+			return QSocketNotifier::Exception;
 	}
 	
 	return QSocketNotifier::Read;
