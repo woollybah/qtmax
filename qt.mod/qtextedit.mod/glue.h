@@ -27,6 +27,9 @@
 #include "../qcolor.mod/glue.h"
 #include "../qfont.mod/glue.h"
 #include "../qtextdocument.mod/glue.h"
+#include "../qtextcharformat.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qabstractscrollarea.mod/glue.h"
 #include <QtCore>
 #include <QTextEdit>
 
@@ -35,6 +38,15 @@ class MaxQTextEdit;
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qtextedit_QTextEdit__OnCopyAvailable(BBObject * handle, int yes);
+	void _qt_qtextedit_QTextEdit__OnCurrentCharFormatChanged(BBObject * handle, MaxQTextCharFormat * f);
+	void _qt_qtextedit_QTextEdit__OnCursorPositionChanged(BBObject * handle);
+	void _qt_qtextedit_QTextEdit__OnRedoAvailable(BBObject * handle, int available);
+	void _qt_qtextedit_QTextEdit__OnSelectionChanged(BBObject * handle);
+	void _qt_qtextedit_QTextEdit__OnTextChanged(BBObject * handle);
+	void _qt_qtextedit_QTextEdit__OnUndoAvailable(BBObject * handle, int available);
+
 
 	QTextEdit * bmx_qt_qtextedit_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qtextedit_setreadonly(QTextEdit * edit, int value);
@@ -64,10 +76,38 @@ extern "C" {
 	void bmx_qt_qtextedit_undo(QTextEdit * edit);
 	void bmx_qt_qtextedit_zoomin(QTextEdit * edit, int _range);
 	void bmx_qt_qtextedit_zoomout(QTextEdit * edit, int _range);
+	void bmx_qt_qtextedit_setacceptrichtext(QTextEdit * edit, int accept);
+	void bmx_qt_qtextedit_setautoformatting(QTextEdit * edit, int features);
+	void bmx_qt_qtextedit_setcursorwidth(QTextEdit * edit, int width);
+	void bmx_qt_qtextedit_setdocumenttitle(QTextEdit * edit, BBString * title);
+	void bmx_qt_qtextedit_setlinewrapcolumnorwidth(QTextEdit * edit, int w);
+	void bmx_qt_qtextedit_setlinewrapmode(QTextEdit * edit, int mode);
 
 	BBString * bmx_qt_qtextedit_tohtml(QTextEdit * edit);
 	BBString * bmx_qt_qtextedit_toplaintext(QTextEdit * edit);
 	QTextDocument * bmx_qt_qtextedit_document(QTextEdit * edit);
+
+	void bmx_qt_qtextedit_default_actionevent(MaxQTextEdit * edit, QActionEvent * event);
+	void bmx_qt_qtextedit_default_changeevent(MaxQTextEdit * edit, QEvent * event);
+	void bmx_qt_qtextedit_default_contextmenuevent(MaxQTextEdit * edit, QContextMenuEvent * event);
+	void bmx_qt_qtextedit_default_dragenterevent(MaxQTextEdit * edit, QDragEnterEvent * event);
+	void bmx_qt_qtextedit_default_dragleaveevent(MaxQTextEdit * edit, QDragLeaveEvent * event);
+	void bmx_qt_qtextedit_default_dragmoveevent(MaxQTextEdit * edit, QDragMoveEvent * event);
+	void bmx_qt_qtextedit_default_dropevent(MaxQTextEdit * edit, QDropEvent * event);
+	void bmx_qt_qtextedit_default_focusinevent(MaxQTextEdit * edit, QFocusEvent * event);
+	int bmx_qt_qtextedit_default_focusnextprevchild(MaxQTextEdit * edit, int next);
+	void bmx_qt_qtextedit_default_focusoutevent(MaxQTextEdit * edit, QFocusEvent * event);
+	void bmx_qt_qtextedit_default_inputmethodevent(MaxQTextEdit * edit, QInputMethodEvent * event);
+	void bmx_qt_qtextedit_default_keypressevent(MaxQTextEdit * edit, QKeyEvent * event);
+	void bmx_qt_qtextedit_default_keyreleaseevent(MaxQTextEdit * edit, QKeyEvent * event);
+	void bmx_qt_qtextedit_default_mousedoubleclickevent(MaxQTextEdit * edit, QMouseEvent * event);
+	void bmx_qt_qtextedit_default_mousemoveevent(MaxQTextEdit * edit, QMouseEvent * event);
+	void bmx_qt_qtextedit_default_mousepressevent(MaxQTextEdit * edit, QMouseEvent * event);
+	void bmx_qt_qtextedit_default_mousereleaseevent(MaxQTextEdit * edit, QMouseEvent * event);
+	void bmx_qt_qtextedit_default_paintevent(MaxQTextEdit * edit, QPaintEvent * event);
+	void bmx_qt_qtextedit_default_resizeevent(MaxQTextEdit * edit, QResizeEvent * event);
+	void bmx_qt_qtextedit_default_scrollcontentsby(MaxQTextEdit * edit, int dx, int dy);
+	void bmx_qt_qtextedit_default_wheelevent(MaxQTextEdit * edit, QWheelEvent * event);
 
 }
 
@@ -75,12 +115,71 @@ extern "C" {
 
 class MaxQTextEdit : public QTextEdit
 {
+	Q_OBJECT
+
 public:
 	MaxQTextEdit(BBObject * handle, QWidget * parent);
 	~MaxQTextEdit();
 
 private:
 	BBObject * maxHandle;
+
+public: 
+	void defaultChangeEvent(QEvent * e);
+	void defaultContextMenuEvent(QContextMenuEvent * event);
+	void defaultDragEnterEvent(QDragEnterEvent * e);
+	void defaultDragLeaveEvent(QDragLeaveEvent * e);
+	void defaultDragMoveEvent(QDragMoveEvent * e);
+	void defaultDropEvent(QDropEvent * e);
+	void defaultFocusInEvent(QFocusEvent * e);
+	bool defaultFocusNextPrevChild(bool next);
+	void defaultFocusOutEvent(QFocusEvent * e);
+	void defaultInputMethodEvent(QInputMethodEvent * e);
+	void defaultKeyPressEvent(QKeyEvent * e);
+	void defaultKeyReleaseEvent(QKeyEvent * e);
+	void defaultMouseDoubleClickEvent(QMouseEvent * e);
+	void defaultMouseMoveEvent(QMouseEvent * e);
+	void defaultMousePressEvent(QMouseEvent * e);
+	void defaultMouseReleaseEvent(QMouseEvent * e);
+	void defaultPaintEvent(QPaintEvent * event);
+	void defaultResizeEvent(QResizeEvent * e);
+	void defaultScrollContentsBy(int dx, int dy);
+	void defaultShowEvent(QShowEvent *);
+	void defaultWheelEvent(QWheelEvent * e);
+
+private slots:
+	void onCopyAvailable(bool yes);
+	void onCurrentCharFormatChanged(const QTextCharFormat & f);
+	void onCursorPositionChanged();
+	void onRedoAvailable(bool available);
+	void onSelectionChanged();
+	void onTextChanged();
+	void onUndoAvailable(bool available);
+	
+protected:
+	void changeEvent(QEvent * e);
+	void contextMenuEvent(QContextMenuEvent * event);
+	void dragEnterEvent(QDragEnterEvent * e);
+	void dragLeaveEvent(QDragLeaveEvent * e);
+	void dragMoveEvent(QDragMoveEvent * e);
+	void dropEvent(QDropEvent * e);
+	void focusInEvent(QFocusEvent * e);
+	bool focusNextPrevChild(bool next);
+	void focusOutEvent(QFocusEvent * e);
+	void inputMethodEvent(QInputMethodEvent * e);
+	void keyPressEvent(QKeyEvent * e);
+	void keyReleaseEvent(QKeyEvent * e);
+	void mouseDoubleClickEvent(QMouseEvent * e);
+	void mouseMoveEvent(QMouseEvent * e);
+	void mousePressEvent(QMouseEvent * e);
+	void mouseReleaseEvent(QMouseEvent * e);
+	void paintEvent(QPaintEvent * event);
+	void resizeEvent(QResizeEvent * e);
+	void scrollContentsBy(int dx, int dy);
+	void showEvent(QShowEvent *);
+	void wheelEvent(QWheelEvent * e);
+	void timerEvent(QTimerEvent * event);
+
 };
 
 #endif

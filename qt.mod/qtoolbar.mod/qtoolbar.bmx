@@ -71,6 +71,14 @@ Type QToolBar Extends QWidget
 	' TODO
 	End Method
 	
+	Method addActionText:QAction(text:String)
+	' TODO
+	End Method
+	
+	Method addActionIcon:QAction(icon:QIcon, text:String)
+	' TODO
+	End Method
+	
 	Method addWidget(widget:QWidget)
 		bmx_qt_qtoolbar_addwidget(qObjectPtr, widget.qObjectPtr)
 	End Method

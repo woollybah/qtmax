@@ -34,6 +34,36 @@ Import "common.bmx"
 
 Type QTextEdit Extends QAbstractScrollArea
 
+	Rem
+	bbdoc: Don't do any automatic formatting.
+	end rem
+	Const Formatter_AutoNone:Int = 0
+	Rem
+	bbdoc: Automatically create bullet lists (e.g. when the user enters an asterisk ('*') in the left most column, or presses Enter in an existing list item.
+	end rem
+	Const Formatter_AutoBulletList:Int = 1
+	Rem
+	bbdoc: Apply all automatic formatting. Currently only automatic bullet lists are supported.
+	end rem
+	Const Formatter_AutoAll:Int = 2
+
+	Rem
+	bbdoc: 
+	end rem
+	Const Mode_NoWrap:Int = 0
+	Rem
+	bbdoc: 
+	end rem
+	Const Mode_WidgetWidth:Int = 1
+	Rem
+	bbdoc: 
+	end rem
+	Const Mode_FixedPixelWidth:Int = 2
+	Rem
+	bbdoc: 
+	end rem
+	Const Mode_FixedColumnWidth:Int = 3
+
 	Function CreateTextEdit:QTextEdit(parent:QWidget = Null)
 		Return New QTextEdit.Create(parent)
 	End Function
@@ -169,11 +199,11 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method setAcceptRichText(accept:Int)
-	' TODO
+		bmx_qt_qtextedit_setacceptrichtext(qObjectPtr, accept)
 	End Method
 	
 	Method setAutoFormatting(features:Int)
-	' TODO
+		bmx_qt_qtextedit_setautoformatting(qObjectPtr, features)
 	End Method
 	
 	Method setCurrentCharFormat(format:QTextCharFormat)
@@ -181,7 +211,7 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method setCursorWidth(width:Int)
-	' TODO
+		bmx_qt_qtextedit_setcursorwidth(qObjectPtr, width)
 	End Method
 	
 	Method setDocument(document:QTextDocument)
@@ -189,15 +219,15 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method setDocumentTitle(title:String)
-	' TODO
+		bmx_qt_qtextedit_setdocumenttitle(qObjectPtr, title)
 	End Method
 	
 	Method setLineWrapColumnOrWidth(w:Int)
-	' TODO
+		bmx_qt_qtextedit_setlinewrapcolumnorwidth(qObjectPtr, w)
 	End Method
 	
 	Method setLineWrapMode(Mode:Int)
-	' TODO
+		bmx_qt_qtextedit_setlinewrapmode(qObjectPtr, Mode)
 	End Method
 	
 	Method setOverwriteMode(overwrite:Int)
@@ -369,6 +399,88 @@ Type QTextEdit Extends QAbstractScrollArea
 	Method zoomOut(_range:Int = 1)
 		bmx_qt_qtextedit_zoomout(qObjectPtr, _range)
 	End Method
+	
+	
+	Method changeEvent(event:QEvent)
+		bmx_qt_qtextedit_default_changeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method contextMenuEvent(event:QContextMenuEvent)
+		bmx_qt_qtextedit_default_contextmenuevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragEnterEvent(event:QDragEnterEvent)
+		bmx_qt_qtextedit_default_dragenterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragLeaveEvent(event:QDragLeaveEvent)
+		bmx_qt_qtextedit_default_dragleaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragMoveEvent(event:QDragMoveEvent)
+		bmx_qt_qtextedit_default_dragmoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dropEvent(event:QDropEvent)
+		bmx_qt_qtextedit_default_dropevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusInEvent(event:QFocusEvent)
+		bmx_qt_qtextedit_default_focusinevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusNextPrevChild:Int(_next:Int)
+		Return bmx_qt_qtextedit_default_focusnextprevchild(qObjectPtr, _next)
+	End Method
+
+	Method focusOutEvent(event:QFocusEvent)
+		bmx_qt_qtextedit_default_focusoutevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method inputMethodEvent(event:QInputMethodEvent)
+		bmx_qt_qtextedit_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyPressEvent(event:QKeyEvent)
+		bmx_qt_qtextedit_default_keypressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyReleaseEvent(event:QKeyEvent)
+		bmx_qt_qtextedit_default_keyreleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qtextedit_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qtextedit_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qtextedit_default_mousepressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qtextedit_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qtextedit_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method resizeEvent(event:QResizeEvent)
+		bmx_qt_qtextedit_default_resizeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method scrollContentsBy(dx:Int, dy:Int)
+		bmx_qt_qtextedit_default_scrollcontentsby(qObjectPtr, dx, dy)
+	End Method
+	
+	Method wheelEvent(event:QWheelEvent)
+		bmx_qt_qtextedit_default_wheelevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
 	
 	' SIGNAL : copyAvailable
 	Function _OnCopyAvailable(obj:QTextEdit, yes:Int)
