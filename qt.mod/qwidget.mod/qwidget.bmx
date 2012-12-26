@@ -397,6 +397,14 @@ Type QWidget Extends QObject
 	' TODO
 	End Method
 	
+	Method setBaseSize(basew:Int, baseh:Int)
+		bmx_qt_qwidget_setbasesize(qObjectPtr, basew, baseh)
+	End Method
+	
+	Method setContentsMargins(Left:Int, top:Int, Right:Int, bottom:Int)
+		bmx_qt_qwidget_setcontentsmargins(qObjectPtr, Left, top, Right, bottom)
+	End Method
+
 	Method setContextMenuPolicy(policy:Int)
 		bmx_qt_qwidget_setcontextmenupolicy(qObjectPtr, policy)
 	End Method

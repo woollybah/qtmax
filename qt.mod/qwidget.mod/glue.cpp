@@ -799,6 +799,14 @@ void bmx_qt_qwidget_setautofillbackground(QWidget * widget, int enabled) {
 	widget->setAutoFillBackground(static_cast<bool>(enabled));
 }
 
+void bmx_qt_qwidget_setbasesize(QWidget * widget, int basew, int baseh) {
+	widget->setBaseSize(basew, baseh);
+}
+
+void bmx_qt_qwidget_setcontentsmargins(QWidget * widget, int left, int top, int right, int bottom) {
+	widget->setContentsMargins(left, top, right, bottom);
+}
+
 // *********************************************
 
 void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event) {
