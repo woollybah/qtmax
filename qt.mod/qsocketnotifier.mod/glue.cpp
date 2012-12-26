@@ -57,7 +57,7 @@ QSocketNotifier::Type bmx_qt_notifiertypefromint(int t) {
 	return QSocketNotifier::Read;
 }
 
-QSocketNotifier * bmx_qt_qsocketnotified_create(BBObject * handle, int socket, int type, QObject * parent) {
+QSocketNotifier * bmx_qt_qsocketnotifier_create(BBObject * handle, int socket, int type, QObject * parent) {
 	return new MaxQSocketNotifier(handle, socket, bmx_qt_notifiertypefromint(type), parent);
 }
 
