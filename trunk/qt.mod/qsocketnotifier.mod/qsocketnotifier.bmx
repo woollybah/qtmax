@@ -64,8 +64,8 @@ Type QSocketNotifier Extends QObject
 	End Method
 
 	' SIGNAL : activated
-	Function _OnActivated(obj:QSocketNotifier)
-		obj._InvokeSignals("activated", Null)
+	Function _OnActivated(obj:QSocketNotifier, socket:Int)
+		obj._InvokeSignals("activated", [String(socket)])
 	End Function
 
 End Type

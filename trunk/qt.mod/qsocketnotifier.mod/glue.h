@@ -33,7 +33,7 @@ extern "C" {
 
 #include <blitz.h>
 
-	void _qt_qsocketnotifier_QSocketNotifier__OnActivated(BBObject * handle);
+	void _qt_qsocketnotifier_QSocketNotifier__OnActivated(BBObject * handle, int socket);
 	
 	QSocketNotifier * bmx_qt_qsocketnotifier_create(BBObject * handle, int socket, int type, QObject * parent);
 
@@ -49,7 +49,7 @@ public:
 	MaxQSocketNotifier(BBObject * handle, int socket, QSocketNotifier::Type type, QObject * parent = 0);
 	~MaxQSocketNotifier();
 
-	void onActivated();
+	void onActivated(int socket);
 
 private:
 	BBObject * maxHandle;
