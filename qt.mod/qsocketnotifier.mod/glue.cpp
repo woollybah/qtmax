@@ -29,7 +29,7 @@ MaxQSocketNotifier::MaxQSocketNotifier(BBObject * handle, int socket, QSocketNot
 {
 	qbind(this, handle);
 	
-	connect(this, SIGNAL(activated()), SLOT(onActivated()));
+	connect(this, SIGNAL(activated(int)), SLOT(onActivated(int)));
 }
 
 MaxQSocketNotifier::~MaxQSocketNotifier()
@@ -37,8 +37,8 @@ MaxQSocketNotifier::~MaxQSocketNotifier()
 	qunbind(this);
 }
 
-void MaxQSocketNotifier::onActivated() {
-	_qt_qsocketnotifier_QSocketNotifier__OnActivated(maxHandle);
+void MaxQSocketNotifier::onActivated(int socket) {
+	_qt_qsocketnotifier_QSocketNotifier__OnActivated(maxHandle, socket);
 }
 
 
