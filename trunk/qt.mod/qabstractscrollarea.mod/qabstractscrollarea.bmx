@@ -94,6 +94,14 @@ Type QAbstractScrollArea Extends QFrame
 		Return QWidget._find(bmx_qt_qabstractscrollarea_viewport(qObjectPtr))
 	End Method
 
+
+	Method scrollContentsBy(dx:Int, dy:Int)
+	' nothing to see here...
+	End Method
+	
+	Function _OnScrollContentsBy(obj:QAbstractScrollArea, dx:Int, dy:Int)
+		obj.scrollContentsBy(dx, dy)
+	End Function
 	
 End Type
 

@@ -31,6 +31,8 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qabstractscrollarea_QAbstractScrollArea__OnScrollContentsBy(BBObject * handle, int dx, int dy);
+
 	void bmx_qt_qabstractscrollarea_addscrollbarwidget(QAbstractScrollArea * sa, QWidget * widget, int alignment);
 	QWidget * bmx_qt_qabstractscrollarea_cornerwidget(QAbstractScrollArea * sa);
 	QScrollBar * bmx_qt_qabstractscrollarea_horizontalscrollbar(QAbstractScrollArea * sa);

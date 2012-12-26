@@ -52,6 +52,27 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qtextedit_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qtextedit_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_scrollcontentsby(handle:Byte Ptr, dx:Int, dy:Int)
+	Function bmx_qt_qtextedit_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+
 	Function bmx_qt_qtextedit_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qtextedit_setreadonly(handle:Byte Ptr, value:Int)
 
@@ -80,6 +101,12 @@ Extern
 	Function bmx_qt_qtextedit_undo(handle:Byte Ptr)
 	Function bmx_qt_qtextedit_zoomin(handle:Byte Ptr, _range:Int)
 	Function bmx_qt_qtextedit_zoomout(handle:Byte Ptr, _range:Int)
+	Function bmx_qt_qtextedit_setacceptrichtext(handle:Byte Ptr, accept:Int)
+	Function bmx_qt_qtextedit_setautoformatting(handle:Byte Ptr, features:Int)
+	Function bmx_qt_qtextedit_setcursorwidth(handle:Byte Ptr, width:Int)
+	Function bmx_qt_qtextedit_setdocumenttitle(handle:Byte Ptr, title:String)
+	Function bmx_qt_qtextedit_setlinewrapcolumnorwidth(handle:Byte Ptr, w:Int)
+	Function bmx_qt_qtextedit_setlinewrapmode(handle:Byte Ptr, Mode:Int)
 
 	Function bmx_qt_qtextedit_tohtml:String(handle:Byte Ptr)
 	Function bmx_qt_qtextedit_toplaintext:String(handle:Byte Ptr)
