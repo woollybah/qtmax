@@ -49,10 +49,12 @@ public:
 	MaxQSocketNotifier(BBObject * handle, int socket, QSocketNotifier::Type type, QObject * parent = 0);
 	~MaxQSocketNotifier();
 
-	void onActivated(int socket);
-
 private:
 	BBObject * maxHandle;
+
+private slots:
+	void onActivated(int socket);
+
 };
 
 #endif
