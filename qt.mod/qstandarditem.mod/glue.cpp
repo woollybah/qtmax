@@ -24,6 +24,12 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQStandardItem::MaxQStandardItem()
+	: QStandardItem()
+{
+
+}
+
 MaxQStandardItem::MaxQStandardItem(const QString & text)
 	: dataHandle(0), QStandardItem(text)
 {
@@ -82,7 +88,7 @@ void MaxQStandardItem::setData(const QVariant & value, int role) {
 }
 
 MaxQStandardItem * MaxQStandardItem::clone() const {
-	MaxQStandardItem item = new MaxQStandardItem();
+	MaxQStandardItem * item = new MaxQStandardItem();
 	// TODO : map to a BlitzMax BObject?
 	return item; 
 }

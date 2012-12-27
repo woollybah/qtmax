@@ -41,216 +41,422 @@ MaxQGraphicsView::~MaxQGraphicsView()
 	qunbind(this);
 }
 
-void MaxQGraphicsView::paintEvent(QPaintEvent * event) {
-	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, event);
+// ****************** DEFAULT HANDLERS ********************
+
+// QGraphicsView
+// QAbstractScrollArea
+void MaxQGraphicsView::defaultscrollContentsBy(int dx, int dy){
+	QGraphicsView::scrollContentsBy(dx, dy);
 }
 
-void MaxQGraphicsView::mouseDoubleClickEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__OnMouseDoubleClickEvent(maxHandle, event);
+bool MaxQGraphicsView::defaultviewportEvent(QEvent * event){
+	return QGraphicsView::viewportEvent(event);
 }
 
-void MaxQGraphicsView::mouseMoveEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__OnMouseMoveEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::mousePressEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__OnMousePressEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::mouseReleaseEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__OnMouseReleaseEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::actionEvent(QActionEvent * event){
-	_qt_qwidget_QWidget__OnActionEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::changeEvent(QEvent * event){
-	_qt_qwidget_QWidget__OnChangeEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::closeEvent(QCloseEvent * event){
-	_qt_qwidget_QWidget__OnCloseEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::contextMenuEvent(QContextMenuEvent * event){
-	_qt_qwidget_QWidget__OnContextMenuEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::dragEnterEvent(QDragEnterEvent * event){
-	_qt_qwidget_QWidget__OnDragEnterEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::dragLeaveEvent(QDragLeaveEvent * event){
-	_qt_qwidget_QWidget__OnDragLeaveEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::dragMoveEvent(QDragMoveEvent * event){
-	_qt_qwidget_QWidget__OnDragMoveEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::dropEvent(QDropEvent * event){
-	_qt_qwidget_QWidget__OnDropEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::enterEvent(QEvent * event){
-	_qt_qwidget_QWidget__OnEnterEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::focusInEvent(QFocusEvent * event){
-	_qt_qwidget_QWidget__OnFocusInEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::focusOutEvent(QFocusEvent * event){
-	_qt_qwidget_QWidget__OnFocusOutEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::hideEvent(QHideEvent * event){
-	_qt_qwidget_QWidget__OnHideEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::inputMethodEvent(QInputMethodEvent * event){
-	_qt_qwidget_QWidget__OnInputMethodEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::keyPressEvent(QKeyEvent * event){
-	_qt_qwidget_QWidget__OnKeyPressEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::keyReleaseEvent(QKeyEvent * event){
-	_qt_qwidget_QWidget__OnKeyReleaseEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::leaveEvent(QEvent * event){
-	_qt_qwidget_QWidget__OnLeaveEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::moveEvent(QMoveEvent * event){
-	_qt_qwidget_QWidget__OnMoveEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::resizeEvent(QResizeEvent * event){
-	_qt_qwidget_QWidget__OnResizeEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::showEvent(QShowEvent * event){
-	_qt_qwidget_QWidget__OnShowEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::tabletEvent(QTabletEvent * event){
-	_qt_qwidget_QWidget__OnTabletEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::wheelEvent(QWheelEvent * event){
-	_qt_qwidget_QWidget__OnWheelEvent(maxHandle, event);
-}
-
-void MaxQGraphicsView::defaultActionEvent(QActionEvent * event) {
+// QFrame
+// QWidget
+void MaxQGraphicsView::defaultactionEvent(QActionEvent * event){
 	QGraphicsView::actionEvent(event);
 }
 
-void MaxQGraphicsView::defaultChangeEvent(QEvent * event) {
+void MaxQGraphicsView::defaultchangeEvent(QEvent * event){
 	QGraphicsView::changeEvent(event);
 }
 
-void MaxQGraphicsView::defaultCloseEvent(QCloseEvent * event) {
+void MaxQGraphicsView::defaultcloseEvent(QCloseEvent * event){
 	QGraphicsView::closeEvent(event);
 }
 
-void MaxQGraphicsView::defaultContextMenuEvent(QContextMenuEvent * event) {
+void MaxQGraphicsView::defaultcontextMenuEvent(QContextMenuEvent * event){
 	QGraphicsView::contextMenuEvent(event);
 }
 
-void MaxQGraphicsView::defaultDragEnterEvent(QDragEnterEvent * event) {
+void MaxQGraphicsView::defaultdragEnterEvent(QDragEnterEvent * event){
 	QGraphicsView::dragEnterEvent(event);
 }
 
-void MaxQGraphicsView::defaultDragLeaveEvent(QDragLeaveEvent * event) {
+void MaxQGraphicsView::defaultdragLeaveEvent(QDragLeaveEvent * event){
 	QGraphicsView::dragLeaveEvent(event);
 }
 
-void MaxQGraphicsView::defaultDragMoveEvent(QDragMoveEvent * event) {
+void MaxQGraphicsView::defaultdragMoveEvent(QDragMoveEvent * event){
 	QGraphicsView::dragMoveEvent(event);
 }
 
-void MaxQGraphicsView::defaultDropEvent(QDropEvent * event) {
+void MaxQGraphicsView::defaultdropEvent(QDropEvent * event){
 	QGraphicsView::dropEvent(event);
 }
 
-void MaxQGraphicsView::defaultEnterEvent(QEvent * event) {
+void MaxQGraphicsView::defaultenterEvent(QEvent * event){
 	QGraphicsView::enterEvent(event);
 }
 
-void MaxQGraphicsView::defaultFocusInEvent(QFocusEvent * event) {
+void MaxQGraphicsView::defaultfocusInEvent(QFocusEvent * event){
 	QGraphicsView::focusInEvent(event);
 }
 
-void MaxQGraphicsView::defaultFocusOutEvent(QFocusEvent * event) {
+bool MaxQGraphicsView::defaultfocusNextChild() {
+	return QGraphicsView::focusNextChild();
+}
+
+bool MaxQGraphicsView::defaultfocusNextPrevChild(bool next){
+	return QGraphicsView::focusNextPrevChild(next);
+}
+
+void MaxQGraphicsView::defaultfocusOutEvent(QFocusEvent * event){
 	QGraphicsView::focusOutEvent(event);
 }
 
-void MaxQGraphicsView::defaultHideEvent(QHideEvent * event) {
+bool MaxQGraphicsView::defaultfocusPreviousChild() {
+	return QGraphicsView::focusPreviousChild();
+}
+
+void MaxQGraphicsView::defaulthideEvent(QHideEvent * event){
 	QGraphicsView::hideEvent(event);
 }
 
-void MaxQGraphicsView::defaultInputMethodEvent(QInputMethodEvent * event) {
+void MaxQGraphicsView::defaultinputMethodEvent(QInputMethodEvent * event){
 	QGraphicsView::inputMethodEvent(event);
 }
 
-void MaxQGraphicsView::defaultKeyPressEvent(QKeyEvent * event) {
+void MaxQGraphicsView::defaultkeyPressEvent(QKeyEvent * event){
 	QGraphicsView::keyPressEvent(event);
 }
 
-void MaxQGraphicsView::defaultKeyReleaseEvent(QKeyEvent * event) {
+void MaxQGraphicsView::defaultkeyReleaseEvent(QKeyEvent * event){
 	QGraphicsView::keyReleaseEvent(event);
 }
 
-void MaxQGraphicsView::defaultLeaveEvent(QEvent * event) {
+void MaxQGraphicsView::defaultleaveEvent(QEvent * event){
 	QGraphicsView::leaveEvent(event);
 }
 
-void MaxQGraphicsView::defaultMoveEvent(QMoveEvent * event) {
-	QGraphicsView::moveEvent(event);
-}
-
-void MaxQGraphicsView::defaultPaintEvent(QPaintEvent * event) {
-	QGraphicsView::paintEvent(event);
-}
-
-void MaxQGraphicsView::defaultMouseDoubleClickEvent(QMouseEvent * event) {
+void MaxQGraphicsView::defaultmouseDoubleClickEvent(QMouseEvent * event){
 	QGraphicsView::mouseDoubleClickEvent(event);
 }
 
-void MaxQGraphicsView::defaultMouseMoveEvent(QMouseEvent * event) {
+void MaxQGraphicsView::defaultmouseMoveEvent(QMouseEvent * event){
 	QGraphicsView::mouseMoveEvent(event);
 }
 
-void MaxQGraphicsView::defaultMousePressEvent(QMouseEvent * event) {
+void MaxQGraphicsView::defaultmousePressEvent(QMouseEvent * event){
 	QGraphicsView::mousePressEvent(event);
 }
 
-void MaxQGraphicsView::defaultMouseReleaseEvent(QMouseEvent * event) {
+void MaxQGraphicsView::defaultmouseReleaseEvent(QMouseEvent * event){
 	QGraphicsView::mouseReleaseEvent(event);
 }
 
-void MaxQGraphicsView::defaultResizeEvent(QResizeEvent * event) {
+void MaxQGraphicsView::defaultmoveEvent(QMoveEvent * event){
+	QGraphicsView::moveEvent(event);
+}
+
+void MaxQGraphicsView::defaultpaintEvent(QPaintEvent * event){
+	QGraphicsView::paintEvent(event);
+}
+
+void MaxQGraphicsView::defaultresizeEvent(QResizeEvent * event){
 	QGraphicsView::resizeEvent(event);
 }
 
-void MaxQGraphicsView::defaultShowEvent(QShowEvent * event) {
+void MaxQGraphicsView::defaultshowEvent(QShowEvent * event){
 	QGraphicsView::showEvent(event);
 }
 
-void MaxQGraphicsView::defaultTabletEvent(QTabletEvent * event) {
+void MaxQGraphicsView::defaulttabletEvent(QTabletEvent * event){
 	QGraphicsView::tabletEvent(event);
 }
 
-void MaxQGraphicsView::defaultWheelEvent(QWheelEvent * event) {
+void MaxQGraphicsView::defaultwheelEvent(QWheelEvent * event){
 	QGraphicsView::wheelEvent(event);
+}
+
+// QObject
+bool MaxQGraphicsView::defaultevent(QEvent * event){
+	return QGraphicsView::event(event);
+}
+
+void MaxQGraphicsView::defaulttimerEvent(QTimerEvent * event){
+	QGraphicsView::timerEvent(event);
+}
+
+
+// ****************** HANDLERS - TO MAX ********************
+
+// QGraphicsView
+// QAbstractScrollArea
+void MaxQGraphicsView::scrollContentsBy(int dx, int dy) {
+	_qt_qabstractscrollarea_QAbstractScrollArea__scrollContentsBy(maxHandle, dx, dy);
+}
+
+bool MaxQGraphicsView::viewportEvent(QEvent * event) {
+	return static_cast<bool>(_qt_qabstractscrollarea_QAbstractScrollArea__viewportEvent(maxHandle, event));
+}
+// QFrame
+// QWidget
+void MaxQGraphicsView::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
+}
+
+
+void MaxQGraphicsView::actionEvent(QActionEvent * event) {
+	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::changeEvent(QEvent * event) {
+	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::closeEvent(QCloseEvent * event) {
+	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::contextMenuEvent(QContextMenuEvent * event) {
+	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::dragEnterEvent(QDragEnterEvent * event) {
+	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::dragLeaveEvent(QDragLeaveEvent * event) {
+	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::dragMoveEvent(QDragMoveEvent * event) {
+	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::dropEvent(QDropEvent * event) {
+	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::focusInEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+}
+
+bool MaxQGraphicsView::focusNextChild () {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextChild(maxHandle));
+}
+
+bool MaxQGraphicsView::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQGraphicsView::focusOutEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+}
+
+bool MaxQGraphicsView::focusPreviousChild() {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusPreviousChild(maxHandle));
+}
+
+void MaxQGraphicsView::hideEvent(QHideEvent * event) {
+	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::keyPressEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::keyReleaseEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::moveEvent(QMoveEvent * event) {
+	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::paintEvent(QPaintEvent * event) {
+	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::resizeEvent(QResizeEvent * event) {
+	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::showEvent(QShowEvent * event) {
+	_qt_qwidget_QWidget__showEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::tabletEvent(QTabletEvent * event) {
+	_qt_qwidget_QWidget__tabletEvent(maxHandle, event);
+}
+
+void MaxQGraphicsView::wheelEvent(QWheelEvent * event) {
+	_qt_qwidget_QWidget__wheelEvent(maxHandle, event);
+}
+
+// QObject
+bool MaxQGraphicsView::event(QEvent * event) {
+	return static_cast<bool>(_qt_qobject_QObject__event(maxHandle, event));
 }
 
 void MaxQGraphicsView::timerEvent(QTimerEvent * event) {
 	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+// *********************************************
+
+// QGraphicsView
+// QAbstractScrollArea
+void bmx_qt_qgraphicsview_default_scrollcontentsby(MaxQGraphicsView * view, int dx, int dy) {
+	view->defaultscrollContentsBy(dx, dy);
+}
+
+int bmx_qt_qgraphicsview_default_viewportevent(MaxQGraphicsView * view, QEvent * event) {
+	static_cast<int>(view->defaultviewportEvent(event));
+}
+
+// QFrame
+// QWidget
+void bmx_qt_qgraphicsview_default_actionevent(MaxQGraphicsView * view, QActionEvent * event) {
+	view->defaultactionEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_changeevent(MaxQGraphicsView * view, QEvent * event) {
+	view->defaultchangeEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_closeevent(MaxQGraphicsView * view, QCloseEvent * event) {
+	view->defaultcloseEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_contextmenuevent(MaxQGraphicsView * view, QContextMenuEvent * event) {
+	view->defaultcontextMenuEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_dragenterevent(MaxQGraphicsView * view, QDragEnterEvent * event) {
+	view->defaultdragEnterEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_dragleaveevent(MaxQGraphicsView * view, QDragLeaveEvent * event) {
+	view->defaultdragLeaveEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_dragmoveevent(MaxQGraphicsView * view, QDragMoveEvent * event) {
+	view->defaultdragMoveEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_dropevent(MaxQGraphicsView * view, QDropEvent * event) {
+	view->defaultdropEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_enterevent(MaxQGraphicsView * view, QEvent * event) {
+	view->defaultenterEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_focusinevent(MaxQGraphicsView * view, QFocusEvent * event) {
+	view->defaultfocusInEvent(event);
+}
+
+int bmx_qt_qgraphicsview_default_focusnextprevchild(MaxQGraphicsView * view, int next) {
+	return static_cast<int>(view->defaultfocusNextPrevChild(static_cast<bool>(next)));
+}
+
+int bmx_qt_qgraphicsview_default_focusnextchild(MaxQGraphicsView * view) {
+	return static_cast<int>(view->defaultfocusNextChild());
+}
+
+void bmx_qt_qgraphicsview_default_focusoutevent(MaxQGraphicsView * view, QFocusEvent * event) {
+	view->defaultfocusOutEvent(event);
+}
+
+int bmx_qt_qgraphicsview_default_focuspreviouschild(MaxQGraphicsView * view) {
+	return static_cast<int>(view->defaultfocusPreviousChild());
+}
+
+void bmx_qt_qgraphicsview_default_hideevent(MaxQGraphicsView * view, QHideEvent * event) {
+	view->defaulthideEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_inputmethodevent(MaxQGraphicsView * view, QInputMethodEvent * event) {
+	view->defaultinputMethodEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_keypressevent(MaxQGraphicsView * view, QKeyEvent * event) {
+	view->defaultkeyPressEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_keyreleaseevent(MaxQGraphicsView * view, QKeyEvent * event) {
+	view->defaultkeyReleaseEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_leaveevent(MaxQGraphicsView * view, QEvent * event) {
+	view->defaultleaveEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_mousedoubleclickevent(MaxQGraphicsView * view, QMouseEvent * event) {
+	view->defaultmouseDoubleClickEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_mousemoveevent(MaxQGraphicsView * view, QMouseEvent * event) {
+	view->defaultmouseMoveEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_mousepressevent(MaxQGraphicsView * view, QMouseEvent * event) {
+	view->defaultmousePressEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_mousereleaseevent(MaxQGraphicsView * view, QMouseEvent * event) {
+	view->defaultmouseReleaseEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_moveevent(MaxQGraphicsView * view, QMoveEvent * event) {
+	view->defaultmoveEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_paintevent(MaxQGraphicsView * view, QPaintEvent * event) {
+	view->defaultpaintEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_resizeevent(MaxQGraphicsView * view, QResizeEvent * event) {
+	view->defaultresizeEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_showevent(MaxQGraphicsView * view, QShowEvent * event) {
+	view->defaultshowEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_tabletevent(MaxQGraphicsView * view, QTabletEvent * event) {
+	view->defaulttabletEvent(event);
+}
+
+void bmx_qt_qgraphicsview_default_wheelevent(MaxQGraphicsView * view, QWheelEvent * event) {
+	view->defaultwheelEvent(event);
+}
+
+// QObject
+int bmx_qt_qgraphicsview_default_event(MaxQGraphicsView * view, QEvent * event) {
+	return static_cast<int>(view->defaultevent(event));
+}
+
+void bmx_qt_qgraphicsview_default_timerevent(MaxQGraphicsView * view, QTimerEvent * event) {
+	view->defaulttimerEvent(event);
 }
 
 // ---------------------------------------------------------------------------------------
@@ -764,112 +970,6 @@ void bmx_qt_qgraphicsview_sizehint(QGraphicsView * view, int * w, int * h) {
 
 void bmx_qt_qgraphicsview_render(QGraphicsView * view, QPainter * painter, MaxQRectF * target, MaxQRect * source, int aspectRatioMode) {
 	view->render(painter, (target) ? target->Rect() : QRectF(), (target) ? source->Rect() : QRect(), (Qt::AspectRatioMode)aspectRatioMode);
-}
-
-// *********************************************
-
-void bmx_qt_qgraphicsview_default_paintevent(MaxQGraphicsView * widget, QPaintEvent * event) {
-	widget->defaultPaintEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_mousedoubleclickevent(MaxQGraphicsView * widget, QMouseEvent * event) {
-	widget->defaultMouseDoubleClickEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_mousemoveevent(MaxQGraphicsView * widget, QMouseEvent * event) {
-	widget->defaultMouseMoveEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_mousepressevent(MaxQGraphicsView * widget, QMouseEvent * event) {
-	widget->defaultMousePressEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_mousereleaseevent(MaxQGraphicsView * widget, QMouseEvent * event) {
-	widget->defaultMouseReleaseEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_actionevent(MaxQGraphicsView * widget, QActionEvent * event) {
-	widget->defaultActionEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_changeevent(MaxQGraphicsView * widget, QEvent * event) {
-	widget->defaultChangeEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_closeevent(MaxQGraphicsView * widget, QCloseEvent * event) {
-	widget->defaultCloseEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_contextmenuevent(MaxQGraphicsView * widget, QContextMenuEvent * event) {
-	widget->defaultContextMenuEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_dragenterevent(MaxQGraphicsView * widget, QDragEnterEvent * event) {
-	widget->defaultDragEnterEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_dragleaveevent(MaxQGraphicsView * widget, QDragLeaveEvent * event) {
-	widget->defaultDragLeaveEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_dragmoveevent(MaxQGraphicsView * widget, QDragMoveEvent * event) {
-	widget->defaultDragMoveEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_dropevent(MaxQGraphicsView * widget, QDropEvent * event) {
-	widget->defaultDropEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_enterevent(MaxQGraphicsView * widget, QEvent * event) {
-	widget->defaultEnterEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_focusinevent(MaxQGraphicsView * widget, QFocusEvent * event) {
-	widget->defaultFocusInEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_focusoutevent(MaxQGraphicsView * widget, QFocusEvent * event) {
-	widget->defaultFocusOutEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_hideevent(MaxQGraphicsView * widget, QHideEvent * event) {
-	widget->defaultHideEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_inputmethodevent(MaxQGraphicsView * widget, QInputMethodEvent * event) {
-	widget->defaultInputMethodEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_keypressevent(MaxQGraphicsView * widget, QKeyEvent * event) {
-	widget->defaultKeyPressEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_keyreleaseevent(MaxQGraphicsView * widget, QKeyEvent * event) {
-	widget->defaultKeyReleaseEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_leaveevent(MaxQGraphicsView * widget, QEvent * event) {
-	widget->defaultLeaveEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_moveevent(MaxQGraphicsView * widget, QMoveEvent * event) {
-	widget->defaultMoveEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_resizeevent(MaxQGraphicsView * widget, QResizeEvent * event) {
-	widget->defaultResizeEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_showevent(MaxQGraphicsView * widget, QShowEvent * event) {
-	widget->defaultShowEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_tabletevent(MaxQGraphicsView * widget, QTabletEvent * event) {
-	widget->defaultTabletEvent(event);
-}
-
-void bmx_qt_qgraphicsview_default_wheelevent(MaxQGraphicsView * widget, QWheelEvent * event) {
-	widget->defaultWheelEvent(event);
 }
 
 // *********************************************
