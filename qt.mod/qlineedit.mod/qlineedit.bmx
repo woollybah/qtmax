@@ -419,6 +419,10 @@ Type QLineEdit Extends QWidget
 		bmx_qt_qlineedit_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusNextChild:Int()
+		Return bmx_qt_qlineedit_default_focusnextchild(qObjectPtr)
+	End Method 
+
 	Method focusNextPrevChild:Int(_next:Int)
 		Return bmx_qt_qlineedit_default_focusnextprevchild(qObjectPtr, _next)
 	End Method
@@ -427,6 +431,10 @@ Type QLineEdit Extends QWidget
 		bmx_qt_qlineedit_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusPreviousChild:Int()
+		Return bmx_qt_qlineedit_default_focuspreviouschild(qObjectPtr)
+	End Method 
+
 	Method hideEvent(event:QHideEvent)
 		bmx_qt_qlineedit_default_hideevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -467,6 +475,10 @@ Type QLineEdit Extends QWidget
 		bmx_qt_qlineedit_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qlineedit_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qlineedit_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method

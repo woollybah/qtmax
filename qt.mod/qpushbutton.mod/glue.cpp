@@ -219,18 +219,6 @@ void MaxQPushButton::nextCheckState() {
 }
 
 // QWidget
-void MaxQPushButton::mouseMoveEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
-}
-
-void MaxQPushButton::mousePressEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
-}
-
-void MaxQPushButton::mouseReleaseEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
-}
-
 
 void MaxQPushButton::actionEvent(QActionEvent * event) {
 	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
@@ -310,6 +298,18 @@ void MaxQPushButton::keyReleaseEvent(QKeyEvent * event) {
 
 void MaxQPushButton::mouseDoubleClickEvent(QMouseEvent * event) {
 	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQPushButton::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
+}
+
+void MaxQPushButton::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
+}
+
+void MaxQPushButton::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
 }
 
 void MaxQPushButton::moveEvent(QMoveEvent * event) {

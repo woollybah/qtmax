@@ -81,6 +81,13 @@ void MaxQStandardItem::setData(const QVariant & value, int role) {
 	}
 }
 
+MaxQStandardItem * MaxQStandardItem::clone() const {
+	MaxQStandardItem item = new MaxQStandardItem();
+	// TODO : map to a BlitzMax BObject?
+	return item; 
+}
+
+
 // *********************************************
 
 typedef std::map<MaxQStandardItem*, BBObject*> QStandardItemPeerMap;

@@ -98,7 +98,7 @@ extern "C" {
 	
 	void bmx_qt_qlineedit_setvalidator(QLineEdit * edit, QValidator * v);
 
-
+	// QLineEdit
 	// QWidget
 	void bmx_qt_qlineedit_default_actionevent(MaxQLineEdit * edit, QActionEvent * event);
 	void bmx_qt_qlineedit_default_changeevent(MaxQLineEdit * edit, QEvent * event);
@@ -148,6 +148,15 @@ public:
 private:
 	BBObject * maxHandle;
 
+private slots:
+	void onCursorPositionChanged(int oldPos, int newPos);
+	void onEditingFinished();
+	void onReturnPressed();
+	void onSelectionChanged();
+	void onTextChanged(const QString & text);
+	void onTextEdited(const QString & text);
+	void onCustomContextMenuRequested(const QPoint & pos);
+
 public:
 	// QLineEdit
 	// QWidget
@@ -183,15 +192,6 @@ public:
 	// QObject
 	bool defaultevent(QEvent * event);
 	void defaulttimerEvent(QTimerEvent * event);
-
-private slots:
-	void onCursorPositionChanged(int oldPos, int newPos);
-	void onEditingFinished();
-	void onReturnPressed();
-	void onSelectionChanged();
-	void onTextChanged(const QString & text);
-	void onTextEdited(const QString & text);
-	void onCustomContextMenuRequested(const QPoint & pos);
 
 protected:
 	// QLineEdit
