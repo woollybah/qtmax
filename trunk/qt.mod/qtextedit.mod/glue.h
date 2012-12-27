@@ -87,27 +87,44 @@ extern "C" {
 	BBString * bmx_qt_qtextedit_toplaintext(QTextEdit * edit);
 	QTextDocument * bmx_qt_qtextedit_document(QTextEdit * edit);
 
+	// QTextEdit
+	// QAbstractScrollArea
+	void bmx_qt_qtextedit_default_scrollcontentsby(MaxQTextEdit * edit, int dx, int dy);
+	int bmx_qt_qtextedit_default_viewportevent(MaxQTextEdit * edit, QEvent * event);
+	// QFrame
+	// QWidget
 	void bmx_qt_qtextedit_default_actionevent(MaxQTextEdit * edit, QActionEvent * event);
 	void bmx_qt_qtextedit_default_changeevent(MaxQTextEdit * edit, QEvent * event);
+	void bmx_qt_qtextedit_default_closeevent(MaxQTextEdit * edit, QCloseEvent * event);
 	void bmx_qt_qtextedit_default_contextmenuevent(MaxQTextEdit * edit, QContextMenuEvent * event);
 	void bmx_qt_qtextedit_default_dragenterevent(MaxQTextEdit * edit, QDragEnterEvent * event);
 	void bmx_qt_qtextedit_default_dragleaveevent(MaxQTextEdit * edit, QDragLeaveEvent * event);
 	void bmx_qt_qtextedit_default_dragmoveevent(MaxQTextEdit * edit, QDragMoveEvent * event);
 	void bmx_qt_qtextedit_default_dropevent(MaxQTextEdit * edit, QDropEvent * event);
+	void bmx_qt_qtextedit_default_enterevent(MaxQTextEdit * edit, QEvent * event);
 	void bmx_qt_qtextedit_default_focusinevent(MaxQTextEdit * edit, QFocusEvent * event);
 	int bmx_qt_qtextedit_default_focusnextprevchild(MaxQTextEdit * edit, int next);
+	int bmx_qt_qtextedit_default_focusnextchild(MaxQTextEdit * edit);
 	void bmx_qt_qtextedit_default_focusoutevent(MaxQTextEdit * edit, QFocusEvent * event);
+	int bmx_qt_qtextedit_default_focuspreviouschild(MaxQTextEdit * edit);
+	void bmx_qt_qtextedit_default_hideevent(MaxQTextEdit * edit, QHideEvent * event);
 	void bmx_qt_qtextedit_default_inputmethodevent(MaxQTextEdit * edit, QInputMethodEvent * event);
 	void bmx_qt_qtextedit_default_keypressevent(MaxQTextEdit * edit, QKeyEvent * event);
 	void bmx_qt_qtextedit_default_keyreleaseevent(MaxQTextEdit * edit, QKeyEvent * event);
+	void bmx_qt_qtextedit_default_leaveevent(MaxQTextEdit * edit, QEvent * event);
 	void bmx_qt_qtextedit_default_mousedoubleclickevent(MaxQTextEdit * edit, QMouseEvent * event);
 	void bmx_qt_qtextedit_default_mousemoveevent(MaxQTextEdit * edit, QMouseEvent * event);
 	void bmx_qt_qtextedit_default_mousepressevent(MaxQTextEdit * edit, QMouseEvent * event);
 	void bmx_qt_qtextedit_default_mousereleaseevent(MaxQTextEdit * edit, QMouseEvent * event);
+	void bmx_qt_qtextedit_default_moveevent(MaxQTextEdit * edit, QMoveEvent * event);
 	void bmx_qt_qtextedit_default_paintevent(MaxQTextEdit * edit, QPaintEvent * event);
 	void bmx_qt_qtextedit_default_resizeevent(MaxQTextEdit * edit, QResizeEvent * event);
-	void bmx_qt_qtextedit_default_scrollcontentsby(MaxQTextEdit * edit, int dx, int dy);
+	void bmx_qt_qtextedit_default_showevent(MaxQTextEdit * edit, QShowEvent * event);
+	void bmx_qt_qtextedit_default_tabletevent(MaxQTextEdit * edit, QTabletEvent * event);
 	void bmx_qt_qtextedit_default_wheelevent(MaxQTextEdit * edit, QWheelEvent * event);
+	// QObject
+	int bmx_qt_qtextedit_default_event(MaxQTextEdit * edit, QEvent * event);
+	void bmx_qt_qtextedit_default_timerevent(MaxQTextEdit * edit, QTimerEvent * event);
 
 }
 
@@ -124,29 +141,6 @@ public:
 private:
 	BBObject * maxHandle;
 
-public: 
-	void defaultChangeEvent(QEvent * e);
-	void defaultContextMenuEvent(QContextMenuEvent * event);
-	void defaultDragEnterEvent(QDragEnterEvent * e);
-	void defaultDragLeaveEvent(QDragLeaveEvent * e);
-	void defaultDragMoveEvent(QDragMoveEvent * e);
-	void defaultDropEvent(QDropEvent * e);
-	void defaultFocusInEvent(QFocusEvent * e);
-	bool defaultFocusNextPrevChild(bool next);
-	void defaultFocusOutEvent(QFocusEvent * e);
-	void defaultInputMethodEvent(QInputMethodEvent * e);
-	void defaultKeyPressEvent(QKeyEvent * e);
-	void defaultKeyReleaseEvent(QKeyEvent * e);
-	void defaultMouseDoubleClickEvent(QMouseEvent * e);
-	void defaultMouseMoveEvent(QMouseEvent * e);
-	void defaultMousePressEvent(QMouseEvent * e);
-	void defaultMouseReleaseEvent(QMouseEvent * e);
-	void defaultPaintEvent(QPaintEvent * event);
-	void defaultResizeEvent(QResizeEvent * e);
-	void defaultScrollContentsBy(int dx, int dy);
-	void defaultShowEvent(QShowEvent *);
-	void defaultWheelEvent(QWheelEvent * e);
-
 private slots:
 	void onCopyAvailable(bool yes);
 	void onCurrentCharFormatChanged(const QTextCharFormat & f);
@@ -155,30 +149,86 @@ private slots:
 	void onSelectionChanged();
 	void onTextChanged();
 	void onUndoAvailable(bool available);
-	
+
+public:
+	// QTextEdit
+	// QAbstractScrollArea
+	void defaultscrollContentsBy(int dx, int dy);
+	bool defaultviewportEvent(QEvent * event);
+	// QFrame
+	// QWidget
+	void defaultactionEvent(QActionEvent * event);
+	void defaultchangeEvent(QEvent * event);
+	void defaultcloseEvent(QCloseEvent * event);
+	void defaultcontextMenuEvent(QContextMenuEvent * event);
+	void defaultdragEnterEvent(QDragEnterEvent * event);
+	void defaultdragLeaveEvent(QDragLeaveEvent * event);
+	void defaultdragMoveEvent(QDragMoveEvent * event);
+	void defaultdropEvent(QDropEvent * event);
+	void defaultenterEvent(QEvent * event);
+	void defaultfocusInEvent(QFocusEvent * event);
+	bool defaultfocusNextChild ();
+	bool defaultfocusNextPrevChild(bool next);
+	void defaultfocusOutEvent(QFocusEvent * event);
+	bool defaultfocusPreviousChild();
+	void defaulthideEvent(QHideEvent * event);
+	void defaultinputMethodEvent(QInputMethodEvent * event);
+	void defaultkeyPressEvent(QKeyEvent * event);
+	void defaultkeyReleaseEvent(QKeyEvent * event);
+	void defaultleaveEvent(QEvent * event);
+	void defaultmouseDoubleClickEvent(QMouseEvent * event);
+	void defaultmouseMoveEvent(QMouseEvent * event);
+	void defaultmousePressEvent(QMouseEvent * event);
+	void defaultmouseReleaseEvent(QMouseEvent * event);
+	void defaultmoveEvent(QMoveEvent * event);
+	void defaultpaintEvent(QPaintEvent * event);
+	void defaultresizeEvent(QResizeEvent * event);
+	void defaultshowEvent(QShowEvent * event);
+	void defaulttabletEvent(QTabletEvent * event);
+	void defaultwheelEvent(QWheelEvent * event);
+	// QObject
+	bool defaultevent(QEvent * event);
+	void defaulttimerEvent(QTimerEvent * event);
+
 protected:
-	void changeEvent(QEvent * e);
-	void contextMenuEvent(QContextMenuEvent * event);
-	void dragEnterEvent(QDragEnterEvent * e);
-	void dragLeaveEvent(QDragLeaveEvent * e);
-	void dragMoveEvent(QDragMoveEvent * e);
-	void dropEvent(QDropEvent * e);
-	void focusInEvent(QFocusEvent * e);
-	bool focusNextPrevChild(bool next);
-	void focusOutEvent(QFocusEvent * e);
-	void inputMethodEvent(QInputMethodEvent * e);
-	void keyPressEvent(QKeyEvent * e);
-	void keyReleaseEvent(QKeyEvent * e);
-	void mouseDoubleClickEvent(QMouseEvent * e);
-	void mouseMoveEvent(QMouseEvent * e);
-	void mousePressEvent(QMouseEvent * e);
-	void mouseReleaseEvent(QMouseEvent * e);
-	void paintEvent(QPaintEvent * event);
-	void resizeEvent(QResizeEvent * e);
-	void scrollContentsBy(int dx, int dy);
-	void showEvent(QShowEvent *);
-	void wheelEvent(QWheelEvent * e);
-	void timerEvent(QTimerEvent * event);
+	// QTextEdit
+	// QAbstractScrollArea
+	virtual void scrollContentsBy(int dx, int dy);
+	virtual bool viewportEvent(QEvent * event);
+	// QFrame
+	// QWidget
+	virtual void actionEvent(QActionEvent * event);
+	virtual void changeEvent(QEvent * event);
+	virtual void closeEvent(QCloseEvent * event);
+	virtual void contextMenuEvent(QContextMenuEvent * event);
+	virtual void dragEnterEvent(QDragEnterEvent * event);
+	virtual void dragLeaveEvent(QDragLeaveEvent * event);
+	virtual void dragMoveEvent(QDragMoveEvent * event);
+	virtual void dropEvent(QDropEvent * event);
+	virtual void enterEvent(QEvent * event);
+	virtual void focusInEvent(QFocusEvent * event);
+	bool focusNextChild();
+	virtual bool focusNextPrevChild(bool next);
+	virtual void focusOutEvent(QFocusEvent * event);
+	bool focusPreviousChild();
+	virtual void hideEvent(QHideEvent * event);
+	virtual void inputMethodEvent(QInputMethodEvent * event);
+	virtual void leaveEvent(QEvent * event);
+	virtual void keyPressEvent(QKeyEvent * event);
+	virtual void keyReleaseEvent(QKeyEvent * event);
+	virtual void mouseDoubleClickEvent(QMouseEvent * event);
+	virtual void mouseMoveEvent(QMouseEvent * event);
+	virtual void mousePressEvent(QMouseEvent * event);
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void moveEvent(QMoveEvent * event);
+	virtual void paintEvent(QPaintEvent * event);
+	virtual void resizeEvent(QResizeEvent * event);
+	virtual void showEvent(QShowEvent * event);
+	virtual void tabletEvent(QTabletEvent * event);
+	virtual void wheelEvent(QWheelEvent * event);
+	// QObject
+	virtual bool event(QEvent * event);
+	virtual void timerEvent(QTimerEvent * event);
 
 };
 

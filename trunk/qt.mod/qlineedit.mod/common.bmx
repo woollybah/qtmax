@@ -49,6 +49,40 @@ Import "glue.cpp"
 
 Extern
 
+	' QLineEdit
+	' QWidget
+	Function bmx_qt_qlineedit_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qlineedit_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qlineedit_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlineedit_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
+
 	Function bmx_qt_qlineedit_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qlineedit_setreadonly(handle:Byte Ptr, value:Int)
 	Function bmx_qt_qlineedit_text:String(handle:Byte Ptr)
@@ -105,22 +139,5 @@ Extern
 	Function bmx_qt_qlineedit_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 
 	Function bmx_qt_qlineedit_setvalidator(handle:Byte Ptr, v:Byte Ptr)
-
-	Function bmx_qt_qlineedit_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qlineedit_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
 
 End Extern

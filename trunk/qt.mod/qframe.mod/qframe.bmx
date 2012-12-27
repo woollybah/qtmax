@@ -167,29 +167,123 @@ Type QFrame Extends QWidget
 	End Method
 
 
+	' DEFAULT EVENT HANDLERS
+	
+	' QFrame
+	' QWidget
+	Method actionEvent(event:QActionEvent)
+		bmx_qt_qframe_default_actionevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
 	Method changeEvent(event:QEvent)
 		bmx_qt_qframe_default_changeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnChangeEvent(obj:QWidget, event:Byte Ptr)
-		QFrame(obj).changeEvent(QEvent._create(event))
-	End Function
-	
-	Method event:Int(ev:QEvent)
-		Return bmx_qt_qframe_default_event(qObjectPtr, ev.qObjectPtr)
+	Method closeEvent(event:QCloseEvent)
+		bmx_qt_qframe_default_closeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnEvent:Int(obj:QWidget, ev:Byte Ptr)
-		Return QFrame(obj).event(QEvent._create(ev))
-	End Function
-	
-	Method paintEvent(event:QPaintEvent)
-		bmx_qt_qframe_default_paintevent(qObjectPtr, event.qObjectPtr)
+	Method contextMenuEvent(event:QContextMenuEvent)
+		bmx_qt_qframe_default_contextmenuevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
-		QFrame(obj).paintEvent(QPaintEvent._create(event))
-	End Function
+	Method dragEnterEvent(event:QDragEnterEvent)
+		bmx_qt_qframe_default_dragenterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragLeaveEvent(event:QDragLeaveEvent)
+		bmx_qt_qframe_default_dragleaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dragMoveEvent(event:QDragMoveEvent)
+		bmx_qt_qframe_default_dragmoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method dropEvent(event:QDropEvent)
+		bmx_qt_qframe_default_dropevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method enterEvent(event:QEvent)
+		bmx_qt_qframe_default_enterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusInEvent(event:QFocusEvent)
+		bmx_qt_qframe_default_focusinevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method focusNextPrevChild:Int(_next:Int)
+		Return bmx_qt_qframe_default_focusnextprevchild(qObjectPtr, _next)
+	End Method
+
+	Method focusOutEvent(event:QFocusEvent)
+		bmx_qt_qframe_default_focusoutevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method hideEvent(event:QHideEvent)
+		bmx_qt_qframe_default_hideevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method inputMethodEvent(event:QInputMethodEvent)
+		bmx_qt_qframe_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyPressEvent(event:QKeyEvent)
+		bmx_qt_qframe_default_keypressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method keyReleaseEvent(event:QKeyEvent)
+		bmx_qt_qframe_default_keyreleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method leaveEvent(event:QEvent)
+		bmx_qt_qframe_default_leaveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qframe_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qframe_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qframe_default_mousepressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qframe_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method moveEvent(event:QMoveEvent)
+		bmx_qt_qframe_default_moveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method resizeEvent(event:QResizeEvent)
+		bmx_qt_qframe_default_resizeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method showEvent(event:QShowEvent)
+		bmx_qt_qframe_default_showevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method tabletEvent(event:QTabletEvent)
+		bmx_qt_qframe_default_tabletevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method wheelEvent(event:QWheelEvent)
+		bmx_qt_qframe_default_wheelevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	' QObject
+	Method event:Int(evt:QEvent)
+		Return bmx_qt_qframe_default_event(qObjectPtr, evt.qObjectPtr)
+	End Method
+
+	Method timerEvent(event:QTimerEvent)
+		bmx_qt_qframe_default_timerevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 
 End Type
 

@@ -66,6 +66,43 @@ extern "C" {
 	MaxQPixmap * bmx_qt_qlabel_pixmap(QLabel * label);
 	void bmx_qt_qlabel_setpixmap(QLabel * label, MaxQPixmap * pixmap);
 
+
+	// QLabel
+	// QFrame
+	// QWidget
+	void bmx_qt_qlabel_default_actionevent(MaxQLabel * label, QActionEvent * event);
+	void bmx_qt_qlabel_default_changeevent(MaxQLabel * label, QEvent * event);
+	void bmx_qt_qlabel_default_closeevent(MaxQLabel * label, QCloseEvent * event);
+	void bmx_qt_qlabel_default_contextmenuevent(MaxQLabel * label, QContextMenuEvent * event);
+	void bmx_qt_qlabel_default_dragenterevent(MaxQLabel * label, QDragEnterEvent * event);
+	void bmx_qt_qlabel_default_dragleaveevent(MaxQLabel * label, QDragLeaveEvent * event);
+	void bmx_qt_qlabel_default_dragmoveevent(MaxQLabel * label, QDragMoveEvent * event);
+	void bmx_qt_qlabel_default_dropevent(MaxQLabel * label, QDropEvent * event);
+	void bmx_qt_qlabel_default_enterevent(MaxQLabel * label, QEvent * event);
+	void bmx_qt_qlabel_default_focusinevent(MaxQLabel * label, QFocusEvent * event);
+	int bmx_qt_qlabel_default_focusnextprevchild(MaxQLabel * label, int next);
+	int bmx_qt_qlabel_default_focusnextchild(MaxQLabel * label);
+	void bmx_qt_qlabel_default_focusoutevent(MaxQLabel * label, QFocusEvent * event);
+	int bmx_qt_qlabel_default_focuspreviouschild(MaxQLabel * label);
+	void bmx_qt_qlabel_default_hideevent(MaxQLabel * label, QHideEvent * event);
+	void bmx_qt_qlabel_default_inputmethodevent(MaxQLabel * label, QInputMethodEvent * event);
+	void bmx_qt_qlabel_default_keypressevent(MaxQLabel * label, QKeyEvent * event);
+	void bmx_qt_qlabel_default_keyreleaseevent(MaxQLabel * label, QKeyEvent * event);
+	void bmx_qt_qlabel_default_leaveevent(MaxQLabel * label, QEvent * event);
+	void bmx_qt_qlabel_default_mousedoubleclickevent(MaxQLabel * label, QMouseEvent * event);
+	void bmx_qt_qlabel_default_mousemoveevent(MaxQLabel * label, QMouseEvent * event);
+	void bmx_qt_qlabel_default_mousepressevent(MaxQLabel * label, QMouseEvent * event);
+	void bmx_qt_qlabel_default_mousereleaseevent(MaxQLabel * label, QMouseEvent * event);
+	void bmx_qt_qlabel_default_moveevent(MaxQLabel * label, QMoveEvent * event);
+	void bmx_qt_qlabel_default_paintevent(MaxQLabel * label, QPaintEvent * event);
+	void bmx_qt_qlabel_default_resizeevent(MaxQLabel * label, QResizeEvent * event);
+	void bmx_qt_qlabel_default_showevent(MaxQLabel * label, QShowEvent * event);
+	void bmx_qt_qlabel_default_tabletevent(MaxQLabel * label, QTabletEvent * event);
+	void bmx_qt_qlabel_default_wheelevent(MaxQLabel * label, QWheelEvent * event);
+	// QObject
+	int bmx_qt_qlabel_default_event(MaxQLabel * label, QEvent * event);
+	void bmx_qt_qlabel_default_timerevent(MaxQLabel * label, QTimerEvent * event);
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -86,18 +123,79 @@ private slots:
 	void onLinkHovered(const QString & link);
 	void onCustomContextMenuRequested(const QPoint & pos);
 
+public:
+	// QLabel
+	// QFrame
+	// QWidget
+	void defaultactionEvent(QActionEvent * event);
+	void defaultchangeEvent(QEvent * event);
+	void defaultcloseEvent(QCloseEvent * event);
+	void defaultcontextMenuEvent(QContextMenuEvent * event);
+	void defaultdragEnterEvent(QDragEnterEvent * event);
+	void defaultdragLeaveEvent(QDragLeaveEvent * event);
+	void defaultdragMoveEvent(QDragMoveEvent * event);
+	void defaultdropEvent(QDropEvent * event);
+	void defaultenterEvent(QEvent * event);
+	void defaultfocusInEvent(QFocusEvent * event);
+	bool defaultfocusNextChild ();
+	bool defaultfocusNextPrevChild(bool next);
+	void defaultfocusOutEvent(QFocusEvent * event);
+	bool defaultfocusPreviousChild();
+	void defaulthideEvent(QHideEvent * event);
+	void defaultinputMethodEvent(QInputMethodEvent * event);
+	void defaultkeyPressEvent(QKeyEvent * event);
+	void defaultkeyReleaseEvent(QKeyEvent * event);
+	void defaultleaveEvent(QEvent * event);
+	void defaultmouseDoubleClickEvent(QMouseEvent * event);
+	void defaultmouseMoveEvent(QMouseEvent * event);
+	void defaultmousePressEvent(QMouseEvent * event);
+	void defaultmouseReleaseEvent(QMouseEvent * event);
+	void defaultmoveEvent(QMoveEvent * event);
+	void defaultpaintEvent(QPaintEvent * event);
+	void defaultresizeEvent(QResizeEvent * event);
+	void defaultshowEvent(QShowEvent * event);
+	void defaulttabletEvent(QTabletEvent * event);
+	void defaultwheelEvent(QWheelEvent * event);
+	// QObject
+	bool defaultevent(QEvent * event);
+	void defaulttimerEvent(QTimerEvent * event);
+
 protected:
-	void timerEvent(QTimerEvent * event);
-	void contextMenuEvent(QContextMenuEvent * ev);
-	void focusInEvent(QFocusEvent * ev);
-	bool focusNextPrevChild(bool next);
-	void focusOutEvent(QFocusEvent * ev);
-	void keyPressEvent(QKeyEvent * ev);
-	void mouseMoveEvent(QMouseEvent * ev);
-	void mousePressEvent(QMouseEvent * ev);
-	void mouseReleaseEvent(QMouseEvent * ev);
-	void enterEvent(QEvent * event);
-	void leaveEvent(QEvent * event);
+	// QLabel
+	// QFrame
+	// QWidget
+	virtual void actionEvent(QActionEvent * event);
+	virtual void changeEvent(QEvent * event);
+	virtual void closeEvent(QCloseEvent * event);
+	virtual void contextMenuEvent(QContextMenuEvent * event);
+	virtual void dragEnterEvent(QDragEnterEvent * event);
+	virtual void dragLeaveEvent(QDragLeaveEvent * event);
+	virtual void dragMoveEvent(QDragMoveEvent * event);
+	virtual void dropEvent(QDropEvent * event);
+	virtual void enterEvent(QEvent * event);
+	virtual void focusInEvent(QFocusEvent * event);
+	bool focusNextChild();
+	virtual bool focusNextPrevChild(bool next);
+	virtual void focusOutEvent(QFocusEvent * event);
+	bool focusPreviousChild();
+	virtual void hideEvent(QHideEvent * event);
+	virtual void inputMethodEvent(QInputMethodEvent * event);
+	virtual void leaveEvent(QEvent * event);
+	virtual void keyPressEvent(QKeyEvent * event);
+	virtual void keyReleaseEvent(QKeyEvent * event);
+	virtual void mouseDoubleClickEvent(QMouseEvent * event);
+	virtual void mouseMoveEvent(QMouseEvent * event);
+	virtual void mousePressEvent(QMouseEvent * event);
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void moveEvent(QMoveEvent * event);
+	virtual void paintEvent(QPaintEvent * event);
+	virtual void resizeEvent(QResizeEvent * event);
+	virtual void showEvent(QShowEvent * event);
+	virtual void tabletEvent(QTabletEvent * event);
+	virtual void wheelEvent(QWheelEvent * event);
+	// QObject
+	virtual bool event(QEvent * event);
+	virtual void timerEvent(QTimerEvent * event);
 };
 
 

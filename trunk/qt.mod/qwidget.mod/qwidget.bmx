@@ -744,10 +744,6 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_default_paintevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnPaintEvent(obj:QWidget, event:Byte Ptr)
-		obj.paintEvent(QPaintEvent._create(event))
-	End Function
-	
 	Method sizeHint(w:Int Var, h:Int Var)
 		bmx_qt_qwidget_default_sizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
@@ -770,224 +766,238 @@ Type QWidget Extends QObject
 		h[0] = height
 	End Function
 	
-	Rem
-	bbdoc: 
-	End Rem
-	Method mouseDoubleClickEvent(event:QMouseEvent)
-		bmx_qt_qwidget_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
-	Function _OnMouseDoubleClickEvent(obj:QWidget, event:Byte Ptr)
-		obj.mouseDoubleClickEvent(QMouseEvent._create(event))
-	End Function
-
-	Rem
-	bbdoc: 
-	End Rem
-	Method mouseMoveEvent(event:QMouseEvent)
-		bmx_qt_qwidget_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
-	Function _OnMouseMoveEvent(obj:QWidget, event:Byte Ptr)
-		obj.mouseMoveEvent(QMouseEvent._create(event))
-	End Function
-
-	Rem
-	bbdoc: 
-	End Rem
-	Method mousePressEvent(event:QMouseEvent)
-		bmx_qt_qwidget_default_mousepressevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
-	Function _OnMousePressEvent(obj:QWidget, event:Byte Ptr)
-		obj.mousePressEvent(QMouseEvent._create(event))
-	End Function
-
-	Rem
-	bbdoc: 
-	End Rem
-	Method mouseReleaseEvent(event:QMouseEvent)
-		bmx_qt_qwidget_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
-	Function _OnMouseReleaseEvent(obj:QWidget, event:Byte Ptr)
-		obj.mouseReleaseEvent(QMouseEvent._create(event))
-	End Function
-
+	
+	
 	Method actionEvent(event:QActionEvent)
 		bmx_qt_qwidget_default_actionevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnActionEvent(obj:QWidget, event:Byte Ptr)
-		obj.actionEvent(QActionEvent._create(event))
-	End Function
 	
 	Method changeEvent(event:QEvent)
 		bmx_qt_qwidget_default_changeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnChangeEvent(obj:QWidget, event:Byte Ptr)
-		obj.changeEvent(QEvent._create(event))
-	End Function
-	
 	Method closeEvent(event:QCloseEvent)
 		bmx_qt_qwidget_default_closeevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnCloseEvent(obj:QWidget, event:Byte Ptr)
-		obj.closeEvent(QCloseEvent._create(event))
-	End Function
 	
 	Method contextMenuEvent(event:QContextMenuEvent)
 		bmx_qt_qwidget_default_contextmenuevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnContextMenuEvent(obj:QWidget, event:Byte Ptr)
-		obj.contextMenuEvent(QContextMenuEvent._create(event))
-	End Function
-	
 	Method dragEnterEvent(event:QDragEnterEvent)
 		bmx_qt_qwidget_default_dragenterevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnDragEnterEvent(obj:QWidget, event:Byte Ptr)
-		obj.dragEnterEvent(QDragEnterEvent._create(event))
-	End Function
 	
 	Method dragLeaveEvent(event:QDragLeaveEvent)
 		bmx_qt_qwidget_default_dragleaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnDragLeaveEvent(obj:QWidget, event:Byte Ptr)
-		obj.dragLeaveEvent(QDragLeaveEvent._create(event))
-	End Function
-	
 	Method dragMoveEvent(event:QDragMoveEvent)
 		bmx_qt_qwidget_default_dragmoveevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnDragMoveEvent(obj:QWidget, event:Byte Ptr)
-		obj.dragMoveEvent(QDragMoveEvent._create(event))
-	End Function
 	
 	Method dropEvent(event:QDropEvent)
 		bmx_qt_qwidget_default_dropevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnDropEvent(obj:QWidget, event:Byte Ptr)
-		obj.dropEvent(QDropEvent._create(event))
-	End Function
-	
 	Method enterEvent(event:QEvent)
 		bmx_qt_qwidget_default_enterevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnEnterEvent(obj:QWidget, event:Byte Ptr)
-		obj.enterEvent(QEvent._create(event))
-	End Function
 	
 	Method focusInEvent(event:QFocusEvent)
 		bmx_qt_qwidget_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnFocusInEvent(obj:QWidget, event:Byte Ptr)
-		obj.focusInEvent(QFocusEvent._create(event))
-	End Function
-	
+	Method focusNextChild:Int()
+		Return bmx_qt_qwidget_default_focusnextchild(qObjectPtr)
+	End Method 
+
+	Method focusNextPrevChild:Int(_next:Int)
+		Return bmx_qt_qwidget_default_focusnextprevchild(qObjectPtr, _next)
+	End Method
+
 	Method focusOutEvent(event:QFocusEvent)
 		bmx_qt_qwidget_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnFocusOutEvent(obj:QWidget, event:Byte Ptr)
-		obj.focusOutEvent(QFocusEvent._create(event))
-	End Function
-	
+	Method focusPreviousChild:Int()
+		Return bmx_qt_qwidget_default_focuspreviouschild(qObjectPtr)
+	End Method 
+
 	Method hideEvent(event:QHideEvent)
 		bmx_qt_qwidget_default_hideevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnHideEvent(obj:QWidget, event:Byte Ptr)
-		obj.hideEvent(QHideEvent._create(event))
-	End Function
 	
 	Method inputMethodEvent(event:QInputMethodEvent)
 		bmx_qt_qwidget_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnInputMethodEvent(obj:QWidget, event:Byte Ptr)
-		obj.inputMethodEvent(QInputMethodEvent._create(event))
-	End Function
-	
 	Method keyPressEvent(event:QKeyEvent)
 		bmx_qt_qwidget_default_keypressevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnKeyPressEvent(obj:QWidget, event:Byte Ptr)
-		obj.keyPressEvent(QKeyEvent._create(event))
-	End Function
 	
 	Method keyReleaseEvent(event:QKeyEvent)
 		bmx_qt_qwidget_default_keyreleaseevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnKeyReleaseEvent(obj:QWidget, event:Byte Ptr)
-		obj.keyReleaseEvent(QKeyEvent._create(event))
-	End Function
-	
 	Method leaveEvent(event:QEvent)
 		bmx_qt_qwidget_default_leaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnLeaveEvent(obj:QWidget, event:Byte Ptr)
-		obj.leaveEvent(QEvent._create(event))
-	End Function
-	
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousepressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qwidget_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method moveEvent(event:QMoveEvent)
 		bmx_qt_qwidget_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnMoveEvent(obj:QWidget, event:Byte Ptr)
-		obj.moveEvent(QMoveEvent._create(event))
-	End Function
 	
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qwidget_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnResizeEvent(obj:QWidget, event:Byte Ptr)
-		obj.resizeEvent(QResizeEvent._create(event))
-	End Function
-	
 	Method showEvent(event:QShowEvent)
 		bmx_qt_qwidget_default_showevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
-	Function _OnShowEvent(obj:QWidget, event:Byte Ptr)
-		obj.showEvent(QShowEvent._create(event))
-	End Function
 	
 	Method tabletEvent(event:QTabletEvent)
 		bmx_qt_qwidget_default_tabletevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnTabletEvent(obj:QWidget, event:Byte Ptr)
-		obj.tabletEvent(QTabletEvent._create(event))
-	End Function
-	
 	Method wheelEvent(event:QWheelEvent)
 		bmx_qt_qwidget_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Function _OnWheelEvent(obj:QWidget, event:Byte Ptr)
-		obj.wheelEvent(QWheelEvent._create(event))
+
+
+
+
+	Function _actionEvent(obj:QWidget, event:Byte Ptr)
+		obj.actionEvent(QActionEvent._create(event))
 	End Function
 	
-	Method focusNextPrevChild:Int(_next:Int)
-		Return bmx_qt_qwidget_default_focusnextprevchild(qObjectPtr, _next)
-	End Method
-
-	Function _OnFocusNextPrevChild:Int(obj:QWidget, _next:Int)
+	Function _changeEvent(obj:QWidget, event:Byte Ptr)
+		obj.changeEvent(QEvent._create(event))
+	End Function
+	
+	Function _closeEvent(obj:QWidget, event:Byte Ptr)
+		obj.closeEvent(QCloseEvent._create(event))
+	End Function
+	
+	Function _contextMenuEvent(obj:QWidget, event:Byte Ptr)
+		obj.contextMenuEvent(QContextMenuEvent._create(event))
+	End Function
+	
+	Function _dragEnterEvent(obj:QWidget, event:Byte Ptr)
+		obj.dragEnterEvent(QDragEnterEvent._create(event))
+	End Function
+	
+	Function _dragLeaveEvent(obj:QWidget, event:Byte Ptr)
+		obj.dragLeaveEvent(QDragLeaveEvent._create(event))
+	End Function
+	
+	Function _dragMoveEvent(obj:QWidget, event:Byte Ptr)
+		obj.dragMoveEvent(QDragMoveEvent._create(event))
+	End Function
+	
+	Function _dropEvent(obj:QWidget, event:Byte Ptr)
+		obj.dropEvent(QDropEvent._create(event))
+	End Function
+	
+	Function _enterEvent(obj:QWidget, event:Byte Ptr)
+		obj.enterEvent(QEvent._create(event))
+	End Function
+	
+	Function _focusInEvent(obj:QWidget, event:Byte Ptr)
+		obj.focusInEvent(QFocusEvent._create(event))
+	End Function
+	
+	Function _focusNextChild:Int(obj:QWidget)
+		Return obj.focusNextChild()
+	End Function
+	
+	Function _focusNextPrevChild:Int(obj:QWidget, _next:Int)
 		Return obj.focusNextPrevChild(_next)
+	End Function
+
+	Function _focusOutEvent(obj:QWidget, event:Byte Ptr)
+		obj.focusOutEvent(QFocusEvent._create(event))
+	End Function
+	
+	Function _focusPreviousChild:Int(obj:QWidget)
+		Return obj.focusPreviousChild()
+	End Function
+	
+	Function _hideEvent(obj:QWidget, event:Byte Ptr)
+		obj.hideEvent(QHideEvent._create(event))
+	End Function
+	
+	Function _inputMethodEvent(obj:QWidget, event:Byte Ptr)
+		obj.inputMethodEvent(QInputMethodEvent._create(event))
+	End Function
+	
+	Function _keyPressEvent(obj:QWidget, event:Byte Ptr)
+		obj.keyPressEvent(QKeyEvent._create(event))
+	End Function
+	
+	Function _keyReleaseEvent(obj:QWidget, event:Byte Ptr)
+		obj.keyReleaseEvent(QKeyEvent._create(event))
+	End Function
+	
+	Function _leaveEvent(obj:QWidget, event:Byte Ptr)
+		obj.leaveEvent(QEvent._create(event))
+	End Function
+	
+	Function _mouseDoubleClickEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseDoubleClickEvent(QMouseEvent._create(event))
+	End Function
+
+	Function _mouseMoveEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseMoveEvent(QMouseEvent._create(event))
+	End Function
+
+	Function _mousePressEvent(obj:QWidget, event:Byte Ptr)
+		obj.mousePressEvent(QMouseEvent._create(event))
+	End Function
+
+	Function _mouseReleaseEvent(obj:QWidget, event:Byte Ptr)
+		obj.mouseReleaseEvent(QMouseEvent._create(event))
+	End Function
+
+	Function _moveEvent(obj:QWidget, event:Byte Ptr)
+		obj.moveEvent(QMoveEvent._create(event))
+	End Function
+	
+	Function _paintEvent(obj:QWidget, event:Byte Ptr)
+		obj.paintEvent(QPaintEvent._create(event))
+	End Function
+	
+	Function _resizeEvent(obj:QWidget, event:Byte Ptr)
+		obj.resizeEvent(QResizeEvent._create(event))
+	End Function
+	
+	Function _showEvent(obj:QWidget, event:Byte Ptr)
+		obj.showEvent(QShowEvent._create(event))
+	End Function
+	
+	Function _tabletEvent(obj:QWidget, event:Byte Ptr)
+		obj.tabletEvent(QTabletEvent._create(event))
+	End Function
+	
+	Function _wheelEvent(obj:QWidget, event:Byte Ptr)
+		obj.wheelEvent(QWheelEvent._create(event))
 	End Function
 	
 	' SIGNAL : customContextMenuRequested

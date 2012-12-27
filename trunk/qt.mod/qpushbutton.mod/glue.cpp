@@ -57,6 +57,435 @@ void MaxQPushButton::onToggled(bool checked) {
 }
 
 
+// ****************** DEFAULT HANDLERS ********************
+
+// QPushButton
+
+// QAbstractButton
+void MaxQPushButton::defaultcheckStateSet() {
+	QPushButton::checkStateSet();
+}
+
+bool MaxQPushButton::defaulthitButton(const QPoint & pos) const{
+	return QPushButton::hitButton(pos);
+}
+
+void MaxQPushButton::defaultnextCheckState() {
+	QPushButton::nextCheckState();
+}
+
+// QWidget
+void MaxQPushButton::defaultactionEvent(QActionEvent * event){
+	QPushButton::actionEvent(event);
+}
+
+void MaxQPushButton::defaultchangeEvent(QEvent * event){
+	QPushButton::changeEvent(event);
+}
+
+void MaxQPushButton::defaultcloseEvent(QCloseEvent * event){
+	QPushButton::closeEvent(event);
+}
+
+void MaxQPushButton::defaultcontextMenuEvent(QContextMenuEvent * event){
+	QPushButton::contextMenuEvent(event);
+}
+
+void MaxQPushButton::defaultdragEnterEvent(QDragEnterEvent * event){
+	QPushButton::dragEnterEvent(event);
+}
+
+void MaxQPushButton::defaultdragLeaveEvent(QDragLeaveEvent * event){
+	QPushButton::dragLeaveEvent(event);
+}
+
+void MaxQPushButton::defaultdragMoveEvent(QDragMoveEvent * event){
+	QPushButton::dragMoveEvent(event);
+}
+
+void MaxQPushButton::defaultdropEvent(QDropEvent * event){
+	QPushButton::dropEvent(event);
+}
+
+void MaxQPushButton::defaultenterEvent(QEvent * event){
+	QPushButton::enterEvent(event);
+}
+
+void MaxQPushButton::defaultfocusInEvent(QFocusEvent * event){
+	QPushButton::focusInEvent(event);
+}
+
+bool MaxQPushButton::defaultfocusNextChild() {
+	return QPushButton::focusNextChild();
+}
+
+bool MaxQPushButton::defaultfocusNextPrevChild(bool next){
+	return QPushButton::focusNextPrevChild(next);
+}
+
+void MaxQPushButton::defaultfocusOutEvent(QFocusEvent * event){
+	QPushButton::focusOutEvent(event);
+}
+
+bool MaxQPushButton::defaultfocusPreviousChild() {
+	return QPushButton::focusPreviousChild();
+}
+
+void MaxQPushButton::defaulthideEvent(QHideEvent * event){
+	QPushButton::hideEvent(event);
+}
+
+void MaxQPushButton::defaultinputMethodEvent(QInputMethodEvent * event){
+	QPushButton::inputMethodEvent(event);
+}
+
+void MaxQPushButton::defaultkeyPressEvent(QKeyEvent * event){
+	QPushButton::keyPressEvent(event);
+}
+
+void MaxQPushButton::defaultkeyReleaseEvent(QKeyEvent * event){
+	QPushButton::keyReleaseEvent(event);
+}
+
+void MaxQPushButton::defaultleaveEvent(QEvent * event){
+	QPushButton::leaveEvent(event);
+}
+
+void MaxQPushButton::defaultmouseDoubleClickEvent(QMouseEvent * event){
+	QPushButton::mouseDoubleClickEvent(event);
+}
+
+void MaxQPushButton::defaultmouseMoveEvent(QMouseEvent * event){
+	QPushButton::mouseMoveEvent(event);
+}
+
+void MaxQPushButton::defaultmousePressEvent(QMouseEvent * event){
+	QPushButton::mousePressEvent(event);
+}
+
+void MaxQPushButton::defaultmouseReleaseEvent(QMouseEvent * event){
+	QPushButton::mouseReleaseEvent(event);
+}
+
+void MaxQPushButton::defaultmoveEvent(QMoveEvent * event){
+	QPushButton::moveEvent(event);
+}
+
+void MaxQPushButton::defaultpaintEvent(QPaintEvent * event){
+	QPushButton::paintEvent(event);
+}
+
+void MaxQPushButton::defaultresizeEvent(QResizeEvent * event){
+	QPushButton::resizeEvent(event);
+}
+
+void MaxQPushButton::defaultshowEvent(QShowEvent * event){
+	QPushButton::showEvent(event);
+}
+
+void MaxQPushButton::defaulttabletEvent(QTabletEvent * event){
+	QPushButton::tabletEvent(event);
+}
+
+void MaxQPushButton::defaultwheelEvent(QWheelEvent * event){
+	QPushButton::wheelEvent(event);
+}
+
+// QObject
+bool MaxQPushButton::defaultevent(QEvent * event){
+	return QPushButton::event(event);
+}
+
+void MaxQPushButton::defaulttimerEvent(QTimerEvent * event){
+	QPushButton::timerEvent(event);
+}
+
+
+// ****************** HANDLERS - TO MAX ********************
+
+// QPushButton
+
+// QAbstractButton
+void MaxQPushButton::checkStateSet() {
+	_qt_qabstractbutton_QAbstractButton__checkStateSet(maxHandle);
+}
+
+bool MaxQPushButton::hitButton(const QPoint & pos) const {
+	return static_cast<bool>(_qt_qabstractbutton_QAbstractButton__hitButton(maxHandle, pos.x(), pos.y()));
+}
+
+void MaxQPushButton::nextCheckState() {
+	_qt_qabstractbutton_QAbstractButton__nextCheckState(maxHandle);
+}
+
+// QWidget
+void MaxQPushButton::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
+}
+
+void MaxQPushButton::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
+}
+
+void MaxQPushButton::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
+}
+
+
+void MaxQPushButton::actionEvent(QActionEvent * event) {
+	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+}
+
+void MaxQPushButton::changeEvent(QEvent * event) {
+	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+}
+
+void MaxQPushButton::closeEvent(QCloseEvent * event) {
+	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+}
+
+void MaxQPushButton::contextMenuEvent(QContextMenuEvent * event) {
+	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+}
+
+void MaxQPushButton::dragEnterEvent(QDragEnterEvent * event) {
+	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQPushButton::dragLeaveEvent(QDragLeaveEvent * event) {
+	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQPushButton::dragMoveEvent(QDragMoveEvent * event) {
+	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQPushButton::dropEvent(QDropEvent * event) {
+	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+}
+
+void MaxQPushButton::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+}
+
+void MaxQPushButton::focusInEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+}
+
+bool MaxQPushButton::focusNextChild () {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextChild(maxHandle));
+}
+
+bool MaxQPushButton::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQPushButton::focusOutEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+}
+
+bool MaxQPushButton::focusPreviousChild() {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusPreviousChild(maxHandle));
+}
+
+void MaxQPushButton::hideEvent(QHideEvent * event) {
+	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+}
+
+void MaxQPushButton::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQPushButton::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+}
+
+void MaxQPushButton::keyPressEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+}
+
+void MaxQPushButton::keyReleaseEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+}
+
+void MaxQPushButton::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQPushButton::moveEvent(QMoveEvent * event) {
+	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
+}
+
+void MaxQPushButton::paintEvent(QPaintEvent * event) {
+	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
+}
+
+void MaxQPushButton::resizeEvent(QResizeEvent * event) {
+	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
+}
+
+void MaxQPushButton::showEvent(QShowEvent * event) {
+	_qt_qwidget_QWidget__showEvent(maxHandle, event);
+}
+
+void MaxQPushButton::tabletEvent(QTabletEvent * event) {
+	_qt_qwidget_QWidget__tabletEvent(maxHandle, event);
+}
+
+void MaxQPushButton::wheelEvent(QWheelEvent * event) {
+	_qt_qwidget_QWidget__wheelEvent(maxHandle, event);
+}
+
+// QObject
+bool MaxQPushButton::event(QEvent * event) {
+	return static_cast<bool>(_qt_qobject_QObject__event(maxHandle, event));
+}
+
+void MaxQPushButton::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+// *********************************************
+
+// QAbstractButton
+void bmx_qt_qpushbutton_default_checkstateset(MaxQPushButton * button) {
+	button->defaultcheckStateSet();
+}
+
+int bmx_qt_qpushbutton_default_hitbutton(MaxQPushButton * button, int x, int y) {
+	return static_cast<int>(button->defaulthitButton(QPoint(x, y)));
+}
+
+void bmx_qt_qpushbutton_default_nextcheckstate(MaxQPushButton * button) {
+	button->defaultnextCheckState();
+}
+
+// QWidget
+void bmx_qt_qpushbutton_default_actionevent(MaxQPushButton * button, QActionEvent * event) {
+	button->defaultactionEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_changeevent(MaxQPushButton * button, QEvent * event) {
+	button->defaultchangeEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_closeevent(MaxQPushButton * button, QCloseEvent * event) {
+	button->defaultcloseEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_contextmenuevent(MaxQPushButton * button, QContextMenuEvent * event) {
+	button->defaultcontextMenuEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_dragenterevent(MaxQPushButton * button, QDragEnterEvent * event) {
+	button->defaultdragEnterEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_dragleaveevent(MaxQPushButton * button, QDragLeaveEvent * event) {
+	button->defaultdragLeaveEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_dragmoveevent(MaxQPushButton * button, QDragMoveEvent * event) {
+	button->defaultdragMoveEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_dropevent(MaxQPushButton * button, QDropEvent * event) {
+	button->defaultdropEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_enterevent(MaxQPushButton * button, QEvent * event) {
+	button->defaultenterEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_focusinevent(MaxQPushButton * button, QFocusEvent * event) {
+	button->defaultfocusInEvent(event);
+}
+
+int bmx_qt_qpushbutton_default_focusnextprevchild(MaxQPushButton * button, int next) {
+	return static_cast<int>(button->defaultfocusNextPrevChild(static_cast<bool>(next)));
+}
+
+int bmx_qt_qpushbutton_default_focusnextchild(MaxQPushButton * button) {
+	return static_cast<int>(button->defaultfocusNextChild());
+}
+
+void bmx_qt_qpushbutton_default_focusoutevent(MaxQPushButton * button, QFocusEvent * event) {
+	button->defaultfocusOutEvent(event);
+}
+
+int bmx_qt_qpushbutton_default_focuspreviouschild(MaxQPushButton * button) {
+	return static_cast<int>(button->defaultfocusPreviousChild());
+}
+
+void bmx_qt_qpushbutton_default_hideevent(MaxQPushButton * button, QHideEvent * event) {
+	button->defaulthideEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_inputmethodevent(MaxQPushButton * button, QInputMethodEvent * event) {
+	button->defaultinputMethodEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_keypressevent(MaxQPushButton * button, QKeyEvent * event) {
+	button->defaultkeyPressEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_keyreleaseevent(MaxQPushButton * button, QKeyEvent * event) {
+	button->defaultkeyReleaseEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_leaveevent(MaxQPushButton * button, QEvent * event) {
+	button->defaultleaveEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_mousedoubleclickevent(MaxQPushButton * button, QMouseEvent * event) {
+	button->defaultmouseDoubleClickEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_mousemoveevent(MaxQPushButton * button, QMouseEvent * event) {
+	button->defaultmouseMoveEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_mousepressevent(MaxQPushButton * button, QMouseEvent * event) {
+	button->defaultmousePressEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_mousereleaseevent(MaxQPushButton * button, QMouseEvent * event) {
+	button->defaultmouseReleaseEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_moveevent(MaxQPushButton * button, QMoveEvent * event) {
+	button->defaultmoveEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_paintevent(MaxQPushButton * button, QPaintEvent * event) {
+	button->defaultpaintEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_resizeevent(MaxQPushButton * button, QResizeEvent * event) {
+	button->defaultresizeEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_showevent(MaxQPushButton * button, QShowEvent * event) {
+	button->defaultshowEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_tabletevent(MaxQPushButton * button, QTabletEvent * event) {
+	button->defaulttabletEvent(event);
+}
+
+void bmx_qt_qpushbutton_default_wheelevent(MaxQPushButton * button, QWheelEvent * event) {
+	button->defaultwheelEvent(event);
+}
+
+// QObject
+int bmx_qt_qpushbutton_default_event(MaxQPushButton * button, QEvent * event) {
+	return static_cast<int>(button->defaultevent(event));
+}
+
+void bmx_qt_qpushbutton_default_timerevent(MaxQPushButton * button, QTimerEvent * event) {
+	button->defaulttimerEvent(event);
+}
+
 // *********************************************
 
 QPushButton * bmx_qt_qpushbutton_create(BBObject * handle, BBString * text, QWidget * parent) {
