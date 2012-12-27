@@ -155,6 +155,32 @@ Type QAbstractButton Extends QWidget
 		bmx_qt_qabstractbutton_toggle(qObjectPtr)
 	End Method
 	
+
+	Method checkStateSet()
+		DebugLog "TODO QAbstractButton::checkStateSet"
+	End Method
+
+	Method hitButton:Int(x:Int, y:Int)
+		DebugLog "TODO QAbstractButton::hitButton"
+		'Return bmx_qt_qabstractbutton_default_hitbutton(qObjectPtr, x, y)
+	End Method
+	
+	Method nextCheckState()
+		DebugLog "TODO QAbstractButton::nextCheckState"
+	End Method
+
+	Function _checkStateSet(obj:QAbstractButton)
+		obj.checkStateSet()
+	End Function
+	
+	Function _hitButton:Int(obj:QAbstractButton, x:Int, y:Int)
+		Return obj.hitButton(x, y)
+	End Function
+
+	Function _nextCheckState(obj:QAbstractButton)
+		obj.nextCheckState()
+	End Function
+	
 End Type
 
 

@@ -32,6 +32,11 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qabstractbutton_QAbstractButton__checkStateSet(BBObject * handle);
+	int _qt_qabstractbutton_QAbstractButton__hitButton(BBObject * handle, int x, int y);
+	void _qt_qabstractbutton_QAbstractButton__nextCheckState(BBObject * handle);
+
+
 	int bmx_qt_qabstractbutton_autoexclusive(QAbstractButton * button);
 	int bmx_qt_qabstractbutton_autorepeat(QAbstractButton * button);
 	int bmx_qt_qabstractbutton_autorepeatdelay(QAbstractButton * button);

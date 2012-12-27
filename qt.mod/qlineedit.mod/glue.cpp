@@ -71,198 +71,393 @@ void MaxQLineEdit::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+// ****************** DEFAULT HANDLERS ********************
+
+// QLineEdit
+// QWidget
+void MaxQLineEdit::defaultactionEvent(QActionEvent * event){
+	QLineEdit::actionEvent(event);
+}
+
+void MaxQLineEdit::defaultchangeEvent(QEvent * event){
+	QLineEdit::changeEvent(event);
+}
+
+void MaxQLineEdit::defaultcloseEvent(QCloseEvent * event){
+	QLineEdit::closeEvent(event);
+}
+
+void MaxQLineEdit::defaultcontextMenuEvent(QContextMenuEvent * event){
+	QLineEdit::contextMenuEvent(event);
+}
+
+void MaxQLineEdit::defaultdragEnterEvent(QDragEnterEvent * event){
+	QLineEdit::dragEnterEvent(event);
+}
+
+void MaxQLineEdit::defaultdragLeaveEvent(QDragLeaveEvent * event){
+	QLineEdit::dragLeaveEvent(event);
+}
+
+void MaxQLineEdit::defaultdragMoveEvent(QDragMoveEvent * event){
+	QLineEdit::dragMoveEvent(event);
+}
+
+void MaxQLineEdit::defaultdropEvent(QDropEvent * event){
+	QLineEdit::dropEvent(event);
+}
+
+void MaxQLineEdit::defaultenterEvent(QEvent * event){
+	QLineEdit::enterEvent(event);
+}
+
+void MaxQLineEdit::defaultfocusInEvent(QFocusEvent * event){
+	QLineEdit::focusInEvent(event);
+}
+
+bool MaxQLineEdit::defaultfocusNextChild() {
+	return QLineEdit::focusNextChild();
+}
+
+bool MaxQLineEdit::defaultfocusNextPrevChild(bool next){
+	return QLineEdit::focusNextPrevChild(next);
+}
+
+void MaxQLineEdit::defaultfocusOutEvent(QFocusEvent * event){
+	QLineEdit::focusOutEvent(event);
+}
+
+bool MaxQLineEdit::defaultfocusPreviousChild() {
+	return QLineEdit::focusPreviousChild();
+}
+
+void MaxQLineEdit::defaulthideEvent(QHideEvent * event){
+	QLineEdit::hideEvent(event);
+}
+
+void MaxQLineEdit::defaultinputMethodEvent(QInputMethodEvent * event){
+	QLineEdit::inputMethodEvent(event);
+}
+
+void MaxQLineEdit::defaultkeyPressEvent(QKeyEvent * event){
+	QLineEdit::keyPressEvent(event);
+}
+
+void MaxQLineEdit::defaultkeyReleaseEvent(QKeyEvent * event){
+	QLineEdit::keyReleaseEvent(event);
+}
+
+void MaxQLineEdit::defaultleaveEvent(QEvent * event){
+	QLineEdit::leaveEvent(event);
+}
+
+void MaxQLineEdit::defaultmouseDoubleClickEvent(QMouseEvent * event){
+	QLineEdit::mouseDoubleClickEvent(event);
+}
+
+void MaxQLineEdit::defaultmouseMoveEvent(QMouseEvent * event){
+	QLineEdit::mouseMoveEvent(event);
+}
+
+void MaxQLineEdit::defaultmousePressEvent(QMouseEvent * event){
+	QLineEdit::mousePressEvent(event);
+}
+
+void MaxQLineEdit::defaultmouseReleaseEvent(QMouseEvent * event){
+	QLineEdit::mouseReleaseEvent(event);
+}
+
+void MaxQLineEdit::defaultmoveEvent(QMoveEvent * event){
+	QLineEdit::moveEvent(event);
+}
+
+void MaxQLineEdit::defaultpaintEvent(QPaintEvent * event){
+	QLineEdit::paintEvent(event);
+}
+
+void MaxQLineEdit::defaultresizeEvent(QResizeEvent * event){
+	QLineEdit::resizeEvent(event);
+}
+
+void MaxQLineEdit::defaultshowEvent(QShowEvent * event){
+	QLineEdit::showEvent(event);
+}
+
+void MaxQLineEdit::defaulttabletEvent(QTabletEvent * event){
+	QLineEdit::tabletEvent(event);
+}
+
+void MaxQLineEdit::defaultwheelEvent(QWheelEvent * event){
+	QLineEdit::wheelEvent(event);
+}
+
+// QObject
+bool MaxQLineEdit::defaultevent(QEvent * event){
+	return QLineEdit::event(event);
+}
+
+void MaxQLineEdit::defaulttimerEvent(QTimerEvent * event){
+	QLineEdit::timerEvent(event);
+}
+
+
+// ****************** HANDLERS - TO MAX ********************
+
+// QLineEdit
+// QWidget
+void MaxQLineEdit::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
+}
+
+
+void MaxQLineEdit::actionEvent(QActionEvent * event) {
+	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::changeEvent(QEvent * event) {
+	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::closeEvent(QCloseEvent * event) {
+	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::contextMenuEvent(QContextMenuEvent * event) {
+	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::dragEnterEvent(QDragEnterEvent * event) {
+	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::dragLeaveEvent(QDragLeaveEvent * event) {
+	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::dragMoveEvent(QDragMoveEvent * event) {
+	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::dropEvent(QDropEvent * event) {
+	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::focusInEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+}
+
+bool MaxQLineEdit::focusNextChild () {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextChild(maxHandle));
+}
+
+bool MaxQLineEdit::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQLineEdit::focusOutEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+}
+
+bool MaxQLineEdit::focusPreviousChild() {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusPreviousChild(maxHandle));
+}
+
+void MaxQLineEdit::hideEvent(QHideEvent * event) {
+	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::keyPressEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::keyReleaseEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::moveEvent(QMoveEvent * event) {
+	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::paintEvent(QPaintEvent * event) {
+	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::resizeEvent(QResizeEvent * event) {
+	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::showEvent(QShowEvent * event) {
+	_qt_qwidget_QWidget__showEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::tabletEvent(QTabletEvent * event) {
+	_qt_qwidget_QWidget__tabletEvent(maxHandle, event);
+}
+
+void MaxQLineEdit::wheelEvent(QWheelEvent * event) {
+	_qt_qwidget_QWidget__wheelEvent(maxHandle, event);
+}
+
+// QObject
+bool MaxQLineEdit::event(QEvent * event) {
+	return static_cast<bool>(_qt_qobject_QObject__event(maxHandle, event));
+}
+
 void MaxQLineEdit::timerEvent(QTimerEvent * event) {
 	_qt_qobject_QObject__timerEvent(maxHandle, event);
 }
 
-void MaxQLineEdit::changeEvent(QEvent * ev) {
-	_qt_qwidget_QWidget__OnChangeEvent(maxHandle, ev);
-}
-
-void MaxQLineEdit::contextMenuEvent(QContextMenuEvent * event) {
-	_qt_qwidget_QWidget__OnContextMenuEvent(maxHandle, event);
-}
-
-void MaxQLineEdit::dragEnterEvent(QDragEnterEvent * e) {
-	_qt_qwidget_QWidget__OnDragEnterEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::dragLeaveEvent(QDragLeaveEvent * e) {
-	_qt_qwidget_QWidget__OnDragLeaveEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::dragMoveEvent(QDragMoveEvent * e) {
-	_qt_qwidget_QWidget__OnDragMoveEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::dropEvent(QDropEvent * e) {
-	_qt_qwidget_QWidget__OnDropEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::focusInEvent(QFocusEvent * e) {
-	_qt_qwidget_QWidget__OnFocusInEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::focusOutEvent(QFocusEvent * e) {
-	_qt_qwidget_QWidget__OnFocusOutEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::inputMethodEvent(QInputMethodEvent * e) {
-	_qt_qwidget_QWidget__OnInputMethodEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::keyPressEvent(QKeyEvent * event) {
-	_qt_qwidget_QWidget__OnKeyPressEvent(maxHandle, event);
-}
-
-void MaxQLineEdit::mouseDoubleClickEvent(QMouseEvent * e) {
-	_qt_qwidget_QWidget__OnMouseDoubleClickEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::mouseMoveEvent(QMouseEvent * e) {
-	_qt_qwidget_QWidget__OnMouseMoveEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::mousePressEvent(QMouseEvent * e) {
-	_qt_qwidget_QWidget__OnMousePressEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::mouseReleaseEvent(QMouseEvent * e) {
-	_qt_qwidget_QWidget__OnMouseReleaseEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::paintEvent(QPaintEvent * e) {
-	_qt_qwidget_QWidget__OnPaintEvent(maxHandle, e);
-}
-
-void MaxQLineEdit::defaultChangeEvent(QEvent * event) {
-	QLineEdit::changeEvent(event);
-}
-
-void MaxQLineEdit::defaultContextMenuEvent(QContextMenuEvent * event) {
-	QLineEdit::contextMenuEvent(event);
-}
-
-void MaxQLineEdit::defaultDragEnterEvent(QDragEnterEvent * event) {
-	QLineEdit::dragEnterEvent(event);
-}
-
-void MaxQLineEdit::defaultDragLeaveEvent(QDragLeaveEvent * event) {
-	QLineEdit::dragLeaveEvent(event);
-}
-
-void MaxQLineEdit::defaultDragMoveEvent(QDragMoveEvent * event) {
-	QLineEdit::dragMoveEvent(event);
-}
-
-void MaxQLineEdit::defaultDropEvent(QDropEvent * event) {
-	QLineEdit::dropEvent(event);
-}
-
-void MaxQLineEdit::defaultFocusInEvent(QFocusEvent * event) {
-	QLineEdit::focusInEvent(event);
-}
-
-void MaxQLineEdit::defaultFocusOutEvent(QFocusEvent * event) {
-	QLineEdit::focusOutEvent(event);
-}
-
-void MaxQLineEdit::defaultInputMethodEvent(QInputMethodEvent * event) {
-	QLineEdit::inputMethodEvent(event);
-}
-
-void MaxQLineEdit::defaultKeyPressEvent(QKeyEvent * event) {
-	QLineEdit::keyPressEvent(event);
-}
-
-void MaxQLineEdit::defaultKeyReleaseEvent(QKeyEvent * event) {
-	QLineEdit::keyReleaseEvent(event);
-}
-
-void MaxQLineEdit::defaultPaintEvent(QPaintEvent * event) {
-	QLineEdit::paintEvent(event);
-}
-
-void MaxQLineEdit::defaultMouseDoubleClickEvent(QMouseEvent * event) {
-	QLineEdit::mouseDoubleClickEvent(event);
-}
-
-void MaxQLineEdit::defaultMouseMoveEvent(QMouseEvent * event) {
-	QLineEdit::mouseMoveEvent(event);
-}
-
-void MaxQLineEdit::defaultMousePressEvent(QMouseEvent * event) {
-	QLineEdit::mousePressEvent(event);
-}
-
-void MaxQLineEdit::defaultMouseReleaseEvent(QMouseEvent * event) {
-	QLineEdit::mouseReleaseEvent(event);
-}
-
 // *********************************************
 
-void bmx_qt_qlineedit_default_mousedoubleclickevent(MaxQLineEdit * edit, QMouseEvent * event) {
-	edit->defaultMouseDoubleClickEvent(event);
-}
-
-void bmx_qt_qlineedit_default_mousemoveevent(MaxQLineEdit * edit, QMouseEvent * event) {
-	edit->defaultMouseMoveEvent(event);
-}
-
-void bmx_qt_qlineedit_default_mousepressevent(MaxQLineEdit * edit, QMouseEvent * event) {
-	edit->defaultMousePressEvent(event);
-}
-
-void bmx_qt_qlineedit_default_mousereleaseevent(MaxQLineEdit * edit, QMouseEvent * event) {
-	edit->defaultMouseReleaseEvent(event);
+// QLineEdit
+// QWidget
+void bmx_qt_qlineedit_default_actionevent(MaxQLineEdit * edit, QActionEvent * event) {
+	edit->defaultactionEvent(event);
 }
 
 void bmx_qt_qlineedit_default_changeevent(MaxQLineEdit * edit, QEvent * event) {
-	edit->defaultChangeEvent(event);
+	edit->defaultchangeEvent(event);
+}
+
+void bmx_qt_qlineedit_default_closeevent(MaxQLineEdit * edit, QCloseEvent * event) {
+	edit->defaultcloseEvent(event);
 }
 
 void bmx_qt_qlineedit_default_contextmenuevent(MaxQLineEdit * edit, QContextMenuEvent * event) {
-	edit->defaultContextMenuEvent(event);
+	edit->defaultcontextMenuEvent(event);
 }
 
 void bmx_qt_qlineedit_default_dragenterevent(MaxQLineEdit * edit, QDragEnterEvent * event) {
-	edit->defaultDragEnterEvent(event);
+	edit->defaultdragEnterEvent(event);
 }
 
 void bmx_qt_qlineedit_default_dragleaveevent(MaxQLineEdit * edit, QDragLeaveEvent * event) {
-	edit->defaultDragLeaveEvent(event);
+	edit->defaultdragLeaveEvent(event);
 }
 
 void bmx_qt_qlineedit_default_dragmoveevent(MaxQLineEdit * edit, QDragMoveEvent * event) {
-	edit->defaultDragMoveEvent(event);
+	edit->defaultdragMoveEvent(event);
 }
 
 void bmx_qt_qlineedit_default_dropevent(MaxQLineEdit * edit, QDropEvent * event) {
-	edit->defaultDropEvent(event);
+	edit->defaultdropEvent(event);
+}
+
+void bmx_qt_qlineedit_default_enterevent(MaxQLineEdit * edit, QEvent * event) {
+	edit->defaultenterEvent(event);
 }
 
 void bmx_qt_qlineedit_default_focusinevent(MaxQLineEdit * edit, QFocusEvent * event) {
-	edit->defaultFocusInEvent(event);
+	edit->defaultfocusInEvent(event);
+}
+
+int bmx_qt_qlineedit_default_focusnextprevchild(MaxQLineEdit * edit, int next) {
+	return static_cast<int>(edit->defaultfocusNextPrevChild(static_cast<bool>(next)));
+}
+
+int bmx_qt_qlineedit_default_focusnextchild(MaxQLineEdit * edit) {
+	return static_cast<int>(edit->defaultfocusNextChild());
 }
 
 void bmx_qt_qlineedit_default_focusoutevent(MaxQLineEdit * edit, QFocusEvent * event) {
-	edit->defaultFocusOutEvent(event);
+	edit->defaultfocusOutEvent(event);
+}
+
+int bmx_qt_qlineedit_default_focuspreviouschild(MaxQLineEdit * edit) {
+	return static_cast<int>(edit->defaultfocusPreviousChild());
+}
+
+void bmx_qt_qlineedit_default_hideevent(MaxQLineEdit * edit, QHideEvent * event) {
+	edit->defaulthideEvent(event);
 }
 
 void bmx_qt_qlineedit_default_inputmethodevent(MaxQLineEdit * edit, QInputMethodEvent * event) {
-	edit->defaultInputMethodEvent(event);
+	edit->defaultinputMethodEvent(event);
 }
 
 void bmx_qt_qlineedit_default_keypressevent(MaxQLineEdit * edit, QKeyEvent * event) {
-	edit->defaultKeyPressEvent(event);
+	edit->defaultkeyPressEvent(event);
 }
 
 void bmx_qt_qlineedit_default_keyreleaseevent(MaxQLineEdit * edit, QKeyEvent * event) {
-	edit->defaultKeyReleaseEvent(event);
+	edit->defaultkeyReleaseEvent(event);
+}
+
+void bmx_qt_qlineedit_default_leaveevent(MaxQLineEdit * edit, QEvent * event) {
+	edit->defaultleaveEvent(event);
+}
+
+void bmx_qt_qlineedit_default_mousedoubleclickevent(MaxQLineEdit * edit, QMouseEvent * event) {
+	edit->defaultmouseDoubleClickEvent(event);
+}
+
+void bmx_qt_qlineedit_default_mousemoveevent(MaxQLineEdit * edit, QMouseEvent * event) {
+	edit->defaultmouseMoveEvent(event);
+}
+
+void bmx_qt_qlineedit_default_mousepressevent(MaxQLineEdit * edit, QMouseEvent * event) {
+	edit->defaultmousePressEvent(event);
+}
+
+void bmx_qt_qlineedit_default_mousereleaseevent(MaxQLineEdit * edit, QMouseEvent * event) {
+	edit->defaultmouseReleaseEvent(event);
+}
+
+void bmx_qt_qlineedit_default_moveevent(MaxQLineEdit * edit, QMoveEvent * event) {
+	edit->defaultmoveEvent(event);
 }
 
 void bmx_qt_qlineedit_default_paintevent(MaxQLineEdit * edit, QPaintEvent * event) {
-	edit->defaultPaintEvent(event);
+	edit->defaultpaintEvent(event);
+}
+
+void bmx_qt_qlineedit_default_resizeevent(MaxQLineEdit * edit, QResizeEvent * event) {
+	edit->defaultresizeEvent(event);
+}
+
+void bmx_qt_qlineedit_default_showevent(MaxQLineEdit * edit, QShowEvent * event) {
+	edit->defaultshowEvent(event);
+}
+
+void bmx_qt_qlineedit_default_tabletevent(MaxQLineEdit * edit, QTabletEvent * event) {
+	edit->defaulttabletEvent(event);
+}
+
+void bmx_qt_qlineedit_default_wheelevent(MaxQLineEdit * edit, QWheelEvent * event) {
+	edit->defaultwheelEvent(event);
+}
+
+// QObject
+int bmx_qt_qlineedit_default_event(MaxQLineEdit * edit, QEvent * event) {
+	return static_cast<int>(edit->defaultevent(event));
+}
+
+void bmx_qt_qlineedit_default_timerevent(MaxQLineEdit * edit, QTimerEvent * event) {
+	edit->defaulttimerEvent(event);
 }
 
 // *********************************************

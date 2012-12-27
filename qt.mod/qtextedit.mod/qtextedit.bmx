@@ -401,8 +401,30 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	
+	
+	' DEFAULT EVENT HANDLERS
+	
+	' QAbstractScrollArea
+	Method scrollContentsBy(dx:Int, dy:Int)
+		bmx_qt_qtextedit_default_scrollcontentsby(qObjectPtr, dx, dy)
+	End Method
+	
+	Method viewportEvent:Int(event:QEvent)
+		Return bmx_qt_qtextedit_default_viewportevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	' QFrame
+	' QWidget
+	Method actionEvent(event:QActionEvent)
+		bmx_qt_qtextedit_default_actionevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
 	Method changeEvent(event:QEvent)
 		bmx_qt_qtextedit_default_changeevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method closeEvent(event:QCloseEvent)
+		bmx_qt_qtextedit_default_closeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Method contextMenuEvent(event:QContextMenuEvent)
@@ -425,6 +447,10 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_default_dropevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method enterEvent(event:QEvent)
+		bmx_qt_qtextedit_default_enterevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
 	Method focusInEvent(event:QFocusEvent)
 		bmx_qt_qtextedit_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -437,6 +463,10 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method hideEvent(event:QHideEvent)
+		bmx_qt_qtextedit_default_hideevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
 	Method inputMethodEvent(event:QInputMethodEvent)
 		bmx_qt_qtextedit_default_inputmethodevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -447,6 +477,10 @@ Type QTextEdit Extends QAbstractScrollArea
 	
 	Method keyReleaseEvent(event:QKeyEvent)
 		bmx_qt_qtextedit_default_keyreleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method leaveEvent(event:QEvent)
+		bmx_qt_qtextedit_default_leaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Method mouseDoubleClickEvent(event:QMouseEvent)
@@ -465,21 +499,37 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
 	End Method
 
-	Method paintEvent(event:QPaintEvent)
-		bmx_qt_qtextedit_default_paintevent(qObjectPtr, event.qObjectPtr)
+	Method moveEvent(event:QMoveEvent)
+		bmx_qt_qtextedit_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qtextedit_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
-	Method scrollContentsBy(dx:Int, dy:Int)
-		bmx_qt_qtextedit_default_scrollcontentsby(qObjectPtr, dx, dy)
+	Method showEvent(event:QShowEvent)
+		bmx_qt_qtextedit_default_showevent(qObjectPtr, event.qObjectPtr)
+	End Method
+	
+	Method tabletEvent(event:QTabletEvent)
+		bmx_qt_qtextedit_default_tabletevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
 	Method wheelEvent(event:QWheelEvent)
 		bmx_qt_qtextedit_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
+
+	' QObject
+	Method event:Int(evt:QEvent)
+		Return bmx_qt_qtextedit_default_event(qObjectPtr, evt.qObjectPtr)
+	End Method
+
+	Method timerEvent(event:QTimerEvent)
+		bmx_qt_qtextedit_default_timerevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+
+
 	
 	
 	' SIGNAL : copyAvailable

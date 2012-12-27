@@ -47,6 +47,40 @@ Import "glue.cpp"
 
 Extern
 
+	' QFrame
+	' QWidget
+	Function bmx_qt_qlabel_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qlabel_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qlabel_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qlabel_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
+
 	Function bmx_qt_qlabel_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr, flags:Int)
 	Function bmx_qt_qlabel_alignment:Int(handle:Byte Ptr)
 	Function bmx_qt_qlabel_buddy:Byte Ptr(handle:Byte Ptr)

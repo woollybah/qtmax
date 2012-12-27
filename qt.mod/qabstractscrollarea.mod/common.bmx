@@ -48,6 +48,43 @@ Import "glue.cpp"
 
 Extern
 
+	' QAbstractScrollArea
+	Function bmx_qt_qabstractscrollarea_default_scrollcontentsby(handle:Byte Ptr, dx:Int, dy:Int)
+	Function bmx_qt_qabstractscrollarea_default_viewportevent:Int(handle:Byte Ptr, event:Byte Ptr)	
+	' QFrame
+	' QWidget
+	Function bmx_qt_qabstractscrollarea_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qabstractscrollarea_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qabstractscrollarea_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractscrollarea_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
+
 	Function bmx_qt_qabstractscrollarea_addscrollbarwidget(handle:Byte Ptr, widget:Byte Ptr, alignment:Int)
 	Function bmx_qt_qabstractscrollarea_cornerwidget:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qabstractscrollarea_horizontalscrollbar:Byte Ptr(handle:Byte Ptr)

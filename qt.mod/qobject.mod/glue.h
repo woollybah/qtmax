@@ -31,6 +31,7 @@ extern "C" {
 
 #include <blitz.h>
 
+	int _qt_qobject_QObject__event(BBObject * handle, QEvent * event);
 	void _qt_qobject_QObject__timerEvent(BBObject * handle, QTimerEvent * event);
 
 	BBString * bmx_qt_qobject_tr(BBString * sourceText, BBString * disambiguation, int n);

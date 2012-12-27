@@ -101,6 +101,13 @@ Type QObject Extends QCoreObjectPtr
 		bmx_qt_qobject_killtimer(qObjectPtr, id)
 	End Method
 	
+	Method event:Int(evt:QEvent)
+	End Method
+	
+	Function _event:Int(obj:QObject, event:Byte Ptr)
+		Return obj.event(QEvent._create(event))
+	End Function
+
 	Rem
 	bbdoc: 
 	End Rem

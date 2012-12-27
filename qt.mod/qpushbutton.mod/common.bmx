@@ -47,6 +47,42 @@ Import "glue.cpp"
 
 Extern
 
+	' QAbstractButton
+	Function bmx_qt_qpushbutton_default_checkstateset(handle:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_hitbutton:Int(handle:Byte Ptr, x:Int, y:Int)
+	Function bmx_qt_qpushbutton_default_nextcheckstate(handle:Byte Ptr)
+	' QWidget
+	Function bmx_qt_qpushbutton_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qpushbutton_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qpushbutton_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
 	Function bmx_qt_qpushbutton_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qpushbutton_autodefault:Int(handle:Byte Ptr)
 	Function bmx_qt_qpushbutton_isdefault:Int(handle:Byte Ptr)

@@ -138,7 +138,10 @@ Extern
 	Function bmx_qt_qwidget_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_focusnextchild:Int(handle:Byte Ptr)
+	Function bmx_qt_qwidget_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
 	Function bmx_qt_qwidget_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_focuspreviouschild:Int(handle:Byte Ptr)
 	Function bmx_qt_qwidget_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
@@ -149,7 +152,6 @@ Extern
 	Function bmx_qt_qwidget_default_showevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qwidget_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
 
 	Function bmx_qt_qwidget_default_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 	Function bmx_qt_qwidget_default_minimumsizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
