@@ -455,6 +455,10 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusNextChild:Int()
+		Return bmx_qt_qtextedit_default_focusnextchild(qObjectPtr)
+	End Method 
+
 	Method focusNextPrevChild:Int(_next:Int)
 		Return bmx_qt_qtextedit_default_focusnextprevchild(qObjectPtr, _next)
 	End Method
@@ -463,6 +467,10 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusPreviousChild:Int()
+		Return bmx_qt_qtextedit_default_focuspreviouschild(qObjectPtr)
+	End Method 
+
 	Method hideEvent(event:QHideEvent)
 		bmx_qt_qtextedit_default_hideevent(qObjectPtr, event.qObjectPtr)
 	End Method

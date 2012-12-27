@@ -289,6 +289,14 @@ Type QLabel Extends QFrame
 		bmx_qt_qlabel_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
 
+	' QObject
+	Method event:Int(evt:QEvent)
+		Return bmx_qt_qlabel_default_event(qObjectPtr, evt.qObjectPtr)
+	End Method
+
+	Method timerEvent(event:QTimerEvent)
+		bmx_qt_qlabel_default_timerevent(qObjectPtr, event.qObjectPtr)
+	End Method
 
 
 

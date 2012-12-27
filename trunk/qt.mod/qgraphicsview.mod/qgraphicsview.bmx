@@ -283,38 +283,19 @@ Type QGraphicsView Extends QAbstractScrollArea
 		bmx_qt_qgraphicsview_sizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
 
-	Method paintEvent(event:QPaintEvent)
-		bmx_qt_qgraphicsview_default_paintevent(qObjectPtr, event.qObjectPtr)
-	End Method
 
-	Rem
-	bbdoc: 
-	End Rem
-	Method mouseDoubleClickEvent(event:QMouseEvent)
-		bmx_qt_qgraphicsview_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	' QGraphicsView
+	' QAbstractScrollArea
+	Method scrollContentsBy(dx:Int, dy:Int)
+		bmx_qt_qgraphicsview_default_scrollcontentsby(qObjectPtr, dx, dy)
 	End Method
-
-	Rem
-	bbdoc: 
-	End Rem
-	Method mouseMoveEvent(event:QMouseEvent)
-		bmx_qt_qgraphicsview_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	
+	Method viewportEvent:Int(event:QEvent)
+		Return bmx_qt_qgraphicsview_default_viewportevent(qObjectPtr, event.qObjectPtr)
 	End Method
-
-	Rem
-	bbdoc: 
-	End Rem
-	Method mousePressEvent(event:QMouseEvent)
-		bmx_qt_qgraphicsview_default_mousepressevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
-	Rem
-	bbdoc: 
-	End Rem
-	Method mouseReleaseEvent(event:QMouseEvent)
-		bmx_qt_qgraphicsview_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
+	
+	' QFrame
+	' QWidget
 	Method actionEvent(event:QActionEvent)
 		bmx_qt_qgraphicsview_default_actionevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -355,10 +336,22 @@ Type QGraphicsView Extends QAbstractScrollArea
 		bmx_qt_qgraphicsview_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusNextChild:Int()
+		Return bmx_qt_qgraphicsview_default_focusnextchild(qObjectPtr)
+	End Method 
+
+	Method focusNextPrevChild:Int(_next:Int)
+		Return bmx_qt_qgraphicsview_default_focusnextprevchild(qObjectPtr, _next)
+	End Method
+
 	Method focusOutEvent(event:QFocusEvent)
 		bmx_qt_qgraphicsview_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusPreviousChild:Int()
+		Return bmx_qt_qgraphicsview_default_focuspreviouschild(qObjectPtr)
+	End Method 
+
 	Method hideEvent(event:QHideEvent)
 		bmx_qt_qgraphicsview_default_hideevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -379,10 +372,30 @@ Type QGraphicsView Extends QAbstractScrollArea
 		bmx_qt_qgraphicsview_default_leaveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method mouseDoubleClickEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousedoubleclickevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseMoveEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousemoveevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mousePressEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousepressevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
+	Method mouseReleaseEvent(event:QMouseEvent)
+		bmx_qt_qgraphicsview_default_mousereleaseevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method moveEvent(event:QMoveEvent)
 		bmx_qt_qgraphicsview_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qgraphicsview_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qgraphicsview_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -398,6 +411,16 @@ Type QGraphicsView Extends QAbstractScrollArea
 	Method wheelEvent(event:QWheelEvent)
 		bmx_qt_qgraphicsview_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
+
+	' QObject
+	Method event:Int(evt:QEvent)
+		Return bmx_qt_qgraphicsview_default_event(qObjectPtr, evt.qObjectPtr)
+	End Method
+
+	Method timerEvent(event:QTimerEvent)
+		bmx_qt_qgraphicsview_default_timerevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 
 End Type
 

@@ -102,6 +102,7 @@ class MaxQStandardItem : public QStandardItem
 {
 public:
 
+	MaxQStandardItem();
 	MaxQStandardItem(const QString & text);
 	MaxQStandardItem(const QIcon & icon, const QString & text);
 	
