@@ -737,13 +737,6 @@ Type QWidget Extends QObject
 
 
 
-	Rem
-	bbdoc: 
-	End Rem
-	Method paintEvent(event:QPaintEvent)
-		bmx_qt_qwidget_default_paintevent(qObjectPtr, event.qObjectPtr)
-	End Method
-	
 	Method sizeHint(w:Int Var, h:Int Var)
 		bmx_qt_qwidget_default_sizehint(qObjectPtr, Varptr w, Varptr h)
 	End Method
@@ -767,7 +760,9 @@ Type QWidget Extends QObject
 	End Function
 	
 	
+	' DEFAULT EVENT HANDLERS
 	
+	' QWidget
 	Method actionEvent(event:QActionEvent)
 		bmx_qt_qwidget_default_actionevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -864,6 +859,10 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qwidget_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qwidget_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -879,7 +878,15 @@ Type QWidget Extends QObject
 	Method wheelEvent(event:QWheelEvent)
 		bmx_qt_qwidget_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
-	
+
+	' QObject
+	Method event:Int(evt:QEvent)
+		Return bmx_qt_qwidget_default_event(qObjectPtr, evt.qObjectPtr)
+	End Method
+
+	Method timerEvent(event:QTimerEvent)
+		bmx_qt_qwidget_default_timerevent(qObjectPtr, event.qObjectPtr)
+	End Method
 
 
 

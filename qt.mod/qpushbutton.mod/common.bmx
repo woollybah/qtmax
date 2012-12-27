@@ -47,6 +47,7 @@ Import "glue.cpp"
 
 Extern
 
+	' QPushButton
 	' QAbstractButton
 	Function bmx_qt_qpushbutton_default_checkstateset(handle:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_hitbutton:Int(handle:Byte Ptr, x:Int, y:Int)
@@ -62,8 +63,10 @@ Extern
 	Function bmx_qt_qpushbutton_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_focusnextchild:Int(handle:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
 	Function bmx_qt_qpushbutton_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_focuspreviouschild:Int(handle:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
@@ -74,6 +77,7 @@ Extern
 	Function bmx_qt_qpushbutton_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qpushbutton_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_showevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qpushbutton_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)

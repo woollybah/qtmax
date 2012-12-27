@@ -213,6 +213,10 @@ Type QLabel Extends QFrame
 		bmx_qt_qlabel_default_focusinevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusNextChild:Int()
+		Return bmx_qt_qlabel_default_focusnextchild(qObjectPtr)
+	End Method 
+
 	Method focusNextPrevChild:Int(_next:Int)
 		Return bmx_qt_qlabel_default_focusnextprevchild(qObjectPtr, _next)
 	End Method
@@ -221,6 +225,10 @@ Type QLabel Extends QFrame
 		bmx_qt_qlabel_default_focusoutevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method focusPreviousChild:Int()
+		Return bmx_qt_qlabel_default_focuspreviouschild(qObjectPtr)
+	End Method 
+
 	Method hideEvent(event:QHideEvent)
 		bmx_qt_qlabel_default_hideevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -261,6 +269,10 @@ Type QLabel Extends QFrame
 		bmx_qt_qlabel_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qlabel_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qlabel_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method
@@ -276,16 +288,6 @@ Type QLabel Extends QFrame
 	Method wheelEvent(event:QWheelEvent)
 		bmx_qt_qlabel_default_wheelevent(qObjectPtr, event.qObjectPtr)
 	End Method
-
-	' QObject
-	Method event:Int(evt:QEvent)
-		Return bmx_qt_qlabel_default_event(qObjectPtr, evt.qObjectPtr)
-	End Method
-
-	Method timerEvent(event:QTimerEvent)
-		bmx_qt_qlabel_default_timerevent(qObjectPtr, event.qObjectPtr)
-	End Method
-
 
 
 

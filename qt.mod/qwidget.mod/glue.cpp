@@ -47,78 +47,164 @@ QSize MaxQWidget::minimumSizeHint() const {
 	return QSize(w, h);
 }
 
-void MaxQWidget::actionEvent(QActionEvent * event){
-	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+void MaxQWidget::defaultSizeHint(int * w, int * h) {
+
+	QSize s(QWidget::sizeHint());
+
+	*w = s.width();
+
+	*h = s.height();
+
 }
 
-void MaxQWidget::changeEvent(QEvent * event){
-	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+
+
+void MaxQWidget::defaultMinimumSizeHint(int * w, int * h) {
+
+	QSize s(QWidget::minimumSizeHint());
+
+	*w = s.width();
+
+	*h = s.height();
+
 }
 
-void MaxQWidget::closeEvent(QCloseEvent * event){
-	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+
+
+
+
+// ****************** DEFAULT HANDLERS ********************
+
+// QWidget
+void MaxQWidget::defaultactionEvent(QActionEvent * event){
+	QWidget::actionEvent(event);
 }
 
-void MaxQWidget::contextMenuEvent(QContextMenuEvent * event){
-	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+void MaxQWidget::defaultchangeEvent(QEvent * event){
+	QWidget::changeEvent(event);
 }
 
-void MaxQWidget::dragEnterEvent(QDragEnterEvent * event){
-	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+void MaxQWidget::defaultcloseEvent(QCloseEvent * event){
+	QWidget::closeEvent(event);
 }
 
-void MaxQWidget::dragLeaveEvent(QDragLeaveEvent * event){
-	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+void MaxQWidget::defaultcontextMenuEvent(QContextMenuEvent * event){
+	QWidget::contextMenuEvent(event);
 }
 
-void MaxQWidget::dragMoveEvent(QDragMoveEvent * event){
-	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+void MaxQWidget::defaultdragEnterEvent(QDragEnterEvent * event){
+	QWidget::dragEnterEvent(event);
 }
 
-void MaxQWidget::dropEvent(QDropEvent * event){
-	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+void MaxQWidget::defaultdragLeaveEvent(QDragLeaveEvent * event){
+	QWidget::dragLeaveEvent(event);
 }
 
-void MaxQWidget::enterEvent(QEvent * event){
-	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+void MaxQWidget::defaultdragMoveEvent(QDragMoveEvent * event){
+	QWidget::dragMoveEvent(event);
 }
 
-void MaxQWidget::focusInEvent(QFocusEvent * event){
-	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+void MaxQWidget::defaultdropEvent(QDropEvent * event){
+	QWidget::dropEvent(event);
 }
 
-bool MaxQWidget::focusNextPrevChild(bool next){
-	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+void MaxQWidget::defaultenterEvent(QEvent * event){
+	QWidget::enterEvent(event);
 }
 
-void MaxQWidget::focusOutEvent(QFocusEvent * event){
-	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+void MaxQWidget::defaultfocusInEvent(QFocusEvent * event){
+	QWidget::focusInEvent(event);
 }
 
-void MaxQWidget::hideEvent(QHideEvent * event){
-	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+bool MaxQWidget::defaultfocusNextChild() {
+	return QWidget::focusNextChild();
 }
 
-void MaxQWidget::inputMethodEvent(QInputMethodEvent * event){
-	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+bool MaxQWidget::defaultfocusNextPrevChild(bool next){
+	return QWidget::focusNextPrevChild(next);
 }
 
-void MaxQWidget::keyPressEvent(QKeyEvent * event){
-	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+void MaxQWidget::defaultfocusOutEvent(QFocusEvent * event){
+	QWidget::focusOutEvent(event);
 }
 
-void MaxQWidget::keyReleaseEvent(QKeyEvent * event){
-	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+bool MaxQWidget::defaultfocusPreviousChild() {
+	return QWidget::focusPreviousChild();
 }
 
-void MaxQWidget::leaveEvent(QEvent * event){
-	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+void MaxQWidget::defaulthideEvent(QHideEvent * event){
+	QWidget::hideEvent(event);
 }
 
-void MaxQWidget::mouseDoubleClickEvent(QMouseEvent * event) {
-	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+void MaxQWidget::defaultinputMethodEvent(QInputMethodEvent * event){
+	QWidget::inputMethodEvent(event);
 }
 
+void MaxQWidget::defaultkeyPressEvent(QKeyEvent * event){
+	QWidget::keyPressEvent(event);
+}
+
+void MaxQWidget::defaultkeyReleaseEvent(QKeyEvent * event){
+	QWidget::keyReleaseEvent(event);
+}
+
+void MaxQWidget::defaultleaveEvent(QEvent * event){
+	QWidget::leaveEvent(event);
+}
+
+void MaxQWidget::defaultmouseDoubleClickEvent(QMouseEvent * event){
+	QWidget::mouseDoubleClickEvent(event);
+}
+
+void MaxQWidget::defaultmouseMoveEvent(QMouseEvent * event){
+	QWidget::mouseMoveEvent(event);
+}
+
+void MaxQWidget::defaultmousePressEvent(QMouseEvent * event){
+	QWidget::mousePressEvent(event);
+}
+
+void MaxQWidget::defaultmouseReleaseEvent(QMouseEvent * event){
+	QWidget::mouseReleaseEvent(event);
+}
+
+void MaxQWidget::defaultmoveEvent(QMoveEvent * event){
+	QWidget::moveEvent(event);
+}
+
+void MaxQWidget::defaultpaintEvent(QPaintEvent * event){
+	QWidget::paintEvent(event);
+}
+
+void MaxQWidget::defaultresizeEvent(QResizeEvent * event){
+	QWidget::resizeEvent(event);
+}
+
+void MaxQWidget::defaultshowEvent(QShowEvent * event){
+	QWidget::showEvent(event);
+}
+
+void MaxQWidget::defaulttabletEvent(QTabletEvent * event){
+	QWidget::tabletEvent(event);
+}
+
+void MaxQWidget::defaultwheelEvent(QWheelEvent * event){
+	QWidget::wheelEvent(event);
+}
+
+// QObject
+bool MaxQWidget::defaultevent(QEvent * event){
+	return QWidget::event(event);
+}
+
+void MaxQWidget::defaulttimerEvent(QTimerEvent * event){
+	QWidget::timerEvent(event);
+}
+
+
+// ****************** HANDLERS - TO MAX ********************
+
+// QWidget
 void MaxQWidget::mouseMoveEvent(QMouseEvent * event) {
 	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
 }
@@ -131,7 +217,88 @@ void MaxQWidget::mouseReleaseEvent(QMouseEvent * event) {
 	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
 }
 
-void MaxQWidget::moveEvent(QMoveEvent * event){
+
+void MaxQWidget::actionEvent(QActionEvent * event) {
+	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+}
+
+void MaxQWidget::changeEvent(QEvent * event) {
+	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+}
+
+void MaxQWidget::closeEvent(QCloseEvent * event) {
+	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+}
+
+void MaxQWidget::contextMenuEvent(QContextMenuEvent * event) {
+	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+}
+
+void MaxQWidget::dragEnterEvent(QDragEnterEvent * event) {
+	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQWidget::dragLeaveEvent(QDragLeaveEvent * event) {
+	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQWidget::dragMoveEvent(QDragMoveEvent * event) {
+	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQWidget::dropEvent(QDropEvent * event) {
+	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+}
+
+void MaxQWidget::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+}
+
+void MaxQWidget::focusInEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+}
+
+bool MaxQWidget::focusNextChild () {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextChild(maxHandle));
+}
+
+bool MaxQWidget::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQWidget::focusOutEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+}
+
+bool MaxQWidget::focusPreviousChild() {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusPreviousChild(maxHandle));
+}
+
+void MaxQWidget::hideEvent(QHideEvent * event) {
+	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+}
+
+void MaxQWidget::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQWidget::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+}
+
+void MaxQWidget::keyPressEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+}
+
+void MaxQWidget::keyReleaseEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+}
+
+void MaxQWidget::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQWidget::moveEvent(QMoveEvent * event) {
 	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
 }
 
@@ -139,153 +306,159 @@ void MaxQWidget::paintEvent(QPaintEvent * event) {
 	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
 }
 
-void MaxQWidget::resizeEvent(QResizeEvent * event){
+void MaxQWidget::resizeEvent(QResizeEvent * event) {
 	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
 }
 
-void MaxQWidget::showEvent(QShowEvent * event){
+void MaxQWidget::showEvent(QShowEvent * event) {
 	_qt_qwidget_QWidget__showEvent(maxHandle, event);
 }
 
-void MaxQWidget::tabletEvent(QTabletEvent * event){
+void MaxQWidget::tabletEvent(QTabletEvent * event) {
 	_qt_qwidget_QWidget__tabletEvent(maxHandle, event);
 }
 
-void MaxQWidget::wheelEvent(QWheelEvent * event){
+void MaxQWidget::wheelEvent(QWheelEvent * event) {
 	_qt_qwidget_QWidget__wheelEvent(maxHandle, event);
 }
 
-void MaxQWidget::defaultActionEvent(QActionEvent * event) {
-	QWidget::actionEvent(event);
-}
-
-void MaxQWidget::defaultChangeEvent(QEvent * event) {
-	QWidget::changeEvent(event);
-}
-
-void MaxQWidget::defaultCloseEvent(QCloseEvent * event) {
-	QWidget::closeEvent(event);
-}
-
-void MaxQWidget::defaultContextMenuEvent(QContextMenuEvent * event) {
-	QWidget::contextMenuEvent(event);
-}
-
-void MaxQWidget::defaultDragEnterEvent(QDragEnterEvent * event) {
-	QWidget::dragEnterEvent(event);
-}
-
-void MaxQWidget::defaultDragLeaveEvent(QDragLeaveEvent * event) {
-	QWidget::dragLeaveEvent(event);
-}
-
-void MaxQWidget::defaultDragMoveEvent(QDragMoveEvent * event) {
-	QWidget::dragMoveEvent(event);
-}
-
-void MaxQWidget::defaultDropEvent(QDropEvent * event) {
-	QWidget::dropEvent(event);
-}
-
-void MaxQWidget::defaultEnterEvent(QEvent * event) {
-	QWidget::enterEvent(event);
-}
-
-void MaxQWidget::defaultFocusInEvent(QFocusEvent * event) {
-	QWidget::focusInEvent(event);
-}
-
-bool MaxQWidget::defaultFocusNextPrevChild(bool next) {
-	return QWidget::focusNextPrevChild(next);
-}
-
-bool MaxQWidget::defaultFocusNextChild() {
-	return QWidget::focusNextChild();
-}
-
-void MaxQWidget::defaultFocusOutEvent(QFocusEvent * event) {
-	QWidget::focusOutEvent(event);
-}
-
-bool MaxQWidget::defaultFocusPreviousChild() {
-	return QWidget::focusPreviousChild();
-}
-
-void MaxQWidget::defaultHideEvent(QHideEvent * event) {
-	QWidget::hideEvent(event);
-}
-
-void MaxQWidget::defaultInputMethodEvent(QInputMethodEvent * event) {
-	QWidget::inputMethodEvent(event);
-}
-
-void MaxQWidget::defaultKeyPressEvent(QKeyEvent * event) {
-	QWidget::keyPressEvent(event);
-}
-
-void MaxQWidget::defaultKeyReleaseEvent(QKeyEvent * event) {
-	QWidget::keyReleaseEvent(event);
-}
-
-void MaxQWidget::defaultLeaveEvent(QEvent * event) {
-	QWidget::leaveEvent(event);
-}
-
-void MaxQWidget::defaultMoveEvent(QMoveEvent * event) {
-	QWidget::moveEvent(event);
-}
-
-void MaxQWidget::defaultPaintEvent(QPaintEvent * event) {
-	QWidget::paintEvent(event);
-}
-
-void MaxQWidget::defaultMouseDoubleClickEvent(QMouseEvent * event) {
-	QWidget::mouseDoubleClickEvent(event);
-}
-
-void MaxQWidget::defaultMouseMoveEvent(QMouseEvent * event) {
-	QWidget::mouseMoveEvent(event);
-}
-
-void MaxQWidget::defaultMousePressEvent(QMouseEvent * event) {
-	QWidget::mousePressEvent(event);
-}
-
-void MaxQWidget::defaultMouseReleaseEvent(QMouseEvent * event) {
-	QWidget::mouseReleaseEvent(event);
-}
-
-void MaxQWidget::defaultResizeEvent(QResizeEvent * event) {
-	QWidget::resizeEvent(event);
-}
-
-void MaxQWidget::defaultShowEvent(QShowEvent * event) {
-	QWidget::showEvent(event);
-}
-
-void MaxQWidget::defaultTabletEvent(QTabletEvent * event) {
-	QWidget::tabletEvent(event);
-}
-
-void MaxQWidget::defaultWheelEvent(QWheelEvent * event) {
-	QWidget::wheelEvent(event);
-}
-
-void MaxQWidget::defaultSizeHint(int * w, int * h) {
-	QSize s(QWidget::sizeHint());
-	*w = s.width();
-	*h = s.height();
-}
-
-void MaxQWidget::defaultMinimumSizeHint(int * w, int * h) {
-	QSize s(QWidget::minimumSizeHint());
-	*w = s.width();
-	*h = s.height();
+// QObject
+bool MaxQWidget::event(QEvent * event) {
+	return static_cast<bool>(_qt_qobject_QObject__event(maxHandle, event));
 }
 
 void MaxQWidget::timerEvent(QTimerEvent * event) {
 	_qt_qobject_QObject__timerEvent(maxHandle, event);
 }
+
+// *********************************************
+
+// QWidget
+void bmx_qt_qwidget_default_actionevent(MaxQWidget * widget, QActionEvent * event) {
+	widget->defaultactionEvent(event);
+}
+
+void bmx_qt_qwidget_default_changeevent(MaxQWidget * widget, QEvent * event) {
+	widget->defaultchangeEvent(event);
+}
+
+void bmx_qt_qwidget_default_closeevent(MaxQWidget * widget, QCloseEvent * event) {
+	widget->defaultcloseEvent(event);
+}
+
+void bmx_qt_qwidget_default_contextmenuevent(MaxQWidget * widget, QContextMenuEvent * event) {
+	widget->defaultcontextMenuEvent(event);
+}
+
+void bmx_qt_qwidget_default_dragenterevent(MaxQWidget * widget, QDragEnterEvent * event) {
+	widget->defaultdragEnterEvent(event);
+}
+
+void bmx_qt_qwidget_default_dragleaveevent(MaxQWidget * widget, QDragLeaveEvent * event) {
+	widget->defaultdragLeaveEvent(event);
+}
+
+void bmx_qt_qwidget_default_dragmoveevent(MaxQWidget * widget, QDragMoveEvent * event) {
+	widget->defaultdragMoveEvent(event);
+}
+
+void bmx_qt_qwidget_default_dropevent(MaxQWidget * widget, QDropEvent * event) {
+	widget->defaultdropEvent(event);
+}
+
+void bmx_qt_qwidget_default_enterevent(MaxQWidget * widget, QEvent * event) {
+	widget->defaultenterEvent(event);
+}
+
+void bmx_qt_qwidget_default_focusinevent(MaxQWidget * widget, QFocusEvent * event) {
+	widget->defaultfocusInEvent(event);
+}
+
+int bmx_qt_qwidget_default_focusnextprevchild(MaxQWidget * widget, int next) {
+	return static_cast<int>(widget->defaultfocusNextPrevChild(static_cast<bool>(next)));
+}
+
+int bmx_qt_qwidget_default_focusnextchild(MaxQWidget * widget) {
+	return static_cast<int>(widget->defaultfocusNextChild());
+}
+
+void bmx_qt_qwidget_default_focusoutevent(MaxQWidget * widget, QFocusEvent * event) {
+	widget->defaultfocusOutEvent(event);
+}
+
+int bmx_qt_qwidget_default_focuspreviouschild(MaxQWidget * widget) {
+	return static_cast<int>(widget->defaultfocusPreviousChild());
+}
+
+void bmx_qt_qwidget_default_hideevent(MaxQWidget * widget, QHideEvent * event) {
+	widget->defaulthideEvent(event);
+}
+
+void bmx_qt_qwidget_default_inputmethodevent(MaxQWidget * widget, QInputMethodEvent * event) {
+	widget->defaultinputMethodEvent(event);
+}
+
+void bmx_qt_qwidget_default_keypressevent(MaxQWidget * widget, QKeyEvent * event) {
+	widget->defaultkeyPressEvent(event);
+}
+
+void bmx_qt_qwidget_default_keyreleaseevent(MaxQWidget * widget, QKeyEvent * event) {
+	widget->defaultkeyReleaseEvent(event);
+}
+
+void bmx_qt_qwidget_default_leaveevent(MaxQWidget * widget, QEvent * event) {
+	widget->defaultleaveEvent(event);
+}
+
+void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event) {
+	widget->defaultmouseDoubleClickEvent(event);
+}
+
+void bmx_qt_qwidget_default_mousemoveevent(MaxQWidget * widget, QMouseEvent * event) {
+	widget->defaultmouseMoveEvent(event);
+}
+
+void bmx_qt_qwidget_default_mousepressevent(MaxQWidget * widget, QMouseEvent * event) {
+	widget->defaultmousePressEvent(event);
+}
+
+void bmx_qt_qwidget_default_mousereleaseevent(MaxQWidget * widget, QMouseEvent * event) {
+	widget->defaultmouseReleaseEvent(event);
+}
+
+void bmx_qt_qwidget_default_moveevent(MaxQWidget * widget, QMoveEvent * event) {
+	widget->defaultmoveEvent(event);
+}
+
+void bmx_qt_qwidget_default_paintevent(MaxQWidget * widget, QPaintEvent * event) {
+	widget->defaultpaintEvent(event);
+}
+
+void bmx_qt_qwidget_default_resizeevent(MaxQWidget * widget, QResizeEvent * event) {
+	widget->defaultresizeEvent(event);
+}
+
+void bmx_qt_qwidget_default_showevent(MaxQWidget * widget, QShowEvent * event) {
+	widget->defaultshowEvent(event);
+}
+
+void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * event) {
+	widget->defaulttabletEvent(event);
+}
+
+void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event) {
+	widget->defaultwheelEvent(event);
+}
+
+// QObject
+int bmx_qt_qwidget_default_event(MaxQWidget * widget, QEvent * event) {
+	return static_cast<int>(widget->defaultevent(event));
+}
+
+void bmx_qt_qwidget_default_timerevent(MaxQWidget * widget, QTimerEvent * event) {
+	widget->defaulttimerEvent(event);
+}
+
 
 // ---------------------------------------------------------------------------------------
 
@@ -813,124 +986,6 @@ void bmx_qt_qwidget_setbasesize(QWidget * widget, int basew, int baseh) {
 
 void bmx_qt_qwidget_setcontentsmargins(QWidget * widget, int left, int top, int right, int bottom) {
 	widget->setContentsMargins(left, top, right, bottom);
-}
-
-// *********************************************
-
-void bmx_qt_qwidget_default_mousedoubleclickevent(MaxQWidget * widget, QMouseEvent * event) {
-	widget->defaultMouseDoubleClickEvent(event);
-}
-
-void bmx_qt_qwidget_default_mousemoveevent(MaxQWidget * widget, QMouseEvent * event) {
-	widget->defaultMouseMoveEvent(event);
-}
-
-void bmx_qt_qwidget_default_mousepressevent(MaxQWidget * widget, QMouseEvent * event) {
-	widget->defaultMousePressEvent(event);
-}
-
-void bmx_qt_qwidget_default_mousereleaseevent(MaxQWidget * widget, QMouseEvent * event) {
-	widget->defaultMouseReleaseEvent(event);
-}
-
-void bmx_qt_qwidget_default_actionevent(MaxQWidget * widget, QActionEvent * event) {
-	widget->defaultActionEvent(event);
-}
-
-void bmx_qt_qwidget_default_changeevent(MaxQWidget * widget, QEvent * event) {
-	widget->defaultChangeEvent(event);
-}
-
-void bmx_qt_qwidget_default_closeevent(MaxQWidget * widget, QCloseEvent * event) {
-	widget->defaultCloseEvent(event);
-}
-
-void bmx_qt_qwidget_default_contextmenuevent(MaxQWidget * widget, QContextMenuEvent * event) {
-	widget->defaultContextMenuEvent(event);
-}
-
-void bmx_qt_qwidget_default_dragenterevent(MaxQWidget * widget, QDragEnterEvent * event) {
-	widget->defaultDragEnterEvent(event);
-}
-
-void bmx_qt_qwidget_default_dragleaveevent(MaxQWidget * widget, QDragLeaveEvent * event) {
-	widget->defaultDragLeaveEvent(event);
-}
-
-void bmx_qt_qwidget_default_dragmoveevent(MaxQWidget * widget, QDragMoveEvent * event) {
-	widget->defaultDragMoveEvent(event);
-}
-
-void bmx_qt_qwidget_default_dropevent(MaxQWidget * widget, QDropEvent * event) {
-	widget->defaultDropEvent(event);
-}
-
-void bmx_qt_qwidget_default_enterevent(MaxQWidget * widget, QEvent * event) {
-	widget->defaultEnterEvent(event);
-}
-
-void bmx_qt_qwidget_default_focusinevent(MaxQWidget * widget, QFocusEvent * event) {
-	widget->defaultFocusInEvent(event);
-}
-
-int bmx_qt_qwidget_default_focusnextprevchild(MaxQWidget * widget, int next) {
-	return static_cast<int>(widget->defaultFocusNextPrevChild(static_cast<bool>(next)));
-}
-
-int bmx_qt_qwidget_default_focusnextchild(MaxQWidget * widget) {
-	return static_cast<int>(widget->defaultFocusNextChild());
-}
-
-void bmx_qt_qwidget_default_focusoutevent(MaxQWidget * widget, QFocusEvent * event) {
-	widget->defaultFocusOutEvent(event);
-}
-
-int bmx_qt_qwidget_default_focuspreviouschild(MaxQWidget * widget) {
-	return static_cast<int>(widget->defaultFocusPreviousChild());
-}
-
-void bmx_qt_qwidget_default_hideevent(MaxQWidget * widget, QHideEvent * event) {
-	widget->defaultHideEvent(event);
-}
-
-void bmx_qt_qwidget_default_inputmethodevent(MaxQWidget * widget, QInputMethodEvent * event) {
-	widget->defaultInputMethodEvent(event);
-}
-
-void bmx_qt_qwidget_default_keypressevent(MaxQWidget * widget, QKeyEvent * event) {
-	widget->defaultKeyPressEvent(event);
-}
-
-void bmx_qt_qwidget_default_keyreleaseevent(MaxQWidget * widget, QKeyEvent * event) {
-	widget->defaultKeyReleaseEvent(event);
-}
-
-void bmx_qt_qwidget_default_leaveevent(MaxQWidget * widget, QEvent * event) {
-	widget->defaultLeaveEvent(event);
-}
-
-void bmx_qt_qwidget_default_moveevent(MaxQWidget * widget, QMoveEvent * event) {
-	widget->defaultMoveEvent(event);
-}
-
-void bmx_qt_qwidget_default_resizeevent(MaxQWidget * widget, QResizeEvent * event) {
-	widget->defaultResizeEvent(event);
-}
-
-void bmx_qt_qwidget_default_showevent(MaxQWidget * widget, QShowEvent * event) {
-	widget->defaultShowEvent(event);
-}
-
-void bmx_qt_qwidget_default_tabletevent(MaxQWidget * widget, QTabletEvent * event) {
-	widget->defaultTabletEvent(event);
-}
-
-void bmx_qt_qwidget_default_wheelevent(MaxQWidget * widget, QWheelEvent * event) {
-	widget->defaultWheelEvent(event);
-}
-
-void bmx_qt_qwidget_default_paintevent(MaxQWidget * widget, QPaintEvent * event) {
-	widget->defaultPaintEvent(event);
 }
 
 int bmx_qt_qwidget_winid(QWidget * widget) {
