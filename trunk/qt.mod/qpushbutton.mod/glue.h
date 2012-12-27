@@ -116,12 +116,10 @@ private slots:
 
 public:
 	// QPushButton
-
 	// QAbstractButton
 	void defaultcheckStateSet();
 	bool defaulthitButton(const QPoint & pos) const;
 	void defaultnextCheckState();
-
 	// QWidget
 	void defaultactionEvent(QActionEvent * event);
 	void defaultchangeEvent(QEvent * event);
@@ -133,7 +131,7 @@ public:
 	void defaultdropEvent(QDropEvent * event);
 	void defaultenterEvent(QEvent * event);
 	void defaultfocusInEvent(QFocusEvent * event);
-	bool defaultfocusNextChild ();
+	bool defaultfocusNextChild();
 	bool defaultfocusNextPrevChild(bool next);
 	void defaultfocusOutEvent(QFocusEvent * event);
 	bool defaultfocusPreviousChild();
@@ -152,19 +150,16 @@ public:
 	void defaultshowEvent(QShowEvent * event);
 	void defaulttabletEvent(QTabletEvent * event);
 	void defaultwheelEvent(QWheelEvent * event);
-
 	// QObject
 	bool defaultevent(QEvent * event);
 	void defaulttimerEvent(QTimerEvent * event);
 
 protected:
 	// QPushButton
-	
 	// QAbstractButton
 	virtual void checkStateSet();
 	virtual bool hitButton(const QPoint & pos) const;
 	virtual void nextCheckState();
-
 	// QWidget
 	virtual void actionEvent(QActionEvent * event);
 	virtual void changeEvent(QEvent * event);
@@ -195,7 +190,6 @@ protected:
 	virtual void showEvent(QShowEvent * event);
 	virtual void tabletEvent(QTabletEvent * event);
 	virtual void wheelEvent(QWheelEvent * event);
-	
 	// QObject
 	virtual bool event(QEvent * event);
 	virtual void timerEvent(QTimerEvent * event);

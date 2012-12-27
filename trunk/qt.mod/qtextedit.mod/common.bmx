@@ -80,6 +80,7 @@ Extern
 	Function bmx_qt_qtextedit_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qtextedit_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qtextedit_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qtextedit_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qtextedit_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qtextedit_default_showevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qtextedit_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)

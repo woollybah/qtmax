@@ -52,6 +52,43 @@ Import "glue.cpp"
 
 Extern
 
+	' QMainWindow
+	' QWidget
+	Function bmx_qt_qmainwindow_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_focusnextchild:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qmainwindow_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_focuspreviouschild:Int(handle:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qmainwindow_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qmainwindow_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
+
 	Function bmx_qt_qmainwindow_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
 
 	Function bmx_qt_qmainwindow_adddockwidget(handle:Byte Ptr, area:Int, dockwidget:Byte Ptr, orientation:Int)

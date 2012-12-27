@@ -123,11 +123,7 @@ Extern
 	Function bmx_qt_qwidget_palette:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setpalette(handle:Byte Ptr, p:Byte Ptr)
 
-	Function bmx_qt_qwidget_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qwidget_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qwidget_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qwidget_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
-	Function bmx_qt_qwidget_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	' QWidget
 	Function bmx_qt_qwidget_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
@@ -147,11 +143,19 @@ Extern
 	Function bmx_qt_qwidget_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_showevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qwidget_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwidget_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
 
 	Function bmx_qt_qwidget_default_sizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
 	Function bmx_qt_qwidget_default_minimumsizehint(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)

@@ -503,6 +503,10 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_default_moveevent(qObjectPtr, event.qObjectPtr)
 	End Method
 	
+	Method paintEvent(event:QPaintEvent)
+		bmx_qt_qtextedit_default_paintevent(qObjectPtr, event.qObjectPtr)
+	End Method
+
 	Method resizeEvent(event:QResizeEvent)
 		bmx_qt_qtextedit_default_resizeevent(qObjectPtr, event.qObjectPtr)
 	End Method

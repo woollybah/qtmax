@@ -347,6 +347,8 @@ void MaxQPushButton::timerEvent(QTimerEvent * event) {
 
 // *********************************************
 
+// QPushButton
+
 // QAbstractButton
 void bmx_qt_qpushbutton_default_checkstateset(MaxQPushButton * button) {
 	button->defaultcheckStateSet();
