@@ -606,6 +606,39 @@ end rem
 Const Qt_UserRole:Int = 32
 
 Rem
+bbdoc: It does not have any properties set.
+End Rem
+Const Qt_NoItemFlags:Int = 0
+Rem
+bbdoc: It can be selected.
+End Rem
+Const Qt_ItemIsSelectable:Int = 1
+Rem
+bbdoc: It can be edited.
+End Rem
+Const Qt_ItemIsEditable:Int = 2
+Rem
+bbdoc: It can be dragged.
+End Rem
+Const Qt_ItemIsDragEnabled:Int = 4
+Rem
+bbdoc: It can be used as a drop target.
+End Rem
+Const Qt_ItemIsDropEnabled:Int = 8
+Rem
+bbdoc: It can be checked or unchecked by the user.
+End Rem
+Const Qt_ItemIsUserCheckable:Int = 16
+Rem
+bbdoc: The user can interact with the item.
+End Rem
+Const Qt_ItemIsEnabled:Int = 32
+Rem
+bbdoc: The item is checkable with three separate states.
+End Rem
+Const Qt_ItemIsTristate:Int = 64
+
+Rem
 bbdoc: A square line end that does not cover the end point of the line.
 End Rem
 Const Qt_FlatCap:Int = $00

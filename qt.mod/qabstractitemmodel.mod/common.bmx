@@ -44,4 +44,19 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qmodelindex_child:Byte Ptr(handle:Byte Ptr, row:Int, column:Int)
+	Function bmx_qt_qmodelindex_column:Int(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_flags:Int(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_internalid(handle:Byte Ptr, id:Long Ptr)
+	Function bmx_qt_qmodelindex_internalpointer:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_isequal:Int(handle:Byte Ptr, other:Byte Ptr)
+	Function bmx_qt_qmodelindex_islessthan:Int(handle:Byte Ptr, other:Byte Ptr)
+	Function bmx_qt_qmodelindex_isnotequal:Int(handle:Byte Ptr, other:Byte ptr)
+	Function bmx_qt_qmodelindex_isvalid:Int(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_model:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_parent:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_row:Int(handle:Byte Ptr)
+	Function bmx_qt_qmodelindex_sibling:Byte Ptr(handle:Byte Ptr, row:Int, column:Int)
+	Function bmx_qt_qmodelindex_free(handle:Byte Ptr)
+
 End Extern

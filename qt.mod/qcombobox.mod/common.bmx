@@ -24,6 +24,7 @@ Import Qt.Core
 Import Qt.QWidget
 Import Qt.QLineEdit
 Import Qt.QCompleter
+Import Qt.QAbstractItemModel
 Import BRL.Blitz
 Import BRL.LinkedList
 
@@ -87,11 +88,13 @@ Extern
 
 	Function bmx_qt_qcombobox_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qcombobox_addItem(handle:Byte Ptr, text:String, itemId:Long)
+	Function bmx_qt_qcombobox_addItem2(handle:Byte Ptr, text:String, data:Object)
 	Function bmx_qt_qcombobox_addItems(handle:Byte Ptr, texts:String[])
 	Function bmx_qt_qcombobox_count:Int(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_currentindex:Int(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_insertitem(handle:Byte Ptr, index:Int, text:String, itemId:Long)
 	Function bmx_qt_qcombobox_itemdata(handle:Byte Ptr, index:Int, id:Long Ptr)
+	Function bmx_qt_qcombobox_itemdata2:Object(handle:Byte Ptr, index:Int)
 	Function bmx_qt_qcombobox_removeitem(handle:Byte Ptr, index:Int)
 	Function bmx_qt_qcombobox_setitemdata(handle:Byte Ptr, index:Int, id:Long)
 	Function bmx_qt_qcombobox_currenttext:String(handle:Byte Ptr)
@@ -100,5 +103,6 @@ Extern
 	Function bmx_qt_qcombobox_duplicatesenabled:Int(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_hasframe:Int(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_hidepopup(handle:Byte Ptr)
+	Function bmx_qt_qcombobox_setmodel(handle:Byte Ptr, model:Byte Ptr)
 
 End Extern

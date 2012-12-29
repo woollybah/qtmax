@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QAbstractItemModel
+Import Qt.QStandardItem
 Import BRL.Blitz
 
 
@@ -45,5 +46,8 @@ Import "/usr/include/qt4/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qstandarditemmodel_create:Byte Ptr(handle:Object, parent:Byte Ptr)
+	Function bmx_qt_qstandarditemmodel_createindex:Byte Ptr(handle:Byte Ptr, row:Int, col:Int, parent:Byte Ptr)
 
 End Extern

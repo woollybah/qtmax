@@ -23,8 +23,10 @@ SuperStrict
 Import Qt.Core
 Import Qt.QIcon
 Import Qt.QBrush
+Import Qt.QAbstractItemModel
 Import BRL.Blitz
 Import BRL.LinkedList
+Import BRL.Map
 
 
 ' headers :-)
@@ -48,7 +50,10 @@ Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qstandarditem_create:Byte Ptr(text:String, icon:Byte Ptr)
+	Function bmx_qt_qstandarditem_create:Byte Ptr(handle:Object)
+	Function bmx_qt_qstandarditem_casttoobj:Object(o:Byte Ptr)
+
+
 	Function bmx_qt_qstandarditem_accessibledescription:String(handle:Byte Ptr)
 	Function bmx_qt_qstandarditem_accessibletext:String(handle:Byte Ptr)
 	Function bmx_qt_qstandarditem_appendrow(handle:Byte Ptr, item:Byte Ptr)

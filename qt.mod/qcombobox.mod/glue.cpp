@@ -465,6 +465,12 @@ void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBInt64 itemId) {
 	cb->addItem(qStringFromBBString(text), QVariant(itemId));
 }
 
+void bmx_qt_qcombobox_addItem2(QComboBox * cb, BBString * text, BBObject * data) {
+	QVariant v = QVariant::fromValue<void*>(data);
+
+	cb->addItem(qStringFromBBString(text), v);
+}
+
 void bmx_qt_qcombobox_addItems(QComboBox * cb, BBArray * texts) {
 	// TODO
 }
@@ -486,6 +492,15 @@ void bmx_qt_qcombobox_itemdata(QComboBox * cb, int index, BBInt64 * id) {
 	if (v.type() != QVariant::Invalid) {
 		*id = v.toLongLong();
 	}
+}
+
+BBObject * bmx_qt_qcombobox_itemdata2(QComboBox * cb, int index) {
+	QVariant v = cb->itemData(index);
+	if (v.type() != QVariant::Invalid) {
+		return reinterpret_cast<BBObject*>(v.value<void*>());
+	}
+	
+	return &bbNullObject;
 }
 
 void bmx_qt_qcombobox_removeitem(QComboBox * cb, int index) {
@@ -518,6 +533,10 @@ int bmx_qt_qcombobox_hasframe(QComboBox * cb) {
 
 void bmx_qt_qcombobox_hidepopup(QComboBox * cb) {
 	cb->hidePopup();
+}
+
+void bmx_qt_qcombobox_setmodel(QComboBox * cb, QAbstractItemModel * model) {
+	cb->setModel(model);
 }
 
 // NOTES :

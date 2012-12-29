@@ -26,11 +26,28 @@
 #include "../core.mod/glue.h"
 #include <QtCore>
 #include <QAbstractItemModel>
+#include <QModelIndex>
+
+class MaxQModelIndex;
 
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQModelIndex * bmx_qt_qmodelindex_child(MaxQModelIndex * index, int row, int column);
+	int bmx_qt_qmodelindex_column(MaxQModelIndex * index);
+	int bmx_qt_qmodelindex_flags(MaxQModelIndex * index);
+	void bmx_qt_qmodelindex_internalid(MaxQModelIndex * index, BBInt64 * id);
+	void * bmx_qt_qmodelindex_internalpointer(MaxQModelIndex * index);
+	int bmx_qt_qmodelindex_isequal(MaxQModelIndex * index, MaxQModelIndex * other);
+	int bmx_qt_qmodelindex_islessthan(MaxQModelIndex * index, MaxQModelIndex * other);
+	int bmx_qt_qmodelindex_isnotequal(MaxQModelIndex * index, MaxQModelIndex * other);
+	int bmx_qt_qmodelindex_isvalid(MaxQModelIndex * index);
+	const QAbstractItemModel * bmx_qt_qmodelindex_model(MaxQModelIndex * index);
+	MaxQModelIndex * bmx_qt_qmodelindex_parent(MaxQModelIndex * index);
+	int bmx_qt_qmodelindex_row(MaxQModelIndex * index);
+	MaxQModelIndex * bmx_qt_qmodelindex_sibling(MaxQModelIndex * index, int row, int column);
+	void bmx_qt_qmodelindex_free(MaxQModelIndex * index);
 
 }
 
