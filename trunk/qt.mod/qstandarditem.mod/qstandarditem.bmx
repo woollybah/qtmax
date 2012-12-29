@@ -33,15 +33,23 @@ Import "common.bmx"
 
 ' Implementation Note :
 '
-'  Unlike QObject classes, we don't track QStandardItem* with an attached reference of the BlitMax object.
 '  
 '
 
 Type QStandardItem
 
+	Field roles:TMap = New TMap
+	Field children:TItemList = New TItemList
+	Field parentItem:QStandardItem
+	Field rows:Int
+	Field columns:Int = 1
+	Field itemFlags:Int = Qt_ItemIsSelectable | Qt_ItemIsEnabled | Qt_ItemIsEditable | Qt_ItemIsDragEnabled | Qt_ItemIsDropEnabled
+	Field lastIndexOf:Int = 2
+	
 	Field qObjectPtr:Byte Ptr
 	
-	Function _Create:QStandardItem(qObjectPtr:Byte Ptr)
+	
+	Function _create:QStandardItem(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
 			Local this:QStandardItem = New QStandardItem
 			this.qObjectPtr = qObjectPtr
@@ -49,25 +57,48 @@ Type QStandardItem
 		End If
 		Return Null
 	End Function
-
+	
+	' internal
+	Method CreateEmpty:QStandardItem()
+		qObjectPtr = bmx_qt_qstandarditem_create(Self)
+		Return Self
+	End Method
+	
+	
 	Function CreateStandardItem:QStandardItem(text:String, icon:QIcon = Null)
 		Return New QStandardItem.Create(text, icon)
 	End Function
 	
 	Method Create:QStandardItem(text:String, icon:QIcon = Null)
+		qObjectPtr = bmx_qt_qstandarditem_create(Self)
+		setText(text)
 		If icon Then
-			qObjectPtr = bmx_qt_qstandarditem_create(text, icon.qObjectPtr)
-		Else
-			qObjectPtr = bmx_qt_qstandarditem_create(text, Null)
+			setIcon(icon)
 		End If
+		Return Self
 	End Method
 	
+	
+	Method setDataInternal(role:Int, data:Object)
+'DebugLog "QStandardItem::setDataInternal(" + role + ", " + String(data) + ")"
+		Local r:TRole = TRole.getRole(role)
+		roles.Insert(r, data)
+	End Method
+	
+	Method getDataInternal:Object(role:Int)
+		Local r:TRole = TRole.getRole(role)
+		Return roles.ValueForKey(r)
+	End Method
+	
+	
 	Method accessibleDescription:String()
-		Return bmx_qt_qstandarditem_accessibledescription(qObjectPtr)
+		Return String(getDataInternal(Qt_AccessibleDescriptionRole))
+		'Return bmx_qt_qstandarditem_accessibledescription(qObjectPtr)
 	End Method
 	
 	Method accessibleText:String()
-		Return bmx_qt_qstandarditem_accessibletext(qObjectPtr)
+		Return String(getDataInternal(Qt_AccessibleTextRole))
+		'Return bmx_qt_qstandarditem_accessibletext(qObjectPtr)
 	End Method
 	
 	Method appendColumn(items:TList)
@@ -79,7 +110,7 @@ Type QStandardItem
 	End Method
 	
 	Method appendRow(item:QStandardItem)
-		bmx_qt_qstandarditem_appendrow(qObjectPtr, item.qObjectPtr)
+		'bmx_qt_qstandarditem_appendrow(qObjectPtr, item.qObjectPtr)
 	End Method
 	
 	Method appendRows(items:TList)
@@ -91,27 +122,50 @@ Type QStandardItem
 	End Method
 	
 	Method checkState:Int()
-		Return bmx_qt_qstandarditem_checkstate(qObjectPtr)
+		'Return bmx_qt_qstandarditem_checkstate(qObjectPtr)
 	End Method
 	
 	Method child:QStandardItem(row:Int, column:Int = 0)
-	' TODO
+		Local index:Int = childIndex(row, column)
+		If index = -1 Then
+			Return Null
+		End If
+		Return children.itemAt(index)
 	End Method
 	
+	Method childIndex:Int(row:Int, column:Int)
+		If (row < 0) Or (column < 0) Or (row >= rowCount()) Or (column >= columnCount()) Then
+			Return -1
+		End If
+		Return (row * columnCount()) + column
+	End Method
+
+	Method childIndexItem:Int(child:QStandardItem)
+		Local start:Int = Max(0, lastIndexOf - 2)
+		lastIndexOf = indexOfChild(child, start)
+		If lastIndexOf = -1 And start <> 0 Then
+			lastIndexOf = lastIndexOfChild(child, start)
+		End If
+		Return lastIndexOf
+	End Method
+
 	Method column:Int()
-		Return bmx_qt_qstandarditem_column(qObjectPtr)
+		'Return bmx_qt_qstandarditem_column(qObjectPtr)
 	End Method
 	
 	Method columnCount:Int()
-		Return bmx_qt_qstandarditem_columncount(qObjectPtr)
+		Return columns
+		'Return bmx_qt_qstandarditem_columncount(qObjectPtr)
 	End Method
 	
 	Method data:Object()
-		Return bmx_qt_qstandarditem_data(qObjectPtr)
+		Return getDataInternal(Qt_UserRole)
+		'Return bmx_qt_qstandarditem_data(qObjectPtr)
 	End Method
 	
 	Method flags:Int()
-		Return bmx_qt_qstandarditem_flags(qObjectPtr)
+		Return itemFlags
+		'Return bmx_qt_qstandarditem_flags(qObjectPtr)
 	End Method
 	
 	Method font:QFont()
@@ -123,11 +177,36 @@ Type QStandardItem
 	End Method
 	
 	Method hasChildren:Int()
-		Return bmx_qt_qstandarditem_haschildren(qObjectPtr)
+		'Return bmx_qt_qstandarditem_haschildren(qObjectPtr)
 	End Method
 	
 	Method icon:QIcon()
 	' TODO
+	End Method
+	
+	Method indexOfChild:Int(child:QStandardItem, start:Int)
+		While start < children.length()
+			If children.itemAt(start) = child Then
+				Return start
+			End If
+			
+			start :+ 1
+		Wend
+		
+		Return -1
+	End Method
+
+	Method lastIndexOfChild:Int(child:QStandardItem, start:Int)
+		Local index:Int = children.length()
+		While index >= start
+			If children.itemAt(index) = child Then
+				Return index
+			End If
+			
+			index :- 1
+		Wend
+		
+		Return -1
 	End Method
 	
 	'Method index:QModelIndex()
@@ -147,43 +226,72 @@ Type QStandardItem
 	End Method
 	
 	Method insertRow(row:Int, item:QStandardItem)
-		bmx_qt_qstandarditem_insertrow(qObjectPtr, row, item.qObjectPtr)
+		'bmx_qt_qstandarditem_insertrow(qObjectPtr, row, item.qObjectPtr)
 	End Method
 	
 	Method insertRowsItems(row:Int, items:TList)
 	' TODO
 	End Method
 	
-	Method insertRows(row:Int, count:Int)
-		bmx_qt_qstandarditem_insertrows(qObjectPtr, row, count)
+	Method insertRows:Int(row:Int, count:Int)
+		If (count < 1) Or (row < 0) Or (row > rowCount()) Then
+			Return False
+		End If
+		
+		rows :+ count
+		
+		children.InsertRows(row, count)
+		Return True
+		'bmx_qt_qstandarditem_insertrows(qObjectPtr, row, count)
 	End Method
 	
 	Method isCheckable:Int()
-		Return bmx_qt_qstandarditem_ischeckable(qObjectPtr)
+		'Return bmx_qt_qstandarditem_ischeckable(qObjectPtr)
 	End Method
 	
 	Method isDragEnabled:Int()
-		Return bmx_qt_qstandarditem_isdragenabled(qObjectPtr)
+		'Return bmx_qt_qstandarditem_isdragenabled(qObjectPtr)
 	End Method
 	
 	Method isDropEnabled:Int()
-		Return bmx_qt_qstandarditem_isdropenabled(qObjectPtr)
+		'Return bmx_qt_qstandarditem_isdropenabled(qObjectPtr)
 	End Method
 	
 	Method isEditable:Int()
-		Return bmx_qt_qstandarditem_iseditable(qObjectPtr)
+		'Return bmx_qt_qstandarditem_iseditable(qObjectPtr)
 	End Method
 	
 	Method isEnabled:Int()
-		Return bmx_qt_qstandarditem_isenabled(qObjectPtr)
+		'Return bmx_qt_qstandarditem_isenabled(qObjectPtr)
 	End Method
 	
 	Method isSelectable:Int()
-		Return bmx_qt_qstandarditem_isselectable(qObjectPtr)
+		'Return bmx_qt_qstandarditem_isselectable(qObjectPtr)
 	End Method
 	
 	Method isTristate:Int()
-		Return bmx_qt_qstandarditem_istristate(qObjectPtr)
+		'Return bmx_qt_qstandarditem_istristate(qObjectPtr)
+	End Method
+
+	Method itemFromIndex:QStandardItem(index:QModelIndex)
+
+		If (index.row() < 0) Or (index.column() < 0) Then
+	        Return Null
+		End If
+		Local parent:QStandardItem = QStandardItem.castToObj(index.internalPointer())
+		If Not parent Then
+			Return Null
+		End If
+		
+		Local item:QStandardItem = parent.child(index.row(), index.column())
+		
+		' create one if it doesn't exist?
+		If Not item Then
+			item = New QStandardItem.CreateEmpty()
+			parent.setChildRC(index.row(), index.column(), item)
+		End If
+		
+		Return item
 	End Method
 	
 	'Method model:QStandardItemModel()
@@ -191,39 +299,55 @@ Type QStandardItem
 	'End Method
 	
 	Method parent:QStandardItem()
-	' TODO
+		Return parentItem
+	End Method
+	
+	Method pos(row:Int Var, column:Int Var)
+		If parentItem Then
+			Local index:Int = parentItem.childIndexItem(Self)
+			If index <> -1 Then
+				row = index / parentItem.columnCount()
+				column = index Mod parentItem.columnCount()
+			End If
+		End If
+		
+		row = -1
+		column = -1
 	End Method
 	
 	Method removeColumn(column:Int)
-		bmx_qt_qstandarditem_removecolumn(qObjectPtr, column)
+		'bmx_qt_qstandarditem_removecolumn(qObjectPtr, column)
 	End Method
 	
 	Method removeColumns(column:Int, count:Int)
-		bmx_qt_qstandarditem_removecolumns(qObjectPtr, column, count)
+		'bmx_qt_qstandarditem_removecolumns(qObjectPtr, column, count)
 	End Method
 	
 	Method removeRow(row:Int)
-		bmx_qt_qstandarditem_removerow(qObjectPtr, row)
+		'bmx_qt_qstandarditem_removerow(qObjectPtr, row)
 	End Method
 	
 	Method removeRows(row:Int, count:Int)
-		bmx_qt_qstandarditem_removerows(qObjectPtr, row, count)
+		'bmx_qt_qstandarditem_removerows(qObjectPtr, row, count)
 	End Method
 	
 	Method row:Int()
-		Return bmx_qt_qstandarditem_row(qObjectPtr)
+		'Return bmx_qt_qstandarditem_row(qObjectPtr)
 	End Method
 	
 	Method rowCount:Int()
-		Return bmx_qt_qstandarditem_rowcount(qObjectPtr)
+		Return rows
+		'Return bmx_qt_qstandarditem_rowcount(qObjectPtr)
 	End Method
 	
 	Method setAccessibleDescription(accessibleDescription:String)
-		bmx_qt_qstandarditem_setaccessibledescription(qObjectPtr, accessibleDescription)
+		setDataInternal(Qt_AccessibleDescriptionRole, accessibleDescription)
+		'bmx_qt_qstandarditem_setaccessibledescription(qObjectPtr, accessibleDescription)
 	End Method
 	
 	Method setAccessibleText(accessibleText:String)
-		bmx_qt_qstandarditem_setaccessibletext(qObjectPtr, accessibleText)
+		setDataInternal(Qt_AccessibleTextRole, accessibleText)
+		'bmx_qt_qstandarditem_setaccessibletext(qObjectPtr, accessibleText)
 	End Method
 	
 	Method setBackground(brush:QBrush)
@@ -231,47 +355,106 @@ Type QStandardItem
 	End Method
 	
 	Method setCheckState(state:Int)
-		bmx_qt_qstandarditem_setcheckstate(qObjectPtr, state)
+		Local v:TInt = New TInt
+		v.value = state
+		setDataInternal(Qt_CheckStateRole, v)
+		'bmx_qt_qstandarditem_setcheckstate(qObjectPtr, state)
 	End Method
 	
 	Method setCheckable(checkable:Int)
-		bmx_qt_qstandarditem_setcheckable(qObjectPtr, checkable)
+		If checkable Then
+			itemFlags :| Qt_ItemIsUserCheckable
+		Else
+			itemFlags :~ Qt_ItemIsUserCheckable
+		End If
+'		bmx_qt_qstandarditem_setcheckable(qObjectPtr, checkable)
 	End Method
 	
 	Method setChildRC(row:Int, column:Int, item:QStandardItem)
-		bmx_qt_qstandarditem_setchildrc(qObjectPtr, row, column, item.qObjectPtr)
+'DebugLog "setChildRC"
+		If row < 0 Or column < 0 Then
+			Return
+		End If
+		
+		If rows <= row Then
+	        setRowCount(row + 1)
+		End If
+		
+		If columns <= column Then
+			setColumnCount(column + 1)
+		End If
+		
+		Local index:Int = childIndex(row, column)
+		
+		If item Then
+			item.parentItem = Self
+		End If
+		
+		children.SetItemAt(index, item)
+		
 	End Method
 	
 	Method setChild(row:Int, item:QStandardItem)
-		bmx_qt_qstandarditem_setchild(qObjectPtr, row, item.qObjectPtr)
+		'bmx_qt_qstandarditem_setchild(qObjectPtr, row, item.qObjectPtr)
 	End Method
 	
 	Method setColumnCount(columns:Int)
-		bmx_qt_qstandarditem_setcolumncount(qObjectPtr, columns)
+		If Self.columns = columns Then
+			Return
+		End If
+		
+		If Self.columns < columns Then
+			' insert columns
+		Else
+			' remove columns
+		End If
+		'bmx_qt_qstandarditem_setcolumncount(qObjectPtr, columns)
 	End Method
 	
 	Method setData(value:Object)
-		bmx_qt_qstandarditem_setdata(qObjectPtr, value)
+		setDataInternal(Qt_UserRole, value)
+		'bmx_qt_qstandarditem_setdata(qObjectPtr, value)
 	End Method
 	
 	Method setDragEnabled(dragEnabled:Int)
-		bmx_qt_qstandarditem_setdragenabled(qObjectPtr, dragEnabled)
+		If dragEnabled Then
+			itemFlags :| Qt_ItemIsDragEnabled
+		Else
+			itemFlags :~ Qt_ItemIsDragEnabled
+		End If
+'		bmx_qt_qstandarditem_setdragenabled(qObjectPtr, dragEnabled)
 	End Method
 	
 	Method setDropEnabled(dropEnabled:Int)
-		bmx_qt_qstandarditem_setdropenabled(qObjectPtr, dropEnabled)
+		If dropEnabled Then
+			itemFlags :| Qt_ItemIsDropEnabled
+		Else
+			itemFlags :~ Qt_ItemIsDropEnabled
+		End If
+'		bmx_qt_qstandarditem_setdropenabled(qObjectPtr, dropEnabled)
 	End Method
 	
 	Method setEditable(editable:Int)
-		bmx_qt_qstandarditem_seteditable(qObjectPtr, editable)
+		If editable Then
+			itemFlags :| Qt_ItemIsEditable
+		Else
+			itemFlags :~ Qt_ItemIsEditable
+		End If
+'		bmx_qt_qstandarditem_seteditable(qObjectPtr, editable)
 	End Method
 	
 	Method setEnabled(enabled:Int)
-		bmx_qt_qstandarditem_setenabled(qObjectPtr, enabled)
+		If enabled Then
+			itemFlags :| Qt_ItemIsEnabled
+		Else
+			itemFlags :~ Qt_ItemIsEnabled
+		End If
+		'bmx_qt_qstandarditem_setenabled(qObjectPtr, enabled)
 	End Method
 	
 	Method setFlags(flags:Int)
-		bmx_qt_qstandarditem_setflags(qObjectPtr, flags)
+		itemFlags = flags
+		'bmx_qt_qstandarditem_setflags(qObjectPtr, flags)
 	End Method
 	
 	Method setFont(font:QFont)
@@ -287,39 +470,59 @@ Type QStandardItem
 	End Method
 	
 	Method setRowCount(rows:Int)
-		bmx_qt_qstandarditem_setrowcount(qObjectPtr, rows)
+		'bmx_qt_qstandarditem_setrowcount(qObjectPtr, rows)
 	End Method
 	
 	Method setSelectable(selectable:Int)
-		bmx_qt_qstandarditem_setselectable(qObjectPtr, selectable)
+		If selectable Then
+			itemFlags :| Qt_ItemIsSelectable
+		Else
+			itemFlags :~ Qt_ItemIsSelectable
+		End If
+	
+		'bmx_qt_qstandarditem_setselectable(qObjectPtr, selectable)
 	End Method
 	
 	Method setSizeHint(width:Int, height:Int)
-		bmx_qt_qstandarditem_setsizehint(qObjectPtr, width, height)
+		'bmx_qt_qstandarditem_setsizehint(qObjectPtr, width, height)
 	End Method
 	
 	Method setStatusTip(statusTip:String)
-		bmx_qt_qstandarditem_setstatustip(qObjectPtr, statustip)
+		setDataInternal(Qt_StatusTipRole, statusTip)
+		'bmx_qt_qstandarditem_setstatustip(qObjectPtr, statustip)
 	End Method
 	
 	Method setText(text:String)
-		bmx_qt_qstandarditem_settext(qObjectPtr, text)
+		setDataInternal(Qt_DisplayRole, text)
+'		bmx_qt_qstandarditem_settext(qObjectPtr, text)
 	End Method
 	
 	Method setTextAlignment(alignment:Int)
-		bmx_qt_qstandarditem_settextalignment(qObjectPtr, alignment)
+		Local v:TInt = New TInt
+		v.value = alignment
+		setDataInternal(Qt_TextAlignmentRole, v)
+		
+		'bmx_qt_qstandarditem_settextalignment(qObjectPtr, alignment)
 	End Method
 	
 	Method setToolTip(toolTip:String)
-		bmx_qt_qstandarditem_settooltip(qObjectPtr, toolTip)
+		setDataInternal(Qt_ToolTipRole, toolTip)
+		'bmx_qt_qstandarditem_settooltip(qObjectPtr, toolTip)
 	End Method
 	
 	Method setTristate(tristate:Int)
-		bmx_qt_qstandarditem_settristate(qObjectPtr, tristate)
+		If tristate Then
+			itemFlags :| Qt_ItemIsTristate
+		Else
+			itemFlags :~ Qt_ItemIsTristate
+		End If
+		
+		'bmx_qt_qstandarditem_settristate(qObjectPtr, tristate)
 	End Method
 	
 	Method setWhatsThis(whatsThis:String)
-		bmx_qt_qstandarditem_setwhatsthis(qObjectPtr, whatsThis)
+		setDataInternal(Qt_WhatsThisRole, whatsThis)
+		'bmx_qt_qstandarditem_setwhatsthis(qObjectPtr, whatsThis)
 	End Method
 	
 	Method sizeHint(width:Int Var, height:Int Var)
@@ -331,7 +534,8 @@ Type QStandardItem
 	End Method
 	
 	Method statusTip:String()
-		Return bmx_qt_qstandarditem_statustip(qObjectPtr)
+		Return String(getDataInternal(Qt_StatusTipRole))
+		'Return bmx_qt_qstandarditem_statustip(qObjectPtr)
 	End Method
 	
 	Method takeChild:QStandardItem(row:Int, column:Int = 0)
@@ -347,29 +551,128 @@ Type QStandardItem
 	End Method
 	
 	Method text:String()
-		Return bmx_qt_qstandarditem_text(qObjectPtr)
+		Return String(getDataInternal(Qt_DisplayRole))
+		'Return bmx_qt_qstandarditem_text(qObjectPtr)
 	End Method
 	
 	Method textAlignment:Int()
-		Return bmx_qt_qstandarditem_textalignment(qObjectPtr)
+		Local value:TInt = TInt(getDataInternal(Qt_TextAlignmentRole))
+		If value Then
+			Return value.value
+		End If
+		Return Qt_AlignLeft
 	End Method
 	
 	Method toolTip:String()
-		Return bmx_qt_qstandarditem_tooltip(qObjectPtr)
+		Return String(getDataInternal(Qt_ToolTipRole))
+		'Return bmx_qt_qstandarditem_tooltip(qObjectPtr)
 	End Method
 	
 	Method itemType:Int()
-		Return bmx_qt_qstandarditem_type(qObjectPtr)
+		'Return bmx_qt_qstandarditem_type(qObjectPtr)
 	End Method
 	
 	Method whatsThis:String()
-		Return bmx_qt_qstandarditem_whatsthis(qObjectPtr)
+		Return String(getDataInternal(Qt_WhatsThisRole))
+		'Return bmx_qt_qstandarditem_whatsthis(qObjectPtr)
 	End Method
+
+
+	Function _columnCount:Int(obj:QStandardItem)
+		Return obj.columnCount()
+	End Function
+
+	Function _rowCount:Int(obj:QStandardItem)
+		Return obj.rowCount()
+	End Function
 
 
 	Function _Free(obj:QStandardItem)
 		obj.qObjectPtr = Null
 	End Function
 	
+	Function castToObj:QStandardItem(item:Byte Ptr)
+		Return QStandardItem(bmx_qt_qstandarditem_casttoobj(item))
+	End Function
+	
+End Type
+
+
+Type TRole
+	Global roles:TRole[100]
+
+	Field id:Int
+	
+	Function getRole:TRole(index:Int)
+		Local role:TRole = roles[index]
+		If Not role Then
+			role = New TRole
+			role.id = index
+			roles[index] = role
+		End If
+		
+		Return role
+	End Function
+	
+	Method Compare:Int(obj:Object)
+		Return id - TRole(obj).id
+	End Method
+	
+End Type
+
+Type TInt
+	Field value:Int
+End Type
+
+Type TItemList
+
+	Field items:QStandardItem[0]
+
+	Method InsertRows(index:Int, count:Int)
+'DebugLog "TItemList::InsertRows(" + index + ", " + count + ")"
+		Local size:Int = items.length
+		
+		' expand if necessary
+		If index >= size Then
+			items = items[..size + 5 + count]
+		Else
+			If index = 0 Then
+				items = New QStandardItem[count] + items
+			Else
+				items = items[index-1..index] + New QStandardItem[count] + items[index..]
+			End If
+		End If
+
+	End Method
+
+	Method InsertItemAt(index:Int, value:QStandardItem)
+
+		InsertRows(index, 1)
+		SetItemAt(index, value)
+	
+	End Method
+		
+	Method SetItemAt(index:Int, value:QStandardItem)
+		items[index] = value
+	End Method
+	
+	Method itemAt:QStandardItem(index:Int)
+		If items.length > index Then
+			Return items[index]
+		End If
+		Return Null
+	End Method
+	
+	Method length:Int()
+		Return items.length
+	End Method
+
+	Method dump()
+	'	For Local i:Int = 0 Until items.length
+	'		Print i + " : " + items[i]
+	'	Next
+	'	Print ""
+	End Method
+
 End Type
 

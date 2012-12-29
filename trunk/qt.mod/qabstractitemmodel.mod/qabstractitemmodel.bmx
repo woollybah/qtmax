@@ -32,6 +32,26 @@ Import "common.bmx"
 
 
 Type QAbstractItemModel Extends QObject
+
+	Function _create:QAbstractItemModel(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QAbstractItemModel = New QAbstractItemModel
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+
+	Function _find:QAbstractItemModel(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local model:QAbstractItemModel = QAbstractItemModel(qfind(qObjectPtr))
+			If Not model Then
+				Return QAbstractItemModel._create(qObjectPtr)
+			End If
+			Return model
+		End If
+	End Function
+	
+
 Rem
 	Method buddy:QModelIndex(index:QModelIndex)
 		Return bmx_qt_qabstractitemmodel_(qObjectPtr)
@@ -184,5 +204,72 @@ Type QModelIndex
 			Return this
 		End If
 	End Function
+
+	Method child:QModelIndex(row:Int, column:Int)
+		Return QModelIndex._create(bmx_qt_qmodelindex_child(qObjectPtr, row, column))
+	End Method
+	
+	Method column:Int()
+		Return bmx_qt_qmodelindex_column(qObjectPtr)
+	End Method
+	
+	'QVariant	data ( Int role = Qt::DisplayRole ) Const
+	
+	Method flags:Int()
+		Return bmx_qt_qmodelindex_flags(qObjectPtr)
+	End Method
+	
+	Method internalId:Long()
+		Local id:Long
+		bmx_qt_qmodelindex_internalid(qObjectPtr, Varptr id)
+		Return id
+	End Method
+	
+	Method internalPointer:Byte Ptr()
+		Return bmx_qt_qmodelindex_internalpointer(qObjectPtr)
+	End Method
+	
+	Method isEqual:Int(index:QModelIndex)
+		Return bmx_qt_qmodelindex_isequal(qObjectPtr, index.qObjectPtr)
+	End Method
+	
+	Method isLessThan:Int(index:QModelIndex)
+		Return bmx_qt_qmodelindex_islessthan(qObjectPtr, index.qObjectPtr)
+	End Method
+	
+	Method isNotEqual:Int(index:QModelIndex)
+		Return bmx_qt_qmodelindex_isnotequal(qObjectPtr, index.qObjectPtr)
+	End Method
+
+	Method isValid:Int()
+		Return bmx_qt_qmodelindex_isvalid(qObjectPtr)
+	End Method
+	
+	Method model:QAbstractItemModel()
+		Return QAbstractItemModel._find(bmx_qt_qmodelindex_model(qObjectPtr))
+	End Method
+	
+	Method parent:QModelIndex()
+		Return QModelIndex._create(bmx_qt_qmodelindex_parent(qObjectPtr))
+	End Method
+	
+	Method row:Int()
+		Return bmx_qt_qmodelindex_row(qObjectPtr)
+	End Method
+	
+	Method sibling:QModelIndex(row:Int, column:Int)
+		Return QModelIndex._create(bmx_qt_qmodelindex_sibling(qObjectPtr, row, column))
+	End Method
+	
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qmodelindex_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
 
 End Type

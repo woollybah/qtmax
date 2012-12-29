@@ -40,6 +40,62 @@ QModelIndex & MaxQModelIndex::Index() {
 
 // *********************************************
 
+MaxQModelIndex * bmx_qt_qmodelindex_child(MaxQModelIndex * index, int row, int column) {
+	return new MaxQModelIndex(index->Index().child(row, column));
+}
+
+int bmx_qt_qmodelindex_column(MaxQModelIndex * index) {
+	return index->Index().column();
+}
+
+int bmx_qt_qmodelindex_flags(MaxQModelIndex * index) {
+	static_cast<int>(index->Index().flags());
+}
+
+void bmx_qt_qmodelindex_internalid(MaxQModelIndex * index, BBInt64 * id) {
+	*id = index->Index().internalId();
+}
+
+void * bmx_qt_qmodelindex_internalpointer(MaxQModelIndex * index) {
+	return index->Index().internalPointer();
+}
+
+int bmx_qt_qmodelindex_isequal(MaxQModelIndex * index, MaxQModelIndex * other) {
+	return static_cast<int>(index->Index() == other->Index());
+}
+
+int bmx_qt_qmodelindex_islessthan(MaxQModelIndex * index, MaxQModelIndex * other) {
+	return static_cast<int>(index->Index() < other->Index());
+}
+
+int bmx_qt_qmodelindex_isnotequal(MaxQModelIndex * index, MaxQModelIndex * other) {
+	return static_cast<int>(index->Index() != other->Index());
+}
+
+int bmx_qt_qmodelindex_isvalid(MaxQModelIndex * index) {
+	return static_cast<int>(index->Index().isValid());
+}
+
+const QAbstractItemModel * bmx_qt_qmodelindex_model(MaxQModelIndex * index) {
+	return index->Index().model();
+}
+
+MaxQModelIndex * bmx_qt_qmodelindex_parent(MaxQModelIndex * index) {
+	return new MaxQModelIndex(index->Index().parent());
+}
+
+int bmx_qt_qmodelindex_row(MaxQModelIndex * index) {
+	return index->Index().row();
+}
+
+MaxQModelIndex * bmx_qt_qmodelindex_sibling(MaxQModelIndex * index, int row, int column) {
+	return new MaxQModelIndex(index->Index().sibling(row, column));
+}
+
+void bmx_qt_qmodelindex_free(MaxQModelIndex * index) {
+	delete index;
+}
+
 
 
 // NOTES :

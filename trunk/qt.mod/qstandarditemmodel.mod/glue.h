@@ -24,8 +24,10 @@
 #define MAX_QT_QSTANDARDITEMMODEL
 
 #include "../core.mod/glue.h"
+#include "../qabstractitemmodel.mod/glue.h"
+#include "../qstandarditem.mod/glue.h"
 #include <QtCore>
-#include <QStandardItemModel>
+#include <QAbstractItemModel>
 
 class MaxQStandardItemModel;
 
@@ -34,13 +36,47 @@ extern "C" {
 
 #include <blitz.h>
 
+	MaxQModelIndex * bmx_qt_qstandarditemmodel_createindex(MaxQStandardItemModel * model, int row, int col, MaxQStandardItem * parent);
+	MaxQStandardItem * _qt_qstandarditemmodel_QStandardItemModel__itemFromIndex(BBObject * handle, MaxQModelIndex * parent);
+	MaxQModelIndex * _qt_qstandarditemmodel_QStandardItemModel__indexFromItem(BBObject * handle, BBObject * item);
+	int _qt_qstandarditemmodel_QStandardItemModel__columnCount(BBObject * handle, MaxQModelIndex * parent);
+	int _qt_qstandarditemmodel_QStandardItemModel__rowCount(BBObject * handle, MaxQModelIndex * parent);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataInt(BBObject * handle, MaxQModelIndex * index, int role, int value);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataString(BBObject * handle, MaxQModelIndex * index, int role, BBString * value);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataObject(BBObject * handle, MaxQModelIndex * index, int role, BBObject * value);
+	int _qt_qstandarditemmodel_QStandardItemModel__insertRows(BBObject * handle, int row, int count, MaxQModelIndex * parent);
+	int _qt_qstandarditemmodel_QStandardItemModel__getDataInt(BBObject * handle, MaxQModelIndex * index, int role);
+	BBString * _qt_qstandarditemmodel_QStandardItemModel__getDataString(BBObject * handle, MaxQModelIndex * index, int role);
+	BBObject * _qt_qstandarditemmodel_QStandardItemModel__getDataObject(BBObject * handle, MaxQModelIndex * index, int role);
+
+	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsAboutToBeInserted(BBObject * handle , MaxQModelIndex * index, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsAboutToBeMoved(BBObject * handle, MaxQModelIndex * sourceParent, int sourceStart, int sourceEnd, MaxQModelIndex * destinationParent, int destinationColumn);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsAboutToBeRemoved(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsInserted(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsMoved(BBObject * handle, MaxQModelIndex * sourceParent, int sourceStart, int sourceEnd, MaxQModelIndex * destinationParent, int destinationColumn);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsRemoved(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnDataChanged(BBObject * handle, MaxQModelIndex * topLeft, MaxQModelIndex * bottomRight);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnHeaderDataChanged(BBObject * handle, int orientation, int first, int last);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnLayoutAboutToBeChanged(BBObject * handle);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnLayoutChanged(BBObject * handle);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnModelAboutToBeReset(BBObject * handle);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnModelReset(BBObject * handle);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnRowsAboutToBeInserted(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnRowsAboutToBeMoved(BBObject * handle, MaxQModelIndex * sourceParent, int sourceStart, int sourceEnd, MaxQModelIndex * destinationParent, int destinationRow);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnRowsAboutToBeRemoved(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnRowsInserted(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnRowsMoved(BBObject * handle, MaxQModelIndex * sourceParent, int sourceStart, int sourceEnd, MaxQModelIndex * destinationParent, int destinationRow);
+	void _qt_qstandarditemmodel_QStandardItemModel__OnRowsRemoved(BBObject * handle, MaxQModelIndex * parent, int start, int end);
+
+
+	MaxQStandardItemModel * bmx_qt_qstandarditemmodel_create(BBObject * handle, QObject * parent);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-class MaxQStandardItemModel : public QStandardItemModel
+class MaxQStandardItemModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
@@ -48,11 +84,20 @@ public:
 	MaxQStandardItemModel(BBObject * handle, QObject * parent);
 	~MaxQStandardItemModel();
 
+	virtual int	columnCount(const QModelIndex & parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	virtual QModelIndex	parent(const QModelIndex & child) const;
+	virtual int	rowCount(const QModelIndex & parent = QModelIndex()) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	virtual bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
+	virtual bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
+
+	QModelIndex doCreateIndex(int row, int col, MaxQStandardItem * parent);
+
 private:
 	BBObject * maxHandle;
 
 private slots:
-	void onItemChanged(QStandardItem * item);
 	void onColumnsAboutToBeInserted(const QModelIndex & parent, int start, int end);
 	void onColumnsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationColumn);
 	void onColumnsAboutToBeRemoved(const QModelIndex & parent, int start, int end);
@@ -64,7 +109,7 @@ private slots:
 	void onLayoutAboutToBeChanged();
 	void onLayoutChanged();
 	void onModelAboutToBeReset();
-	void oModelReset();
+	void onModelReset();
 	void onRowsAboutToBeInserted(const QModelIndex & parent, int start, int end);
 	void onRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationRow);
 	void onRowsAboutToBeRemoved(const QModelIndex & parent, int start, int end);

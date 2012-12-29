@@ -41,11 +41,13 @@ extern "C" {
 
 	QComboBox * bmx_qt_qcombobox_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qcombobox_addItem(QComboBox * cb, BBString * text, BBInt64 itemId);
+	void bmx_qt_qcombobox_addItem2(QComboBox * cb, BBString * text, BBObject * data);
 	void bmx_qt_qcombobox_addItems(QComboBox * cb, BBArray * texts);
 	int bmx_qt_qcombobox_count(QComboBox * cb);
 	int bmx_qt_qcombobox_currentindex(QComboBox * cb);
 	void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBInt64 itemId);
 	void bmx_qt_qcombobox_itemdata(QComboBox * cb, int index, BBInt64 * id);
+	BBObject * bmx_qt_qcombobox_itemdata2(QComboBox * cb, int index);
 	void bmx_qt_qcombobox_removeitem(QComboBox * cb, int index);
 	void bmx_qt_qcombobox_setitemdata(QComboBox * cb, int index, BBInt64 id);
 	BBString * bmx_qt_qcombobox_currenttext(QComboBox * cb);
@@ -54,6 +56,7 @@ extern "C" {
 	int bmx_qt_qcombobox_duplicatesenabled(QComboBox * cb);
 	int bmx_qt_qcombobox_hasframe(QComboBox * cb);
 	void bmx_qt_qcombobox_hidepopup(QComboBox * cb);
+	void bmx_qt_qcombobox_setmodel(QComboBox * cb, QAbstractItemModel * model);
 
 
 	// QComboBox
