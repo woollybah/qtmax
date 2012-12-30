@@ -1350,6 +1350,7 @@ End Type
 Type MaxGuiQComboBox Extends QComboBox
 
 	Field gadget:TQtGadget
+	Field model:QStandardItemModel
 
 	Method MCreate:MaxGuiQComboBox(parent:QWidget, owner:TQtGadget)
 		gadget = owner
@@ -1358,6 +1359,9 @@ Type MaxGuiQComboBox Extends QComboBox
 	End Method
 
 	Method OnInit()
+		model = New QStandardItemModel.Create()
+		setModel(model)
+	
 		connect(Self, "currentIndexChanged", Self, "onCurrentIndexChanged")
 		connect(Self, "editTextChanged", Self, "onEditTextChanged")
 	End Method

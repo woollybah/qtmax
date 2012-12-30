@@ -200,6 +200,7 @@ Type QStandardItemModel Extends QAbstractItemModel
 	
 	
 	Method _itemChanged(data:Object)
+'DebugLog "QStandardItemModel::_itemChanged"
 		Local index:QModelIndex = indexFromItem(QStandardItem(data))
 		bmx_qt_qstandarditemmodel_dataChanged(qObjectPtr, index.qObjectPtr, index.qObjectPtr)
 	End Method
