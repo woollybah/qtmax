@@ -362,6 +362,7 @@ DebugLog "Item::insertRows(" + row + ", " + count + ")"
 			If index <> -1 Then
 				row = index / parentItem.columnCount()
 				column = index Mod parentItem.columnCount()
+				Return
 			End If
 		End If
 		

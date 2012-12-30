@@ -162,7 +162,7 @@ QModelIndex MaxQStandardItemModel::doCreateIndex(int row, int col, MaxQStandardI
 }
 
 bool MaxQStandardItemModel::setData(const QModelIndex & index, const QVariant & value, int role) {
-printf("MaxQStandardItemModel::setData : %d\n", role);fflush(stdout);
+//printf("MaxQStandardItemModel::setData : %d\n", role);fflush(stdout);
 	if (!index.isValid()) {
 		return false;
 	}

@@ -46,6 +46,7 @@ Import Qt.QColorDialog
 Import Qt.QMessageBox
 Import Qt.QSpinBox
 Import Qt.QSocketNotifier
+Import Qt.QStandardItemModel
 
 ' gadget identifiers
 Const QT_WINDOW:Int = 0
