@@ -46,6 +46,8 @@ Type QStandardItem
 	Field itemFlags:Int = Qt_ItemIsSelectable | Qt_ItemIsEnabled | Qt_ItemIsEditable | Qt_ItemIsDragEnabled | Qt_ItemIsDropEnabled
 	Field lastIndexOf:Int = 2
 	
+	Field model:QAbstractItemModel
+	
 	Field qObjectPtr:Byte Ptr
 	
 	
@@ -83,6 +85,10 @@ Type QStandardItem
 'DebugLog "QStandardItem::setDataInternal(" + role + ", " + String(data) + ")"
 		Local r:TRole = TRole.getRole(role)
 		roles.Insert(r, data)
+		
+		If model Then
+			model._itemChanged(Self)
+		End If
 	End Method
 	
 	Method getDataInternal:Object(role:Int)
@@ -226,7 +232,15 @@ Type QStandardItem
 	End Method
 	
 	Method insertRow(row:Int, item:QStandardItem)
-		'bmx_qt_qstandarditem_insertrow(qObjectPtr, row, item.qObjectPtr)
+		If row >= 0 Then
+			insertRows(row, 1)
+			
+			item.parentItem = Self
+			item.model = model
+			
+			Local index:Int = childIndex(row, 0)
+			children.SetItemAt(index, item)
+		End If
 	End Method
 	
 	Method insertRowsItems(row:Int, items:TList)
@@ -234,15 +248,55 @@ Type QStandardItem
 	End Method
 	
 	Method insertRows:Int(row:Int, count:Int)
+DebugLog "Item::insertRows(" + row + ", " + count + ")"
 		If (count < 1) Or (row < 0) Or (row > rowCount()) Then
 			Return False
+		End If
+		
+		If model Then
+			model._doBeginInsertRows(Self, row, row + count - 1)
 		End If
 		
 		rows :+ count
 		
 		children.InsertRows(row, count)
+		
+		If model Then
+			model._doEndInsertRows(Self, row, count)
+		End If
+		
 		Return True
 		'bmx_qt_qstandarditem_insertrows(qObjectPtr, row, count)
+	End Method
+
+	Method removeRows:Int(row:Int, count:Int)
+		If (count < 1) Or (row < 0) Or ((row + count) > rowCount()) Then
+			Return False
+		End If
+		
+		If model Then
+			model._doBeginRemoveRows(Self, row, row + count - 1)
+		End If
+		
+		Local _start:Int = childIndex(row, 0)
+		Local _end:Int = count * columnCount()
+		
+		For Local i:Int = _start Until _start + _end
+			Local item:QStandardItem = children.itemAt(i)
+			If item Then
+				item.Free()
+			End If
+		Next
+		
+		rows :- count
+		
+		children.RemoveRows(row, count)
+		
+		If model Then
+			model._doEndRemoveRows(Self, row, count)
+		End If
+		
+		Return True
 	End Method
 	
 	Method isCheckable:Int()
@@ -316,7 +370,7 @@ Type QStandardItem
 	End Method
 	
 	Method removeColumn(column:Int)
-		'bmx_qt_qstandarditem_removecolumn(qObjectPtr, column)
+		removeColumns(column, 1)
 	End Method
 	
 	Method removeColumns(column:Int, count:Int)
@@ -324,11 +378,7 @@ Type QStandardItem
 	End Method
 	
 	Method removeRow(row:Int)
-		'bmx_qt_qstandarditem_removerow(qObjectPtr, row)
-	End Method
-	
-	Method removeRows(row:Int, count:Int)
-		'bmx_qt_qstandarditem_removerows(qObjectPtr, row, count)
+		removeRows(row, 1)
 	End Method
 	
 	Method row:Int()
@@ -422,7 +472,6 @@ Type QStandardItem
 		Else
 			itemFlags :~ Qt_ItemIsDragEnabled
 		End If
-'		bmx_qt_qstandarditem_setdragenabled(qObjectPtr, dragEnabled)
 	End Method
 	
 	Method setDropEnabled(dropEnabled:Int)
@@ -431,7 +480,6 @@ Type QStandardItem
 		Else
 			itemFlags :~ Qt_ItemIsDropEnabled
 		End If
-'		bmx_qt_qstandarditem_setdropenabled(qObjectPtr, dropEnabled)
 	End Method
 	
 	Method setEditable(editable:Int)
@@ -440,7 +488,6 @@ Type QStandardItem
 		Else
 			itemFlags :~ Qt_ItemIsEditable
 		End If
-'		bmx_qt_qstandarditem_seteditable(qObjectPtr, editable)
 	End Method
 	
 	Method setEnabled(enabled:Int)
@@ -449,12 +496,10 @@ Type QStandardItem
 		Else
 			itemFlags :~ Qt_ItemIsEnabled
 		End If
-		'bmx_qt_qstandarditem_setenabled(qObjectPtr, enabled)
 	End Method
 	
 	Method setFlags(flags:Int)
 		itemFlags = flags
-		'bmx_qt_qstandarditem_setflags(qObjectPtr, flags)
 	End Method
 	
 	Method setFont(font:QFont)
@@ -479,8 +524,6 @@ Type QStandardItem
 		Else
 			itemFlags :~ Qt_ItemIsSelectable
 		End If
-	
-		'bmx_qt_qstandarditem_setselectable(qObjectPtr, selectable)
 	End Method
 	
 	Method setSizeHint(width:Int, height:Int)
@@ -489,25 +532,20 @@ Type QStandardItem
 	
 	Method setStatusTip(statusTip:String)
 		setDataInternal(Qt_StatusTipRole, statusTip)
-		'bmx_qt_qstandarditem_setstatustip(qObjectPtr, statustip)
 	End Method
 	
 	Method setText(text:String)
 		setDataInternal(Qt_DisplayRole, text)
-'		bmx_qt_qstandarditem_settext(qObjectPtr, text)
 	End Method
 	
 	Method setTextAlignment(alignment:Int)
 		Local v:TInt = New TInt
 		v.value = alignment
 		setDataInternal(Qt_TextAlignmentRole, v)
-		
-		'bmx_qt_qstandarditem_settextalignment(qObjectPtr, alignment)
 	End Method
 	
 	Method setToolTip(toolTip:String)
 		setDataInternal(Qt_ToolTipRole, toolTip)
-		'bmx_qt_qstandarditem_settooltip(qObjectPtr, toolTip)
 	End Method
 	
 	Method setTristate(tristate:Int)
@@ -516,13 +554,10 @@ Type QStandardItem
 		Else
 			itemFlags :~ Qt_ItemIsTristate
 		End If
-		
-		'bmx_qt_qstandarditem_settristate(qObjectPtr, tristate)
 	End Method
 	
 	Method setWhatsThis(whatsThis:String)
 		setDataInternal(Qt_WhatsThisRole, whatsThis)
-		'bmx_qt_qstandarditem_setwhatsthis(qObjectPtr, whatsThis)
 	End Method
 	
 	Method sizeHint(width:Int Var, height:Int Var)
@@ -535,7 +570,6 @@ Type QStandardItem
 	
 	Method statusTip:String()
 		Return String(getDataInternal(Qt_StatusTipRole))
-		'Return bmx_qt_qstandarditem_statustip(qObjectPtr)
 	End Method
 	
 	Method takeChild:QStandardItem(row:Int, column:Int = 0)
@@ -552,7 +586,6 @@ Type QStandardItem
 	
 	Method text:String()
 		Return String(getDataInternal(Qt_DisplayRole))
-		'Return bmx_qt_qstandarditem_text(qObjectPtr)
 	End Method
 	
 	Method textAlignment:Int()
@@ -565,7 +598,6 @@ Type QStandardItem
 	
 	Method toolTip:String()
 		Return String(getDataInternal(Qt_ToolTipRole))
-		'Return bmx_qt_qstandarditem_tooltip(qObjectPtr)
 	End Method
 	
 	Method itemType:Int()
@@ -574,7 +606,6 @@ Type QStandardItem
 	
 	Method whatsThis:String()
 		Return String(getDataInternal(Qt_WhatsThisRole))
-		'Return bmx_qt_qstandarditem_whatsthis(qObjectPtr)
 	End Method
 
 
@@ -594,6 +625,38 @@ Type QStandardItem
 	Function castToObj:QStandardItem(item:Byte Ptr)
 		Return QStandardItem(bmx_qt_qstandarditem_casttoobj(item))
 	End Function
+	
+	Method ToString:String()
+		Return text()
+	End Method
+	
+	' tody up for removal
+	Method Free()
+		If qObjectPtr Then
+			model = Null
+			parentItem = Null
+	
+			' Free all children
+			For Local i:Int = 0 Until children.items.length
+				Local item:QStandardItem = children.items[i]
+				If item Then
+					item.Free()
+				End If
+			Next
+			
+			children.Clear()
+			children = Null
+	
+			bmx_qt_qstandarditem_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		If qObjectPtr Then
+			DebugLog "Delete before Free! The model is broken :-("
+		End If
+	End Method
 	
 End Type
 
@@ -629,20 +692,41 @@ Type TItemList
 	Field items:QStandardItem[0]
 
 	Method InsertRows(index:Int, count:Int)
-'DebugLog "TItemList::InsertRows(" + index + ", " + count + ")"
+		'DebugLog "TItemList::InsertRows(" + index + ", " + count + ")"
 		Local size:Int = items.length
 		
 		' expand if necessary
 		If index >= size Then
-			items = items[..size + 5 + count]
+			items = items[..index + count]
 		Else
 			If index = 0 Then
 				items = New QStandardItem[count] + items
 			Else
-				items = items[index-1..index] + New QStandardItem[count] + items[index..]
+				items = items[..index] + New QStandardItem[count] + items[index..]
 			End If
 		End If
-
+	End Method
+	
+	Method RemoveRows(index:Int, count:Int)
+		Local toEnd:Int = False
+		
+		If index + count > items.length Then
+			toEnd = True
+		End If
+		
+		If index = 0 Then
+			If toEnd Then
+				items = New QStandardItem[0]
+			Else
+				items = items[..index]
+			End If
+		Else
+			If toEnd Then
+				items = items[..index]
+			Else
+				items = items[..index] + items[index + count..]
+			End If
+		End If
 	End Method
 
 	Method InsertItemAt(index:Int, value:QStandardItem)
@@ -653,6 +737,7 @@ Type TItemList
 	End Method
 		
 	Method SetItemAt(index:Int, value:QStandardItem)
+		' TODO : if item exists here already.. we need to free it up properly?
 		items[index] = value
 	End Method
 	
@@ -663,15 +748,27 @@ Type TItemList
 		Return Null
 	End Method
 	
+	Method Clear()
+		For Local i:Int = 0 Until items.length
+			items[i] = Null
+		Next
+	End Method
+	
 	Method length:Int()
 		Return items.length
 	End Method
-
+	
+	' for debugging the list
 	Method dump()
-	'	For Local i:Int = 0 Until items.length
-	'		Print i + " : " + items[i]
-	'	Next
-	'	Print ""
+		For Local i:Int = 0 Until items.length
+			Local item:QStandardItem = items[i]
+			If item Then
+				DebugLog i + " : " + item.toString()
+			Else
+				DebugLog i + " : ..."
+			End If
+		Next
+		DebugLog ""
 	End Method
 
 End Type

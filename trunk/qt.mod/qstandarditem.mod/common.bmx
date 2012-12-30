@@ -52,6 +52,7 @@ Extern
 
 	Function bmx_qt_qstandarditem_create:Byte Ptr(handle:Object)
 	Function bmx_qt_qstandarditem_casttoobj:Object(o:Byte Ptr)
+	Function bmx_qt_qstandarditem_free(handle:Byte Ptr)
 
 
 	Function bmx_qt_qstandarditem_accessibledescription:String(handle:Byte Ptr)

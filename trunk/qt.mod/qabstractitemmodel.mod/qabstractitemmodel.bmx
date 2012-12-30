@@ -52,6 +52,21 @@ Type QAbstractItemModel Extends QObject
 	End Function
 	
 
+	Method _itemChanged(data:Object)
+	End Method
+	
+	Method _doBeginInsertRows(item:Object, row:Int, count:Int)
+	End Method
+
+	Method _doEndInsertRows(item:Object, row:Int, count:Int)
+	End Method
+
+	Method _doBeginRemoveRows(item:Object, row:Int, count:Int)
+	End Method
+
+	Method _doEndRemoveRows(item:Object, row:Int, count:Int)
+	End Method
+
 Rem
 	Method buddy:QModelIndex(index:QModelIndex)
 		Return bmx_qt_qabstractitemmodel_(qObjectPtr)

@@ -49,5 +49,10 @@ Extern
 
 	Function bmx_qt_qstandarditemmodel_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qstandarditemmodel_createindex:Byte Ptr(handle:Byte Ptr, row:Int, col:Int, parent:Byte Ptr)
+	Function bmx_qt_qstandarditemmodel_dataChanged(handle:Byte Ptr, index1:Byte Ptr, index2:Byte Ptr)
+	Function bmx_qt_qstandarditemmodel_dobegininsertrows(handle:Byte Ptr, index:Byte Ptr, row:Int, count:Int)
+	Function bmx_qt_qstandarditemmodel_doendinsertrows(handle:Byte Ptr)
+	Function bmx_qt_qstandarditemmodel_dobeginremoverows(handle:Byte Ptr, index:Byte Ptr, row:Int, count:Int)
+	Function bmx_qt_qstandarditemmodel_doendremoverows(handle:Byte Ptr)
 
 End Extern
