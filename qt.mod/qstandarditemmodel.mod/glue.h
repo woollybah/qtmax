@@ -86,6 +86,7 @@ extern "C" {
 	void bmx_qt_qstandarditemmodel_doendinsertrows(MaxQStandardItemModel * model);
 	void bmx_qt_qstandarditemmodel_dobeginremoverows(MaxQStandardItemModel * model, MaxQModelIndex * index, int row, int count);
 	void bmx_qt_qstandarditemmodel_doendremoverows(MaxQStandardItemModel * model);
+	MaxQModelIndex * bmx_qt_qstandarditemmodel_index(MaxQStandardItemModel * model, int row, int column, MaxQModelIndex * parent);
 
 }
 

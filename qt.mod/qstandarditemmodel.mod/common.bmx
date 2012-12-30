@@ -54,5 +54,6 @@ Extern
 	Function bmx_qt_qstandarditemmodel_doendinsertrows(handle:Byte Ptr)
 	Function bmx_qt_qstandarditemmodel_dobeginremoverows(handle:Byte Ptr, index:Byte Ptr, row:Int, count:Int)
 	Function bmx_qt_qstandarditemmodel_doendremoverows(handle:Byte Ptr)
+	Function bmx_qt_qstandarditemmodel_index:Byte Ptr(handle:Byte Ptr, row:Int, column:Int, parent:Byte Ptr)
 
 End Extern

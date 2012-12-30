@@ -50,6 +50,47 @@ Import "glue.cpp"
 
 Extern
 
+	' QAbstractItemView
+	' QAbstractScrollArea
+	Function bmx_qt_qabstractitemview_default_scrollcontentsby(handle:Byte Ptr, dx:Int, dy:Int)
+	Function bmx_qt_qabstractitemview_default_viewportevent:Int(handle:Byte Ptr, event:Byte Ptr)	
+	' QFrame
+	' QWidget
+	Function bmx_qt_qabstractitemview_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_focusnextchild:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qabstractitemview_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_focuspreviouschild:Int(handle:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qabstractitemview_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qabstractitemview_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
+
 	Function bmx_qt_qabstractitemview_setmodel(handle:Byte Ptr, model:Byte Ptr)
 
 End Extern
