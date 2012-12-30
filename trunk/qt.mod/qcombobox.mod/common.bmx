@@ -91,7 +91,7 @@ Extern
 	Function bmx_qt_qcombobox_addItems(handle:Byte Ptr, texts:String[])
 	Function bmx_qt_qcombobox_count:Int(handle:Byte Ptr)
 	Function bmx_qt_qcombobox_currentindex:Int(handle:Byte Ptr)
-	Function bmx_qt_qcombobox_insertitem(handle:Byte Ptr, index:Int, text:String, itemId:Long)
+	Function bmx_qt_qcombobox_insertitem(handle:Byte Ptr, index:Int, text:String, data:Object)
 	Function bmx_qt_qcombobox_itemdata:Object(handle:Byte Ptr, index:Int)
 	Function bmx_qt_qcombobox_removeitem(handle:Byte Ptr, index:Int)
 	Function bmx_qt_qcombobox_setitemdata(handle:Byte Ptr, index:Int, data:Object)
@@ -112,5 +112,10 @@ Extern
 	Function bmx_qt_qcombobox_setframe(handle:Byte Ptr, value:Int)
 	Function bmx_qt_qcombobox_seticonsize(handle:Byte Ptr, w:Int, h:Int)
 	Function bmx_qt_qcombobox_setinsertpolicy(handle:Byte Ptr, policy:Int)
+	Function bmx_qt_qcombobox_setitemicon(handle:Byte Ptr, index:Int, icon:Byte Ptr)
+	Function bmx_qt_qcombobox_setitemtext(handle:Byte Ptr, index:Int, text:String)
+	Function bmx_qt_qcombobox_setmaxcount(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qcombobox_setmaxvisibleitems(handle:Byte Ptr, maxItems:Int)
+	Function bmx_qt_qcombobox_setminimumcontentslength(handle:Byte Ptr, characters:Int)
 
 End Extern
