@@ -47,6 +47,7 @@ Type QStandardItemModel Extends QAbstractItemModel
 		End If
 		
 		root = New QStandardItem.CreateEmpty()
+		root.model = Self
 		
 		Return Self
 	End Method
@@ -67,6 +68,7 @@ Type QStandardItemModel Extends QAbstractItemModel
 		' create one if it doesn't exist?
 		If Not item Then
 			item = New QStandardItem.CreateEmpty()
+			item.model = Self
 			parent.setChildRC(index.row(), index.column(), item)
 		End If
 		
@@ -179,6 +181,54 @@ Type QStandardItemModel Extends QAbstractItemModel
 		
 		Return item.insertRows(row, count)
 	End Method
+
+	Method removeRows:Int(row:Int, count:Int, parent:QModelIndex)
+		Local item:QStandardItem
+		If Not parent.isValid() Then
+			item = root
+		Else
+			item = itemFromIndex(parent)
+		End If
+
+		If Not item Then
+			Return False
+		End If
+
+		Return item.removeRows(row, count)
+	End Method
+	
+	
+	
+	Method _itemChanged(data:Object)
+		Local index:QModelIndex = indexFromItem(QStandardItem(data))
+		bmx_qt_qstandarditemmodel_dataChanged(qObjectPtr, index.qObjectPtr, index.qObjectPtr)
+	End Method
+	
+	Method _doBeginInsertRows(item:Object, row:Int, count:Int)
+		Local index:QModelIndex = indexFromItem(QStandardItem(item))
+		If index Then
+			bmx_qt_qstandarditemmodel_dobegininsertrows(qObjectPtr, index.qObjectPtr, row, count)
+		Else
+			bmx_qt_qstandarditemmodel_dobegininsertrows(qObjectPtr, Null, row, count)
+		End If
+	End Method
+
+	Method _doEndInsertRows(item:Object, row:Int, count:Int)
+		bmx_qt_qstandarditemmodel_doendinsertrows(qObjectPtr)
+	End Method
+
+	Method _doBeginRemoveRows(item:Object, row:Int, count:Int)
+		Local index:QModelIndex = indexFromItem(QStandardItem(item))
+		If index Then
+			bmx_qt_qstandarditemmodel_dobeginremoverows(qObjectPtr, index.qObjectPtr, row, count)
+		Else
+			bmx_qt_qstandarditemmodel_dobeginremoverows(qObjectPtr, Null, row, count)
+		End If
+	End Method
+
+	Method _doEndRemoveRows(item:Object, row:Int, count:Int)
+		bmx_qt_qstandarditemmodel_doendremoverows(qObjectPtr)
+	End Method
 	
 	
 	
@@ -220,10 +270,26 @@ Type QStandardItemModel Extends QAbstractItemModel
 		Return obj.setDataObject(QModelIndex._create(index), role, value)
 	End Function
 	
-	Function _insertRows:Int(obj:QStandardItemModel, row:Int, count:Int, parent:Byte Ptr)
-		Return obj.insertRows(row, count, QModelIndex._create(parent))
+	Function _setDataColor:Int(obj:QStandardItemModel, index:Byte Ptr, role:Int, color:Byte Ptr)
+		Return obj.setDataObject(QModelIndex._create(index), role, QColor._create(color))
 	End Function
-
+	
+	Function _setDataIcon:Int(obj:QStandardItemModel, index:Byte Ptr, role:Int, icon:Byte Ptr)
+		Return obj.setDataObject(QModelIndex._create(index), role, QIcon._create(icon))
+	End Function
+	
+	Function _setDataPixmap:Int(obj:QStandardItemModel, index:Byte Ptr, role:Int, pixmap:Byte Ptr)
+		Return obj.setDataObject(QModelIndex._create(index), role, QPixmap._create(pixmap))
+	End Function
+	
+	Function _setDataBrush:Int(obj:QStandardItemModel, index:Byte Ptr, role:Int, brush:Byte Ptr)
+		Return obj.setDataObject(QModelIndex._create(index), role, QBrush._create(brush))
+	End Function
+	
+	Function _setDataFont:Int(obj:QStandardItemModel, index:Byte Ptr, role:Int, font:Byte Ptr)
+		Return obj.setDataObject(QModelIndex._create(index), role, QFont._create(font))
+	End Function
+	
 	Function _getDataInt:Int(obj:QStandardItemModel, index:Byte Ptr, role:Int)
 		Return obj.getDataInt(QModelIndex._create(index), role)
 	End Function
@@ -236,6 +302,36 @@ Type QStandardItemModel Extends QAbstractItemModel
 		Return obj.getDataObject(QModelIndex._create(index), role)
 	End Function
 	
+	Function _getDataType:Byte Ptr(obj:QStandardItemModel, index:Byte Ptr, role:Int, _type:Int Ptr)
+		Local data:Object = obj.getDataObject(QModelIndex._create(index), role)
+		
+		If QColor(data) Then
+			_type[0] = QVariant.Type_Color
+			Return QColor(data).qObjectPtr
+		Else If QIcon(data) Then
+			_type[0] = QVariant.Type_Icon
+			Return QIcon(data).qObjectPtr
+		Else If QPixmap(data) Then
+			_type[0] = QVariant.Type_Pixmap
+			Return QPixmap(data).qObjectPtr
+		Else If QBrush(data) Then
+			_type[0] = QVariant.Type_Brush
+			Return QBrush(data).qObjectPtr
+		Else If QFont(data) Then
+			_type[0] = QVariant.Type_Font
+			Return QFont(data).qObjectPtr
+		Else
+			Return Null
+		End If
+	End Function
+		
+	Function _insertRows:Int(obj:QStandardItemModel, row:Int, count:Int, parent:Byte Ptr)
+		Return obj.insertRows(row, count, QModelIndex._create(parent))
+	End Function
+
+	Function _removeRows:Int(obj:QStandardItemModel, row:Int, count:Int, parent:Byte Ptr)
+		Return obj.removeRows(row, count, QModelIndex._create(parent))
+	End Function
 	
 	
 	

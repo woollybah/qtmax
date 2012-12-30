@@ -41,7 +41,8 @@ extern "C" {
 
 
 	MaxQStandardItem * bmx_qt_qstandarditem_create(BBObject * handle);
-
+	void bmx_qt_qstandarditem_free(MaxQStandardItem * item);
+	
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

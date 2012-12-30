@@ -50,11 +50,7 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method addItem(text:String, userData:Object = Null)
-		'Local itemId:Long
-		'If userData Then
-		'	itemId = data.addItem(userData)
-		'End If
-		bmx_qt_qcombobox_addItem2(qObjectPtr, text, userData)
+		bmx_qt_qcombobox_addItem(qObjectPtr, text, userData)
 	End Method
 	
 	Method addItems(texts:String[])
@@ -118,11 +114,7 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method itemData:Object(index:Int)
-		'Local id:Long
-		Return bmx_qt_qcombobox_itemdata2(qObjectPtr, index)
-		'If id Then
-		'	Return data.itemData(id)
-		'End If
+		Return bmx_qt_qcombobox_itemdata(qObjectPtr, index)
 	End Method
 	
 	'Method itemDelegate:QAbstractItemDelegate()
@@ -134,7 +126,7 @@ Type QComboBox Extends QWidget
 	End Method
 	
 	Method itemText:String(index:Int)
-	' TODO
+		Return bmx_qt_qcombobox_itemtext(qObjectPtr, index)
 	End Method
 	
 	Method lineEdit:QLineEdit()
@@ -142,15 +134,15 @@ Type QComboBox Extends QWidget
 	End Method
 	
 	Method maxCount:Int()
-	' TODO
+		Return bmx_qt_qcombobox_maxcount(qObjectPtr)
 	End Method
 	
 	Method maxVisibleItems:Int()
-	' TODO
+		Return bmx_qt_qcombobox_maxvisibleitems(qObjectPtr)
 	End Method
 	
 	Method minimumContentsLength:Int()
-	' TODO
+		Return bmx_qt_qcombobox_minimumcontentslength(qObjectPtr)
 	End Method
 
 	'Method model:QAbstractItemModel()
@@ -158,7 +150,7 @@ Type QComboBox Extends QWidget
 	'End Method
 
 	Method modelColumn:Int()
-	' TODO
+		Return bmx_qt_qcombobox_modelcolumn(qObjectPtr)
 	End Method
 
 	Method removeItem(index:Int)
@@ -179,30 +171,27 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method setDuplicatesEnabled(enable:Int)
-	' TODO
+		bmx_qt_qcombobox_setduplicatesenabled(qObjectPtr, enable)
 	End Method
 
 	Method setEditable(editable:Int)
-	' TODO
+		bmx_qt_qcombobox_seteditable(qObjectPtr, editable)
 	End Method
 
 	Method setFrame(value:Int)
-	' TODO
+		bmx_qt_qcombobox_setframe(qObjectPtr, value)
 	End Method
 
 	Method setIconSize(w:Int, h:Int)
-	' TODO
+		bmx_qt_qcombobox_seticonsize(qObjectPtr, w, h)
 	End Method
 
 	Method setInsertPolicy(policy:Int)
-	' TODO
+		bmx_qt_qcombobox_setinsertpolicy(qObjectPtr, policy)
 	End Method
 
 	Method setItemData(index:Int, value:Object)
-		'Local id:Long
-		'bmx_qt_qcombobox_itemdata(qObjectPtr, index, Varptr id)
-		'data.setItem(id, value)
-		'bmx_qt_qcombobox_setitemdata(qObjectPtr, index, id)
+		bmx_qt_qcombobox_setitemdata(qObjectPtr, index, value)
 	End Method
 
 	'Method setItemDelegate(delegate:QAbstractItemDelegate)

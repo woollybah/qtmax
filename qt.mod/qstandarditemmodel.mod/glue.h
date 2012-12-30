@@ -26,6 +26,10 @@
 #include "../core.mod/glue.h"
 #include "../qabstractitemmodel.mod/glue.h"
 #include "../qstandarditem.mod/glue.h"
+#include "../qcolor.mod/glue.h"
+#include "../qicon.mod/glue.h"
+#include "../qbrush.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
 #include <QAbstractItemModel>
 
@@ -44,10 +48,17 @@ extern "C" {
 	int _qt_qstandarditemmodel_QStandardItemModel__setDataInt(BBObject * handle, MaxQModelIndex * index, int role, int value);
 	int _qt_qstandarditemmodel_QStandardItemModel__setDataString(BBObject * handle, MaxQModelIndex * index, int role, BBString * value);
 	int _qt_qstandarditemmodel_QStandardItemModel__setDataObject(BBObject * handle, MaxQModelIndex * index, int role, BBObject * value);
-	int _qt_qstandarditemmodel_QStandardItemModel__insertRows(BBObject * handle, int row, int count, MaxQModelIndex * parent);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataColor(BBObject * handle, MaxQModelIndex * index, int role, MaxQColor * value);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataIcon(BBObject * handle, MaxQModelIndex * index, int role, MaxQIcon * value);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataPixmap(BBObject * handle, MaxQModelIndex * index, int role, MaxQPixmap * value);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataBrush(BBObject * handle, MaxQModelIndex * index, int role, MaxQBrush * value);
+	int _qt_qstandarditemmodel_QStandardItemModel__setDataFont(BBObject * handle, MaxQModelIndex * index, int role, MaxQFont * value);
 	int _qt_qstandarditemmodel_QStandardItemModel__getDataInt(BBObject * handle, MaxQModelIndex * index, int role);
 	BBString * _qt_qstandarditemmodel_QStandardItemModel__getDataString(BBObject * handle, MaxQModelIndex * index, int role);
 	BBObject * _qt_qstandarditemmodel_QStandardItemModel__getDataObject(BBObject * handle, MaxQModelIndex * index, int role);
+	void * _qt_qstandarditemmodel_QStandardItemModel__getDataType(BBObject * handle, MaxQModelIndex * index, int role, int * type);
+	int _qt_qstandarditemmodel_QStandardItemModel__insertRows(BBObject * handle, int row, int count, MaxQModelIndex * parent);
+	int _qt_qstandarditemmodel_QStandardItemModel__removeRows(BBObject * handle, int row, int count, MaxQModelIndex * parent);
 
 	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsAboutToBeInserted(BBObject * handle , MaxQModelIndex * index, int start, int end);
 	void _qt_qstandarditemmodel_QStandardItemModel__OnColumnsAboutToBeMoved(BBObject * handle, MaxQModelIndex * sourceParent, int sourceStart, int sourceEnd, MaxQModelIndex * destinationParent, int destinationColumn);
@@ -70,6 +81,11 @@ extern "C" {
 
 
 	MaxQStandardItemModel * bmx_qt_qstandarditemmodel_create(BBObject * handle, QObject * parent);
+	void bmx_qt_qstandarditemmodel_dataChanged(MaxQStandardItemModel * model, MaxQModelIndex * index1, MaxQModelIndex * index2);
+	void bmx_qt_qstandarditemmodel_dobegininsertrows(MaxQStandardItemModel * model, MaxQModelIndex * index, int row, int count);
+	void bmx_qt_qstandarditemmodel_doendinsertrows(MaxQStandardItemModel * model);
+	void bmx_qt_qstandarditemmodel_dobeginremoverows(MaxQStandardItemModel * model, MaxQModelIndex * index, int row, int count);
+	void bmx_qt_qstandarditemmodel_doendremoverows(MaxQStandardItemModel * model);
 
 }
 
@@ -91,8 +107,14 @@ public:
 	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	virtual bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
 	virtual bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	virtual bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 
 	QModelIndex doCreateIndex(int row, int col, MaxQStandardItem * parent);
+	void itemChanged(const QModelIndex & index1, const QModelIndex & index2);
+	void doBeginInsertRows(const QModelIndex & index, int row, int count);
+	void doEndInsertRows();
+	void doBeginRemoveRows(const QModelIndex & index, int row, int count);
+	void doEndRemoveRows();
 
 private:
 	BBObject * maxHandle;

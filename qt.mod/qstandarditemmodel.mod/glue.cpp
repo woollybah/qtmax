@@ -62,6 +62,8 @@ int	MaxQStandardItemModel::columnCount(const QModelIndex & parent) const {
 QVariant MaxQStandardItemModel::data(const QModelIndex & index, int role) const {
 //printf("MaxQStandardItemModel::data - %d\n", role);fflush(stdout);
 
+	role = (role == Qt::EditRole) ? Qt::DisplayRole : role;
+
 	switch(role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
@@ -97,7 +99,29 @@ QVariant MaxQStandardItemModel::data(const QModelIndex & index, int role) const 
 					return QVariant();
 				} 
 			}
-		// TODO : icons, brushes etc
+		case Qt::DecorationRole:
+		case Qt::BackgroundRole:
+		case Qt::ForegroundRole:
+		case Qt::FontRole:
+			{
+				int type = 0;
+				void * data = _qt_qstandarditemmodel_QStandardItemModel__getDataType(maxHandle, new MaxQModelIndex(index), role, &type);
+				if (data) {
+					switch (type) {
+						case QVariant::Color:
+							return QVariant(((MaxQColor*)data)->Color());
+						case QVariant::Icon:
+							return QVariant(((MaxQIcon*)data)->Icon());
+						case QVariant::Pixmap:
+							return QVariant(((MaxQPixmap*)data)->Pixmap());
+						case QVariant::Brush:
+							return QVariant(((MaxQBrush*)data)->Brush());
+						case QVariant::Font:
+							return QVariant(((MaxQFont*)data)->Font());
+					}
+				}
+				return QVariant();
+			}
 	}
 	
 	return QVariant();
@@ -138,7 +162,7 @@ QModelIndex MaxQStandardItemModel::doCreateIndex(int row, int col, MaxQStandardI
 }
 
 bool MaxQStandardItemModel::setData(const QModelIndex & index, const QVariant & value, int role) {
-//printf("MaxQStandardItemModel::setData : %d\n", role);fflush(stdout);
+printf("MaxQStandardItemModel::setData : %d\n", role);fflush(stdout);
 	if (!index.isValid()) {
 		return false;
 	}
@@ -166,18 +190,58 @@ bool MaxQStandardItemModel::setData(const QModelIndex & index, const QVariant & 
 	
 				return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__setDataObject(maxHandle, new MaxQModelIndex(index), role, obj)); 
 			}
-		// TODO : icons, brushes etc
+		case Qt::DecorationRole:
+			{
+				int type = value.type();
+				switch (type) {
+					case QVariant::Color:
+						return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__setDataColor(maxHandle, new MaxQModelIndex(index), role, new MaxQColor(value.value<QColor>()))); 
+					case QVariant::Icon:
+						return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__setDataIcon(maxHandle, new MaxQModelIndex(index), role, new MaxQIcon(value.value<QIcon>()))); 
+					case QVariant::Pixmap:
+						return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__setDataPixmap(maxHandle, new MaxQModelIndex(index), role, new MaxQPixmap(value.value<QPixmap>()))); 
+				}
+			}
+		case Qt::BackgroundRole:
+		case Qt::ForegroundRole:
+			return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__setDataBrush(maxHandle, new MaxQModelIndex(index), role, new MaxQBrush(value.value<QBrush>()))); 
+		case Qt::FontRole:
+			return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__setDataFont(maxHandle, new MaxQModelIndex(index), role, new MaxQFont(value.value<QFont>()))); 
 	}
 	
 	return false;
 }
 
 bool MaxQStandardItemModel::insertRows(int row, int count, const QModelIndex & parent) {
-//printf("MaxQStandardItemModel::insertRows\n");fflush(stdout);
+printf("MaxQStandardItemModel::insertRows\n");fflush(stdout);
 	return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__insertRows(maxHandle, row, count, new MaxQModelIndex(parent)));
 }
 
+bool MaxQStandardItemModel::removeRows(int row, int count, const QModelIndex & parent) {
+printf("MaxQStandardItemModel:: removeRows\n");fflush(stdout);
+	return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__removeRows(maxHandle, row, count, new MaxQModelIndex(parent)));
+}
 
+
+void MaxQStandardItemModel::itemChanged(const QModelIndex & index1, const QModelIndex & index2) {
+	emit dataChanged(index1, index2);
+}
+
+void MaxQStandardItemModel::doBeginInsertRows(const QModelIndex & index, int row, int count) {
+	beginInsertRows(index, row, count);
+}
+
+void MaxQStandardItemModel::doEndInsertRows() {
+	endInsertRows();
+}
+
+void MaxQStandardItemModel::doBeginRemoveRows(const QModelIndex & index, int row, int count) {
+	beginRemoveRows(index, row, count);
+}
+
+void MaxQStandardItemModel::doEndRemoveRows() {
+	endRemoveRows();
+}
 
 // ********************  SLOTS ****************************
 
@@ -264,7 +328,25 @@ MaxQModelIndex * bmx_qt_qstandarditemmodel_createindex(MaxQStandardItemModel * m
 	return new MaxQModelIndex(model->doCreateIndex(row, col, parent));
 }
 
+void bmx_qt_qstandarditemmodel_dataChanged(MaxQStandardItemModel * model, MaxQModelIndex * index1, MaxQModelIndex * index2) {
+	model->itemChanged(index1->Index(), index2->Index());
+}
 
+void bmx_qt_qstandarditemmodel_dobegininsertrows(MaxQStandardItemModel * model, MaxQModelIndex * index, int row, int count) {
+	model->doBeginInsertRows((index) ? index->Index() : QModelIndex(), row, count);
+}
+
+void bmx_qt_qstandarditemmodel_doendinsertrows(MaxQStandardItemModel * model) {
+	model->doEndInsertRows();
+}
+
+void bmx_qt_qstandarditemmodel_dobeginremoverows(MaxQStandardItemModel * model, MaxQModelIndex * index, int row, int count) {
+	model->doBeginRemoveRows((index) ? index->Index() : QModelIndex(), row, count);
+}
+
+void bmx_qt_qstandarditemmodel_doendremoverows(MaxQStandardItemModel * model) {
+	model->doEndRemoveRows();
+}
 
 // NOTES :
 // The moc4glue.cpp file is generated by running :  moc.sh
