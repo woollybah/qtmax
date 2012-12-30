@@ -44,7 +44,7 @@ extern "C" {
 	void bmx_qt_qcombobox_addItems(QComboBox * cb, BBArray * texts);
 	int bmx_qt_qcombobox_count(QComboBox * cb);
 	int bmx_qt_qcombobox_currentindex(QComboBox * cb);
-	void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBInt64 itemId);
+	void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBObject * data);
 	BBObject * bmx_qt_qcombobox_itemdata(QComboBox * cb, int index);
 	void bmx_qt_qcombobox_removeitem(QComboBox * cb, int index);
 	void bmx_qt_qcombobox_setitemdata(QComboBox * cb, int index, BBObject * data);
@@ -65,6 +65,11 @@ extern "C" {
 	void bmx_qt_qcombobox_setframe(QComboBox * cb, int value);
 	void bmx_qt_qcombobox_seticonsize(QComboBox * cb, int w, int h);
 	void bmx_qt_qcombobox_setinsertpolicy(QComboBox * cb, int policy);
+	void bmx_qt_qcombobox_setitemicon(QComboBox * cb, int index, MaxQIcon * icon);
+	void bmx_qt_qcombobox_setitemtext(QComboBox * cb, int index, BBString * text);
+	void bmx_qt_qcombobox_setmaxcount(QComboBox * cb, int value);
+	void bmx_qt_qcombobox_setmaxvisibleitems(QComboBox * cb, int maxItems);
+	void bmx_qt_qcombobox_setminimumcontentslength(QComboBox * cb, int characters);
 
 	// QComboBox
 	// QWidget

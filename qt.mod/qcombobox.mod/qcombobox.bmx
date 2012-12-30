@@ -33,7 +33,41 @@ Import "common.bmx"
 
 Type QComboBox Extends QWidget
 
-	'Field data:QItemList = New QItemList
+		Rem
+	bbdoc: The string will not be inserted into the combobox.
+	End Rem
+	Const InsertPolicy_NoInsert:Int = 0
+	
+	Rem
+	bbdoc: The string will be inserted as the first item in the combobox.
+	End Rem
+	Const InsertPolicy_InsertAtTop:Int = 1
+	
+	Rem
+	bbdoc: The current item will be replaced by the string.
+	End Rem
+	Const InsertPolicy_InsertAtCurrent:Int = 2
+	
+	Rem
+	bbdoc: The string will be inserted after the last item in the combobox.
+	End Rem
+	Const InsertPolicy_InsertAtBottom:Int = 3
+	
+	Rem
+	bbdoc: The string is inserted after the current item in the combobox.
+	End Rem
+	Const InsertPolicy_InsertAfterCurrent:Int = 4
+	
+	Rem
+	bbdoc: The string is inserted before the current item in the combobox.
+	End Rem
+	Const InsertPolicy_InsertBeforeCurrent:Int = 5
+	
+	Rem
+	bbdoc: The string is inserted in the alphabetic order in the combobox.
+	End Rem
+	Const InsertPolicy_InsertAlphabetically:Int = 6
+
 
 	Function CreateComboBox:QComboBox(parent:QWidget = Null)
 		Return New QComboBox.Create(parent)
@@ -94,7 +128,7 @@ Type QComboBox Extends QWidget
 		'If userData Then
 		'	itemId = data.addItem(userData)
 		'End If
-		'bmx_qt_qcombobox_insertitem(qObjectPtr, index, text, itemId)
+		bmx_qt_qcombobox_insertitem(qObjectPtr, index, text, userData)
 	End Method
 	
 	Method insertItems(index:Int, texts:String[])
@@ -154,12 +188,7 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method removeItem(index:Int)
-		'Local id:Long
-		'bmx_qt_qcombobox_itemdata(qObjectPtr, index, Varptr id)
-		'If id Then
-	'		data.removeItem(id)
-		'End If
-		'bmx_qt_qcombobox_removeitem(qObjectPtr, index)
+		bmx_qt_qcombobox_removeitem(qObjectPtr, index)
 	End Method
 
 	'Method rootModelIndex:QModelIndex()
@@ -199,11 +228,11 @@ Type QComboBox Extends QWidget
 	'End Method
 
 	Method setItemIcon(index:Int, icon:QIcon)
-	' TODO
+		bmx_qt_qcombobox_setitemicon(qObjectPtr, index, icon.qObjectPtr)
 	End Method
 
 	Method setItemText(index:Int, text:String)
-	' TODO
+		bmx_qt_qcombobox_setitemtext(qObjectPtr, index, text)
 	End Method
 
 	Method setLineEdit(edit:QLineEdit)
@@ -211,15 +240,15 @@ Type QComboBox Extends QWidget
 	End Method
 
 	Method setMaxCount(value:Int)
-	' TODO
+		bmx_qt_qcombobox_setmaxcount(qObjectPtr, value)
 	End Method
 
 	Method setMaxVisibleItems(maxItems:Int)
-	' TODO
+		bmx_qt_qcombobox_setmaxvisibleitems(qObjectPtr, maxItems)
 	End Method
 
 	Method setMinimumContentsLength(characters:Int)
-	' TODO
+		bmx_qt_qcombobox_setminimumcontentslength(qObjectPtr, characters)
 	End Method
 
 	Method setModel(model:QAbstractItemModel)

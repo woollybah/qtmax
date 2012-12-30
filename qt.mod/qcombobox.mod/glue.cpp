@@ -501,8 +501,10 @@ int bmx_qt_qcombobox_currentindex(QComboBox * cb) {
 	return cb->currentIndex();
 }
 
-void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBInt64 itemId) {
-	cb->insertItem(index, qStringFromBBString(text), itemId);
+void bmx_qt_qcombobox_insertitem(QComboBox * cb, int index, BBString * text, BBObject * data) {
+	QVariant v = QVariant::fromValue<void*>(data);
+
+	cb->insertItem(index, qStringFromBBString(text), v);
 }
 
 BBObject * bmx_qt_qcombobox_itemdata(QComboBox * cb, int index) {
@@ -589,6 +591,28 @@ void bmx_qt_qcombobox_seticonsize(QComboBox * cb, int w, int h) {
 
 void bmx_qt_qcombobox_setinsertpolicy(QComboBox * cb, int policy) {
 	cb->setInsertPolicy(bmx_qt_comboboxIntToInsertPolicy(policy));
+}
+
+void bmx_qt_qcombobox_setitemicon(QComboBox * cb, int index, MaxQIcon * icon) {
+	if (icon) {
+		cb->setItemIcon(index, icon->Icon());
+	}
+}
+
+void bmx_qt_qcombobox_setitemtext(QComboBox * cb, int index, BBString * text) {
+	cb->setItemText(index, qStringFromBBString(text));
+}
+
+void bmx_qt_qcombobox_setmaxcount(QComboBox * cb, int value) {
+	cb->setMaxCount(value);
+}
+
+void bmx_qt_qcombobox_setmaxvisibleitems(QComboBox * cb, int maxItems) {
+	cb->setMaxVisibleItems(maxItems);
+}
+
+void bmx_qt_qcombobox_setminimumcontentslength(QComboBox * cb, int characters) {
+	cb->setMinimumContentsLength(characters);
 }
 
 
