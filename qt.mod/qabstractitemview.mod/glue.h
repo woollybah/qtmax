@@ -87,6 +87,15 @@ extern "C" {
 
 
 	void bmx_qt_qabstractitemview_setmodel(QAbstractItemView * view, QAbstractItemModel * model);
+	void bmx_qt_qabstractitemview_clearselection(QAbstractItemView * view);
+	void bmx_qt_qabstractitemview_scrollto(QAbstractItemView * view, MaxQModelIndex * index, int hint);
+	void bmx_qt_qabstractitemview_scrolltobottom(QAbstractItemView * view);
+	void bmx_qt_qabstractitemview_scrolltotop(QAbstractItemView * view);
+	void bmx_qt_qabstractitemview_selectall(QAbstractItemView * view);
+	void bmx_qt_qabstractitemview_setcurrentindex(QAbstractItemView * view, MaxQModelIndex * index);
+	void bmx_qt_qabstractitemview_update(QAbstractItemView * view, MaxQModelIndex * index);
+	void bmx_qt_qabstractitemview_setselectionmodel(QAbstractItemView * view, QItemSelectionModel * model);
+	void bmx_qt_qabstractitemview_setselectionmode(QAbstractItemView * view, int mode);
 
 }
 

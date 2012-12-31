@@ -43,6 +43,7 @@ Type QListView Extends QAbstractItemView
 		Else
 			qObjectPtr = bmx_qt_qlistview_create(Self, Null)
 		End If
+		OnInit()
 		Return Self
 	End Method
 	

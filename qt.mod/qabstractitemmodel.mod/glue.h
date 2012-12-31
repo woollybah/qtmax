@@ -34,6 +34,9 @@ extern "C" {
 
 #include <blitz.h>
 
+	BBObject * _qt_qabstractitemmodel_QModelIndex__newArray(int size);
+	void _qt_qabstractitemmodel_QModelIndex__setArrayItem(BBObject * array, int index, MaxQModelIndex * value);
+
 	MaxQModelIndex * bmx_qt_qmodelindex_child(MaxQModelIndex * index, int row, int column);
 	int bmx_qt_qmodelindex_column(MaxQModelIndex * index);
 	int bmx_qt_qmodelindex_flags(MaxQModelIndex * index);
@@ -49,6 +52,8 @@ extern "C" {
 	MaxQModelIndex * bmx_qt_qmodelindex_sibling(MaxQModelIndex * index, int row, int column);
 	void bmx_qt_qmodelindex_free(MaxQModelIndex * index);
 
+
+	BBObject * bmx_qt_qmodelindex_createarrayfromlist(const QModelIndexList & list);
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

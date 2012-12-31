@@ -38,7 +38,7 @@ Import "common.bmx"
 
 Type QStandardItem
 
-	Field roles:TMap = New TMap
+	Field roles:TCleanMap = New TCleanMap
 	Field children:TItemList = New TItemList
 	Field parentItem:QStandardItem
 	Field rows:Int
@@ -83,6 +83,12 @@ Type QStandardItem
 	
 	Method setDataInternal(role:Int, data:Object)
 'DebugLog "QStandardItem::setDataInternal(" + role + ", " + String(data) + ")"
+
+		' edit and display are the same...
+		If role = Qt_EditRole Then
+			role = Qt_DisplayRole
+		End If
+
 		Local r:TRole = TRole.getRole(role)
 		roles.Insert(r, data)
 		
@@ -92,6 +98,12 @@ Type QStandardItem
 	End Method
 	
 	Method getDataInternal:Object(role:Int)
+
+		' edit and display are the same...
+		If role = Qt_EditRole Then
+			role = Qt_DisplayRole
+		End If
+
 		Local r:TRole = TRole.getRole(role)
 		Return roles.ValueForKey(r)
 	End Method
@@ -684,8 +696,49 @@ Type TRole
 	
 End Type
 
-Type TInt
+Type TCleanMap
+	Field map:TMap = New TMap
+	
+	' inserting a null object will remove the entry.
+	Method Insert(key:Object, value:Object)
+		If value = Null Then
+			map.Remove(key)
+		Else
+			map.Insert(key, value)
+		End If
+	End Method
+	
+	Method ValueForKey:Object(key:Object)
+		Return map.ValueForKey(key)
+	End Method
+	
+End Type
+
+Type TNumber
+End Type
+
+Type TInt Extends TNumber
 	Field value:Int
+End Type
+
+Type TFloat Extends TNumber
+	Field value:Float
+End Type
+
+Type TShort Extends TNumber
+	Field value:Short
+End Type
+
+Type TLong Extends TNumber
+	Field value:Long
+End Type
+
+Type TDouble Extends TNumber
+	Field value:Double
+End Type
+
+Type TByte Extends TNumber
+	Field value:Byte
 End Type
 
 Type TItemList
@@ -719,7 +772,7 @@ Type TItemList
 			If toEnd Then
 				items = New QStandardItem[0]
 			Else
-				items = items[..index]
+				items = items[1..]
 			End If
 		Else
 			If toEnd Then

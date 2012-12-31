@@ -20,41 +20,37 @@
 ' 
 SuperStrict
 
-Import Qt.core
-Import Qt.QTimerEvent
-Import BRL.Blitz
-Import BRL.Map
-Import BRL.LinkedList
-Import BRL.Reflection
+Module Qt.QFontDialog
 
-' headers :-)
-?win32
-Import "../lib/win32/include/*.h"
-?macos
-Import "../lib/macos/include/*.h"
-?Not linux
-Import "../src/include/*.h"
-Import "../src/include/Qt/*.h"
-Import "../src/include/QtCore/*.h"
-?linux
-Import "/usr/include/qt4/*.h"
-Import "/usr/include/qt4/Qt/*.h"
-Import "/usr/include/qt4/QtCore/*.h"
-?
+ModuleInfo "Version: 1.00"
+ModuleInfo "License: MIT"
+ModuleInfo "Author: Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
 
 
-Import "glue.cpp"
+Import "common.bmx"
 
-Extern
 
-	Function bmx_qt_qobject_tr:String(sourceText:String, disambiguation:String, n:Int)
-	Function bmx_qt_qobject_trarg:String(sourceText:String, args:String[])
-	Function bmx_qt_qobject_setobjectname(handle:Byte Ptr, name:String)
-	Function bmx_qt_qobject_setparent(handle:Byte Ptr, parent:Byte Ptr)
-	Function bmx_qt_qobject_blocksignals:Int(handle:Byte Ptr, block:Int)
-	Function bmx_qt_qobject_signalsblocked:Int(handle:Byte Ptr)
-	Function bmx_qt_qobject_starttimer:Int(handle:Byte Ptr, interval:Int)
-	Function bmx_qt_qobject_killtimer(handle:Byte Ptr, id:Int)
-	Function bmx_qt_qobject_deletelater(handle:Byte Ptr)
+Type QFontDialog Extends QDialog
 
-End Extern
+	Function getFont:QFont(ok:Int Var, parent:QWidget = Null)
+		If parent Then
+			Return QFont._create(bmx_qt_qfontdialog_getfont(Varptr ok, parent.qObjectPtr))
+		Else
+			Return QFont._create(bmx_qt_qfontdialog_getfont(Varptr ok, Null))
+		End If
+	End Function
+	
+	Function getFontWithInitial:QFont(ok:Int Var, initial:QFont, parent:QWidget = Null)
+		If parent Then
+			Return QFont._create(bmx_qt_qfontdialog_getfontwithinitial(Varptr ok, initial.qObjectPtr, parent.qObjectPtr))
+		Else
+			Return QFont._create(bmx_qt_qfontdialog_getfontwithinitial(Varptr ok, initial.qObjectPtr, Null))
+		End If
+	End Function
+
+	Function getFontWithOptions:QFont(ok:Int Var, initial:QFont, parent:QWidget, title:String, options:Int)
+		Return QFont._create(bmx_qt_qfontdialog_getfontwithoptions(Varptr ok, initial.qObjectPtr, parent.qObjectPtr, title, options))
+	End Function
+	
+End Type

@@ -20,29 +20,26 @@
   THE SOFTWARE.
 */ 
 
-#ifndef MAX_QT_QOBJECT
-#define MAX_QT_QOBJECT
+#ifndef MAX_QT_QFONTDIALOG
+#define MAX_QT_QFONTDIALOG
 
 #include "../core.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
-#include <QObject>
+#include <QFontDialog>
 
 extern "C" {
 
 #include <blitz.h>
 
-	int _qt_qobject_QObject__event(BBObject * handle, QEvent * event);
-	void _qt_qobject_QObject__timerEvent(BBObject * handle, QTimerEvent * event);
+	QFontDialog::FontDialogOptions bmt_qt_getfontdialogoptions(int o);
 
-	BBString * bmx_qt_qobject_tr(BBString * sourceText, BBString * disambiguation, int n);
-	BBString * bmx_qt_qobject_trarg(BBString * sourceText, BBArray * args);
-	void bmx_qt_qobject_setobjectname(QObject * obj, BBString * name);
-	void bmx_qt_qobject_setparent(QObject * obj, QObject * parent);
-	int bmx_qt_qobject_blocksignals(QObject * obj, int block);
-	int bmx_qt_qobject_signalsblocked(QObject * obj);
-	int bmx_qt_qobject_starttimer(QObject * obj, int interval);
-	void bmx_qt_qobject_killtimer(QObject * obj, int id);
-	void bmx_qt_qobject_deletelater(QObject * obj);
+
+	MaxQFont * bmx_qt_qfontdialog_getfont(int * ok, QWidget * parent);
+	MaxQFont * bmx_qt_qfontdialog_getfontwithinitial(int * ok, MaxQFont * initial, QWidget * parent);
+	MaxQFont * bmx_qt_qfontdialog_getfontwithoptions(int * ok, MaxQFont * initial, QWidget * parent, BBString * title, int options);
+
+
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
