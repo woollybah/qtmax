@@ -96,6 +96,16 @@ void bmx_qt_qmodelindex_free(MaxQModelIndex * index) {
 	delete index;
 }
 
+BBObject * bmx_qt_qmodelindex_createarrayfromlist(const QModelIndexList & list) {
+	int size = list.size();
+	BBObject * arr = _qt_qabstractitemmodel_QModelIndex__newArray(size);
+	
+	for (int i = 0; i < list.size(); ++i) {
+		_qt_qabstractitemmodel_QModelIndex__setArrayItem(arr, i, new MaxQModelIndex(list.at(i)));
+	}
+	
+	return arr;
+}
 
 
 // NOTES :

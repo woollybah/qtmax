@@ -563,6 +563,50 @@ Type TQtListBox Extends TQtGadget
 		
 	End Method
 
+	Method InsertListItem(index:Int, text:String, tip:String, icon:Int, extra:Object)
+		Local image:QIcon
+		
+		If icons And icon >= 0 Then
+			image = icons.icons[icon]
+		End If
+		
+		MaxGuiQListView(widget).insertListItem(index, text, tip, image, extra)
+	End Method
+
+	Method SetListItem(index:Int, text:String ,tip:String, icon:Int, data:Object)
+		Local image:QIcon
+		
+		If icons And icon >= 0 Then
+			image = icons.icons[icon]
+		End If
+		
+		MaxGuiQListView(widget).setListItem(index, text, tip, image, data)
+	End Method
+
+	Method SetListItemState(index:Int, state:Int)
+'DebugLog "TQtListBox::SetListItemState"
+		MaxGuiQListView(widget).setListItemState(index, state)
+	End Method
+
+	Method ListItemState:Int(index:Int)
+'DebugLog "TQtListBox::ListItemState"
+		Return MaxGuiQListView(widget).listItemState(index)
+	End Method
+
+	'Method SelectItem:Int(index:Int, op:Int= 1) '0=deselect 1=select 2=toggle
+'DebugLog "TQtListBox::SelectItem"
+	'	MaxGuiQListView(widget).selectItem(index, op)
+	'End Method
+
+	Method RemoveListItem(index:Int)
+DebugLog "TQtListBox::RemoveListItem(" + index + ")"
+		MaxGuiQListView(widget).removeItem(index)
+	End Method
+
+'	Method ItemState:Int(index:Int)
+'DebugLog "TQtListBox::ItemState"
+'	End Method
+
 	Method Class:Int()
 		Return GADGET_LISTBOX
 	EndMethod
@@ -692,10 +736,10 @@ End Type
 Type TQtToolBar Extends TQtGadget
 
 	Method InitGadget()
-		CreateToolBar()
+		CreateToolbar()
 	End Method
 	
-	Method CreateToolBar()
+	Method CreateToolbar()
 
 		If parent.Class() <> GADGET_WINDOW Then
 			DebugLog "Parent is not a WINDOW!?"
@@ -1320,6 +1364,8 @@ End Type
 Type MaxGuiQListView Extends QListView
 
 	Field gadget:TQtGadget
+	Field model:QStandardItemModel
+	Field selectionModel:QItemSelectionModel
 
 	Method MCreate:MaxGuiQListView(parent:QWidget, owner:TQtGadget)
 		gadget = owner
@@ -1328,6 +1374,82 @@ Type MaxGuiQListView Extends QListView
 	End Method
 
 	Method OnInit()
+		setSelectionMode(QAbstractItemView.Mode_SingleSelection)
+		
+		model = New QStandardItemModel.Create()
+		selectionModel = New QItemSelectionModel.Create(model)
+		setModel(model)
+		setSelectionModel(selectionModel)
+		
+		connect(Self, "activated", Self, "onActivated")
+		connect(Self, "doubleClicked", Self, "onDoubleClicked")
+	End Method
+
+	Method insertListItem(index:Int, text:String, tip:String, icon:QIcon, extra:Object)
+		
+		model.insertRows(index, 1)
+
+		Local idx:QModelIndex = model.index(index, 0)
+		model.setData(idx, text)
+		
+		If extra Then
+			model.setData(idx, extra, Qt_UserRole)
+		End If
+		
+		If tip Then
+			model.setData(idx, tip, Qt_ToolTipRole)
+		End If
+		
+		If icon Then
+			model.setData(idx, icon, Qt_DecorationRole)
+		End If
+	End Method
+
+	Method setListItem(index:Int, text:String, tip:String, icon:QIcon, extra:Object)
+
+		Local idx:QModelIndex = model.index(index, 0)
+		model.setData(idx, text)
+		model.setData(idx, extra, Qt_UserRole)
+		model.setData(idx, tip, Qt_ToolTipRole)
+		model.setData(idx, icon, Qt_DecorationRole)
+
+	End Method
+
+	Method setListItemState(index:Int, state:Int)
+		Local op:Int
+		Local idx:QModelIndex = model.index(index, 0)
+
+		If state & STATE_DISABLED Then
+			op = QItemSelectionModel.Selection_Deselect
+		End If
+		
+		If state & STATE_SELECTED Then
+			op = QItemSelectionModel.Selection_ClearAndSelect
+		End If
+
+		selectionModel.setCurrentIndex(idx, op)
+	End Method
+	
+	Method removeItem(index:Int)
+		model.removeRows(index, 1)
+	End Method
+	
+	Method onActivated(index:QModelIndex)
+		PostGuiEvent EVENT_GADGETSELECT, gadget, index.row()
+	End Method
+	
+	Method onDoubleClicked(index:QModelIndex)
+		PostGuiEvent EVENT_GADGETACTION, gadget, index.row()
+	End Method
+	
+	Method listItemState:Int(index:Int)
+		Local idx:QModelIndex = model.index(index, 0)
+		
+		If selectionModel.isSelected(idx) Then
+			Return STATE_SELECTED
+		Else
+			Return STATE_DISABLED
+		End If
 	End Method
 
 End Type

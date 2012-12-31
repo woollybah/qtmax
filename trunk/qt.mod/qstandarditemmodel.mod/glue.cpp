@@ -147,7 +147,7 @@ int	MaxQStandardItemModel::rowCount(const QModelIndex & parent) const {
 }
 
 QModelIndex MaxQStandardItemModel::index(int row, int column, const QModelIndex &parent) const {
-//printf("MaxQStandardItemModel::index\n");fflush(stdout);
+//printf("MaxQStandardItemModel::index : %d, %d\n", row, column);fflush(stdout);
 	MaxQStandardItem * item = _qt_qstandarditemmodel_QStandardItemModel__itemFromIndex(maxHandle, new MaxQModelIndex(parent));
 
 	if ((item == 0) || (row < 0) || (column < 0) || (row >= item->rowCount()) || (column >= item->columnCount())) {

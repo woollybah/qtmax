@@ -26,6 +26,7 @@ Import Qt.QAbstractItemModel
 Import Qt.QStyleOptionViewItem
 Import Qt.QPainter
 Import Qt.QHelpEvent
+Import Qt.QItemSelectionModel
 Import BRL.Blitz
 
 
@@ -92,5 +93,14 @@ Extern
 
 
 	Function bmx_qt_qabstractitemview_setmodel(handle:Byte Ptr, model:Byte Ptr)
+	Function bmx_qt_qabstractitemview_clearselection(handle:Byte Ptr)
+	Function bmx_qt_qabstractitemview_scrollto(handle:Byte Ptr, index:Byte Ptr, hint:Int)
+	Function bmx_qt_qabstractitemview_scrolltobottom(handle:Byte Ptr)
+	Function bmx_qt_qabstractitemview_scrolltotop(handle:Byte Ptr)
+	Function bmx_qt_qabstractitemview_selectall(handle:Byte Ptr)
+	Function bmx_qt_qabstractitemview_setcurrentindex(handle:Byte Ptr, index:Byte Ptr)
+	Function bmx_qt_qabstractitemview_update(handle:Byte Ptr, index:Byte Ptr)
+	Function bmx_qt_qabstractitemview_setselectionmodel(handle:Byte Ptr, model:Byte Ptr)
+	Function bmx_qt_qabstractitemview_setselectionmode(handle:Byte Ptr, Mode:Int)
 
 End Extern

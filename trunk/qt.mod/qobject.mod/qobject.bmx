@@ -73,6 +73,22 @@ Type QObject Extends QCoreObjectPtr
 	End Function
 	
 	Rem
+	bbdoc: Schedules this object for deletion.
+	about: The object will be deleted when control returns to the event loop.
+	about: If the event loop is not running when this function is called (e.g. deleteLater() is called
+	on an object before QCoreApplication::exec()), the object will be deleted once the event loop is started.
+	Note that entering and leaving a new event loop (e.g., by opening a modal dialog) will not perform the deferred
+	deletion; for the object to be deleted, the control must return to the event loop from which deleteLater() was called.
+	<p>
+	Note: It is safe to call this function more than once; when the first deferred deletion event is delivered, any pending
+	events for the object are removed from the event queue.
+	</p>
+	End Rem
+	Method deleteLater()
+		bmx_qt_qobject_deletelater(qObjectPtr)
+	End Method
+	
+	Rem
 	bbdoc: Sets the name of this object.
 	about: By default, this property contains an empty string.
 	End Rem

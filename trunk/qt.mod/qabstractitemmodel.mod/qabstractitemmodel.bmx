@@ -207,7 +207,11 @@ End Rem
 
 End Type
 
-
+Rem
+bbdoc: Used to locate data in a data model.
+about: This class is used as an index into item models derived from QAbstractItemModel.
+The index is used by item views, delegates, and selection models to locate an item in the model.
+End Rem
 Type QModelIndex
 
 	Field qObjectPtr:Byte Ptr
@@ -275,6 +279,16 @@ Type QModelIndex
 	Method sibling:QModelIndex(row:Int, column:Int)
 		Return QModelIndex._create(bmx_qt_qmodelindex_sibling(qObjectPtr, row, column))
 	End Method
+	
+	
+	Function _newArray:QModelIndex[](size:Int)
+		Return New QModelIndex[size]
+	End Function
+	
+	Function _setArrayItem(array:QModelIndex[], index:Int, value:Byte Ptr)
+		array[index] = New QModelIndex._create(value)
+	End Function
+	
 	
 	Method Free()
 		If qObjectPtr Then

@@ -3,6 +3,7 @@ Strict
 
 Framework Qt.QtMaxGui
 Import BRL.EventQueue
+Import BRL.bmploader
 
 Local window:TGadget
 Local listbox:TGadget

@@ -20,12 +20,10 @@
 ' 
 SuperStrict
 
-Import Qt.core
-Import Qt.QTimerEvent
+Import Qt.Core
+Import Qt.QDialog
 Import BRL.Blitz
-Import BRL.Map
-Import BRL.LinkedList
-Import BRL.Reflection
+
 
 ' headers :-)
 ?win32
@@ -36,25 +34,20 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
 ?
-
 
 Import "glue.cpp"
 
 Extern
 
-	Function bmx_qt_qobject_tr:String(sourceText:String, disambiguation:String, n:Int)
-	Function bmx_qt_qobject_trarg:String(sourceText:String, args:String[])
-	Function bmx_qt_qobject_setobjectname(handle:Byte Ptr, name:String)
-	Function bmx_qt_qobject_setparent(handle:Byte Ptr, parent:Byte Ptr)
-	Function bmx_qt_qobject_blocksignals:Int(handle:Byte Ptr, block:Int)
-	Function bmx_qt_qobject_signalsblocked:Int(handle:Byte Ptr)
-	Function bmx_qt_qobject_starttimer:Int(handle:Byte Ptr, interval:Int)
-	Function bmx_qt_qobject_killtimer(handle:Byte Ptr, id:Int)
-	Function bmx_qt_qobject_deletelater(handle:Byte Ptr)
+	Function bmx_qt_qfontdialog_getfont:Byte Ptr(ok:Int Ptr, parent:Byte Ptr)
+	Function bmx_qt_qfontdialog_getfontwithinitial:Byte Ptr(ok:Int Ptr, initial:Byte Ptr, parent:Byte Ptr)
+	Function bmx_qt_qfontdialog_getfontwithoptions:Byte Ptr(ok:Int Ptr, initial:Byte Ptr, parent:Byte Ptr, title:String, options:Int)
 
 End Extern
