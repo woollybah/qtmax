@@ -43,11 +43,32 @@ MaxQItemSelectionModel::MaxQItemSelectionModel(BBObject * handle, QAbstractItemM
 	: maxHandle(handle), QItemSelectionModel(model)
 {
 	qbind(this, handle);
+
+	connect(this, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), SLOT(onCurrentChanged(const QModelIndex &, const QModelIndex &)));
+	connect(this, SIGNAL(currentColumnChanged(const QModelIndex &, const QModelIndex &)), SLOT(onCurrentColumnChanged(const QModelIndex &, const QModelIndex &)));
+	connect(this, SIGNAL(currentRowChanged(const QModelIndex &, const QModelIndex &)), SLOT(onCurrentRowChanged(const QModelIndex &, const QModelIndex &)));
+	connect(this, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(onSelectionChanged(const QItemSelection &, const QItemSelection &)));
 }
 
 MaxQItemSelectionModel::~MaxQItemSelectionModel()
 {
 	qunbind(this);
+}
+
+void MaxQItemSelectionModel::onCurrentChanged(const QModelIndex & current, const QModelIndex & previous) {
+	_qt_qitemselectionmodel_QItemSelectionModel__OnCurrentChanged(maxHandle, new MaxQModelIndex(current), new MaxQModelIndex(previous));
+}
+
+void MaxQItemSelectionModel::onCurrentColumnChanged(const QModelIndex & current, const QModelIndex & previous) {
+	_qt_qitemselectionmodel_QItemSelectionModel__OnCurrentColumnChanged(maxHandle, new MaxQModelIndex(current), new MaxQModelIndex(previous));
+}
+
+void MaxQItemSelectionModel::onCurrentRowChanged(const QModelIndex & current, const QModelIndex & previous) {
+	_qt_qitemselectionmodel_QItemSelectionModel__OnCurrentRowChanged(maxHandle, new MaxQModelIndex(current), new MaxQModelIndex(previous));
+}
+
+void MaxQItemSelectionModel::onSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected) {
+	_qt_qitemselectionmodel_QItemSelectionModel__OnSelectionChanged(maxHandle, new MaxQItemSelection(selected), new MaxQItemSelection(deselected));
 }
 
 

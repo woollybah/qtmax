@@ -736,10 +736,10 @@ End Type
 Type TQtToolBar Extends TQtGadget
 
 	Method InitGadget()
-		CreateToolbar()
+		CreateToolBar()
 	End Method
 	
-	Method CreateToolbar()
+	Method CreateToolBar()
 
 		If parent.Class() <> GADGET_WINDOW Then
 			DebugLog "Parent is not a WINDOW!?"
@@ -1366,6 +1366,8 @@ Type MaxGuiQListView Extends QListView
 	Field gadget:TQtGadget
 	Field model:QStandardItemModel
 	Field selectionModel:QItemSelectionModel
+	
+	Field runSilent:Int = False
 
 	Method MCreate:MaxGuiQListView(parent:QWidget, owner:TQtGadget)
 		gadget = owner
@@ -1374,14 +1376,15 @@ Type MaxGuiQListView Extends QListView
 	End Method
 
 	Method OnInit()
+		model = New QStandardItemModel.Create()
+		setModel(model)
+
+		selectionModel = New QItemSelectionModel.Create(model)
+		setSelectionModel(selectionModel)
+
 		setSelectionMode(QAbstractItemView.Mode_SingleSelection)
 		
-		model = New QStandardItemModel.Create()
-		selectionModel = New QItemSelectionModel.Create(model)
-		setModel(model)
-		setSelectionModel(selectionModel)
-		
-		connect(Self, "activated", Self, "onActivated")
+		connect(selectionModel, "selectionChanged", Self, "onSelectionChanged")
 		connect(Self, "doubleClicked", Self, "onDoubleClicked")
 	End Method
 
@@ -1427,15 +1430,24 @@ Type MaxGuiQListView Extends QListView
 			op = QItemSelectionModel.Selection_ClearAndSelect
 		End If
 
+		runSilent = True
 		selectionModel.setCurrentIndex(idx, op)
+		runSilent = False
 	End Method
 	
 	Method removeItem(index:Int)
 		model.removeRows(index, 1)
 	End Method
 	
-	Method onActivated(index:QModelIndex)
-		PostGuiEvent EVENT_GADGETSELECT, gadget, index.row()
+	Method onSelectionChanged(selected:QItemSelection, deselected:QItemSelection)
+		If Not runSilent
+			' well, it's a bit of a hack, picking the first one from the list (we assume single-row selection!)
+			Local indexes:QModelIndex[] = selected.indexes()
+		
+			If indexes.length > 0	
+				PostGuiEvent EVENT_GADGETSELECT, gadget, indexes[0].row()
+			End If
+		End If
 	End Method
 	
 	Method onDoubleClicked(index:QModelIndex)

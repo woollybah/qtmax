@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sun Dec 30 17:31:50 2012
+** Created: Mon Dec 31 20:39:43 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MaxQAbstractItemView[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,7 @@ static const uint qt_meta_data_MaxQAbstractItemView[] = {
      105,   22,   21,   21, 0x08,
      128,   22,   21,   21, 0x08,
      151,   21,   21,   21, 0x08,
+     175,  171,   21,   21, 0x08,
 
        0        // eod
 };
@@ -47,7 +48,8 @@ static const char qt_meta_stringdata_MaxQAbstractItemView[] = {
     "onClicked(QModelIndex)\0"
     "onDoubleClicked(QModelIndex)\0"
     "onEntered(QModelIndex)\0onPressed(QModelIndex)\0"
-    "onViewportEntered()\0"
+    "onViewportEntered()\0pos\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
 void MaxQAbstractItemView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -62,6 +64,7 @@ void MaxQAbstractItemView::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         case 3: _t->onEntered((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 4: _t->onPressed((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 5: _t->onViewportEntered(); break;
+        case 6: _t->onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -99,9 +102,9 @@ int MaxQAbstractItemView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

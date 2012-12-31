@@ -36,8 +36,8 @@ SelectGadgetItem listbox,1
 SelectGadgetItem listbox,2
 RemoveGadgetItem(listbox, 0)
 
-ModifyGadgetItem(listbox, 0, "Scottish",0,6)
-ModifyGadgetItem(listbox, 3, "Canadian - changed",0,-1)
+ModifyGadgetItem(listbox, 3, "Scottish",0,6)
+ModifyGadgetItem(listbox, 4, "Canadian - changed",0,-1)
 
 
 'ClearGadgetItems(listbox)
