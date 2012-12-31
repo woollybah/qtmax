@@ -167,6 +167,28 @@ Type QItemSelectionModel Extends QObject
 		Return QItemSelection._create(bmx_qt_qitemselectionmodel_selection(qObjectPtr))
 	End Method
 
+
+
+	' SIGNAL : currentChanged
+	Function _OnCurrentChanged(obj:QItemSelectionModel, _current:Byte Ptr, _previous:Byte Ptr)
+		obj._InvokeSignals("currentChanged", [New QModelIndex._create(_current), New QModelIndex._create(_previous)])
+	End Function
+
+	' SIGNAL : currentColumnChanged
+	Function _OnCurrentColumnChanged(obj:QItemSelectionModel, _current:Byte Ptr, _previous:Byte Ptr)
+		obj._InvokeSignals("currentColumnChanged", [New QModelIndex._create(_current), New QModelIndex._create(_previous)])
+	End Function
+
+	' SIGNAL : currentRowChanged
+	Function _OnCurrentRowChanged(obj:QItemSelectionModel, _current:Byte Ptr, _previous:Byte Ptr)
+		obj._InvokeSignals("currentRowChanged", [New QModelIndex._create(_current), New QModelIndex._create(_previous)])
+	End Function
+
+	' SIGNAL : selectionChanged
+	Function _OnSelectionChanged(obj:QItemSelectionModel, selected:Byte Ptr, deselected:Byte Ptr)
+		obj._InvokeSignals("selectionChanged", [New QItemSelection._create(selected), New QItemSelection._create(deselected)])
+	End Function
+
 End Type
 
 

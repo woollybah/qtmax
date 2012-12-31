@@ -260,7 +260,7 @@ Type QStandardItem
 	End Method
 	
 	Method insertRows:Int(row:Int, count:Int)
-DebugLog "Item::insertRows(" + row + ", " + count + ")"
+'DebugLog "Item::insertRows(" + row + ", " + count + ")"
 		If (count < 1) Or (row < 0) Or (row > rowCount()) Then
 			Return False
 		End If

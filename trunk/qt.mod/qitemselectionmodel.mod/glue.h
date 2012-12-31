@@ -35,6 +35,11 @@ extern "C" {
 
 #include <blitz.h>
 
+	void _qt_qitemselectionmodel_QItemSelectionModel__OnCurrentChanged(BBObject * handle, MaxQModelIndex * current, MaxQModelIndex * previous);
+	void _qt_qitemselectionmodel_QItemSelectionModel__OnCurrentColumnChanged(BBObject * handle, MaxQModelIndex * current, MaxQModelIndex * previous);
+	void _qt_qitemselectionmodel_QItemSelectionModel__OnCurrentRowChanged(BBObject * handle, MaxQModelIndex * current, MaxQModelIndex * previous);
+	void _qt_qitemselectionmodel_QItemSelectionModel__OnSelectionChanged(BBObject * handle, MaxQItemSelection * selected, MaxQItemSelection * deselected);
+
 	void bmx_qt_qitemselection_free(MaxQItemSelection * selection);
 	int bmx_qt_qitemselection_contains(MaxQItemSelection * selection, MaxQModelIndex * index);
 	BBObject * bmx_qt_qitemselection_indexes(MaxQItemSelection * selection);
@@ -66,7 +71,7 @@ extern "C" {
 
 class MaxQItemSelectionModel : public QItemSelectionModel
 {
-	//Q_OBJECT
+	Q_OBJECT
 	
 public:
 	MaxQItemSelectionModel(BBObject * handle, QAbstractItemModel * model);
@@ -74,6 +79,13 @@ public:
 	
 private:	
 	BBObject * maxHandle;
+
+private slots:
+	void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
+	void onCurrentColumnChanged(const QModelIndex & current, const QModelIndex & previous);
+	void onCurrentRowChanged(const QModelIndex & current, const QModelIndex & previous);
+	void onSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
+
 };
 
 class MaxQItemSelection
