@@ -1,4 +1,4 @@
-' Copyright (c) 2009 Bruce A Henderson
+' Copyright (c) 2009-2013 Bruce A Henderson
 ' 
 ' Permission is hereby granted, free of charge, to any person obtaining a copy
 ' of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ Module Qt.QStandardItem
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
 ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009 Bruce A Henderson"
+ModuleInfo "Copyright: (c) 2009-2013 Bruce A Henderson"
 
 
 Import "common.bmx"
@@ -714,6 +714,7 @@ Type TCleanMap
 	
 End Type
 
+' helper types for storing numbers as objects!
 Type TNumber
 End Type
 
@@ -741,6 +742,8 @@ Type TByte Extends TNumber
 	Field value:Byte
 End Type
 
+' where all the magic happens.
+' keeps track of child items and looks after insertions and removals.
 Type TItemList
 
 	Field items:QStandardItem[0]
