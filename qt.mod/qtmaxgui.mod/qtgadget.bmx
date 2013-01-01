@@ -181,7 +181,7 @@ Type TQtWindow Extends TQtGadget
 	End Method
 	
 	Method CreateWindow()
-	
+
 		Local flags:Int = 0
 		
 		If style & WINDOW_TOOL Then
@@ -993,16 +993,18 @@ End Type
 
 Type TQtCanvas Extends TQtGadget
 
+	Field canvas:TGraphics
+	Field canvasFlags:Int
+
 	Method InitGadget()
 		CreateCanvas()
 	End Method
 	
 	Method CreateCanvas()
 	
-		'widget = New MaxGuiQGLWidget.MCreate(TQtGadget(parent).RealParentForChild(), Self)
+		widget = New MaxGuiCanvasWidget.MCreate(TQtGadget(parent).RealParentForChild(), Self)
 		
-		' PLACEHOLDER
-		widget = New QWidget._Create(TQtGadget(parent).RealParentForChild())
+		widget.setAttribute(Qt_WA_NativeWindow)
 		
 		Rethink()
 		
@@ -1010,6 +1012,21 @@ Type TQtCanvas Extends TQtGadget
 		
 	End Method
 
+	Method AttachGraphics:TGraphics( flags:Int )
+		canvasFlags = flags
+		canvas=brl.Graphics.AttachGraphics(widget.winId(), flags)
+	End Method
+	
+	Method CanvasGraphics:TGraphics()
+		Return canvas
+	End Method
+	
+	Method Activate(kind:Int)
+		If kind = ACTIVATE_REDRAW Then
+			widget.update()
+		End If
+	End Method
+	
 	Method Class:Int()
 		Return GADGET_CANVAS
 	EndMethod
@@ -1214,15 +1231,15 @@ Type MaxGuiQLabel Extends QLabel
 
 	Method mousePressEvent(event:QMouseEvent)
 		If event.button() & Qt_RightButton Then
-			PostGuiEvent EVENT_GADGETMENU, gadget, event.button(), event.x(), event.y()
+			PostGuiEvent EVENT_GADGETMENU, gadget, event.button(), , event.x(), event.y()
 		Else
-			PostGuiEvent EVENT_MOUSEDOWN, gadget, event.button(), event.x(), event.y()
+			PostGuiEvent EVENT_MOUSEDOWN, gadget, event.button(), , event.x(), event.y()
 		End If
 	End Method
 
 	Method mouseReleaseEvent(event:QMouseEvent)
 		' TODO : We want this event for a label?
-		PostGuiEvent EVENT_MOUSEUP, gadget, event.button(), event.x(), event.y()
+		PostGuiEvent EVENT_MOUSEUP, gadget, event.button(), , event.x(), event.y()
 	End Method
 	
 End Type
@@ -1683,3 +1700,26 @@ Type MaxGuiQMenu Extends QMenu
 
 End Type
 
+Type MaxGuiCanvasWidget Extends QWidget
+
+	Field gadget:TQtGadget
+
+	Method MCreate:MaxGuiCanvasWidget(parent:QWidget, owner:TQtGadget)
+		gadget = owner
+		Super._Create(parent)
+		Return Self
+	End Method
+
+	Method OnInit()
+		setMouseTracking(True)
+	End Method
+
+	Method paintEvent(event:QPaintEvent)
+		PostGuiEvent EVENT_GADGETPAINT, gadget
+	End Method
+
+	Method mouseMoveEvent(event:QMouseEvent)
+		PostGuiEvent EVENT_MOUSEMOVE, gadget, event.button(), , event.x(), event.y()
+	End Method
+	
+End Type
