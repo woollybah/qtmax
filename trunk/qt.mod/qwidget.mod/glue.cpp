@@ -70,6 +70,13 @@ void MaxQWidget::defaultMinimumSizeHint(int * w, int * h) {
 }
 
 
+QPaintEngine * MaxQWidget::paintEngine() const {
+	return _qt_qwidget_QWidget__paintEngine(maxHandle);
+}
+
+QPaintEngine * MaxQWidget::defaultpaintEngine() {
+	return QWidget::paintEngine();
+}
 
 
 
@@ -998,6 +1005,10 @@ void bmx_qt_qwidget_default_sizehint(MaxQWidget * widget, int * w, int * h) {
 
 void bmx_qt_qwidget_default_minimumsizehint(MaxQWidget * widget, int * w, int * h) {
 	widget->defaultMinimumSizeHint(w, h);
+}
+
+QPaintEngine * bmx_qt_qwidget_default_paintengine(MaxQWidget * widget) {
+	return widget->defaultpaintEngine();
 }
 
 // *********************************************
