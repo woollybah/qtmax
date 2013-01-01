@@ -103,7 +103,17 @@ DebugLog "SetShow(" + truefalse + ")"
 		
 		Return s
 	End Method
-	
+
+	' default to own width
+	Method ClientWidth:Int()
+		Return widget.width()
+	End Method
+
+	' default to own height
+	Method ClientHeight:Int()
+		Return widget.height()
+	End Method
+
 End Type
 
 Type TQtIconStrip Extends TIconStrip
