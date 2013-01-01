@@ -87,6 +87,41 @@ extern "C" {
 	BBString * bmx_qt_qtextedit_toplaintext(QTextEdit * edit);
 	QTextDocument * bmx_qt_qtextedit_document(QTextEdit * edit);
 
+	int bmx_qt_qtextedit_acceptrichtext(QTextEdit * edit);
+	int bmx_qt_qtextedit_alignment(QTextEdit * edit);
+	BBString * bmx_qt_qtextedit_anchorat(QTextEdit * edit, int x, int y);
+	int bmx_qt_qtextedit_autoformatting(QTextEdit * edit);
+	int bmx_qt_qtextedit_canpaste(QTextEdit * edit);
+	MaxQTextCharFormat * bmx_qt_qtextedit_currentcharformat(QTextEdit * edit);
+	MaxQFont * bmx_qt_qtextedit_currentfont(QTextEdit * edit);
+	MaxQTextCursor * bmx_qt_qtextedit_cursorforposition(QTextEdit * edit, int x, int y);
+	int bmx_qt_qtextedit_cursorwidth(QTextEdit * edit);
+	BBString * bmx_qt_qtextedit_documenttitle(QTextEdit * edit);
+	void bmx_qt_qtextedit_ensurecursorvisible(QTextEdit * edit);
+	int bmx_qt_qtextedit_find(QTextEdit * edit, BBString * expr, int options);
+	BBString * bmx_qt_qtextedit_fontfamily(QTextEdit * edit);
+	int bmx_qt_qtextedit_fontitalic(QTextEdit * edit);
+	double bmx_qt_qtextedit_fontpointsize(QTextEdit * edit);
+	int bmx_qt_qtextedit_fontunderline(QTextEdit * edit);
+	int bmx_qt_qtextedit_fontweight(QTextEdit * edit);
+	int bmx_qt_qtextedit_isreadonly(QTextEdit * edit);
+	int bmx_qt_qtextedit_isundoredoenabled(QTextEdit * edit);
+	int bmx_qt_qtextedit_linewrapcolumnorwidth(QTextEdit * edit);
+	int bmx_qt_qtextedit_linewrapmode(QTextEdit * edit);
+	void bmx_qt_qtextedit_mergecurrentcharformat(QTextEdit * edit, MaxQTextCharFormat * modifier);
+	int bmx_qt_qtextedit_overwritemode(QTextEdit * edit);
+	int bmx_qt_qtextedit_tabstopwidth(QTextEdit * edit);
+	MaxQColor * bmx_qt_qtextedit_textbackgroundcolor(QTextEdit * edit);
+	MaxQColor * bmx_qt_qtextedit_textcolor(QTextEdit * edit);
+	MaxQTextCursor * bmx_qt_qtextedit_textcursor(QTextEdit * edit);
+	void bmx_qt_qtextedit_settabchangesfocus(QTextEdit * edit, int value);
+	void bmx_qt_qtextedit_settabstopwidth(QTextEdit * edit, int width);
+	void bmx_qt_qtextedit_settextcursor(QTextEdit * edit, MaxQTextCursor * cursor);
+	void bmx_qt_qtextedit_settextinteractionflags(QTextEdit * edit, int flags);
+	void bmx_qt_qtextedit_setundoredoenabled(QTextEdit * edit, int enable);
+	void bmx_qt_qtextedit_setwordwrapmode(QTextEdit * edit, int policy);
+	int bmx_qt_qtextedit_tabchangesfocus(QTextEdit * edit);
+
 	// QTextEdit
 	// QAbstractScrollArea
 	void bmx_qt_qtextedit_default_scrollcontentsby(MaxQTextEdit * edit, int dx, int dy);

@@ -79,39 +79,39 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 
 	Method acceptRichText:Int()
-	' TODO
+		Return bmx_qt_qtextedit_acceptrichtext(qObjectPtr)
 	End Method
 	
 	Method alignment:Int()
-	' TODO
+		Return bmx_qt_qtextedit_alignment(qObjectPtr)
 	End Method
 	
 	Method anchorAt:String(x:Int, y:Int)
-	' TODO
+		Return bmx_qt_qtextedit_anchorat(qObjectPtr, x, y)
 	End Method
 	
 	Method autoFormatting:Int()
-	' TODO
+		Return bmx_qt_qtextedit_autoformatting(qObjectPtr)
 	End Method
 	
 	Method canPaste:Int()
-	' TODO
+		Return bmx_qt_qtextedit_canpaste(qObjectPtr)
 	End Method
 	
 	Method createStandardContextMenu:QMenu(x:Int = -1, y:Int = -1)
 	' TODO
 	End Method
 	
-	Method currentCharFormat:Int()
-	' TODO
+	Method currentCharFormat:QTextCharFormat()
+		Return QTextCharFormat._create(bmx_qt_qtextedit_currentcharformat(qObjectPtr))
 	End Method
 	
 	Method currentFont:QFont()
-	' TODO
+		Return QFont._create(bmx_qt_qtextedit_currentfont(qObjectPtr))
 	End Method
 	
 	Method cursorForPosition:QTextCursor(x:Int, y:Int)
-	' TODO
+		Return QTextCursor._create(bmx_qt_qtextedit_cursorforposition(qObjectPtr, x, y))
 	End Method
 	
 	'QRect cursorRect(cursor:QTextCursor)
@@ -123,7 +123,7 @@ Type QTextEdit Extends QAbstractScrollArea
 	'end method
 	
 	Method cursorWidth:Int()
-	' TODO
+		Return bmx_qt_qtextedit_cursorwidth(qObjectPtr)
 	End Method
 	
 	Method document:QTextDocument()
@@ -131,51 +131,51 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method documentTitle:String()
-	' TODO
+		Return bmx_qt_qtextedit_documenttitle(qObjectPtr)
 	End Method
 	
 	Method ensureCursorVisible()
-	' TODO
+		bmx_qt_qtextedit_ensurecursorvisible(qObjectPtr)
 	End Method
 	
-	Method find:Int(Exp:String, options:Int = 0)
-	' TODO
+	Method find:Int(expr:String, options:Int = 0)
+		Return bmx_qt_qtextedit_find(qObjectPtr, expr, options)
 	End Method
 	
 	Method fontFamily:String()
-	' TODO
+		Return bmx_qt_qtextedit_fontfamily(qObjectPtr)
 	End Method
 	
 	Method fontItalic:Int()
-	' TODO
+		Return bmx_qt_qtextedit_fontitalic(qObjectPtr)
 	End Method
 	
 	Method fontPointSize:Double()
-	' TODO
+		Return bmx_qt_qtextedit_fontpointsize(qObjectPtr)
 	End Method
 	
 	Method fontUnderline:Int()
-	' TODO
+		Return bmx_qt_qtextedit_fontunderline(qObjectPtr)
 	End Method
 	
 	Method fontWeight:Int()
-	' TODO
+		Return bmx_qt_qtextedit_fontweight(qObjectPtr)
 	End Method
 	
 	Method isReadOnly:Int()
-	' TODO
+		Return bmx_qt_qtextedit_isreadonly(qObjectPtr)
 	End Method
 	
 	Method isUndoRedoEnabled:Int()
-	' TODO
+		Return bmx_qt_qtextedit_isundoredoenabled(qObjectPtr)
 	End Method
 	
 	Method lineWrapColumnOrWidth:Int()
-	' TODO
+		Return bmx_qt_qtextedit_linewrapcolumnorwidth(qObjectPtr)
 	End Method
 	
 	Method lineWrapMode:Int()
-	' TODO
+		Return bmx_qt_qtextedit_linewrapmode(qObjectPtr)
 	End Method
 	
 	Method loadResource:QVariant(_type:Int, name:QUrl)
@@ -183,7 +183,7 @@ Type QTextEdit Extends QAbstractScrollArea
 	End Method
 	
 	Method mergeCurrentCharFormat(modifier:QTextCharFormat)
-	' TODO
+		bmx_qt_qtextedit_mergecurrentcharformat(qObjectPtr, modifier.qObjectPtr)
 	End Method
 	
 	'Method moveCursor(operation:Int, Mode:Int = QTextCursor.MoveAnchor)
@@ -191,7 +191,7 @@ Type QTextEdit Extends QAbstractScrollArea
 	'End Method
 	
 	Method overwriteMode:Int()
-	' TODO
+		Return bmx_qt_qtextedit_overwritemode(qObjectPtr)
 	End Method
 	
 	Method Print(printer:QPrinter)
@@ -238,48 +238,48 @@ Type QTextEdit Extends QAbstractScrollArea
 		bmx_qt_qtextedit_setreadonly(qObjectPtr, value)
 	End Method
 
-	Method setTabChangesFocus(b:Int)
-	' TODO
+	Method setTabChangesFocus(value:Int)
+		bmx_qt_qtextedit_settabchangesfocus(qObjectPtr, value)
 	End Method
 	
 	Method setTabStopWidth(width:Int)
-	' TODO
+		bmx_qt_qtextedit_settabstopwidth(qObjectPtr, width)
 	End Method
 	
 	Method setTextCursor(cursor:QTextCursor)
-	' TODO
+		bmx_qt_qtextedit_settextcursor(qObjectPtr, cursor.qObjectPtr)
 	End Method
 	
 	Method setTextInteractionFlags(flags:Int)
-	' TODO
+		bmx_qt_qtextedit_settextinteractionflags(qObjectPtr, flags)
 	End Method
 	
 	Method setUndoRedoEnabled(enable:Int)
-	' TODO
+		bmx_qt_qtextedit_setundoredoenabled(qObjectPtr, enable)
 	End Method
 	
 	Method setWordWrapMode(policy:Int)
-	' TODO
+		bmx_qt_qtextedit_setwordwrapmode(qObjectPtr, policy)
 	End Method
 	
 	Method tabChangesFocus:Int()
-	' TODO
+		Return bmx_qt_qtextedit_tabchangesfocus(qObjectPtr)
 	End Method
 	
 	Method tabStopWidth:Int()
-	' TODO
+		Return bmx_qt_qtextedit_tabstopwidth(qObjectPtr)
 	End Method
 	
 	Method textBackgroundColor:QColor()
-	' TODO
+		Return QColor._create(bmx_qt_qtextedit_textbackgroundcolor(qObjectPtr))
 	End Method
 	
 	Method textColor:QColor()
-	' TODO
+		Return QColor._create(bmx_qt_qtextedit_textcolor(qObjectPtr))
 	End Method
 	
 	Method textCursor:QTextCursor()
-	' TODO
+		Return QTextCursor._create(bmx_qt_qtextedit_textcursor(qObjectPtr))
 	End Method
 	
 	Method textInteractionFlags:Int()

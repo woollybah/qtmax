@@ -25,6 +25,9 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QTextImageFormat>
+
+class MaxQTextImageFormat;
 
 extern "C" {
 
@@ -35,5 +38,14 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQTextImageFormat
+{
+public:
+	MaxQTextImageFormat(const QTextImageFormat & t);
+	QTextImageFormat & Format();
+
+private:
+	QTextImageFormat textformat;
+};
 
 #endif

@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Module Qt.QTextFormat
+Module Qt.QTextFrameFormat
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "License: MIT"
@@ -30,23 +30,15 @@ ModuleInfo "Copyright: (c) 2009-2013 Bruce A Henderson"
 
 Import "common.bmx"
 
+Type QTextFrameFormat Extends QTextFormat
 
-Type QTextFormat
-
-	Field qObjectPtr:Byte Ptr
-
-	Function _create:QTextFormat(qObjectPtr:Byte Ptr)
+	Function _create:QTextFrameFormat(qObjectPtr:Byte Ptr)
 		If qObjectPtr Then
-			Local this:QTextFormat = New QTextFormat
+			Local this:QTextFrameFormat = New QTextFrameFormat
 			this.qObjectPtr = qObjectPtr
 			Return this
 		End If
 	End Function
-	
-	Method setForeground(brush:QBrush)
-		bmx_qt_qtextformat_setforeground(qObjectPtr, brush.qObjectPtr)
-	End Method
 
 End Type
-
 

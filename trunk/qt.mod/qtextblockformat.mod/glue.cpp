@@ -24,12 +24,12 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQTextImageFormat::MaxQTextImageFormat(const QTextImageFormat & t)
+MaxQTextBlockFormat::MaxQTextBlockFormat(const QTextBlockFormat & t)
 	: textformat(t)
 {
 }
 
-QTextImageFormat & MaxQTextImageFormat::Format() {
+QTextBlockFormat & MaxQTextBlockFormat::Format() {
 	return textformat;
 }
 
