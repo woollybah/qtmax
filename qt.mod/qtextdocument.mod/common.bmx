@@ -25,6 +25,9 @@ Import Qt.QObject
 Import Qt.QTextCharFormat
 Import Qt.QPrinter
 Import Qt.QFont
+Import Qt.QTextBlockFormat
+Import Qt.QTextFrameFormat
+Import Qt.QTextImageFormat
 Import BRL.Blitz
 
 
@@ -89,5 +92,61 @@ Extern
 	Function bmx_qt_qtextdocument_undo(handle:Byte Ptr, cursor:Byte Ptr)
 	Function bmx_qt_qtextdocument_usedesignmetrics:Int(handle:Byte Ptr)
 	Function bmx_qt_qtextdocument_setmodified(handle:Byte Ptr, m:Int)
+
+
+	Function bmx_qt_qtextcursor_anchor:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_atblockend:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_atblockstart:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_atend:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_atstart:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_begineditblock(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_block:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_blockcharformat:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_blockformat:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_blocknumber:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_charformat:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_clearselection(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_columnnumber:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_deletechar(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_deletepreviouschar(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_endeditblock(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_hascomplexselection:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_hasselection:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_insertblock(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_insertblockformat(handle:Byte Ptr, format:Byte Ptr)
+	Function bmx_qt_qtextcursor_insertblockcharformat(handle:Byte Ptr, format:Byte Ptr, charFormat:Byte Ptr)
+	Function bmx_qt_qtextcursor_insertfragment(handle:Byte Ptr, fragment:Byte Ptr)
+	Function bmx_qt_qtextcursor_inserthtml(handle:Byte Ptr, html:String)
+	Function bmx_qt_qtextcursor_insertimage(handle:Byte Ptr, format:Byte Ptr)
+	Function bmx_qt_qtextcursor_insertimagealign(handle:Byte Ptr, format:Byte Ptr, alignment:Int)
+	Function bmx_qt_qtextcursor_insertimagename(handle:Byte Ptr, name:String)
+	Function bmx_qt_qtextcursor_insertimageimage(handle:Byte Ptr, image:Byte Ptr, name:String)
+	Function bmx_qt_qtextcursor_inserttext(handle:Byte Ptr, text:String)
+	Function bmx_qt_qtextcursor_inserttextformat(handle:Byte Ptr, text:String, format:Byte Ptr)
+	Function bmx_qt_qtextcursor_iscopyof:Int(handle:Byte Ptr, other:Byte Ptr)
+	Function bmx_qt_qtextcursor_isnull:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_joinpreviouseditblock(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_keeppositiononinsert:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_mergeblockcharformat(handle:Byte Ptr, modifier:Byte Ptr)
+	Function bmx_qt_qtextcursor_mergeblockformat(handle:Byte Ptr, modifier:Byte Ptr)
+	Function bmx_qt_qtextcursor_mergecharformat(handle:Byte Ptr, modifier:Byte Ptr)
+	Function bmx_qt_qtextcursor_moveposition:Int(handle:Byte Ptr, operation:Int, Mode:Int, n:Int)
+	Function bmx_qt_qtextcursor_position:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_positioninblock:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_removeselectedtext(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_selecttext(handle:Byte Ptr, selection:Int)
+	Function bmx_qt_qtextcursor_selectedtext:String(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_selection:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_selectionend:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_selectionstart:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_setblockcharformat(handle:Byte Ptr, format:Byte Ptr)
+	Function bmx_qt_qtextcursor_setblockformat(handle:Byte Ptr, format:Byte Ptr)
+	Function bmx_qt_qtextcursor_setcharformat(handle:Byte Ptr, format:Byte Ptr)
+	Function bmx_qt_qtextcursor_setkeepoisitiononinsert(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qtextcursor_setposition(handle:Byte Ptr, pos:Int, Mode:Int)
+	Function bmx_qt_qtextcursor_setverticalmovementx(handle:Byte Ptr, x:Int)
+	Function bmx_qt_qtextcursor_setvisualnavigation(handle:Byte Ptr, value:Int)
+	Function bmx_qt_qtextcursor_verticalmovementx:Int(handle:Byte Ptr)
+	Function bmx_qt_qtextcursor_visualnavigation:Int(handle:Byte Ptr)
 
 End Extern

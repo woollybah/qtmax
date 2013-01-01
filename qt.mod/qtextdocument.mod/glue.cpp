@@ -163,8 +163,33 @@ QTextBlock & MaxQTextBlock::Block() {
 	return block;
 }
 
+// ---------------------------------------------------------------------------------------
+
+MaxQTextDocumentFragment::MaxQTextDocumentFragment(const QTextDocumentFragment & f)
+	: fragment(f)
+{
+}
+
+MaxQTextDocumentFragment::~MaxQTextDocumentFragment()
+{
+}
+
+QTextDocumentFragment & MaxQTextDocumentFragment::Fragment() {
+	return fragment;
+}
+
 
 // *********************************************
+
+QTextDocument::FindFlags bmx_qt_intToDocumentFindFlags(int f) {
+	QTextDocument::FindFlags flags;
+	
+	if (f & 0x0001) flags |= QTextDocument::FindBackward;
+	if (f & 0x0002) flags |= QTextDocument::FindCaseSensitively;
+	if (f & 0x0004) flags |= QTextDocument::FindWholeWords;
+	
+	return flags;
+}
 
 double bmx_qt_qtextdocument_idealwidth(QTextDocument * doc) {
 	return doc->idealWidth();
@@ -337,6 +362,327 @@ int bmx_qt_qtextdocument_usedesignmetrics(QTextDocument * doc) {
 void bmx_qt_qtextdocument_setmodified(QTextDocument * doc, int m) {
 	doc->setModified(static_cast<bool>(m));
 }
+
+
+// *********************************************
+
+QTextCursor::SelectionType bmx_qt_intToCursorSelectionType(int t) {
+	switch(t) {
+		case 0:
+			return QTextCursor::WordUnderCursor;
+		case 1:
+			return QTextCursor::LineUnderCursor;
+		case 2:
+			return QTextCursor::BlockUnderCursor;
+		case 3:
+			return QTextCursor::Document;
+	}
+	return QTextCursor::WordUnderCursor;
+}
+
+QTextCursor::MoveOperation bmx_qt_intToCursorMoveOperation(int o) {
+	switch(o) {
+		case 0:
+			return QTextCursor::NoMove;
+		case 1:
+			return QTextCursor::Start;
+		case 2:
+			return QTextCursor::Up;
+		case 3:
+			return QTextCursor::StartOfLine;
+		case 4:
+			return QTextCursor::StartOfBlock;
+		case 5:
+			return QTextCursor::StartOfWord;
+		case 6:
+			return QTextCursor::PreviousBlock;
+		case 7:
+			return QTextCursor::PreviousCharacter;
+		case 8:
+			return QTextCursor::PreviousWord;
+		case 9:
+			return QTextCursor::Left;
+		case 10:
+			return QTextCursor::WordLeft;
+		case 11:
+			return QTextCursor::End;
+		case 12:
+			return QTextCursor::Down;
+		case 13:
+			return QTextCursor::EndOfLine;
+		case 14:
+			return QTextCursor::EndOfWord;
+		case 15:
+			return QTextCursor::EndOfBlock;
+		case 16:
+			return QTextCursor::NextBlock;
+		case 17:
+			return QTextCursor::NextCharacter;
+		case 18:
+			return QTextCursor::NextWord;
+		case 19:
+			return QTextCursor::Right;
+		case 20:
+			return QTextCursor::WordRight;
+		case 21:
+			return QTextCursor::NextCell;
+		case 22:
+			return QTextCursor::PreviousCell;
+		case 23:
+			return QTextCursor::NextRow;
+		case 24:
+			return QTextCursor::PreviousRow;		
+	}
+	
+	return QTextCursor::NoMove;
+}
+
+QTextCursor::MoveMode bmx_qt_intToCursorMoveMode(int m) {
+	switch(m) {
+		case 0:
+			return QTextCursor::MoveAnchor;
+		case 1:
+			return QTextCursor::KeepAnchor;
+	}
+	return QTextCursor::MoveAnchor;
+}
+
+int bmx_qt_qtextcursor_anchor(MaxQTextCursor * cursor) {
+	return cursor->Cursor().anchor();
+}
+
+int bmx_qt_qtextcursor_atblockend(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().atBlockEnd());
+}
+
+int bmx_qt_qtextcursor_atblockstart(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().atBlockStart());
+}
+
+int bmx_qt_qtextcursor_atend(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().atEnd());
+}
+
+int bmx_qt_qtextcursor_atstart(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().atStart());
+}
+
+void bmx_qt_qtextcursor_begineditblock(MaxQTextCursor * cursor) {
+	cursor->Cursor().beginEditBlock();
+}
+
+MaxQTextBlock * bmx_qt_qtextcursor_block(MaxQTextCursor * cursor) {
+	return new MaxQTextBlock(cursor->Cursor().block());
+}
+
+MaxQTextCharFormat * bmx_qt_qtextcursor_blockcharformat(MaxQTextCursor * cursor) {
+	return new MaxQTextCharFormat(cursor->Cursor().blockCharFormat());
+}
+
+MaxQTextBlockFormat * bmx_qt_qtextcursor_blockformat(MaxQTextCursor * cursor) {
+	return new MaxQTextBlockFormat(cursor->Cursor().blockFormat());
+}
+
+int bmx_qt_qtextcursor_blocknumber(MaxQTextCursor * cursor) {
+	return cursor->Cursor().blockNumber();
+}
+
+MaxQTextCharFormat * bmx_qt_qtextcursor_charformat(MaxQTextCursor * cursor) {
+	return new MaxQTextCharFormat(cursor->Cursor().charFormat());
+}
+
+void bmx_qt_qtextcursor_clearselection(MaxQTextCursor * cursor) {
+	cursor->Cursor().clearSelection();
+}
+
+int bmx_qt_qtextcursor_columnnumber(MaxQTextCursor * cursor) {
+	return cursor->Cursor().columnNumber();
+}
+
+void bmx_qt_qtextcursor_deletechar(MaxQTextCursor * cursor) {
+	cursor->Cursor().deleteChar();
+}
+
+void bmx_qt_qtextcursor_deletepreviouschar(MaxQTextCursor * cursor) {
+	cursor->Cursor().deletePreviousChar();
+}
+
+void bmx_qt_qtextcursor_endeditblock(MaxQTextCursor * cursor) {
+	cursor->Cursor().endEditBlock();
+}
+
+int bmx_qt_qtextcursor_hascomplexselection(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().hasComplexSelection());
+}
+
+int bmx_qt_qtextcursor_hasselection(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().hasSelection());
+}
+
+void bmx_qt_qtextcursor_insertblock(MaxQTextCursor * cursor) {
+	cursor->Cursor().insertBlock();
+}
+
+void bmx_qt_qtextcursor_insertblockformat(MaxQTextCursor * cursor, MaxQTextBlockFormat * format) {
+	cursor->Cursor().insertBlock(format->Format());
+}
+
+void bmx_qt_qtextcursor_insertblockcharformat(MaxQTextCursor * cursor, MaxQTextBlockFormat * format, MaxQTextCharFormat * charFormat) {
+	cursor->Cursor().insertBlock(format->Format(), charFormat->Format());
+}
+
+void bmx_qt_qtextcursor_insertfragment(MaxQTextCursor * cursor, MaxQTextDocumentFragment * fragment) {
+	cursor->Cursor().insertFragment(fragment->Fragment());
+}
+
+void bmx_qt_qtextcursor_inserthtml(MaxQTextCursor * cursor, BBString * html) {
+	cursor->Cursor().insertHtml(qStringFromBBString(html));
+}
+
+void bmx_qt_qtextcursor_insertimage(MaxQTextCursor * cursor, MaxQTextImageFormat * format) {
+	cursor->Cursor().insertImage(format->Format());
+}
+
+void bmx_qt_qtextcursor_insertimagealign(MaxQTextCursor * cursor, MaxQTextImageFormat * format, int alignment) {
+	cursor->Cursor().insertImage(format->Format(), bmx_qt_intToFrameFormatPosition(alignment));
+}
+
+void bmx_qt_qtextcursor_insertimagename(MaxQTextCursor * cursor, BBString * name) {
+	cursor->Cursor().insertImage(qStringFromBBString(name));
+}
+
+void bmx_qt_qtextcursor_insertimageimage(MaxQTextCursor * cursor, MaxQImage * image, BBString * name) {
+	cursor->Cursor().insertImage(image->Image(), qStringFromBBString(name));
+}
+
+void bmx_qt_qtextcursor_inserttext(MaxQTextCursor * cursor, BBString * text) {
+	cursor->Cursor().insertText(qStringFromBBString(text));
+}
+
+void bmx_qt_qtextcursor_inserttextformat(MaxQTextCursor * cursor, BBString * text, MaxQTextCharFormat * format) {
+	cursor->Cursor().insertText(qStringFromBBString(text), format->Format());
+}
+
+int bmx_qt_qtextcursor_iscopyof(MaxQTextCursor * cursor, MaxQTextCursor * other) {
+	return static_cast<int>(cursor->Cursor().isCopyOf(other->Cursor()));
+}
+
+int bmx_qt_qtextcursor_isnull(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().isNull());
+}
+
+void bmx_qt_qtextcursor_joinpreviouseditblock(MaxQTextCursor * cursor) {
+	cursor->Cursor().joinPreviousEditBlock();
+}
+
+int bmx_qt_qtextcursor_keeppositiononinsert(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().keepPositionOnInsert());
+}
+
+void bmx_qt_qtextcursor_mergeblockcharformat(MaxQTextCursor * cursor, MaxQTextCharFormat * modifier) {
+	cursor->Cursor().mergeBlockCharFormat(modifier->Format());
+}
+
+void bmx_qt_qtextcursor_mergeblockformat(MaxQTextCursor * cursor, MaxQTextBlockFormat * modifier) {
+	cursor->Cursor().mergeBlockFormat(modifier->Format());
+}
+
+void bmx_qt_qtextcursor_mergecharformat(MaxQTextCursor * cursor, MaxQTextCharFormat * modifier) {
+	cursor->Cursor().mergeCharFormat(modifier->Format());
+}
+
+int bmx_qt_qtextcursor_moveposition(MaxQTextCursor * cursor, int operation, int mode, int n) {
+	return static_cast<int>(cursor->Cursor().movePosition(bmx_qt_intToCursorMoveOperation(operation), bmx_qt_intToCursorMoveMode(mode), n));
+}
+
+int bmx_qt_qtextcursor_position(MaxQTextCursor * cursor) {
+	return cursor->Cursor().position();
+}
+
+int bmx_qt_qtextcursor_positioninblock(MaxQTextCursor * cursor) {
+	return cursor->Cursor().positionInBlock();
+}
+
+void bmx_qt_qtextcursor_removeselectedtext(MaxQTextCursor * cursor) {
+	cursor->Cursor().removeSelectedText();
+}
+
+void bmx_qt_qtextcursor_selecttext(MaxQTextCursor * cursor, int selection) {
+	cursor->Cursor().select(bmx_qt_intToCursorSelectionType(selection));
+}
+
+BBString * bmx_qt_qtextcursor_selectedtext(MaxQTextCursor * cursor) {
+	return bbStringFromQString(cursor->Cursor().selectedText());
+}
+
+MaxQTextDocumentFragment * bmx_qt_qtextcursor_selection(MaxQTextCursor * cursor) {
+	return new MaxQTextDocumentFragment(cursor->Cursor().selection());
+}
+
+int bmx_qt_qtextcursor_selectionend(MaxQTextCursor * cursor) {
+	return cursor->Cursor().selectionEnd();
+}
+
+int bmx_qt_qtextcursor_selectionstart(MaxQTextCursor * cursor) {
+	return cursor->Cursor().selectionStart();
+}
+
+void bmx_qt_qtextcursor_setblockcharformat(MaxQTextCursor * cursor, MaxQTextCharFormat * format) {
+	cursor->Cursor().setBlockCharFormat(format->Format());
+}
+
+void bmx_qt_qtextcursor_setblockformat(MaxQTextCursor * cursor, MaxQTextBlockFormat * format) {
+	cursor->Cursor().setBlockFormat(format->Format());
+}
+
+void bmx_qt_qtextcursor_setcharformat(MaxQTextCursor * cursor, MaxQTextCharFormat * format) {
+	cursor->Cursor().setCharFormat(format->Format());
+}
+
+void bmx_qt_qtextcursor_setkeepoisitiononinsert(MaxQTextCursor * cursor, int value) {
+	cursor->Cursor().setKeepPositionOnInsert(static_cast<bool>(value));
+}
+
+void bmx_qt_qtextcursor_setposition(MaxQTextCursor * cursor, int pos, int mode) {
+	cursor->Cursor().setPosition(pos, bmx_qt_intToCursorMoveMode(mode));
+}
+
+void bmx_qt_qtextcursor_setverticalmovementx(MaxQTextCursor * cursor, int x) {
+	cursor->Cursor().setVerticalMovementX(x);
+}
+
+void bmx_qt_qtextcursor_setvisualnavigation(MaxQTextCursor * cursor, int value) {
+	cursor->Cursor().setVisualNavigation(static_cast<bool>(value));
+}
+
+int bmx_qt_qtextcursor_verticalmovementx(MaxQTextCursor * cursor) {
+	return cursor->Cursor().verticalMovementX();
+}
+
+int bmx_qt_qtextcursor_visualnavigation(MaxQTextCursor * cursor) {
+	return static_cast<int>(cursor->Cursor().visualNavigation());
+}
+
+// *********************************************
+
+QTextOption::WrapMode bmx_qt_intToTextOptionWrapMode(int m) {
+	switch(m) {
+		case 0:
+			return QTextOption::NoWrap;
+		case 1:
+			return QTextOption::WordWrap;
+		case 2:
+			return QTextOption::ManualWrap;
+		case 3:
+			return QTextOption::WrapAnywhere;
+		case 4:
+			return QTextOption::WrapAtWordBoundaryOrAnywhere;
+	}
+	
+	return QTextOption::NoWrap;
+}
+
+
 
 // NOTES :
 // The moc4glue.cpp file is generated by running :  moc.sh

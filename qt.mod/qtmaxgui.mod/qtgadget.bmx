@@ -58,7 +58,7 @@ Type TQtGadget Extends TGadget
 	Method SetShow(truefalse:Int)
 		'visible = truefalse
 		'mySetVisible = visible
-DebugLog "SetShow(" + truefalse + ")"
+'DebugLog "SetShow(" + truefalse + ")"
 		If truefalse Then
 			widget.show()
 		Else
@@ -545,10 +545,82 @@ Type TQtTextArea Extends TQtGadget
 			MaxGuiQTextEdit(widget).setLineWrapMode(QTextEdit.Mode_NoWrap)
 		End If
 		
+		If style & TEXTAREA_READONLY Then
+			MaxGuiQTextEdit(widget).setReadOnly(True)
+		End If
+		
 		Rethink()
 		
 		SetShow(True)
 		
+	End Method
+
+	Method SetText(text:String)
+		MaxGuiQTextEdit(widget).setText(text)
+	End Method
+
+	Method ReplaceText(pos:Int, length:Int, text:String, units:Int)
+		DebugLog "TODO - TQtTextArea::ReplaceText"
+	End Method
+
+	Method AddText(text:String)
+		MaxGuiQTextEdit(widget).append(text)
+	End Method
+
+	Method AreaText:String(pos:Int, length:Int, units:Int)
+		DebugLog "TODO - TQtTextArea::AreaText"
+	End Method
+
+	Method AreaLen:Int(units:Int)
+		DebugLog "TODO - TQtTextArea::AreaLen"
+	End Method
+
+	Method LockText()
+		DebugLog "TODO - TQtTextArea::LockText"
+	End Method
+
+	Method UnlockText()
+		DebugLog "TODO - TQtTextArea::UnlockText"
+	End Method
+
+	Method SetTabs(tabwidth:Int)
+		DebugLog "TODO - TQtTextArea::SetTabs"
+	End Method
+
+	Method SetMargins(leftmargin:Int)
+		DebugLog "TODO - TQtTextArea::SetMargins"
+	End Method
+
+	Method GetCursorPos:Int(units:Int)
+		Return MaxGuiQTextEdit(widget).getCursorPos(units)
+	End Method
+
+	Method GetSelectionLength:Int(units:Int)
+		Return MaxGuiQTextEdit(widget).getSelectionLength(units)
+	End Method
+
+	Method SetStyle(r:Int, g:Int, b:Int, flags:Int, pos:Int, length:Int, units:Int)
+		DebugLog "TODO - TQtTextArea::SetStyle"
+	End Method	
+
+	Method SetSelection(pos:Int, length:Int, units:Int)
+		MaxGuiQTextEdit(widget).setSelection(pos, length, units)
+	End Method
+
+	Method CharX:Int(char:Int)
+		DebugLog "TODO - TQtTextArea::CharX"
+	End Method
+
+	Method CharY:Int(char:Int)
+		DebugLog "TODO - TQtTextArea::CharY"
+	End Method
+
+	Method CharAt:Int(line:Int)
+		DebugLog "TODO - TQtTextArea::CharAt"
+	End Method
+
+	Method LineAt:Int(index:Int)
+		DebugLog "TODO - TQtTextArea::LineAt"
 	End Method
 
 	Method Class:Int()
@@ -1387,6 +1459,58 @@ Type MaxGuiQTextEdit Extends QTextEdit
 	Method OnInit()
 	End Method
 
+	Method setSelection(pos:Int, length:Int, units:Int)
+
+		Local cursor:QTextCursor = textCursor()
+		
+		Local moveOp:Int = QTextCursor.Op_NextCharacter
+		
+		If units = TEXTAREA_LINES Then
+			moveOp = QTextCursor.Op_Down
+
+			' 1) move cursor pos/anchor, to start, then find pos
+			cursor.movePosition(QTextCursor.Op_Start)
+			cursor.movePosition(moveOp, QTextCursor.Mode_MoveAnchor, pos)
+		Else
+			' 1) set absolute pos
+			cursor.setPosition(pos)
+		End If
+		
+		' 2) move, keep anchor
+		cursor.movePosition(moveOp, QTextCursor.Mode_KeepAnchor, length)
+		
+		setTextCursor(cursor)
+	End Method
+
+	Method getCursorPos:Int(units:Int)
+		Local cursor:QTextCursor = textCursor()
+		
+		If units = TEXTAREA_LINES Then
+			Return cursor.blockNumber()
+		Else
+			Return cursor.position()
+		End If
+	End Method
+	
+	Method getSelectionLength:Int(units:Int)
+		Local cursor:QTextCursor = textCursor()
+		
+		If units = TEXTAREA_LINES Then
+			Local _start:Int = cursor.selectionStart()
+			Local _end:Int = cursor.selectionEnd()
+			
+			cursor.setPosition(_start)
+			_start = cursor.blockNumber()
+			
+			cursor.setPosition(_end)
+			_end = cursor.blockNumber()
+			
+			Return _end - _start
+		Else
+			Return Abs(cursor.position() - cursor.anchor())
+		End If
+	End Method
+	
 End Type
 
 Type MaxGuiQListView Extends QListView

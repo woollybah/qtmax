@@ -20,33 +20,30 @@
 ' 
 SuperStrict
 
-Module Qt.QTextFormat
-
-ModuleInfo "Version: 1.00"
-ModuleInfo "License: MIT"
-ModuleInfo "Author: Bruce A Henderson"
-ModuleInfo "Copyright: (c) 2009-2013 Bruce A Henderson"
+Import Qt.Core
+Import Qt.QTextFormat
+Import BRL.Blitz
 
 
-Import "common.bmx"
+' headers :-)
+?win32
+Import "../lib/win32/include/*.h"
+?macos
+Import "../lib/macos/include/*.h"
+?Not linux
+Import "../src/include/*.h"
+Import "../src/include/Qt/*.h"
+Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
+?linux
+Import "/usr/include/qt4/*.h"
+Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+?
 
+Import "glue.cpp"
 
-Type QTextFormat
+Extern
 
-	Field qObjectPtr:Byte Ptr
-
-	Function _create:QTextFormat(qObjectPtr:Byte Ptr)
-		If qObjectPtr Then
-			Local this:QTextFormat = New QTextFormat
-			this.qObjectPtr = qObjectPtr
-			Return this
-		End If
-	End Function
-	
-	Method setForeground(brush:QBrush)
-		bmx_qt_qtextformat_setforeground(qObjectPtr, brush.qObjectPtr)
-	End Method
-
-End Type
-
-
+End Extern
