@@ -984,6 +984,167 @@ end rem
 Const Qt_WA_UpdatesDisabled:Int = 10
 
 Rem
+bbdoc: Indicates that the window is marked as modified.
+about: On some platforms this flag will do nothing, on others (including Mac OS X and Windows) the window will take a modified appearance.
+This flag is set or cleared by QWidget::setWindowModified().
+End Rem
+Const Qt_WA_WindowModified:Int = 41
+Rem
+bbdoc: Makes a toplevel window inherit font and palette from its parent.
+end rem
+Const Qt_WA_WindowPropagation:Int = 80
+Rem
+bbdoc: On Mac OS X, show the tool window even when the application is not active.
+about: By default, all tool windows are hidden when the application is inactive.
+End Rem
+Const Qt_WA_MacAlwaysShowToolWindow:Int = 96
+Rem
+bbdoc: Indicates the locale should be taken into consideration in the widget.
+end rem
+Const Qt_WA_SetLocale:Int = 87
+Rem
+bbdoc: Indicates the widget should be drawn using a styled background.
+end rem
+Const Qt_WA_StyledBackground:Int = 93
+Rem
+bbdoc: Show the widget without making it active.
+end rem
+Const Qt_WA_ShowWithoutActivating:Int = 98
+Rem
+bbdoc: Indicates that a native window is created for the widget.
+about: Enabling this flag will also force a native window for the widget's ancestors unless Qt::WA_DontCreateNativeAncestors is set.
+End Rem
+Const Qt_WA_NativeWindow:Int = 100
+Rem
+bbdoc: Indicates that the widget's ancestors are kept non-native even though the widget itself is native.
+end rem
+Const Qt_WA_DontCreateNativeAncestors:Int = 101
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_DESKTOP to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeDesktop:Int = 104
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_DOCK to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeDock:Int = 105
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_TOOLBAR to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automaticaly sets this attribute for QToolBar.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeToolBar:Int = 106
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_MENU to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automatically sets this attribute for QMenu when torn-off.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeMenu:Int = 107
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_UTILITY to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automatically sets this attribute for the Qt::Tool window type.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeUtility:Int = 108
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_SPLASH to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automatically sets this attribute for the Qt::SplashScreen window type.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeSplash:Int = 109
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_DIALOG to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automatically sets this attribute for the Qt::Dialog and Qt::Sheet window types.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeDialog:Int = 110
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_DROPDOWN_MENU to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automatically sets this attribute for QMenus added to a QMenuBar.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeDropDownMenu:Int = 111
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_POPUP_MENU to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+Note: Qt automatically sets this attribute for QMenu.
+End Rem
+Const Qt_WA_X11NetWmWindowTypePopupMenu:Int = 112
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_TOOLTIP to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms. 
+Note: Qt automatically sets this attribute for the Qt::ToolTip window type.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeToolTip:Int = 113
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_NOTIFICATION to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeNotification:Int = 114
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_COMBO to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms. 
+Note: Qt automatically sets this attribute for the QComboBox pop-up.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeCombo:Int = 115
+Rem
+bbdoc: Adds _NET_WM_WINDOW_TYPE_DND to the window's _NET_WM_WINDOW_TYPE X11 window property.
+about: See http://standards.freedesktop.org/wm-spec/ for more details. This attribute has no effect on non-X11 platforms. 
+Note: Qt automatically sets this attribute on the feedback widget used during a drag.
+End Rem
+Const Qt_WA_X11NetWmWindowTypeDND:Int = 116
+Rem
+bbdoc: Enables resolution independence aware mode on Mac when using Carbon.
+about: This attribute has no effect on Cocoa. The attribute is off by default and can be enabled on a per-window basis.
+End Rem
+Const Qt_WA_MacFrameworkScaled:Int = 117
+Rem
+bbdoc: Allows touch events (see QTouchEvent) to be sent to the widget.
+about: Must be set on all widgets that can handle touch events. Without this attribute set, events from a touch device will be sent as mouse events.
+End Rem
+Const Qt_WA_AcceptTouchEvents:Int = 121
+Rem
+bbdoc: Allows touchpad single touch events to be sent to the widget.
+end rem
+Const Qt_WA_TouchPadAcceptSingleTouchEvents:Int = 123
+Rem
+bbdoc: Allows widget to merge softkeys with parent widget
+about: i.e. widget can set only one softkeys and request softkey implementation to take rest of the softkeys from the parent.
+Note parents are traversed until WA_MergeSoftkeys is not set. See also Qt::WA_MergeSoftkeysRecursively This attribute currently has effect only on Symbian platforms
+End Rem
+Const Qt_WA_MergeSoftkeys:Int = 124
+Rem
+bbdoc: Allows widget to merge softkeys recursively with all parents.
+about: If this attribute is set, the widget parents are traversed until window boundary (widget without parent or dialog) is found.
+This attribute currently has effect only on Symbian platforms
+End Rem
+Const Qt_WA_MergeSoftkeysRecursively:Int = 125
+Rem
+bbdoc: Asks the window manager to not give focus to this top level window.
+about: This attribute has no effect on non-X11 platforms.
+End Rem
+Const Qt_WA_X11DoNotAcceptFocus:Int = 132
+Rem
+bbdoc: Locks the widget to a portrait orientation, ignoring changes to the display's orientation with respect to the user.
+end rem
+Const Qt_WA_LockPortraitOrientation:Int = 128
+Rem
+bbdoc: Locks the widget to a landscape orientation, ignoring changes to the display's orientation with respect to the user.
+end rem
+Const Qt_WA_LockLandscapeOrientation:Int = 129
+Rem
+bbdoc: Causes the widget to change orientation whenever the display changes orientation with respect to the user.
+end rem
+Const Qt_WA_AutoOrientation:Int = 130
+Rem
+bbdoc: Since Qt 4.8, this attribute disables drop shadows for this top level window.
+about: Only affects Cocoa builds of Qt for Mac OS X.
+End Rem
+Const Qt_WA_MacNoShadow:Int = 134
+
+
+Rem
 bbdoc: The X axis.
 End Rem
 Const Qt_XAxis:Int = 0
