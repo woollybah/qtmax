@@ -286,7 +286,7 @@ Type QModelIndex
 	End Function
 	
 	Function _setArrayItem(array:QModelIndex[], index:Int, value:Byte Ptr)
-		array[index] = New QModelIndex._create(value)
+		array[index] = QModelIndex._create(value)
 	End Function
 	
 	

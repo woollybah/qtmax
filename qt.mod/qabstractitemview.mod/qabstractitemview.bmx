@@ -299,27 +299,27 @@ Type QAbstractItemView Extends QAbstractScrollArea
 
 	' SIGNAL : activated
 	Function _OnActivated(obj:QAbstractItemView, index:Byte Ptr)
-		obj._InvokeSignals("activated", [New QModelIndex._create(index)])
+		obj._InvokeSignals("activated", [QModelIndex._create(index)])
 	End Function
 
 	' SIGNAL : clicked
 	Function _OnClicked(obj:QAbstractItemView, index:Byte Ptr)
-		obj._InvokeSignals("clicked", [New QModelIndex._create(index)])
+		obj._InvokeSignals("clicked", [QModelIndex._create(index)])
 	End Function
 
 	' SIGNAL : doubleClicked
 	Function _OnDoubleClicked(obj:QAbstractItemView, index:Byte Ptr)
-		obj._InvokeSignals("doubleClicked", [New QModelIndex._create(index)])
+		obj._InvokeSignals("doubleClicked", [QModelIndex._create(index)])
 	End Function
 
 	' SIGNAL : entered
 	Function _OnEntered(obj:QAbstractItemView, index:Byte Ptr)
-		obj._InvokeSignals("entered", [New QModelIndex._create(index)])
+		obj._InvokeSignals("entered", [QModelIndex._create(index)])
 	End Function
 
 	' SIGNAL : pressed
 	Function _OnPressed(obj:QAbstractItemView, index:Byte Ptr)
-		obj._InvokeSignals("pressed", [New QModelIndex._create(index)])
+		obj._InvokeSignals("pressed", [QModelIndex._create(index)])
 	End Function
 
 	' SIGNAL : viewportEntered
