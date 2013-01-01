@@ -112,7 +112,7 @@ Type QItemSelectionModel Extends QObject
 	End Method
 
 	Method currentIndex:QModelIndex()
-		Return New QModelIndex._create(bmx_qt_qitemselectionmodel_currentindex(qObjectPtr))
+		Return QModelIndex._create(bmx_qt_qitemselectionmodel_currentindex(qObjectPtr))
 	End Method
 
 	Method hasSelection:Int()
@@ -171,22 +171,22 @@ Type QItemSelectionModel Extends QObject
 
 	' SIGNAL : currentChanged
 	Function _OnCurrentChanged(obj:QItemSelectionModel, _current:Byte Ptr, _previous:Byte Ptr)
-		obj._InvokeSignals("currentChanged", [New QModelIndex._create(_current), New QModelIndex._create(_previous)])
+		obj._InvokeSignals("currentChanged", [QModelIndex._create(_current), QModelIndex._create(_previous)])
 	End Function
 
 	' SIGNAL : currentColumnChanged
 	Function _OnCurrentColumnChanged(obj:QItemSelectionModel, _current:Byte Ptr, _previous:Byte Ptr)
-		obj._InvokeSignals("currentColumnChanged", [New QModelIndex._create(_current), New QModelIndex._create(_previous)])
+		obj._InvokeSignals("currentColumnChanged", [QModelIndex._create(_current), QModelIndex._create(_previous)])
 	End Function
 
 	' SIGNAL : currentRowChanged
 	Function _OnCurrentRowChanged(obj:QItemSelectionModel, _current:Byte Ptr, _previous:Byte Ptr)
-		obj._InvokeSignals("currentRowChanged", [New QModelIndex._create(_current), New QModelIndex._create(_previous)])
+		obj._InvokeSignals("currentRowChanged", [QModelIndex._create(_current), QModelIndex._create(_previous)])
 	End Function
 
 	' SIGNAL : selectionChanged
 	Function _OnSelectionChanged(obj:QItemSelectionModel, selected:Byte Ptr, deselected:Byte Ptr)
-		obj._InvokeSignals("selectionChanged", [New QItemSelection._create(selected), New QItemSelection._create(deselected)])
+		obj._InvokeSignals("selectionChanged", [QItemSelection._create(selected), QItemSelection._create(deselected)])
 	End Function
 
 End Type
