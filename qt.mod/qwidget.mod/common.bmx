@@ -123,6 +123,8 @@ Extern
 	Function bmx_qt_qwidget_palette:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setpalette(handle:Byte Ptr, p:Byte Ptr)
 
+	Function bmx_qt_qwidget_default_paintengine:Byte Ptr(handle:Byte Ptr)
+	
 	' QWidget
 	Function bmx_qt_qwidget_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
 	Function bmx_qt_qwidget_default_changeevent(handle:Byte Ptr, event:Byte Ptr)

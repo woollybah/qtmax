@@ -890,6 +890,12 @@ Type QWidget Extends QObject
 
 
 
+	Method paintEngine:Byte Ptr()
+		Return bmx_qt_qwidget_default_paintengine(qObjectPtr)
+	End Method
+	
+
+
 
 	Function _actionEvent(obj:QWidget, event:Byte Ptr)
 		obj.actionEvent(QActionEvent._create(event))
@@ -1005,6 +1011,10 @@ Type QWidget Extends QObject
 	
 	Function _wheelEvent(obj:QWidget, event:Byte Ptr)
 		obj.wheelEvent(QWheelEvent._create(event))
+	End Function
+	
+	Function _paintEngine:Byte Ptr(obj:QWidget)
+		Return obj.paintEngine()
 	End Function
 	
 	' SIGNAL : customContextMenuRequested

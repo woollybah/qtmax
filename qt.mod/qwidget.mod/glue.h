@@ -50,6 +50,8 @@ extern "C" {
 	
 	void _qt_qwidget_QActionGroup__OnHovered(BBObject * handle, QAction * action);
 	void _qt_qwidget_QActionGroup__OnTriggered(BBObject * handle, QAction * action);
+	
+	QPaintEngine * _qt_qwidget_QWidget__paintEngine(BBObject * handle);
 
 	void _qt_qwidget_QWidget__actionEvent(BBObject * handle, QActionEvent * event);
 	void _qt_qwidget_QWidget__changeEvent(BBObject * handle, QEvent * event);
@@ -151,6 +153,7 @@ extern "C" {
 	MaxQPalette * bmx_qt_qwidget_palette(QWidget * widget);
 	void bmx_qt_qwidget_setpalette(QWidget * widget, MaxQPalette * palette);
 
+	QPaintEngine * bmx_qt_qwidget_default_paintengine(MaxQWidget * handle);
 
 	// QWidget
 	void bmx_qt_qwidget_default_actionevent(MaxQWidget * widget, QActionEvent * event);
@@ -326,6 +329,9 @@ public:
 	
 	void defaultSizeHint(int * w, int * h);
 	void defaultMinimumSizeHint(int * w, int * h);
+	
+	virtual QPaintEngine * paintEngine() const;
+	QPaintEngine * defaultpaintEngine();
 
 	// QWidget
 	void defaultactionEvent(QActionEvent * event);
