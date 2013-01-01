@@ -1014,7 +1014,8 @@ Type TQtCanvas Extends TQtGadget
 	
 		widget = New MaxGuiCanvasWidget.MCreate(TQtGadget(parent).RealParentForChild(), Self)
 		
-		widget.setAttribute(Qt_WA_NativeWindow)
+		' no widget double-buffering
+		widget.setAttribute(Qt_WA_PaintOnScreen)
 		
 		Rethink()
 		
@@ -1731,5 +1732,13 @@ Type MaxGuiCanvasWidget Extends QWidget
 	Method mouseMoveEvent(event:QMouseEvent)
 		PostGuiEvent EVENT_MOUSEMOVE, gadget, event.button(), , event.x(), event.y()
 	End Method
+
+	Method paintEngine:Byte Ptr()
+		' no widget double buffering
+
+		Return Null
+
+	End Method
+
 	
 End Type
