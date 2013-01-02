@@ -34,6 +34,61 @@ Import "common.bmx"
 Type QGLWidget Extends QWidget
 
 
+	Function CreateGLWidget:QGLWidget(format:QGLFormat = Null, parent:QWidget = Null, shareWidget:QGLWidget = Null, flags:Int = 0)
+		Return New QGLWidget.Create(format, parent, shareWidget, flags)
+	End Function
+	
+	Method Create:QGLWidget(format:QGLFormat = Null, parent:QWidget = Null, shareWidget:QGLWidget = Null, flags:Int = 0)
+		If format Then
+			If parent Then
+				If shareWidget Then
+					qObjectPtr = bmx_qt_qglwidget_create(Self, format.qObjectPtr, parent.qObjectPtr, shareWidget.qObjectPtr, flags)
+				Else
+					qObjectPtr = bmx_qt_qglwidget_create(Self, format.qObjectPtr, parent.qObjectPtr, Null, flags)
+				End If
+			Else
+				If shareWidget Then
+					qObjectPtr = bmx_qt_qglwidget_create(Self, format.qObjectPtr, Null, shareWidget.qObjectPtr, flags)
+				Else
+					qObjectPtr = bmx_qt_qglwidget_create(Self, format.qObjectPtr, Null, Null, flags)
+				End If
+			End If
+		Else
+			If parent Then
+				If shareWidget Then
+					qObjectPtr = bmx_qt_qglwidget_create(Self, Null, parent.qObjectPtr, shareWidget.qObjectPtr, flags)
+				Else
+					qObjectPtr = bmx_qt_qglwidget_create(Self, Null, parent.qObjectPtr, Null, flags)
+				End If
+			Else
+				If shareWidget Then
+					qObjectPtr = bmx_qt_qglwidget_create(Self, Null, Null, shareWidget.qObjectPtr, flags)
+				Else
+					qObjectPtr = bmx_qt_qglwidget_create(Self, Null, Null, Null, flags)
+				End If
+			End If
+		End If
+		OnInit()
+		Return Self
+	End Method
+
+	Method doubleBuffer:Int()
+		Return bmx_qt_qglwidget_doublebuffer(qObjectPtr)
+	End Method
+	
+	Method format:QGLFormat()
+		Return QGLFormat._create(bmx_qt_qglwidget_doublebuffer(qObjectPtr))
+	End Method
+	
+	Method isSharing:Int()
+		Return bmx_qt_qglwidget_issharing(qObjectPtr)
+	End Method
+	
+	Method isValid:Int()
+		Return bmx_qt_qglwidget_isvalid(qObjectPtr)
+	End Method
+	
+
 
 
 	' DEFAULT EVENT HANDLERS
@@ -204,24 +259,31 @@ Type QGLWidget Extends QWidget
 	End Function
 	
 	Function _glInit(obj:QGLWidget)
+		obj.glInit()
 	End Function
 
 	Function _initializeGL(obj:QGLWidget)
+		obj.initializeGL()
 	End Function
 
 	Function _initializeOverlayGL(obj:QGLWidget)
+		obj.initializeOverlayGL()
 	End Function
 
 	Function _paintGL(obj:QGLWidget)
+		obj.paintGL()
 	End Function
 
 	Function _paintOverlayGL(obj:QGLWidget)
+		obj.paintOverlayGL()
 	End Function
 
 	Function _resizeGL(obj:QGLWidget, width:Int, height:Int)
+		obj.resizeGL(width, height)
 	End Function
 
 	Function _resizeOverlayGL(obj:QGLWidget, width:Int, height:Int)
+		obj.resizeOverlayGL(width, height)
 	End Function
 
 

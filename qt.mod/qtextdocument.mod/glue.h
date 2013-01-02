@@ -102,8 +102,8 @@ extern "C" {
 	void bmx_qt_qtextdocument_setmodified(QTextDocument * doc, int m);
 
 	QTextDocument::FindFlags bmx_qt_intToDocumentFindFlags(int f);
-	
-	
+	QTextCursor::MoveMode bmx_qt_intToCursorMoveMode(int m);
+	QTextCursor::MoveOperation bmx_qt_intToCursorMoveOperation(int o);
 	
 	int bmx_qt_qtextcursor_anchor(MaxQTextCursor * cursor);
 	int bmx_qt_qtextcursor_atblockend(MaxQTextCursor * cursor);

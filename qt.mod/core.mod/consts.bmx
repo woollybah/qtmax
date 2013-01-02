@@ -1143,6 +1143,39 @@ about: Only affects Cocoa builds of Qt for Mac OS X.
 End Rem
 Const Qt_WA_MacNoShadow:Int = 134
 
+Rem
+bbdoc: No interaction with the text is possible.
+end rem
+Const Qt_NoTextInteraction:Int = 0
+Rem
+bbdoc: Text can be selected with the mouse and copied to the clipboard using a context menu or standard keyboard shortcuts.
+end rem
+Const Qt_TextSelectableByMouse:Int = 1
+Rem
+bbdoc: Text can be selected with the cursor keys on the keyboard.
+about: A text cursor is shown.
+End Rem
+Const Qt_TextSelectableByKeyboard:Int = 2
+Rem
+bbdoc: Links can be highlighted and activated with the mouse.
+end rem
+Const Qt_LinksAccessibleByMouse:Int = 4
+Rem
+bbdoc: Links can be focused using tab and activated with enter.
+end rem
+Const Qt_LinksAccessibleByKeyboard:Int = 8
+Rem
+bbdoc: The text is fully editable.
+end rem
+Const Qt_TextEditable:Int = 16
+Rem
+bbdoc: The default for a text editor.
+end rem
+Const Qt_TextEditorInteraction:Int = Qt_TextSelectableByMouse | Qt_TextSelectableByKeyboard | Qt_TextEditable
+Rem
+bbdoc: The default for QTextBrowser.
+end rem
+Const Qt_TextBrowserInteraction:Int = Qt_TextSelectableByMouse | Qt_LinksAccessibleByMouse | Qt_LinksAccessibleByKeyboard
 
 Rem
 bbdoc: The X axis.
