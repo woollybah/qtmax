@@ -539,14 +539,14 @@ Type TQtTextArea Extends TQtGadget
 	
 	Method CreateTextArea()
 	
-		widget = New MaxGuiQTextEdit.MCreate(TQtGadget(parent).RealParentForChild(), Self)
+		widget = New MaxGuiQPlainTextEdit.MCreate(TQtGadget(parent).RealParentForChild(), Self)
 		
 		If ~style & TEXTAREA_WORDWRAP Then
-			MaxGuiQTextEdit(widget).setLineWrapMode(QTextEdit.Mode_NoWrap)
+			MaxGuiQPlainTextEdit(widget).setLineWrapMode(QPlainTextEdit.Mode_NoWrap)
 		End If
 		
 		If style & TEXTAREA_READONLY Then
-			MaxGuiQTextEdit(widget).setReadOnly(True)
+			MaxGuiQPlainTextEdit(widget).setReadOnly(True)
 		End If
 		
 		Rethink()
@@ -556,7 +556,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method SetText(text:String)
-		MaxGuiQTextEdit(widget).setText(text)
+		MaxGuiQPlainTextEdit(widget).setPlainText(text)
 	End Method
 
 	Method ReplaceText(pos:Int, length:Int, text:String, units:Int)
@@ -564,7 +564,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method AddText(text:String)
-		MaxGuiQTextEdit(widget).append(text)
+		MaxGuiQPlainTextEdit(widget).appendPlainText(text)
 	End Method
 
 	Method AreaText:String(pos:Int, length:Int, units:Int)
@@ -592,11 +592,11 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method GetCursorPos:Int(units:Int)
-		Return MaxGuiQTextEdit(widget).getCursorPos(units)
+		Return MaxGuiQPlainTextEdit(widget).getCursorPos(units)
 	End Method
 
 	Method GetSelectionLength:Int(units:Int)
-		Return MaxGuiQTextEdit(widget).getSelectionLength(units)
+		Return MaxGuiQPlainTextEdit(widget).getSelectionLength(units)
 	End Method
 
 	Method SetStyle(r:Int, g:Int, b:Int, flags:Int, pos:Int, length:Int, units:Int)
@@ -604,7 +604,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method	
 
 	Method SetSelection(pos:Int, length:Int, units:Int)
-		MaxGuiQTextEdit(widget).setSelection(pos, length, units)
+		MaxGuiQPlainTextEdit(widget).setSelection(pos, length, units)
 	End Method
 
 	Method CharX:Int(char:Int)
@@ -1446,11 +1446,11 @@ Type MaxGuiQLineEdit Extends QLineEdit
 
 End Type
 
-Type MaxGuiQTextEdit Extends QTextEdit
+Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 
 	Field gadget:TQtGadget
 
-	Method MCreate:MaxGuiQTextEdit(parent:QWidget, owner:TQtGadget)
+	Method MCreate:MaxGuiQPlainTextEdit(parent:QWidget, owner:TQtGadget)
 		gadget = owner
 		Super.Create(parent)
 		Return Self

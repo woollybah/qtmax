@@ -34,7 +34,7 @@ Import Qt.QLabel
 Import Qt.QGroupBox
 Import Qt.QVBoxLayout
 Import Qt.QLineEdit
-Import Qt.QTextEdit
+Import Qt.QPlainTextEdit
 Import Qt.QListView
 Import Qt.QProgressBar
 Import Qt.QComboBox
