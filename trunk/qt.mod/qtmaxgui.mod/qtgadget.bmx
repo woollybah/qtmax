@@ -572,7 +572,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method AreaLen:Int(units:Int)
-		DebugLog "TODO - TQtTextArea::AreaLen"
+		Return MaxGuiQPlainTextEdit(widget).areaLen(units)
 	End Method
 
 	Method LockText()
@@ -584,7 +584,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method SetTabs(tabwidth:Int)
-		DebugLog "TODO - TQtTextArea::SetTabs"
+		MaxGuiQPlainTextEdit(widget).setTabStopWidth(tabwidth)
 	End Method
 
 	Method SetMargins(leftmargin:Int)
@@ -1494,7 +1494,10 @@ Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 	
 	Method getSelectionLength:Int(units:Int)
 		Local cursor:QTextCursor = textCursor()
-		
+		Return calcLength(cursor, units)
+	End Method
+	
+	Method calcLength:Int(cursor:QTextCursor, units:Int)
 		If units = TEXTAREA_LINES Then
 			Local _start:Int = cursor.selectionStart()
 			Local _end:Int = cursor.selectionEnd()
@@ -1509,6 +1512,15 @@ Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 		Else
 			Return Abs(cursor.position() - cursor.anchor())
 		End If
+	End Method
+	
+	Method areaLen:Int(units:Int)
+		Local cursor:QTextCursor = textCursor()
+
+		cursor.movePosition(QTextCursor.Op_Start, QTextCursor.Mode_MoveAnchor)
+		cursor.movePosition(QTextCursor.Op_Start, QTextCursor.Mode_KeepAnchor)
+
+		Return calcLength(cursor, units)
 	End Method
 	
 End Type
