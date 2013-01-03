@@ -22,6 +22,7 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QBrush
+Import Qt.QPen
 Import BRL.Blitz
 
 
@@ -46,7 +47,37 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_textformat_background:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_textformat_boolproperty:Int(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_brushproperty:Byte Ptr(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_clearbackground(handle:Byte Ptr)
+	Function bmx_qt_textformat_clearforeground(handle:Byte Ptr)
+	Function bmx_qt_textformat_clearproperty(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_colorProperty:Byte Ptr(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_doubleproperty:Double(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_foreground:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_textformat_hasproperty:Int(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_intproperty:Int(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_isblockformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_ischarformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_isframeformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_isimageformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_islistformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_istablecellformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_istableformat:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_isvalid:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_layoutdirection:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_merge(handle:Byte Ptr, other:Byte Ptr)
+	Function bmx_qt_textformat_objectindex:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_objecttype:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_penproperty:Byte Ptr(handle:Byte Ptr, propertyId:Int)
+	Function bmx_qt_textformat_propertycount:Int(handle:Byte Ptr)
+	Function bmx_qt_textformat_setbackground(handle:Byte Ptr, brush:Byte Ptr)
 	Function bmx_qt_qtextformat_setforeground(handle:Byte Ptr, brush:Byte Ptr)
+	Function bmx_qt_textformat_setlayoutdirection(handle:Byte Ptr, direction:Int)
+	Function bmx_qt_textformat_setobjectindex(handle:Byte Ptr, index:Int)
+	Function bmx_qt_textformat_setobjecttype(handle:Byte Ptr, _type:Int)
+	Function bmx_qt_textformat_stringproperty:String(handle:Byte Ptr, propertyId:Int)
 
 
 End Extern
