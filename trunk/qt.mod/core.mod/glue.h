@@ -138,6 +138,7 @@ extern "C" {
 	Qt::Orientation bmx_qt_getorientation(int o);
 	Qt::ItemFlags bmx_qt_getitemflags(int f);
 	Qt::CheckState bmx_qt_getcheckstate(int s);
+	Qt::LayoutDirection bmx_qt_inttolayoutdirection(int d);
 
 	int bmx_qt_qtime_elapsed(MaxQTime * time);
 	int bmx_qt_qtime_hour(MaxQTime * time);

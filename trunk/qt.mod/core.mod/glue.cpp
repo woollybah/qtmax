@@ -637,6 +637,19 @@ Qt::CheckState bmx_qt_getcheckstate(int s) {
 	return Qt::Unchecked;
 }
 
+Qt::LayoutDirection bmx_qt_inttolayoutdirection(int d) {
+	switch(d) {
+		case 0:
+			return Qt::LeftToRight;
+		case 1:
+			return Qt::RightToLeft;
+		case 2:
+			return Qt::LayoutDirectionAuto;
+	}
+	
+	return Qt::LeftToRight;
+}
+
 
 // *********************************************
 

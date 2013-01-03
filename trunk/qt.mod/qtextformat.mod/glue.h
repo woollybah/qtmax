@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qbrush.mod/glue.h"
+#include "../qpen.mod/glue.h"
 #include <QtCore>
 #include <QTextFormat>
 
@@ -34,7 +35,37 @@ extern "C" {
 
 #include <blitz.h>
 
+	MaxQBrush * bmx_qt_textformat_background(MaxQTextFormat * format);
+	int bmx_qt_textformat_boolproperty(MaxQTextFormat * format, int propertyId);
+	MaxQBrush * bmx_qt_textformat_brushproperty(MaxQTextFormat * format, int propertyId);
+	void bmx_qt_textformat_clearbackground(MaxQTextFormat * format);
+	void bmx_qt_textformat_clearforeground(MaxQTextFormat * format);
+	void bmx_qt_textformat_clearproperty(MaxQTextFormat * format, int propertyId);
+	MaxQColor * bmx_qt_textformat_colorProperty(MaxQTextFormat * format, int propertyId);
+	double bmx_qt_textformat_doubleproperty(MaxQTextFormat * format, int propertyId);
+	MaxQBrush * bmx_qt_textformat_foreground(MaxQTextFormat * format);
+	int bmx_qt_textformat_hasproperty(MaxQTextFormat * format, int propertyId);
+	int bmx_qt_textformat_intproperty(MaxQTextFormat * format, int propertyId);
+	int bmx_qt_textformat_isblockformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_ischarformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_isframeformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_isimageformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_islistformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_istablecellformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_istableformat(MaxQTextFormat * format);
+	int bmx_qt_textformat_isvalid(MaxQTextFormat * format);
+	int bmx_qt_textformat_layoutdirection(MaxQTextFormat * format);
+	void bmx_qt_textformat_merge(MaxQTextFormat * format, MaxQTextFormat * other);
+	int bmx_qt_textformat_objectindex(MaxQTextFormat * format);
+	int bmx_qt_textformat_objecttype(MaxQTextFormat * format);
+	MaxQPen * bmx_qt_textformat_penproperty(MaxQTextFormat * format, int propertyId);
+	int bmx_qt_textformat_propertycount(MaxQTextFormat * format);
+	void bmx_qt_textformat_setbackground(MaxQTextFormat * format, MaxQBrush * brush);
 	void bmx_qt_qtextformat_setforeground(MaxQTextFormat * format, MaxQBrush * brush);
+	void bmx_qt_textformat_setlayoutdirection(MaxQTextFormat * format, int direction);
+	void bmx_qt_textformat_setobjectindex(MaxQTextFormat * format, int index);
+	void bmx_qt_textformat_setobjecttype(MaxQTextFormat * format, int _type);
+	BBString * bmx_qt_textformat_stringproperty(MaxQTextFormat * format, int propertyId);
 
 }
 
