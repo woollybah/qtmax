@@ -33,7 +33,7 @@ Import "common.bmx"
 
 Type QGLWidget Extends QWidget
 
-
+Rem
 	Function CreateGLWidget:QGLWidget(format:QGLFormat = Null, parent:QWidget = Null, shareWidget:QGLWidget = Null, flags:Int = 0)
 		Return New QGLWidget.Create(format, parent, shareWidget, flags)
 	End Function
@@ -87,7 +87,7 @@ Type QGLWidget Extends QWidget
 	Method isValid:Int()
 		Return bmx_qt_qglwidget_isvalid(qObjectPtr)
 	End Method
-	
+End Rem
 
 
 
