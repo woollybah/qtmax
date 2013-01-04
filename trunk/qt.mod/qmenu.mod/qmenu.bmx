@@ -61,6 +61,7 @@ Type QMenu Extends QWidget
 		Else
 			qObjectPtr = bmx_qt_qmenu_create(Self, Null)
 		End If
+		OnInit()
 		Return Self
 	End Method
 	
@@ -70,6 +71,7 @@ Type QMenu Extends QWidget
 		Else
 			qObjectPtr = bmx_qt_qmenu_createwithtitle(Self, title, Null)
 		End If
+		OnInit()
 		Return Self
 	End Method
 

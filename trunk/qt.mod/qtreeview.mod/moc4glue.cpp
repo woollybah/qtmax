@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Wed Jan 2 21:54:10 2013
+** Created: Fri Jan 4 08:37:50 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -32,20 +32,20 @@ static const uint qt_meta_data_MaxQTreeView[] = {
 
  // slots: signature, parameters, type, tag, flags
       20,   14,   13,   13, 0x08,
-      46,   14,   13,   13, 0x08,
-      70,   14,   13,   13, 0x08,
-      95,   14,   13,   13, 0x08,
-     118,   14,   13,   13, 0x08,
-     147,   14,   13,   13, 0x08,
-     170,   14,   13,   13, 0x08,
-     193,   13,   13,   13, 0x08,
-     217,  213,   13,   13, 0x08,
+      45,   14,   13,   13, 0x08,
+      69,   14,   13,   13, 0x08,
+      94,   14,   13,   13, 0x08,
+     117,   14,   13,   13, 0x08,
+     146,   14,   13,   13, 0x08,
+     169,   14,   13,   13, 0x08,
+     192,   13,   13,   13, 0x08,
+     216,  212,   13,   13, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MaxQTreeView[] = {
-    "MaxQTreeView\0\0index\0onCcollapsed(QModelIndex)\0"
+    "MaxQTreeView\0\0index\0onCollapsed(QModelIndex)\0"
     "onExpanded(QModelIndex)\0"
     "onActivated(QModelIndex)\0"
     "onClicked(QModelIndex)\0"
@@ -61,7 +61,7 @@ void MaxQTreeView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         Q_ASSERT(staticMetaObject.cast(_o));
         MaxQTreeView *_t = static_cast<MaxQTreeView *>(_o);
         switch (_id) {
-        case 0: _t->onCcollapsed((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 0: _t->onCollapsed((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 1: _t->onExpanded((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 2: _t->onActivated((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 3: _t->onClicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;

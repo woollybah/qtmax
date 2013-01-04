@@ -1171,12 +1171,17 @@ Type QAction Extends QObject
 	
 	Method Create:QAction(text:String, parent:QObject)
 		qObjectPtr = bmx_qt_qaction_create(Self, text, parent.qObjectPtr)
+		OnInit()
 		Return Self
 	End Method
 
 	Method CreateWithIcon:QAction(icon:QIcon, text:String, parent:QObject)
 		qObjectPtr = bmx_qt_qaction_createwithicon(Self, icon.qObjectPtr, text, parent.qObjectPtr)
+		OnInit()
 		Return Self
+	End Method
+	
+	Method OnInit()
 	End Method
 
 	Method actionGroup:QActionGroup()
