@@ -25,15 +25,32 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QKeySequence>
+
+class MaxQKeySequence;
 
 extern "C" {
 
 #include <blitz.h>
 
+	MaxQKeySequence * bmx_qt_qkeysequence_create(int key1, int key2, int key3, int key4);
+	void bmx_qt_qkeysequence_free(MaxQKeySequence * sequence);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class MaxQKeySequence
+{
+public:
+	MaxQKeySequence(const QKeySequence & s);
+	~MaxQKeySequence();
+	
+	QKeySequence & Sequence();
+
+private:
+	QKeySequence sequence;
+};
 
 
 #endif

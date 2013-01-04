@@ -1027,6 +1027,10 @@ void bmx_qt_qaction_setshortcut(QAction * action, BBString * sequence) {
 	action->setShortcut(qStringFromBBString(sequence));
 }
 
+void bmx_qt_qaction_setshortcutsequence(QAction * action, MaxQKeySequence * sequence) {
+	action->setShortcut(sequence->Sequence());
+}
+
 QActionGroup * bmx_qt_qaction_actiongroup(QAction * action) {
 	return action->actionGroup();
 }

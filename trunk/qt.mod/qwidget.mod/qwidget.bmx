@@ -1360,8 +1360,12 @@ Type QAction Extends QObject
 		Return bmx_qt_qaction_whatsthis(qObjectPtr)
 	End Method
 	
-	Method setShortcut(sequence:String)
-		bmx_qt_qaction_setshortcut(qObjectPtr, sequence)
+	Method setShortcut(sequence:Object)
+		If String(sequence) Then
+			bmx_qt_qaction_setshortcut(qObjectPtr, String(sequence))
+		Else If QKeySequence(sequence) Then
+			bmx_qt_qaction_setshortcutsequence(qObjectPtr, QKeySequence(sequence).qObjectPtr)
+		End If
 	End Method
 
 	Method hover()

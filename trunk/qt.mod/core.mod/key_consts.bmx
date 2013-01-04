@@ -1693,3 +1693,32 @@ bbdoc:
 End Rem
 Const Qt_Key_Cancel:Int = $01020001
 
+
+Rem
+bbdoc: No modifier key is pressed.
+End Rem
+Const Qt_KeyMod_NoModifier:Int = $00000000
+Rem
+bbdoc: A Shift key on the keyboard is pressed.
+End Rem
+Const Qt_KeyMod_ShiftModifier:Int = $02000000
+Rem
+bbdoc: A Ctrl key on the keyboard is pressed.
+End Rem
+Const Qt_KeyMod_ControlModifier:Int = $04000000
+Rem
+bbdoc: An Alt key on the keyboard is pressed.
+End Rem
+Const Qt_KeyMod_AltModifier:Int = $08000000
+Rem
+bbdoc: A Meta key on the keyboard is pressed.
+End Rem
+Const Qt_KeyMod_MetaModifier:Int = $10000000
+Rem
+bbdoc: A keypad button is pressed.
+End Rem
+Const Qt_KeyMod_KeypadModifier:Int = $20000000
+Rem
+bbdoc: X11 only. A Mode_switch key on the keyboard is pressed.
+End Rem
+Const Qt_KeyMod_GroupSwitchModifier:Int = $40000000

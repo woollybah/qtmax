@@ -45,4 +45,7 @@ Import "glue.cpp"
 
 Extern
 
+	Function bmx_qt_qkeysequence_create:Byte Ptr(key1:Int, key2:Int, key3:Int, key4:Int)
+	Function bmx_qt_qkeysequence_free(handle:Byte Ptr)
+	
 End Extern

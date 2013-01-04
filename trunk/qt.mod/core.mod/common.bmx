@@ -22,6 +22,7 @@ SuperStrict
 
 Import BRL.Blitz
 Import BRL.Map
+Import BRL.KeyCodes
 
 ' headers :-)
 ?win32

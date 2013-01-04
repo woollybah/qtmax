@@ -219,7 +219,6 @@ Type TQtWindow Extends TQtGadget
 		End If
 	
 		If style & WINDOW_MENU Then
-DebugLog "creating window_menu"
 			MaxGuiQMainWindow(widget).createMenuBar()
 		End If
 		
@@ -1173,6 +1172,14 @@ Type TQtMenuItem Extends TQtGadget
 			End If
 		'End If
 	End Method
+	
+	Method SetHotKey(hotkey:Int, modifier:Int)
+		hotkey = TQtKeyMap.mapKey(hotkey)
+		modifier = TQtKeyMap.mapModifier(modifier)
+		
+		Local seq:QKeySequence = New QKeySequence.Create(hotkey + modifier)
+		action.setShortcut(seq)
+	End Method
 
 	Method ClientWidth:Int()
 		Return 0
@@ -2072,7 +2079,7 @@ Type MaxGuiQMenuAction Extends QAction
 	End Method
 	
 	Method onTriggered(checked:Int)
-		PostGuiEvent EVENT_MENUACTION, gadget, gadget.style
+		PostGuiEvent EVENT_MENUACTION, gadget, gadget.style ' style is the menu id (really!)
 	End Method
 	
 End Type
