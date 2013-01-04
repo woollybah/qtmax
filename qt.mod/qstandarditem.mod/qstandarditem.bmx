@@ -128,7 +128,7 @@ Type QStandardItem
 	End Method
 	
 	Method appendRow(item:QStandardItem)
-		'bmx_qt_qstandarditem_appendrow(qObjectPtr, item.qObjectPtr)
+		insertRow(rowCount(), item)
 	End Method
 	
 	Method appendRows(items:TList)
@@ -260,9 +260,14 @@ Type QStandardItem
 	End Method
 	
 	Method insertRows:Int(row:Int, count:Int)
-'DebugLog "Item::insertRows(" + row + ", " + count + ")"
-		If (count < 1) Or (row < 0) Or (row > rowCount()) Then
+DebugLog "Item::insertRows(" + row + ", " + count + ")"
+		If (count < 1) Or (row > rowCount()) Then
 			Return False
+		End If
+		
+		' for append new rows
+		If row < 0 Then
+			row = rowCount()
 		End If
 		
 		If model Then
