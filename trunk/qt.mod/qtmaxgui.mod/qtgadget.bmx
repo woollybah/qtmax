@@ -576,6 +576,8 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method LockText()
+		' TODO : maybe to grab a QTextCursor and apply everything to it until unlocked
+		'  when we finally re-set it to the edit widget.
 		DebugLog "TODO - TQtTextArea::LockText"
 	End Method
 
@@ -608,19 +610,19 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method CharX:Int(char:Int)
-		DebugLog "TODO - TQtTextArea::CharX"
+		Return MaxGuiQPlainTextEdit(widget).charX(char)
 	End Method
 
 	Method CharY:Int(char:Int)
-		DebugLog "TODO - TQtTextArea::CharY"
+		Return MaxGuiQPlainTextEdit(widget).charY(char)
 	End Method
 
 	Method CharAt:Int(line:Int)
-		DebugLog "TODO - TQtTextArea::CharAt"
+		Return MaxGuiQPlainTextEdit(widget).charAt(line)
 	End Method
 
 	Method LineAt:Int(index:Int)
-		DebugLog "TODO - TQtTextArea::LineAt"
+		Return MaxGuiQPlainTextEdit(widget).lineAt(index)
 	End Method
 
 	Method Class:Int()
@@ -886,7 +888,65 @@ Type TQtTabber Extends TQtGadget
 
 End Type
 
-Type TQtTreeView Extends TQtGadget
+Type TQtTreeViewNode Extends TQtGadget
+
+	Field item:QStandardItem
+
+	Method CreateNode:TQtTreeViewNode(text:String, group:TQtGadget, tree:QWidget, style:Int)
+	
+		Self.style = style
+		parent = group
+		widget = tree
+		'InitGadget()
+
+		MaxGuiQTreeView(widget).insertNode(Self)
+		
+		LockLayout()
+		
+		If (LocalizationMode() & LOCALIZATION_OVERRIDE) Then
+			LocalizeGadget(Self, text)
+		Else
+			SetText(text)
+		EndIf
+
+		If parent Then
+			parent.kids.Remove(Self)
+			parent.kids.AddLast(Self)
+		End If
+		
+		Return Self
+	End Method
+
+	Method InitGadget()
+	End Method
+	
+	Method InsertNode:TGadget(index:Int, text:String, icon:Int)
+		Local node:TQtTreeViewNode = New TQtTreeViewNode.CreateNode(text, Self, widget, index)
+		'node.SetIcon icon
+		node._SetParent Self
+		Return node
+	End Method
+
+	Method ModifyNode(text$, icon:Int)
+		DebugLog "TODO : TQtTreeView::ModifyNode"
+	End Method
+	
+	Method SelectedNode:TGadget()
+		DebugLog "TODO : TQtTreeView::SelectedNode"
+	End Method
+	
+	Method CountKids:Int()
+		DebugLog "TODO : TQtTreeView::CountKids"
+	End Method
+
+	Method SetText(text:String)
+		MaxGuiQTreeView(widget).setItemText(item, text)
+	End Method
+	
+End Type
+
+
+Type TQtTreeView Extends TQtTreeViewNode
 
 	Method InitGadget()
 		CreateTreeView()
@@ -896,12 +956,22 @@ Type TQtTreeView Extends TQtGadget
 	
 		widget = New MaxGuiQTreeView.MCreate(TQtGadget(parent).RealParentForChild(), Self)
 		
+		' get root item
+		item = MaxGuiQTreeView(widget).model.root
+		
 		Rethink()
 		
 		SetShow(True)
 		
 	End Method
 
+	Method RootNode:TGadget()
+		Return Self
+	End Method
+	
+	Method SetText(text:String)
+	End Method
+		
 	Method Class:Int()
 		Return GADGET_TREEVIEW
 	EndMethod
@@ -1523,6 +1593,37 @@ Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 		Return calcLength(cursor, units)
 	End Method
 	
+	Method charX:Int(char:Int)
+		Local cursor:QTextCursor = textCursor()
+		cursor.setPosition(char)
+		Local x:Int, y:Int, w:Int, h:Int
+		cursorRectCursor(cursor, x, y, w, h)
+		Return x
+	End Method
+
+	Method charY:Int(char:Int)
+		Local cursor:QTextCursor = textCursor()
+		cursor.setPosition(char)
+		Local x:Int, y:Int, w:Int, h:Int
+		cursorRectCursor(cursor, x, y, w, h)
+		Return y
+	End Method
+	
+	Method charAt:Int(line:Int)
+		Local cursor:QTextCursor = textCursor()
+	
+		cursor.movePosition(QTextCursor.Op_Start)
+		cursor.movePosition(QTextCursor.Op_Down, QTextCursor.Mode_MoveAnchor, line)
+		
+		Return cursor.position()
+	End Method
+	
+	Method lineAt:Int(index:Int)
+		Local cursor:QTextCursor = textCursor()
+		cursor.setPosition(index)
+		Return cursor.blockNumber()
+	End Method
+	
 End Type
 
 Type MaxGuiQListView Extends QListView
@@ -1748,8 +1849,17 @@ Type MaxGuiQTabWidget Extends QTabWidget
 End Type
 
 Type MaxGuiQTreeView Extends QTreeView
+Rem
+* EVENT_GADGETSELECT | The user has selected a node.
+* EVENT_GADGETACTION | The user has double-clicked a node.
+* EVENT_GADGETOPEN | The user has expanded a node, revealing its children.
+* EVENT_GADGETCLOSE | The user has collapsed a node, hiding its children.
+* EVENT_GADGETMENU | The user has right-clicked somewhere in the TreeView.
+End Rem
 
 	Field gadget:TQtGadget
+	Field model:QStandardItemModel
+	Field selectionModel:QItemSelectionModel
 
 	Method MCreate:MaxGuiQTreeView(parent:QWidget, owner:TQtGadget)
 		gadget = owner
@@ -1758,8 +1868,37 @@ Type MaxGuiQTreeView Extends QTreeView
 	End Method
 
 	Method OnInit()
+		model = New QStandardItemModel.Create()
+		setModel(model)
+
+		selectionModel = New QItemSelectionModel.Create(model)
+		setSelectionModel(selectionModel)
+
+		setSelectionMode(QAbstractItemView.Mode_SingleSelection)
 	End Method
 
+	Method insertNode(node:TQtTreeViewNode)
+'DebugStop
+		' insert row in parent, at index (style)
+		Local parent:QModelIndex = model.indexFromItem(TQtTreeViewNode(node.parent).item)
+		model.insertRows(node.style, 1, parent)
+		
+		' if we appended, then get the last row from the parent
+		If node.style < 0 Then
+			node.style = TQtTreeViewNode(node.parent).item.rowCount() - 1
+		End If
+		
+		Local nodeIndex:QModelIndex = model.index(node.style, 0, parent)
+		
+		' get item at index, and set in gadget
+		node.item = model.itemFromIndex(nodeIndex)
+	End Method
+	
+	Method setItemText(item:QStandardItem, text:String)
+		Local index:QModelIndex = model.indexFromItem(item)
+		model.setData(index, text)
+	End Method
+	
 End Type
 
 Type MaxGuiQWebView Extends QWebView
