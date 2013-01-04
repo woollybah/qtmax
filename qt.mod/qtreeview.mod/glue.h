@@ -25,6 +25,9 @@
 
 #include "../core.mod/glue.h"
 #include "../qabstractitemmodel.mod/glue.h"
+#include "../qobject.mod/glue.h"
+#include "../qwidget.mod/glue.h"
+#include "../qabstractitemview.mod/glue.h"
 #include <QtCore>
 #include <QTreeView>
 
@@ -33,6 +36,52 @@ class MaxQTreeView;
 extern "C" {
 
 #include <blitz.h>
+
+	void _qt_qtreeview_QTreeView__OnCollapsed(BBObject * handle, MaxQModelIndex * index);
+	void _qt_qtreeview_QTreeView__OnExpanded(BBObject * handle, MaxQModelIndex * index);
+
+
+	// QTreeView
+	// QAbstractItemView
+	// QAbstractScrollArea
+	void bmx_qt_qtreeview_default_scrollcontentsby(MaxQTreeView * view, int dx, int dy);
+	int bmx_qt_qtreeview_default_viewportevent(MaxQTreeView * view, QEvent * event);
+	// QFrame
+	// QWidget
+	void bmx_qt_qtreeview_default_actionevent(MaxQTreeView * view, QActionEvent * event);
+	void bmx_qt_qtreeview_default_changeevent(MaxQTreeView * view, QEvent * event);
+	void bmx_qt_qtreeview_default_closeevent(MaxQTreeView * view, QCloseEvent * event);
+	void bmx_qt_qtreeview_default_contextmenuevent(MaxQTreeView * view, QContextMenuEvent * event);
+	void bmx_qt_qtreeview_default_dragenterevent(MaxQTreeView * view, QDragEnterEvent * event);
+	void bmx_qt_qtreeview_default_dragleaveevent(MaxQTreeView * view, QDragLeaveEvent * event);
+	void bmx_qt_qtreeview_default_dragmoveevent(MaxQTreeView * view, QDragMoveEvent * event);
+	void bmx_qt_qtreeview_default_dropevent(MaxQTreeView * view, QDropEvent * event);
+	void bmx_qt_qtreeview_default_enterevent(MaxQTreeView * view, QEvent * event);
+	void bmx_qt_qtreeview_default_focusinevent(MaxQTreeView * view, QFocusEvent * event);
+	int bmx_qt_qtreeview_default_focusnextprevchild(MaxQTreeView * view, int next);
+	int bmx_qt_qtreeview_default_focusnextchild(MaxQTreeView * view);
+	void bmx_qt_qtreeview_default_focusoutevent(MaxQTreeView * view, QFocusEvent * event);
+	int bmx_qt_qtreeview_default_focuspreviouschild(MaxQTreeView * view);
+	void bmx_qt_qtreeview_default_hideevent(MaxQTreeView * view, QHideEvent * event);
+	void bmx_qt_qtreeview_default_inputmethodevent(MaxQTreeView * view, QInputMethodEvent * event);
+	void bmx_qt_qtreeview_default_keypressevent(MaxQTreeView * view, QKeyEvent * event);
+	void bmx_qt_qtreeview_default_keyreleaseevent(MaxQTreeView * view, QKeyEvent * event);
+	void bmx_qt_qtreeview_default_leaveevent(MaxQTreeView * view, QEvent * event);
+	void bmx_qt_qtreeview_default_mousedoubleclickevent(MaxQTreeView * view, QMouseEvent * event);
+	void bmx_qt_qtreeview_default_mousemoveevent(MaxQTreeView * view, QMouseEvent * event);
+	void bmx_qt_qtreeview_default_mousepressevent(MaxQTreeView * view, QMouseEvent * event);
+	void bmx_qt_qtreeview_default_mousereleaseevent(MaxQTreeView * view, QMouseEvent * event);
+	void bmx_qt_qtreeview_default_moveevent(MaxQTreeView * view, QMoveEvent * event);
+	void bmx_qt_qtreeview_default_paintevent(MaxQTreeView * view, QPaintEvent * event);
+	void bmx_qt_qtreeview_default_resizeevent(MaxQTreeView * view, QResizeEvent * event);
+	void bmx_qt_qtreeview_default_showevent(MaxQTreeView * view, QShowEvent * event);
+	void bmx_qt_qtreeview_default_tabletevent(MaxQTreeView * view, QTabletEvent * event);
+	void bmx_qt_qtreeview_default_wheelevent(MaxQTreeView * view, QWheelEvent * event);
+	// QObject
+	int bmx_qt_qtreeview_default_event(MaxQTreeView * view, QEvent * event);
+	void bmx_qt_qtreeview_default_timerevent(MaxQTreeView * view, QTimerEvent * event);
+
+
 
 	QTreeView * bmx_qt_qtreeview_create(BBObject * handle, QWidget * parent);
 	int bmx_qt_qtreeview_allcolumnsshowfocus(QTreeView * tv);
@@ -100,7 +149,7 @@ private:
 	BBObject * maxHandle;
 
 private slots:
-	void onCcollapsed(const QModelIndex & index);
+	void onCollapsed(const QModelIndex & index);
 	void onExpanded(const QModelIndex & index);
 	void onActivated(const QModelIndex & index);
 	void onClicked(const QModelIndex & index);
@@ -109,6 +158,89 @@ private slots:
 	void onPressed(const QModelIndex & index);
 	void onViewportEntered();
 	void onCustomContextMenuRequested(const QPoint & pos);
+	
+public:
+	// QTreeView
+	// QAbstractItemView
+	// QAbstractScrollArea
+	void defaultscrollContentsBy(int dx, int dy);
+	bool defaultviewportEvent(QEvent * event);
+	// QFrame
+	// QWidget
+	void defaultactionEvent(QActionEvent * event);
+	void defaultchangeEvent(QEvent * event);
+	void defaultcloseEvent(QCloseEvent * event);
+	void defaultcontextMenuEvent(QContextMenuEvent * event);
+	void defaultdragEnterEvent(QDragEnterEvent * event);
+	void defaultdragLeaveEvent(QDragLeaveEvent * event);
+	void defaultdragMoveEvent(QDragMoveEvent * event);
+	void defaultdropEvent(QDropEvent * event);
+	void defaultenterEvent(QEvent * event);
+	void defaultfocusInEvent(QFocusEvent * event);
+	bool defaultfocusNextChild ();
+	bool defaultfocusNextPrevChild(bool next);
+	void defaultfocusOutEvent(QFocusEvent * event);
+	bool defaultfocusPreviousChild();
+	void defaulthideEvent(QHideEvent * event);
+	void defaultinputMethodEvent(QInputMethodEvent * event);
+	void defaultkeyPressEvent(QKeyEvent * event);
+	void defaultkeyReleaseEvent(QKeyEvent * event);
+	void defaultleaveEvent(QEvent * event);
+	void defaultmouseDoubleClickEvent(QMouseEvent * event);
+	void defaultmouseMoveEvent(QMouseEvent * event);
+	void defaultmousePressEvent(QMouseEvent * event);
+	void defaultmouseReleaseEvent(QMouseEvent * event);
+	void defaultmoveEvent(QMoveEvent * event);
+	void defaultpaintEvent(QPaintEvent * event);
+	void defaultresizeEvent(QResizeEvent * event);
+	void defaultshowEvent(QShowEvent * event);
+	void defaulttabletEvent(QTabletEvent * event);
+	void defaultwheelEvent(QWheelEvent * event);
+	// QObject
+	bool defaultevent(QEvent * event);
+	void defaulttimerEvent(QTimerEvent * event);
+
+protected:
+	// QTreeView
+	// QAbstractItemView
+	// QAbstractScrollArea
+	virtual void scrollContentsBy(int dx, int dy);
+	virtual bool viewportEvent(QEvent * event);
+	// QFrame
+	// QWidget
+	virtual void actionEvent(QActionEvent * event);
+	virtual void changeEvent(QEvent * event);
+	virtual void closeEvent(QCloseEvent * event);
+	virtual void contextMenuEvent(QContextMenuEvent * event);
+	virtual void dragEnterEvent(QDragEnterEvent * event);
+	virtual void dragLeaveEvent(QDragLeaveEvent * event);
+	virtual void dragMoveEvent(QDragMoveEvent * event);
+	virtual void dropEvent(QDropEvent * event);
+	virtual void enterEvent(QEvent * event);
+	virtual void focusInEvent(QFocusEvent * event);
+	bool focusNextChild();
+	virtual bool focusNextPrevChild(bool next);
+	virtual void focusOutEvent(QFocusEvent * event);
+	bool focusPreviousChild();
+	virtual void hideEvent(QHideEvent * event);
+	virtual void inputMethodEvent(QInputMethodEvent * event);
+	virtual void leaveEvent(QEvent * event);
+	virtual void keyPressEvent(QKeyEvent * event);
+	virtual void keyReleaseEvent(QKeyEvent * event);
+	virtual void mouseDoubleClickEvent(QMouseEvent * event);
+	virtual void mouseMoveEvent(QMouseEvent * event);
+	virtual void mousePressEvent(QMouseEvent * event);
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void moveEvent(QMoveEvent * event);
+	virtual void paintEvent(QPaintEvent * event);
+	virtual void resizeEvent(QResizeEvent * event);
+	virtual void showEvent(QShowEvent * event);
+	virtual void tabletEvent(QTabletEvent * event);
+	virtual void wheelEvent(QWheelEvent * event);
+	// QObject
+	virtual bool event(QEvent * event);
+	virtual void timerEvent(QTimerEvent * event);
+
 };
 
 #endif

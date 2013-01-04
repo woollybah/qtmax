@@ -28,6 +28,17 @@ MaxQTreeView::MaxQTreeView(BBObject * handle, QWidget * parent)
 	: maxHandle(handle), QTreeView(parent)
 {
 	qbind(this, handle);
+	
+	
+	connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(onCollapsed(const QModelIndex &)));
+	connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(onExpanded(const QModelIndex &)));
+	connect(this, SIGNAL(activated(const QModelIndex &)), SLOT(onActivated(const QModelIndex &)));
+	connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(onClicked(const QModelIndex &)));
+	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(onDoubleClicked(const QModelIndex &)));
+	connect(this, SIGNAL(entered(const QModelIndex &)), SLOT(onEntered(const QModelIndex &)));
+	connect(this, SIGNAL(pressed(const QModelIndex &)), SLOT(onPressed(const QModelIndex &)));
+	connect(this, SIGNAL(viewportEntered()), SLOT(onViewportEntered()));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 MaxQTreeView::~MaxQTreeView()
@@ -35,42 +46,462 @@ MaxQTreeView::~MaxQTreeView()
 	qunbind(this);
 }
 
-void MaxQTreeView::onCcollapsed(const QModelIndex & index) {
-
+void MaxQTreeView::onCollapsed(const QModelIndex & index) {
+	_qt_qtreeview_QTreeView__OnCollapsed(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onExpanded(const QModelIndex & index) {
-
+	_qt_qtreeview_QTreeView__OnExpanded(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onActivated(const QModelIndex & index) {
-
+	_qt_qabstractitemview_QAbstractItemView__OnActivated(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onClicked(const QModelIndex & index) {
-
+	_qt_qabstractitemview_QAbstractItemView__OnClicked(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onDoubleClicked(const QModelIndex & index) {
-
+	_qt_qabstractitemview_QAbstractItemView__OnDoubleClicked(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onEntered(const QModelIndex & index) {
-
+	_qt_qabstractitemview_QAbstractItemView__OnEntered(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onPressed(const QModelIndex & index) {
-
+	_qt_qabstractitemview_QAbstractItemView__OnPressed(maxHandle, new MaxQModelIndex(index));
 }
 
 void MaxQTreeView::onViewportEntered() {
-
+	_qt_qabstractitemview_QAbstractItemView__OnViewportEntered(maxHandle);
 }
 
 void MaxQTreeView::onCustomContextMenuRequested(const QPoint & pos) {
-
+	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+// ****************** DEFAULT HANDLERS ********************
+
+// QTreeView
+// QAbstractItemView
+// QAbstractScrollArea
+void MaxQTreeView::defaultscrollContentsBy(int dx, int dy){
+	QTreeView::scrollContentsBy(dx, dy);
+}
+
+bool MaxQTreeView::defaultviewportEvent(QEvent * event){
+	return QTreeView::viewportEvent(event);
+}
+
+// QFrame
+// QWidget
+void MaxQTreeView::defaultactionEvent(QActionEvent * event){
+	QTreeView::actionEvent(event);
+}
+
+void MaxQTreeView::defaultchangeEvent(QEvent * event){
+	QTreeView::changeEvent(event);
+}
+
+void MaxQTreeView::defaultcloseEvent(QCloseEvent * event){
+	QTreeView::closeEvent(event);
+}
+
+void MaxQTreeView::defaultcontextMenuEvent(QContextMenuEvent * event){
+	QTreeView::contextMenuEvent(event);
+}
+
+void MaxQTreeView::defaultdragEnterEvent(QDragEnterEvent * event){
+	QTreeView::dragEnterEvent(event);
+}
+
+void MaxQTreeView::defaultdragLeaveEvent(QDragLeaveEvent * event){
+	QTreeView::dragLeaveEvent(event);
+}
+
+void MaxQTreeView::defaultdragMoveEvent(QDragMoveEvent * event){
+	QTreeView::dragMoveEvent(event);
+}
+
+void MaxQTreeView::defaultdropEvent(QDropEvent * event){
+	QTreeView::dropEvent(event);
+}
+
+void MaxQTreeView::defaultenterEvent(QEvent * event){
+	QTreeView::enterEvent(event);
+}
+
+void MaxQTreeView::defaultfocusInEvent(QFocusEvent * event){
+	QTreeView::focusInEvent(event);
+}
+
+bool MaxQTreeView::defaultfocusNextChild() {
+	return QTreeView::focusNextChild();
+}
+
+bool MaxQTreeView::defaultfocusNextPrevChild(bool next){
+	return QTreeView::focusNextPrevChild(next);
+}
+
+void MaxQTreeView::defaultfocusOutEvent(QFocusEvent * event){
+	QTreeView::focusOutEvent(event);
+}
+
+bool MaxQTreeView::defaultfocusPreviousChild() {
+	return QTreeView::focusPreviousChild();
+}
+
+void MaxQTreeView::defaulthideEvent(QHideEvent * event){
+	QTreeView::hideEvent(event);
+}
+
+void MaxQTreeView::defaultinputMethodEvent(QInputMethodEvent * event){
+	QTreeView::inputMethodEvent(event);
+}
+
+void MaxQTreeView::defaultkeyPressEvent(QKeyEvent * event){
+	QTreeView::keyPressEvent(event);
+}
+
+void MaxQTreeView::defaultkeyReleaseEvent(QKeyEvent * event){
+	QTreeView::keyReleaseEvent(event);
+}
+
+void MaxQTreeView::defaultleaveEvent(QEvent * event){
+	QTreeView::leaveEvent(event);
+}
+
+void MaxQTreeView::defaultmouseDoubleClickEvent(QMouseEvent * event){
+	QTreeView::mouseDoubleClickEvent(event);
+}
+
+void MaxQTreeView::defaultmouseMoveEvent(QMouseEvent * event){
+	QTreeView::mouseMoveEvent(event);
+}
+
+void MaxQTreeView::defaultmousePressEvent(QMouseEvent * event){
+	QTreeView::mousePressEvent(event);
+}
+
+void MaxQTreeView::defaultmouseReleaseEvent(QMouseEvent * event){
+	QTreeView::mouseReleaseEvent(event);
+}
+
+void MaxQTreeView::defaultmoveEvent(QMoveEvent * event){
+	QTreeView::moveEvent(event);
+}
+
+void MaxQTreeView::defaultpaintEvent(QPaintEvent * event){
+	QTreeView::paintEvent(event);
+}
+
+void MaxQTreeView::defaultresizeEvent(QResizeEvent * event){
+	QTreeView::resizeEvent(event);
+}
+
+void MaxQTreeView::defaultshowEvent(QShowEvent * event){
+	QTreeView::showEvent(event);
+}
+
+void MaxQTreeView::defaulttabletEvent(QTabletEvent * event){
+	QTreeView::tabletEvent(event);
+}
+
+void MaxQTreeView::defaultwheelEvent(QWheelEvent * event){
+	QTreeView::wheelEvent(event);
+}
+
+// QObject
+bool MaxQTreeView::defaultevent(QEvent * event){
+	return QTreeView::event(event);
+}
+
+void MaxQTreeView::defaulttimerEvent(QTimerEvent * event){
+	QTreeView::timerEvent(event);
+}
+
+
+// ****************** HANDLERS - TO MAX ********************
+
+// QTreeView
+// QAbstractItemView
+// QAbstractScrollArea
+void MaxQTreeView::scrollContentsBy(int dx, int dy) {
+	_qt_qabstractscrollarea_QAbstractScrollArea__scrollContentsBy(maxHandle, dx, dy);
+}
+
+bool MaxQTreeView::viewportEvent(QEvent * event) {
+	return static_cast<bool>(_qt_qabstractscrollarea_QAbstractScrollArea__viewportEvent(maxHandle, event));
+}
+// QFrame
+// QWidget
+void MaxQTreeView::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
+}
+
+void MaxQTreeView::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
+}
+
+void MaxQTreeView::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
+}
+
+
+void MaxQTreeView::actionEvent(QActionEvent * event) {
+	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+}
+
+void MaxQTreeView::changeEvent(QEvent * event) {
+	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+}
+
+void MaxQTreeView::closeEvent(QCloseEvent * event) {
+	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+}
+
+void MaxQTreeView::contextMenuEvent(QContextMenuEvent * event) {
+	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+}
+
+void MaxQTreeView::dragEnterEvent(QDragEnterEvent * event) {
+	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQTreeView::dragLeaveEvent(QDragLeaveEvent * event) {
+	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQTreeView::dragMoveEvent(QDragMoveEvent * event) {
+	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQTreeView::dropEvent(QDropEvent * event) {
+	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+}
+
+void MaxQTreeView::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+}
+
+void MaxQTreeView::focusInEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+}
+
+bool MaxQTreeView::focusNextChild () {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextChild(maxHandle));
+}
+
+bool MaxQTreeView::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQTreeView::focusOutEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+}
+
+bool MaxQTreeView::focusPreviousChild() {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusPreviousChild(maxHandle));
+}
+
+void MaxQTreeView::hideEvent(QHideEvent * event) {
+	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+}
+
+void MaxQTreeView::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQTreeView::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+}
+
+void MaxQTreeView::keyPressEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+}
+
+void MaxQTreeView::keyReleaseEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+}
+
+void MaxQTreeView::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQTreeView::moveEvent(QMoveEvent * event) {
+	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
+}
+
+void MaxQTreeView::paintEvent(QPaintEvent * event) {
+	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
+}
+
+void MaxQTreeView::resizeEvent(QResizeEvent * event) {
+	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
+}
+
+void MaxQTreeView::showEvent(QShowEvent * event) {
+	_qt_qwidget_QWidget__showEvent(maxHandle, event);
+}
+
+void MaxQTreeView::tabletEvent(QTabletEvent * event) {
+	_qt_qwidget_QWidget__tabletEvent(maxHandle, event);
+}
+
+void MaxQTreeView::wheelEvent(QWheelEvent * event) {
+	_qt_qwidget_QWidget__wheelEvent(maxHandle, event);
+}
+
+// QObject
+bool MaxQTreeView::event(QEvent * event) {
+	return static_cast<bool>(_qt_qobject_QObject__event(maxHandle, event));
+}
+
+void MaxQTreeView::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+// *********************************************
+
+// QTreeView
+// QAbstractItemView
+// QAbstractScrollArea
+void bmx_qt_qtreeview_default_scrollcontentsby(MaxQTreeView * view, int dx, int dy) {
+	view->defaultscrollContentsBy(dx, dy);
+}
+
+int bmx_qt_qtreeview_default_viewportevent(MaxQTreeView * view, QEvent * event) {
+	static_cast<int>(view->defaultviewportEvent(event));
+}
+
+// QFrame
+// QWidget
+void bmx_qt_qtreeview_default_actionevent(MaxQTreeView * view, QActionEvent * event) {
+	view->defaultactionEvent(event);
+}
+
+void bmx_qt_qtreeview_default_changeevent(MaxQTreeView * view, QEvent * event) {
+	view->defaultchangeEvent(event);
+}
+
+void bmx_qt_qtreeview_default_closeevent(MaxQTreeView * view, QCloseEvent * event) {
+	view->defaultcloseEvent(event);
+}
+
+void bmx_qt_qtreeview_default_contextmenuevent(MaxQTreeView * view, QContextMenuEvent * event) {
+	view->defaultcontextMenuEvent(event);
+}
+
+void bmx_qt_qtreeview_default_dragenterevent(MaxQTreeView * view, QDragEnterEvent * event) {
+	view->defaultdragEnterEvent(event);
+}
+
+void bmx_qt_qtreeview_default_dragleaveevent(MaxQTreeView * view, QDragLeaveEvent * event) {
+	view->defaultdragLeaveEvent(event);
+}
+
+void bmx_qt_qtreeview_default_dragmoveevent(MaxQTreeView * view, QDragMoveEvent * event) {
+	view->defaultdragMoveEvent(event);
+}
+
+void bmx_qt_qtreeview_default_dropevent(MaxQTreeView * view, QDropEvent * event) {
+	view->defaultdropEvent(event);
+}
+
+void bmx_qt_qtreeview_default_enterevent(MaxQTreeView * view, QEvent * event) {
+	view->defaultenterEvent(event);
+}
+
+void bmx_qt_qtreeview_default_focusinevent(MaxQTreeView * view, QFocusEvent * event) {
+	view->defaultfocusInEvent(event);
+}
+
+int bmx_qt_qtreeview_default_focusnextprevchild(MaxQTreeView * view, int next) {
+	return static_cast<int>(view->defaultfocusNextPrevChild(static_cast<bool>(next)));
+}
+
+int bmx_qt_qtreeview_default_focusnextchild(MaxQTreeView * view) {
+	return static_cast<int>(view->defaultfocusNextChild());
+}
+
+void bmx_qt_qtreeview_default_focusoutevent(MaxQTreeView * view, QFocusEvent * event) {
+	view->defaultfocusOutEvent(event);
+}
+
+int bmx_qt_qtreeview_default_focuspreviouschild(MaxQTreeView * view) {
+	return static_cast<int>(view->defaultfocusPreviousChild());
+}
+
+void bmx_qt_qtreeview_default_hideevent(MaxQTreeView * view, QHideEvent * event) {
+	view->defaulthideEvent(event);
+}
+
+void bmx_qt_qtreeview_default_inputmethodevent(MaxQTreeView * view, QInputMethodEvent * event) {
+	view->defaultinputMethodEvent(event);
+}
+
+void bmx_qt_qtreeview_default_keypressevent(MaxQTreeView * view, QKeyEvent * event) {
+	view->defaultkeyPressEvent(event);
+}
+
+void bmx_qt_qtreeview_default_keyreleaseevent(MaxQTreeView * view, QKeyEvent * event) {
+	view->defaultkeyReleaseEvent(event);
+}
+
+void bmx_qt_qtreeview_default_leaveevent(MaxQTreeView * view, QEvent * event) {
+	view->defaultleaveEvent(event);
+}
+
+void bmx_qt_qtreeview_default_mousedoubleclickevent(MaxQTreeView * view, QMouseEvent * event) {
+	view->defaultmouseDoubleClickEvent(event);
+}
+
+void bmx_qt_qtreeview_default_mousemoveevent(MaxQTreeView * view, QMouseEvent * event) {
+	view->defaultmouseMoveEvent(event);
+}
+
+void bmx_qt_qtreeview_default_mousepressevent(MaxQTreeView * view, QMouseEvent * event) {
+	view->defaultmousePressEvent(event);
+}
+
+void bmx_qt_qtreeview_default_mousereleaseevent(MaxQTreeView * view, QMouseEvent * event) {
+	view->defaultmouseReleaseEvent(event);
+}
+
+void bmx_qt_qtreeview_default_moveevent(MaxQTreeView * view, QMoveEvent * event) {
+	view->defaultmoveEvent(event);
+}
+
+void bmx_qt_qtreeview_default_paintevent(MaxQTreeView * view, QPaintEvent * event) {
+	view->defaultpaintEvent(event);
+}
+
+void bmx_qt_qtreeview_default_resizeevent(MaxQTreeView * view, QResizeEvent * event) {
+	view->defaultresizeEvent(event);
+}
+
+void bmx_qt_qtreeview_default_showevent(MaxQTreeView * view, QShowEvent * event) {
+	view->defaultshowEvent(event);
+}
+
+void bmx_qt_qtreeview_default_tabletevent(MaxQTreeView * view, QTabletEvent * event) {
+	view->defaulttabletEvent(event);
+}
+
+void bmx_qt_qtreeview_default_wheelevent(MaxQTreeView * view, QWheelEvent * event) {
+	view->defaultwheelEvent(event);
+}
+
+// QObject
+int bmx_qt_qtreeview_default_event(MaxQTreeView * view, QEvent * event) {
+	return static_cast<int>(view->defaultevent(event));
+}
+
+void bmx_qt_qtreeview_default_timerevent(MaxQTreeView * view, QTimerEvent * event) {
+	view->defaulttimerEvent(event);
+}
 
 // *********************************************
 

@@ -114,6 +114,20 @@ Type TQtGadget Extends TGadget
 		Return widget.height()
 	End Method
 
+	Method getParentWindow:TQtGadget()
+		If TQtWindow(Self) Then Return Self
+	
+		If parent Then
+			If TQtWindow(parent) Then
+				Return TQtGadget(parent)
+			End If
+			
+			Return TQtGadget(parent).getParentWindow()
+		End If
+		
+		Return Null
+	End Method
+	
 End Type
 
 Type TQtIconStrip Extends TIconStrip
@@ -205,6 +219,7 @@ Type TQtWindow Extends TQtGadget
 		End If
 	
 		If style & WINDOW_MENU Then
+DebugLog "creating window_menu"
 			MaxGuiQMainWindow(widget).createMenuBar()
 		End If
 		
@@ -260,6 +275,12 @@ Type TQtWindow Extends TQtGadget
 
 	Method AddToolBar(toolbar:TQtToolBar)
 		MaxGuiQMainWindow(widget).addToolbar(toolbar.widget)
+	End Method
+	
+	Method GetMenu:TGadget()
+		' return the window itself. Menus are attached to the menubar.
+		' we deal with that in the menu item code!
+		Return Self
 	End Method
 	
 End Type
@@ -942,7 +963,11 @@ Type TQtTreeViewNode Extends TQtGadget
 	Method SetText(text:String)
 		MaxGuiQTreeView(widget).setItemText(item, text)
 	End Method
-	
+
+	Method Class:Int()
+		Return GADGET_NODE
+	EndMethod
+
 End Type
 
 
@@ -1123,18 +1148,38 @@ End Type
 
 Type TQtMenuItem Extends TQtGadget
 
+	Field action:QAction
+
 	Method InitGadget()
 		CreateMenuItem()
 	End Method
 	
 	Method CreateMenuItem()
-	
-		widget = New MaxGuiQMenu.MCreate(TQtGadget(parent).RealParentForChild(), Self)
+
+		action = New MaxGuiQMenuAction.MCreate(TQtGadget(parent).getParentWindow().widget, Self)
 		
 		Rethink()
 		
-		SetShow(True)
+		'SetShow(True)
 		
+	End Method
+	
+	Method SetText(text:String)
+		'If action Then
+			If text Then
+				action.setText(text)
+			Else
+				action.setSeparator(True)
+			End If
+		'End If
+	End Method
+
+	Method ClientWidth:Int()
+		Return 0
+	End Method
+
+	Method ClientHeight:Int()
+		Return 0
 	End Method
 
 	Method Class:Int()
@@ -1875,6 +1920,12 @@ End Rem
 		setSelectionModel(selectionModel)
 
 		setSelectionMode(QAbstractItemView.Mode_SingleSelection)
+		
+		' hide the header bar of the treeview
+		setHeaderHidden(True)
+		
+		connect(Self, "expanded", Self, "onExpanded")
+		connect(Self, "collapsed", Self, "onCollapsed")
 	End Method
 
 	Method insertNode(node:TQtTreeViewNode)
@@ -1884,6 +1935,7 @@ End Rem
 		model.insertRows(node.style, 1, parent)
 		
 		' if we appended, then get the last row from the parent
+		' we need this to get our new node's index in the model
 		If node.style < 0 Then
 			node.style = TQtTreeViewNode(node.parent).item.rowCount() - 1
 		End If
@@ -1897,6 +1949,14 @@ End Rem
 	Method setItemText(item:QStandardItem, text:String)
 		Local index:QModelIndex = model.indexFromItem(item)
 		model.setData(index, text)
+	End Method
+	
+	Method onExpanded(index:QModelIndex)
+	' TODO
+	End Method
+
+	Method onCollapsed(index:QModelIndex)
+	' TODO
 	End Method
 	
 End Type
@@ -1971,19 +2031,50 @@ Type MaxGuiQSpinBox Extends QSpinBox
 
 End Type
 
-Type MaxGuiQMenu Extends QMenu
+Type MaxGuiQMenuAction Extends QAction
 
 	Field gadget:TQtGadget
 
-	Method MCreate:MaxGuiQMenu(parent:QWidget, owner:TQtGadget)
+	Method MCreate:MaxGuiQMenuAction(parent:QWidget, owner:TQtGadget)
 		gadget = owner
-		Super.Create(parent)
+		Super.Create("", parent)
 		Return Self
 	End Method
 
 	Method OnInit()
-	End Method
 
+		' if the parent is a window, we need to talk to the menubar
+		If TQtWindow(gadget.parent) Then
+			' assign a menu to this action because it is a root menu action which sits on the menubar
+			gadget.widget = New QMenu.Create()
+			QMenu.setMenuForAction(Self, QMenu(gadget.widget))
+			
+			' add us to the menubar
+			MaxGuiQMainWindow(TQtWindow(gadget.parent).widget).menuBar.addAction(Self)
+		Else
+	
+			' if the parent action doesn't have a menu yet (because it has not children)
+			' then we need to assign one to it.	
+			If Not TQtMenuItem(gadget.parent).widget Then
+				TQtMenuItem(gadget.parent).widget = New QMenu.Create()
+				
+				' assign menu to action
+				QMenu.setMenuForAction(Self, QMenu(TQtMenuItem(gadget.parent).widget))
+			End If
+
+			' add this action to the parent menu
+			QMenu(TQtMenuItem(gadget.parent).widget).addAction(Self)
+
+		End If
+
+		connect(Self, "triggered", Self, "onTriggered")
+
+	End Method
+	
+	Method onTriggered(checked:Int)
+		PostGuiEvent EVENT_MENUACTION, gadget, gadget.style
+	End Method
+	
 End Type
 
 Type MaxGuiCanvasWidget Extends QWidget
