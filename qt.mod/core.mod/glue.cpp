@@ -650,6 +650,18 @@ Qt::LayoutDirection bmx_qt_inttolayoutdirection(int d) {
 	return Qt::LeftToRight;
 }
 
+Qt::KeyboardModifiers bmx_qt_inttokeymodifiers(int k) {
+	Qt::KeyboardModifiers mods;
+	
+	if (k & 0x02000000) mods |= Qt::ShiftModifier;
+	if (k & 0x04000000) mods |= Qt::ControlModifier;
+	if (k & 0x08000000) mods |= Qt::AltModifier;
+	if (k & 0x10000000) mods |= Qt::MetaModifier;
+	if (k & 0x20000000) mods |= Qt::KeypadModifier;
+	if (k & 0x40000000) mods |= Qt::GroupSwitchModifier;
+
+	return mods;
+}
 
 // *********************************************
 

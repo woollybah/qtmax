@@ -24,10 +24,31 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQKeySequence::MaxQKeySequence(const QKeySequence & s)
+	: sequence(s)
+{
+}
+
+MaxQKeySequence::~MaxQKeySequence()
+{
+}
+
+QKeySequence & MaxQKeySequence::Sequence() {
+	return sequence;
+}
+
 
 
 // *********************************************
 
+MaxQKeySequence * bmx_qt_qkeysequence_create(int key1, int key2, int key3, int key4) {
+	QKeySequence k(key1, key2, key3, key4);
+	return new MaxQKeySequence(k);
+}
+
+void bmx_qt_qkeysequence_free(MaxQKeySequence * sequence) {
+	delete sequence;
+}
 
 
 // NOTES :

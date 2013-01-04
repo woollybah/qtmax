@@ -32,6 +32,7 @@
 #include "../qlocale.mod/glue.h"
 #include "../qobject.mod/glue.h"
 #include "../qpalette.mod/glue.h"
+#include "../qkeysequence.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
@@ -245,6 +246,7 @@ extern "C" {
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
 	void bmx_qt_qaction_setshortcut(QAction * handle, BBString * sequence);
+	void bmx_qt_qaction_setshortcutsequence(QAction * handle, MaxQKeySequence * sequence);
 	QActionGroup * bmx_qt_qaction_actiongroup(QAction * action);
 	void bmx_qt_qaction_activate(QAction * action, int event);
 	int bmx_qt_qaction_autorepeat(QAction * action);

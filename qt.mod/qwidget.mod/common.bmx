@@ -215,6 +215,7 @@ Extern
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_setshortcut(handle:Byte Ptr, sequence:String)
+	Function bmx_qt_qaction_setshortcutsequence(handle:Byte Ptr, sequence:Byte Ptr)
 	Function bmx_qt_qaction_actiongroup:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qaction_activate(handle:Byte Ptr, event:Int)
 	Function bmx_qt_qaction_autorepeat:Int(handle:Byte Ptr)

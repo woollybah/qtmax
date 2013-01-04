@@ -296,5 +296,30 @@ Type QKeySequence
 	end rem
 	Const Key_ZoomOut:Int = 17
 
+	Function _create:QKeySequence(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QKeySequence = New QKeySequence
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Method Create:QKeySequence(key1:Int, key2:Int = 0, key3:Int = 0, key4:Int = 0)
+		qObjectPtr = bmx_qt_qkeysequence_create(key1, key2, key3, key4)
+		Return Self
+	End Method
+
+
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qkeysequence_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
 
 End Type

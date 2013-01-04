@@ -238,3 +238,167 @@ Type QChar
 	End Function
 
 End Type
+
+Type TQtKeyMap
+
+	Function mapModifier:Int(maxKey:Int)
+		Local m:Int = 0
+
+		If maxKey & MODIFIER_SHIFT Then    'shift key
+				m:| Qt_KeyMod_ShiftModifier
+		End If
+
+?MacOs
+		If maxKey & MODIFIER_SYSTEM Then  'ctrl key
+				m:| Qt_KeyMod_ControlModifier
+		End If
+
+		If maxKey & MODIFIER_CONTROL Then   ' windows / apple
+				m:| Qt_KeyMod_MetaModifier   ' ??? or 3, 4, or 5...
+		End If
+?Not MacOs
+		If maxKey & MODIFIER_CONTROL Then  'ctrl key
+				m:| Qt_KeyMod_ControlModifier
+		End If
+
+		If maxKey & MODIFIER_SYSTEM Then   ' windows / apple
+				m:| Qt_KeyMod_MetaModifier   ' ??? or 3, 4, or 5...
+		End If
+?
+
+		If maxKey & MODIFIER_OPTION Then   'alt or menu key
+				m:| Qt_KeyMod_AltModifier
+		End If
+
+		Return m
+	End Function
+
+	Function mapKey:Int(maxKey:Int)
+		Global map:Int[]
+	
+		If Not map Then
+			map = New Int[255]
+	
+			map[KEY_BACKSPACE] = Qt_Key_Backspace
+			map[KEY_TAB] = Qt_Key_Tab
+			map[KEY_CLEAR] = Qt_Key_Clear
+			map[KEY_RETURN] = Qt_Key_Return
+			map[KEY_ENTER] = Qt_Key_Enter
+			map[KEY_ESCAPE] = Qt_Key_Escape
+			map[KEY_SPACE] = Qt_Key_Space
+			map[KEY_PAGEUP] = Qt_Key_PageUp
+			map[KEY_PAGEDOWN] = Qt_Key_PageDown
+			map[KEY_END] = Qt_Key_End
+			map[KEY_HOME] = Qt_Key_Home
+			
+			map[KEY_LEFT] = Qt_Key_Left
+			map[KEY_UP] = Qt_Key_Up
+			map[KEY_RIGHT] = Qt_Key_Right
+			map[KEY_DOWN] = Qt_Key_Down
+			
+			map[KEY_SELECT] = Qt_Key_Select
+			map[KEY_PRINT] = Qt_Key_Print
+			map[KEY_EXECUTE] = Qt_Key_Execute
+			map[KEY_SCREEN] = Qt_Key_SysReq
+			map[KEY_INSERT] = Qt_Key_Insert
+			map[KEY_DELETE] = Qt_Key_Delete
+	
+	
+			map[KEY_0] = Qt_Key_0
+			map[KEY_1] = Qt_Key_1
+			map[KEY_2] = Qt_Key_2
+			map[KEY_3] = Qt_Key_3
+			map[KEY_4] = Qt_Key_4
+			map[KEY_5] = Qt_Key_5
+			map[KEY_6] = Qt_Key_6
+			map[KEY_7] = Qt_Key_7
+			map[KEY_8] = Qt_Key_8
+			map[KEY_9] = Qt_Key_9
+			map[KEY_A] = Qt_Key_A
+			map[KEY_B] = Qt_Key_B
+			map[KEY_C] = Qt_Key_C
+			map[KEY_D] = Qt_Key_D
+			map[KEY_E] = Qt_Key_E
+			map[KEY_F] = Qt_Key_F
+			map[KEY_G] = Qt_Key_G
+			map[KEY_H] = Qt_Key_H
+			map[KEY_I] = Qt_Key_I
+			map[KEY_J] = Qt_Key_J
+			map[KEY_K] = Qt_Key_K
+			map[KEY_L] = Qt_Key_L
+			map[KEY_M] = Qt_Key_M
+			map[KEY_N] = Qt_Key_N
+			map[KEY_O] = Qt_Key_O
+			map[KEY_P] = Qt_Key_P
+			map[KEY_Q] = Qt_Key_Q
+			map[KEY_R] = Qt_Key_R
+			map[KEY_S] = Qt_Key_S
+			map[KEY_T] = Qt_Key_T
+			map[KEY_U] = Qt_Key_U
+			map[KEY_V] = Qt_Key_V
+			map[KEY_W] = Qt_Key_W
+			map[KEY_X] = Qt_Key_X
+			map[KEY_Y] = Qt_Key_Y
+			map[KEY_Z] = Qt_Key_Z
+	
+			map[KEY_NUM0] = Qt_Key_0 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM1] = Qt_Key_1 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM2] = Qt_Key_2 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM3] = Qt_Key_3 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM4] = Qt_Key_4 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM5] = Qt_Key_5 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM6] = Qt_Key_6 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM7] = Qt_Key_7 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM8] = Qt_Key_8 + Qt_KeyMod_KeypadModifier
+			map[KEY_NUM9] = Qt_Key_9 + Qt_KeyMod_KeypadModifier
+			
+			map[KEY_NUMMULTIPLY] = Qt_Key_Asterisk + Qt_KeyMod_KeypadModifier
+			map[KEY_NUMADD] = Qt_Key_Plus + Qt_KeyMod_KeypadModifier
+			map[KEY_NUMSUBTRACT] = Qt_Key_Minus + Qt_KeyMod_KeypadModifier
+			map[KEY_NUMDECIMAL] = Qt_Key_Period + Qt_KeyMod_KeypadModifier
+			map[KEY_NUMDIVIDE] = Qt_Key_Slash + Qt_KeyMod_KeypadModifier
+			
+			map[KEY_F1] = Qt_Key_F1
+			map[KEY_F2] = Qt_Key_F2
+			map[KEY_F3] = Qt_Key_F3
+			map[KEY_F4] = Qt_Key_F4
+			map[KEY_F5] = Qt_Key_F5
+			map[KEY_F6] = Qt_Key_F6
+			map[KEY_F7] = Qt_Key_F7
+			map[KEY_F8] = Qt_Key_F8
+			map[KEY_F9] = Qt_Key_F9
+			map[KEY_F10] = Qt_Key_F10
+			map[KEY_F11] = Qt_Key_F11
+			map[KEY_F12] = Qt_Key_F12
+			
+			map[KEY_TILDE] = Qt_Key_AsciiTilde
+			map[KEY_MINUS] = Qt_Key_Minus
+			map[KEY_EQUALS] = Qt_Key_Plus
+			
+			map[KEY_OPENBRACKET] = Qt_Key_BracketLeft
+			map[KEY_CLOSEBRACKET] = Qt_Key_BracketRight
+			map[KEY_BACKSLASH] = Qt_Key_Backslash
+			
+			map[KEY_SEMICOLON] = Qt_Key_Semicolon
+			map[KEY_QUOTES] = Qt_Key_At
+			
+			map[KEY_COMMA] = Qt_Key_Comma
+			map[KEY_PERIOD] = Qt_Key_Period
+			map[KEY_SLASH] = Qt_Key_Slash
+			
+			map[KEY_LSHIFT] = Qt_Key_Shift
+			map[KEY_RSHIFT] = Qt_Key_Shift
+			map[KEY_LCONTROL] = Qt_Key_Control
+			map[KEY_RCONTROL] = Qt_Key_Control
+			map[KEY_LALT] = Qt_Key_Alt
+			map[KEY_RALT] = Qt_Key_Alt
+			map[KEY_LSYS] = Qt_Key_Meta
+			map[KEY_RSYS] = Qt_Key_Meta
+	
+		End If
+	
+		Return map[maxKey]
+	
+	End Function
+
+End Type
