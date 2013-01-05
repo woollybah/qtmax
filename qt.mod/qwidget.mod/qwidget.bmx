@@ -265,6 +265,10 @@ Type QWidget Extends QObject
 	' TODO
 	End Method
 	
+	Method deleteLayout()
+		bmx_qt_qwidget_deletelayout(qObjectPtr)
+	End Method
+	
 	Method layoutDirection:Int()
 	' TODO
 	End Method

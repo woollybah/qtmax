@@ -1011,6 +1011,13 @@ QPaintEngine * bmx_qt_qwidget_default_paintengine(MaxQWidget * widget) {
 	return widget->defaultpaintEngine();
 }
 
+void bmx_qt_qwidget_deletelayout(QWidget * widget) {
+	QLayout * layout = widget->layout();
+	if (layout) {
+		delete layout;
+	}
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
