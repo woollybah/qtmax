@@ -139,6 +139,8 @@ extern "C" {
 	Qt::ItemFlags bmx_qt_getitemflags(int f);
 	Qt::CheckState bmx_qt_getcheckstate(int s);
 	Qt::LayoutDirection bmx_qt_inttolayoutdirection(int d);
+	Qt::TextElideMode bmx_qt_inttoelidemode(int e);
+	Qt::Corner bmx_qt_inttocorner(int c);
 
 	int bmx_qt_qtime_elapsed(MaxQTime * time);
 	int bmx_qt_qtime_hour(MaxQTime * time);

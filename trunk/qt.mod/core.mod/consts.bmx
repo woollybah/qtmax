@@ -1455,3 +1455,20 @@ Rem
 bbdoc: 'Base value for user types' Meta Type.
 End Rem
 Const QMetaType_User:Int = 256
+
+Rem
+bbdoc: The top-left corner of the rectangle.
+end rem
+Const Qt_TopLeftCorner:Int = $00000
+Rem
+bbdoc: The top-right corner of the rectangle.
+end rem
+Const Qt_TopRightCorner:Int = $00001
+Rem
+bbdoc: The bottom-left corner of the rectangle.
+end rem
+Const Qt_BottomLeftCorner:Int = $00002
+Rem
+bbdoc: The bottom-right corner of the rectangle.
+end rem
+Const Qt_BottomRightCorner:Int = $00003

@@ -122,6 +122,7 @@ Extern
 	Function bmx_qt_qwidget_setgeometry(handle:Byte Ptr, x:Int, y:Int, w:Int, h:Int)
 	Function bmx_qt_qwidget_palette:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setpalette(handle:Byte Ptr, p:Byte Ptr)
+	Function bmx_qt_qwidget_deletelayout(handle:Byte Ptr)
 
 	Function bmx_qt_qwidget_default_paintengine:Byte Ptr(handle:Byte Ptr)
 	

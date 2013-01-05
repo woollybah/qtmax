@@ -902,6 +902,27 @@ Type TQtTabber Extends TQtGadget
 		
 	End Method
 
+	Method InsertListItem(index:Int, text:String, tip:String, icon:Int, extra:Object)
+		Local image:QIcon
+		
+		If icons And icon >= 0 Then
+			image = icons.icons[icon]
+		End If
+		MaxGuiQTabWidget(widget).insertListItem(index, text, tip, image, extra)
+	End Method
+	
+	Method RealParentForChild:QWidget()
+		Return MaxGuiQTabWidget(widget).clientWidget
+	End Method
+
+	Method ClientWidth:Int()
+		Return MaxGuiQTabWidget(widget).ClientWidth()
+	End Method
+
+	Method ClientHeight:Int()
+		Return MaxGuiQTabWidget(widget).ClientHeight()
+	End Method
+
 	Method Class:Int()
 		Return GADGET_TABBER
 	EndMethod
@@ -1888,6 +1909,15 @@ End Type
 Type MaxGuiQTabWidget Extends QTabWidget
 
 	Field gadget:TQtGadget
+	
+	' this is the client widget for ALL pages.
+	' Its parent is always the current tab view - i.e. when the page changes this is reparented.
+	Field clientWidget:QWidget
+	
+	' each page widget contains a layout onto which the clientWidget is placed.
+	' This causes the clientWidget to auto-fill the space.
+	' When a page is removed, the page widget must be freed, etc.
+	Field pages:QWidget[0]
 
 	Method MCreate:MaxGuiQTabWidget(parent:QWidget, owner:TQtGadget)
 		gadget = owner
@@ -1896,6 +1926,54 @@ Type MaxGuiQTabWidget Extends QTabWidget
 	End Method
 
 	Method OnInit()
+		clientWidget = New QWidget._Create()
+
+		connect(Self, "currentChanged", Self, "onCurrentChanged")
+	End Method
+
+	Method insertListItem(index:Int, text:String, tip:String, icon:QIcon, extra:Object)
+		Local page:QWidget = New QWidget._Create(Self)
+		
+		Local layout:QVBoxLayout = New QVBoxLayout.Create()
+		layout.setContentsMargins(0, 0, 0, 0)
+		
+		page.setLayout(layout)
+		
+		' add the page to our internal list
+		pages = pages[..index] + [page] + pages[index..]
+		
+		inserttab(index, page, text, icon)
+		
+		If tip Then
+			setTabToolTip(index, tip)
+		End If
+		
+	End Method
+	
+	Method onCurrentChanged(index:Int)
+		' reparent the clientWidget
+		clientWidget.setParent(pages[index])
+		
+		' delete the old layout
+		pages[index].deleteLayout()
+
+		' create a new one for our client widget
+		Local layout:QVBoxLayout = New QVBoxLayout.Create()
+		layout.setContentsMargins(0, 0, 0, 0)
+		
+		layout.addWidget(clientWidget)
+		
+		pages[index].setLayout(layout)
+		
+		PostGuiEvent EVENT_GADGETACTION, gadget, index
+	End Method
+
+	Method ClientWidth:Int()
+		Return clientWidget.width()
+	End Method
+
+	Method ClientHeight:Int()
+		Return clientWidget.height()
 	End Method
 
 End Type

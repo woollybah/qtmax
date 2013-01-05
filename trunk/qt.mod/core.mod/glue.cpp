@@ -663,6 +663,37 @@ Qt::KeyboardModifiers bmx_qt_inttokeymodifiers(int k) {
 	return mods;
 }
 
+Qt::TextElideMode bmx_qt_inttoelidemode(int e) {
+
+	switch(e) {
+		case 0:
+			return Qt::ElideLeft;
+		case 1:
+			return Qt::ElideRight;
+		case 2:
+			return Qt::ElideMiddle;
+		case 3:
+			return Qt::ElideNone;
+	}
+	
+	return Qt::ElideLeft;
+}
+
+Qt::Corner bmx_qt_inttocorner(int c) {
+	switch(c) {
+		case 0:
+			return Qt::TopLeftCorner;
+		case 1:
+			return Qt::TopRightCorner;
+		case 2:
+			return Qt::BottomLeftCorner;
+		case 3:
+			return Qt::BottomRightCorner;
+	}
+	
+	return Qt::TopLeftCorner;
+}
+
 // *********************************************
 
 void bmx_qt_qevent_accept(QEvent * event) {
