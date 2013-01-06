@@ -1982,8 +1982,6 @@ Type MaxGuiQTreeView Extends QTreeView
 Rem
 * EVENT_GADGETSELECT | The user has selected a node.
 * EVENT_GADGETACTION | The user has double-clicked a node.
-* EVENT_GADGETOPEN | The user has expanded a node, revealing its children.
-* EVENT_GADGETCLOSE | The user has collapsed a node, hiding its children.
 * EVENT_GADGETMENU | The user has right-clicked somewhere in the TreeView.
 End Rem
 
@@ -2029,6 +2027,8 @@ End Rem
 		
 		' get item at index, and set in gadget
 		node.item = model.itemFromIndex(nodeIndex)
+		' a way to get our node from the item
+		node.item.setData(node)
 	End Method
 	
 	Method setItemText(item:QStandardItem, text:String)
@@ -2037,11 +2037,13 @@ End Rem
 	End Method
 	
 	Method onExpanded(index:QModelIndex)
-	' TODO
+		Local item:QStandardItem = model.itemFromIndex(index)
+		PostGuiEvent EVENT_GADGETOPEN, gadget,,,,, item.data()
 	End Method
 
 	Method onCollapsed(index:QModelIndex)
-	' TODO
+		Local item:QStandardItem = model.itemFromIndex(index)
+		PostGuiEvent EVENT_GADGETCLOSE, gadget,,,,, item.data()
 	End Method
 	
 End Type
