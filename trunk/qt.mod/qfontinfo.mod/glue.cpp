@@ -40,6 +40,65 @@ QFontInfo & MaxQFontInfo::Info() {
 
 // *********************************************
 
+MaxQFontInfo * bmx_qt_qfontinfo_create(MaxQFont * font) {
+	return new MaxQFontInfo(font->Font());
+}
+
+int bmx_qt_qfontinfo_bold(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().bold());
+}
+
+int bmx_qt_qfontinfo_exactmatch(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().exactMatch());
+}
+
+BBString * bmx_qt_qfontinfo_family(MaxQFontInfo * info) {
+	return bbStringFromQString(info->Info().family());
+}
+
+int bmx_qt_qfontinfo_fixedpitch(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().fixedPitch());
+}
+
+int bmx_qt_qfontinfo_italic(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().italic());
+}
+
+int bmx_qt_qfontinfo_pixelsize(MaxQFontInfo * info) {
+	return info->Info().pixelSize();
+}
+
+int bmx_qt_qfontinfo_pointsize(MaxQFontInfo * info) {
+	return info->Info().pointSize();
+}
+
+double bmx_qt_qfontinfo_pointsizef(MaxQFontInfo * info) {
+	return info->Info().pointSizeF();
+}
+
+int bmx_qt_qfontinfo_rawmode(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().rawMode());
+}
+
+int bmx_qt_qfontinfo_style(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().style());
+}
+
+int bmx_qt_qfontinfo_stylehint(MaxQFontInfo * info) {
+	return static_cast<int>(info->Info().styleHint());
+}
+
+BBString * bmx_qt_qfontinfo_stylename(MaxQFontInfo * info) {
+	return bbStringFromQString(info->Info().styleName());
+}
+
+int bmx_qt_qfontinfo_weight(MaxQFontInfo * info) {
+	return info->Info().weight();
+}
+
+void bmx_qt_qfontinfo_free(MaxQFontInfo * info) {
+	delete info;
+}
 
 
 // NOTES :

@@ -50,7 +50,7 @@ int bmx_qt_qfontdatabase_bold(MaxQFontDatabase * db, BBString * family, BBString
 }
 
 BBArray * bmx_qt_qfontdatabase_families(MaxQFontDatabase * db, int writingSystem) {
-//
+	return bbStringArrayFromQStringList(db->Database().families((QFontDatabase::WritingSystem)writingSystem));
 }
 
 MaxQFont * bmx_qt_qfontdatabase_font(MaxQFontDatabase * db, BBString * family, BBString * style, int pointSize) {
@@ -102,7 +102,21 @@ int bmx_qt_qfontdatabase_weight(MaxQFontDatabase * db, BBString * family, BBStri
 }
 
 BBArray * bmx_qt_qfontdatabase_writingsystems(MaxQFontDatabase * db, BBString * family) {
-//
+	QList<QFontDatabase::WritingSystem> list;
+
+	if (family) {
+		list = db->Database().writingSystems(qStringFromBBString(family));
+	} else {
+		list = db->Database().writingSystems();
+	}
+	
+	int n = list.count();
+	BBArray *p = bbArrayNew1D( "i",n );
+	int *s=(int*)BBARRAYDATA( p,p->dims );
+	for( int i=0;i<n;++i ){
+		s[i] = list[i];
+	}
+	return p;
 }
 
 int bmx_qt_qfontdatabase_addapplicationfont(BBString * fileName) {
@@ -135,6 +149,10 @@ BBString * bmx_qt_qfontdatabase_writingsystemname(int writingSystem) {
 
 BBString * bmx_qt_qfontdatabase_writingsystemsample(int writingSystem) {
 	return bbStringFromQString(QFontDatabase::writingSystemSample((QFontDatabase::WritingSystem)writingSystem));
+}
+
+void bmx_qt_qfontdatabase_free(MaxQFontDatabase * db) {
+	delete db;
 }
 
 

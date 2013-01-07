@@ -24,6 +24,7 @@
 #define MAX_QT_QFONTINFO
 
 #include "../core.mod/glue.h"
+#include "../qfont.mod/glue.h"
 #include <QtCore>
 #include <QFontInfo>
 
@@ -33,6 +34,21 @@ extern "C" {
 
 #include <blitz.h>
 
+	MaxQFontInfo * bmx_qt_qfontinfo_create(MaxQFont * font);
+	int bmx_qt_qfontinfo_bold(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_exactmatch(MaxQFontInfo * info);
+	BBString * bmx_qt_qfontinfo_family(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_fixedpitch(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_italic(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_pixelsize(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_pointsize(MaxQFontInfo * info);
+	double bmx_qt_qfontinfo_pointsizef(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_rawmode(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_style(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_stylehint(MaxQFontInfo * info);
+	BBString * bmx_qt_qfontinfo_stylename(MaxQFontInfo * info);
+	int bmx_qt_qfontinfo_weight(MaxQFontInfo * info);
+	void bmx_qt_qfontinfo_free(MaxQFontInfo * info);
 
 }
 

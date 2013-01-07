@@ -75,5 +75,6 @@ Extern
 	Function bmx_qt_qfontdatabase_supportsthreadedfontrendering:Int()
 	Function bmx_qt_qfontdatabase_writingsystemname:String(writingSystem:Int)
 	Function bmx_qt_qfontdatabase_writingsystemsample:String(writingSystem:Int)
+	Function bmx_qt_qfontdatabase_free(handle:Byte Ptr)
 
 End Extern

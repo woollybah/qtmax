@@ -730,6 +730,10 @@ MaxQFont * bmx_qt_qwidget_font(QWidget * widget) {
 	return new MaxQFont(widget->font());
 }
 
+MaxQFontInfo * bmx_qt_qwidget_fontinfo(QWidget * widget) {
+	return new MaxQFontInfo(widget->fontInfo());
+}
+
 MaxQFontMetrics * bmx_qt_qwidget_fontmetrics(QWidget * widget) {
 	return new MaxQFontMetrics(widget->fontMetrics());
 }

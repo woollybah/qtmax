@@ -64,7 +64,7 @@ public:
 	QRectF boundingRect() const;
 
 protected:
-	void draw(QPainter *painter);
+	virtual void draw(QPainter *painter);
 
 private:
 	BBObject * maxHandle;

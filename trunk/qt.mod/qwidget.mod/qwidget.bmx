@@ -160,6 +160,10 @@ Type QWidget Extends QObject
 		Return QFont._create(bmx_qt_qwidget_font(qObjectPtr))
 	End Method
 	
+	Method fontInfo:QFontInfo()
+		Return QFontInfo._create(bmx_qt_qwidget_fontinfo(qObjectPtr))
+	End Method
+	
 	Method fontMetrics:QFontMetrics()
 		Return QFontMetrics._create(bmx_qt_qwidget_fontmetrics(qObjectPtr))
 	End Method

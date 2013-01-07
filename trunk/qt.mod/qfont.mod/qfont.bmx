@@ -30,13 +30,20 @@ ModuleInfo "Copyright: (c) 2009-2013 Bruce A Henderson"
 
 Import "common.bmx"
 
+Rem
+bbdoc: Specifies a font used for drawing text.
+about: When you create a QFont object you specify various attributes that you want the font to have. Qt will use the font with
+the specified attributes, or if no matching font exists, Qt will use the closest matching installed font. The attributes of
+the font that is actually used are retrievable from a QFontInfo object. If the window system provides an exact match exactMatch() returns true.
+Use QFontMetrics to get measurements, e.g. the pixel length of a string using QFontMetrics::width().
+End Rem
 Type QFont
 
 	Field qObjectPtr:Byte Ptr
 	
 	Rem
 	bbdoc: This is the normal text rendering option where no capitalization change is applied.
-	end rem
+	End Rem
 	Const Case_MixedCase:Int = 0
 	Rem
 	bbdoc: This alters the text to be rendered in all uppercase type.

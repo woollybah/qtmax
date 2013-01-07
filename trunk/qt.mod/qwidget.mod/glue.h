@@ -26,6 +26,7 @@
 #include "../core.mod/glue.h"
 #include "../qsizepolicy.mod/glue.h"
 #include "../qfont.mod/glue.h"
+#include "../qfontinfo.mod/glue.h"
 #include "../qfontmetrics.mod/glue.h"
 #include "../qicon.mod/glue.h"
 #include "../qregion.mod/glue.h"
@@ -134,6 +135,7 @@ extern "C" {
 	MaxQSizePolicy * bmx_qt_qwidget_sizepolicy(QWidget * widget);
 	void bmx_qt_qwidget_setsizepolicyhv(QWidget * widget, int horizontalPolicy, int verticalPolicy);
 	MaxQFont * bmx_qt_qwidget_font(QWidget * widget);
+	MaxQFontInfo * bmx_qt_qwidget_fontinfo(QWidget * widget);
 	MaxQFontMetrics * bmx_qt_qwidget_fontmetrics(QWidget * widget);
 	void bmx_qt_qwidget_setfont(QWidget * widget, MaxQFont * font);
 	QWidget * bmx_qt_qwidget_window(QWidget * widget);
