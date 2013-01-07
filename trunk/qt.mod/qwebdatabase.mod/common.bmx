@@ -36,9 +36,13 @@ Import "../src/include/QtCore/*.h"
 Import "../src/include/QtWebKit/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
+Import "/usr/include/*.h"
 Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/QtCore/*.h"
 Import "/usr/include/qt4/QtWebKit/*.h"
+Import "/usr/include/QtWebKit/*.h"
 ?
 
 Import "glue.cpp"

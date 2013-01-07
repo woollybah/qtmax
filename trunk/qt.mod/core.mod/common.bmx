@@ -35,8 +35,11 @@ Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
+Import "/usr/include/*.h"
 Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/QtCore/*.h"
 ?
 
 Import "consts.bmx"

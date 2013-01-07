@@ -42,9 +42,13 @@ Import "../src/include/QtCore/*.h"
 Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
+Import "/usr/include/*.h"
 Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/QtCore/*.h"
 Import "/usr/include/qt4/QtGui/*.h"
+Import "/usr/include/QtGui/*.h"
 ?
 
 
