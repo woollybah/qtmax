@@ -40,6 +40,38 @@ extern "C" {
 
 	MaxQTextCharFormat * bmx_qt_qtextcharformat_create();
 	void bmx_qt_qtextcharformat_free(MaxQTextCharFormat * format);
+	
+	MaxQBrush * bmx_qt_qtextcharformat_background(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_boolproperty(MaxQTextCharFormat * format, int propertyId);
+	MaxQBrush * bmx_qt_qtextcharformat_brushproperty(MaxQTextCharFormat * format, int propertyId);
+	void bmx_qt_qtextcharformat_clearbackground(MaxQTextCharFormat * format);
+	void bmx_qt_qtextcharformat_clearforeground(MaxQTextCharFormat * format);
+	void bmx_qt_qtextcharformat_clearproperty(MaxQTextCharFormat * format, int propertyId);
+	MaxQColor * bmx_qt_qtextcharformat_colorProperty(MaxQTextCharFormat * format, int propertyId);
+	double bmx_qt_qtextcharformat_doubleproperty(MaxQTextCharFormat * format, int propertyId);
+	MaxQBrush * bmx_qt_qtextcharformat_foreground(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_hasproperty(MaxQTextCharFormat * format, int propertyId);
+	int bmx_qt_qtextcharformat_intproperty(MaxQTextCharFormat * format, int propertyId);
+	int bmx_qt_qtextcharformat_isblockformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_ischarformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_isframeformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_isimageformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_islistformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_istablecellformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_istableformat(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_layoutdirection(MaxQTextCharFormat * format);
+	void bmx_qt_qtextcharformat_merge(MaxQTextCharFormat * format, MaxQTextCharFormat * other);
+	int bmx_qt_qtextcharformat_objectindex(MaxQTextCharFormat * format);
+	int bmx_qt_qtextcharformat_objecttype(MaxQTextCharFormat * format);
+	MaxQPen * bmx_qt_qtextcharformat_penproperty(MaxQTextCharFormat * format, int propertyId);
+	int bmx_qt_qtextcharformat_propertycount(MaxQTextCharFormat * format);
+	void bmx_qt_qtextcharformat_setbackground(MaxQTextCharFormat * format, MaxQBrush * brush);
+	void bmx_qt_qtextcharformat_setforeground(MaxQTextCharFormat * format, MaxQBrush * brush);
+	void bmx_qt_qtextcharformat_setlayoutdirection(MaxQTextCharFormat * format, int direction);
+	void bmx_qt_qtextcharformat_setobjectindex(MaxQTextCharFormat * format, int index);
+	void bmx_qt_qtextcharformat_setobjecttype(MaxQTextCharFormat * format, int _type);
+	BBString * bmx_qt_qtextcharformat_stringproperty(MaxQTextCharFormat * format, int propertyId);
+
 	BBString * bmx_qt_qtextcharformat_anchorhref(MaxQTextCharFormat * format);
 	BBArray * bmx_qt_qtextcharformat_anchornames(MaxQTextCharFormat * format);
 	MaxQFont * bmx_qt_qtextcharformat_font(MaxQTextCharFormat * format);
@@ -88,14 +120,12 @@ extern "C" {
 	int bmx_qt_qtextcharformat_underlinestyle(MaxQTextCharFormat * format);
 	int bmx_qt_qtextcharformat_verticalalignment(MaxQTextCharFormat * format);
 
-	void bmx_qt_qtextcharformat_setforeground(MaxQTextCharFormat * format, MaxQBrush * brush);
-
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-class MaxQTextCharFormat : public MaxQTextFormat
+class MaxQTextCharFormat
 {
 public:
 	MaxQTextCharFormat(const QTextCharFormat & f);

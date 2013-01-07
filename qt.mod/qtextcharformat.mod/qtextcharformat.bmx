@@ -107,6 +107,152 @@ Type QTextCharFormat Extends QTextFormat
 		Return Self
 	End Method
 
+
+	Method background:QBrush()
+		Return QBrush._create(bmx_qt_qtextcharformat_background(qObjectPtr))
+	End Method
+
+	Method boolProperty:Int(propertyId:Int)
+		Return bmx_qt_qtextcharformat_boolproperty(qObjectPtr, propertyId)
+	End Method
+
+	Method brushProperty:QBrush(propertyId:Int)
+		Return QBrush._create(bmx_qt_qtextcharformat_brushproperty(qObjectPtr, propertyId))
+	End Method
+
+	Method clearBackground()
+		bmx_qt_qtextcharformat_clearbackground(qObjectPtr)
+	End Method
+
+	Method clearForeground()
+		bmx_qt_qtextcharformat_clearforeground(qObjectPtr)
+	End Method
+
+	Method clearProperty(propertyId:Int)
+		bmx_qt_qtextcharformat_clearproperty(qObjectPtr, propertyId)
+	End Method
+
+	Method colorProperty:QColor(propertyId:Int)
+		Return QColor._create(bmx_qt_qtextcharformat_colorProperty(qObjectPtr, propertyId))
+	End Method
+
+	Method doubleProperty:Double(propertyId:Int)
+		Return bmx_qt_qtextcharformat_doubleproperty(qObjectPtr, propertyId)
+	End Method
+
+	Method foreground:QBrush()
+		Return QBrush._create(bmx_qt_qtextcharformat_foreground(qObjectPtr))
+	End Method
+
+	Method hasProperty:Int(propertyId:Int)
+		Return bmx_qt_qtextcharformat_hasproperty(qObjectPtr, propertyId)
+	End Method
+
+	Method intProperty:Int(propertyId:Int)
+		Return bmx_qt_qtextcharformat_intproperty(qObjectPtr, propertyId)
+	End Method
+
+	Method isBlockFormat:Int()
+		Return bmx_qt_qtextcharformat_isblockformat(qObjectPtr)
+	End Method
+
+	Method isCharFormat:Int()
+		Return bmx_qt_qtextcharformat_ischarformat(qObjectPtr)
+	End Method
+
+	Method isFrameFormat:Int()
+		Return bmx_qt_qtextcharformat_isframeformat(qObjectPtr)
+	End Method
+
+	Method isImageFormat:Int()
+		Return bmx_qt_qtextcharformat_isimageformat(qObjectPtr)
+	End Method
+
+	Method isListFormat:Int()
+		Return bmx_qt_qtextcharformat_islistformat(qObjectPtr)
+	End Method
+
+	Method isTableCellFormat:Int()
+		Return bmx_qt_qtextcharformat_istablecellformat(qObjectPtr)
+	End Method
+
+	Method isTableFormat:Int()
+		Return bmx_qt_qtextcharformat_istableformat(qObjectPtr)
+	End Method
+
+	Method layoutDirection:Int()
+		Return bmx_qt_qtextcharformat_layoutdirection(qObjectPtr)
+	End Method
+
+	'Method lengthProperty:QTextLength(propertyId:Int)
+	' TODO
+	'End Method
+
+	'Method QVector<QTextLength> lengthVectorProperty(propertyId:Int)
+	' TODO
+	'End Method
+
+	Method merge(other:QTextFormat)
+		bmx_qt_qtextcharformat_merge(qObjectPtr, other.qObjectPtr)
+	End Method
+
+	Method objectIndex:Int()
+		Return bmx_qt_qtextcharformat_objectindex(qObjectPtr)
+	End Method
+
+	Method objectType:Int()
+		Return bmx_qt_qtextcharformat_objecttype(qObjectPtr)
+	End Method
+
+	Method penProperty:QPen(propertyId:Int)
+		Return QPen._create(bmx_qt_qtextcharformat_penproperty(qObjectPtr, propertyId))
+	End Method
+
+	'Method QMap<Int, QVariant> properties()
+	' TODO
+	'End Method
+
+	'Method QVariant property(propertyId:Int)
+	' TODO
+	'End Method
+
+	Method propertyCount:Int()
+		Return bmx_qt_qtextcharformat_propertycount(qObjectPtr)
+	End Method
+
+	Method setBackground(brush:QBrush)
+		bmx_qt_qtextcharformat_setbackground(qObjectPtr, brush.qObjectPtr)
+	End Method
+
+	Method setForeground(brush:QBrush)
+		bmx_qt_qtextformat_setforeground(qObjectPtr, brush.qObjectPtr)
+	End Method
+
+	Method setLayoutDirection(direction:Int)
+		bmx_qt_qtextcharformat_setlayoutdirection(qObjectPtr, direction)
+	End Method
+
+	Method setObjectIndex(index:Int)
+		bmx_qt_qtextcharformat_setobjectindex(qObjectPtr, index)
+	End Method
+
+	Method setObjectType(_type:Int)
+		bmx_qt_qtextcharformat_setobjecttype(qObjectPtr, _type)
+	End Method
+
+	'Method setProperty(propertyId:Int, value:QVariant)
+	' TODO
+	'End Method
+
+	'Method setProperty(propertyId:Int, QVector<QTextLength> & value)
+	' TODO
+	'End Method
+
+	Method stringProperty:String(propertyId:Int)
+		Return bmx_qt_qtextcharformat_stringproperty(qObjectPtr, propertyId)
+	End Method
+
+
 	Method anchorHref:String()
 		Return bmx_qt_qtextcharformat_anchorhref(qObjectPtr)
 	End Method
@@ -293,10 +439,6 @@ Type QTextCharFormat Extends QTextFormat
 	
 	Method verticalAlignment:Int()
 		Return bmx_qt_qtextcharformat_verticalalignment(qObjectPtr)
-	End Method
-
-	Method setForeground(brush:QBrush)
-		bmx_qt_qtextcharformat_setforeground(qObjectPtr, brush.qObjectPtr)
 	End Method
 
 	Method Free()

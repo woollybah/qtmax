@@ -25,7 +25,7 @@
 // ---------------------------------------------------------------------------------------
 
 MaxQTextCharFormat::MaxQTextCharFormat(const QTextCharFormat & f)
-	: textcharformat(f), MaxQTextFormat(f)
+	: textcharformat(f)
 {
 }
 
@@ -44,6 +44,129 @@ MaxQTextCharFormat * bmx_qt_qtextcharformat_create() {
 void bmx_qt_qtextcharformat_free(MaxQTextCharFormat * format) {
 	delete format;
 }
+
+
+MaxQBrush * bmx_qt_qtextcharformat_background(MaxQTextCharFormat * format) {
+	return new MaxQBrush(format->Format().background());
+}
+
+int bmx_qt_qtextcharformat_boolproperty(MaxQTextCharFormat * format, int propertyId) {
+	return static_cast<int>(format->Format().boolProperty(propertyId));
+}
+
+MaxQBrush * bmx_qt_qtextcharformat_brushproperty(MaxQTextCharFormat * format, int propertyId) {
+	return new MaxQBrush(format->Format().brushProperty(propertyId));
+}
+
+void bmx_qt_qtextcharformat_clearbackground(MaxQTextCharFormat * format) {
+	format->Format().clearBackground();
+}
+
+void bmx_qt_qtextcharformat_clearforeground(MaxQTextCharFormat * format) {
+	format->Format().clearForeground();
+}
+
+void bmx_qt_qtextcharformat_clearproperty(MaxQTextCharFormat * format, int propertyId) {
+	format->Format().clearProperty(propertyId);
+}
+
+MaxQColor * bmx_qt_qtextcharformat_colorProperty(MaxQTextCharFormat * format, int propertyId) {
+	return new MaxQColor(format->Format().colorProperty(propertyId));
+}
+
+double bmx_qt_qtextcharformat_doubleproperty(MaxQTextCharFormat * format, int propertyId) {
+	return format->Format().doubleProperty(propertyId);
+}
+
+MaxQBrush * bmx_qt_qtextcharformat_foreground(MaxQTextCharFormat * format) {
+	return new MaxQBrush(format->Format().foreground());
+}
+
+int bmx_qt_qtextcharformat_hasproperty(MaxQTextCharFormat * format, int propertyId) {
+	return static_cast<int>(format->Format().hasProperty(propertyId));
+}
+
+int bmx_qt_qtextcharformat_intproperty(MaxQTextCharFormat * format, int propertyId) {
+	return format->Format().intProperty(propertyId);
+}
+
+int bmx_qt_qtextcharformat_isblockformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isBlockFormat());
+}
+
+int bmx_qt_qtextcharformat_ischarformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isCharFormat());
+}
+
+int bmx_qt_qtextcharformat_isframeformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isFrameFormat());
+}
+
+int bmx_qt_qtextcharformat_isimageformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isImageFormat());
+}
+
+int bmx_qt_qtextcharformat_islistformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isListFormat());
+}
+
+int bmx_qt_qtextcharformat_istablecellformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isTableCellFormat());
+}
+
+int bmx_qt_qtextcharformat_istableformat(MaxQTextCharFormat * format) {
+	return static_cast<int>(format->Format().isTableFormat());
+}
+
+int bmx_qt_qtextcharformat_layoutdirection(MaxQTextCharFormat * format) {
+	return format->Format().layoutDirection();
+}
+
+void bmx_qt_qtextcharformat_merge(MaxQTextCharFormat * format, MaxQTextCharFormat * other) {
+	format->Format().merge(other->Format());
+}
+
+int bmx_qt_qtextcharformat_objectindex(MaxQTextCharFormat * format) {
+	return format->Format().objectIndex();
+}
+
+int bmx_qt_qtextcharformat_objecttype(MaxQTextCharFormat * format) {
+	return format->Format().objectType();
+}
+
+MaxQPen * bmx_qt_qtextcharformat_penproperty(MaxQTextCharFormat * format, int propertyId) {
+	return new MaxQPen(format->Format().penProperty(propertyId));
+}
+
+int bmx_qt_qtextcharformat_propertycount(MaxQTextCharFormat * format) {
+	return format->Format().propertyCount();
+}
+
+void bmx_qt_qtextcharformat_setbackground(MaxQTextCharFormat * format, MaxQBrush * brush) {
+	format->Format().setBackground(brush->Brush());
+}
+
+void bmx_qt_qtextformat_setforeground(MaxQTextCharFormat * format, MaxQBrush * brush) {
+	format->Format().setForeground(brush->Brush());
+}
+
+void bmx_qt_qtextcharformat_setlayoutdirection(MaxQTextCharFormat * format, int direction) {
+	format->Format().setLayoutDirection(bmx_qt_inttolayoutdirection(direction));
+}
+
+void bmx_qt_qtextcharformat_setobjectindex(MaxQTextCharFormat * format, int index) {
+	format->Format().setObjectIndex(index);
+}
+
+void bmx_qt_qtextcharformat_setobjecttype(MaxQTextCharFormat * format, int _type) {
+	format->Format().setObjectType(_type);
+}
+
+BBString * bmx_qt_qtextcharformat_stringproperty(MaxQTextCharFormat * format, int propertyId) {
+	return bbStringFromQString(format->Format().stringProperty(propertyId));
+}
+
+
 
 BBString * bmx_qt_qtextcharformat_anchorhref(MaxQTextCharFormat * format) {
 	return bbStringFromQString(format->Format().anchorHref());
@@ -233,9 +356,6 @@ int bmx_qt_qtextcharformat_verticalalignment(MaxQTextCharFormat * format) {
 	return format->Format().verticalAlignment();
 }
 
-void bmx_qt_qtextcharformat_setforeground(MaxQTextCharFormat * format, MaxQBrush * brush) {
-	format->Format().setForeground(brush->Brush());
-}
 
 // NOTES :
 // The moc4glue.cpp file is generated by running :  moc.sh

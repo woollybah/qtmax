@@ -127,7 +127,11 @@ Type TQtGadget Extends TGadget
 		
 		Return Null
 	End Method
-	
+
+	Method SetFont(font:TGuiFont)
+		widget.setFont(TQtGuiFont(font).font)
+	End Method
+
 End Type
 
 Type TQtIconStrip Extends TIconStrip
@@ -580,7 +584,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method ReplaceText(pos:Int, length:Int, text:String, units:Int)
-		DebugLog "TODO - TQtTextArea::ReplaceText"
+		MaxGuiQPlainTextEdit(widget).replaceText(pos, length, text, units)
 	End Method
 
 	Method AddText(text:String)
@@ -588,7 +592,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method AreaText:String(pos:Int, length:Int, units:Int)
-		DebugLog "TODO - TQtTextArea::AreaText"
+		Return MaxGuiQPlainTextEdit(widget).areaText(pos, length, units)
 	End Method
 
 	Method AreaLen:Int(units:Int)
@@ -598,11 +602,11 @@ Type TQtTextArea Extends TQtGadget
 	Method LockText()
 		' TODO : maybe to grab a QTextCursor and apply everything to it until unlocked
 		'  when we finally re-set it to the edit widget.
-		DebugLog "TODO - TQtTextArea::LockText"
+		MaxGuiQPlainTextEdit(widget).lock()
 	End Method
 
 	Method UnlockText()
-		DebugLog "TODO - TQtTextArea::UnlockText"
+		MaxGuiQPlainTextEdit(widget).unlock()
 	End Method
 
 	Method SetTabs(tabwidth:Int)
@@ -622,7 +626,7 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method SetStyle(r:Int, g:Int, b:Int, flags:Int, pos:Int, length:Int, units:Int)
-		DebugLog "TODO - TQtTextArea::SetStyle"
+		MaxGuiQPlainTextEdit(widget).setTextStyle(r, g, b, flags, pos, length, units)
 	End Method	
 
 	Method SetSelection(pos:Int, length:Int, units:Int)
@@ -973,7 +977,16 @@ Type TQtTreeViewNode Extends TQtGadget
 	End Method
 
 	Method ModifyNode(text$, icon:Int)
-		DebugLog "TODO : TQtTreeView::ModifyNode"
+		Local image:QIcon
+		
+		If icons And icon >= 0 Then
+			image = icons.icons[icon]
+		End If
+		
+		MaxGuiQTreeView(widget).setItemText(item, text)
+		If image Then
+			item.setIcon(image)
+		End If
 	End Method
 	
 	Method SelectedNode:TGadget()
@@ -1609,6 +1622,11 @@ End Type
 Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 
 	Field gadget:TQtGadget
+	
+	Field lockedCursor:QTextCursor
+	Field locked:Int
+	
+	Field styles:TMap = New TMap
 
 	Method MCreate:MaxGuiQPlainTextEdit(parent:QWidget, owner:TQtGadget)
 		gadget = owner
@@ -1617,12 +1635,33 @@ Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 	End Method
 
 	Method OnInit()
+		connect(Self, "cursorPositionChanged", Self, "onCursorPositionChanged")
+		connect(Self, "textChanged", Self, "onTextChanged")
+	End Method
+
+	Method onCursorPositionChanged()
+		If Not locked Then
+			PostGuiEvent EVENT_GADGETSELECT, gadget
+		End If
+	End Method
+	
+	Method onTextChanged()
+		If Not locked Then
+			PostGuiEvent EVENT_GADGETACTION, gadget
+		End If
 	End Method
 
 	Method setSelection(pos:Int, length:Int, units:Int)
 
-		Local cursor:QTextCursor = textCursor()
+		Local cursor:QTextCursor = getCursor()
 		
+		setCursorSelection(cursor, pos, length, units)
+		
+		updateCursor(cursor)
+	End Method
+
+	Method setCursorSelection(cursor:QTextCursor, pos:Int, length:Int, units:Int)
+
 		Local moveOp:Int = QTextCursor.Op_NextCharacter
 		
 		If units = TEXTAREA_LINES Then
@@ -1638,8 +1677,7 @@ Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 		
 		' 2) move, keep anchor
 		cursor.movePosition(moveOp, QTextCursor.Mode_KeepAnchor, length)
-		
-		setTextCursor(cursor)
+	
 	End Method
 
 	Method getCursorPos:Int(units:Int)
@@ -1713,7 +1751,106 @@ Type MaxGuiQPlainTextEdit Extends QPlainTextEdit
 		cursor.setPosition(index)
 		Return cursor.blockNumber()
 	End Method
+
+	Method replaceText(pos:Int, length:Int, text:String, units:Int)
+		Local cursor:QTextCursor = getCursor()
+
+		' get the current cursor pos
+		Local position:Int = cursor.position()
 	
+		' select text in range
+		setCursorSelection(cursor, pos, length, units)
+		
+		' remove selected text
+		cursor.removeSelectedText()
+		
+		' insert new text
+		cursor.insertText(text)
+
+		' reset the cursor
+		cursor.setPosition(position)
+		
+		updateCursor(cursor)
+	End Method
+	
+	Method getCursor:QTextCursor()
+		If locked Then
+			Return lockedCursor
+		Else
+			Return textCursor()
+		End If
+	End Method
+	
+	Method updateCursor(cursor:QTextCursor)
+		If Not locked Then
+			setTextCursor(cursor)
+		End If
+	End Method
+	
+	Method lock()
+		If Not lockedCursor Then
+			lockedCursor = textCursor()
+			locked = True
+		End If
+	End Method
+	
+	Method unlock()
+		If lockedCursor Then
+			setTextCursor(lockedCursor)
+			lockedCursor = Null
+			locked = False
+		End If
+	End Method
+
+	Method setTextStyle(r:Int, g:Int, b:Int, flags:Int, pos:Int, length:Int, units:Int)
+		Local cursor:QTextCursor = getCursor()
+
+		' get the current cursor pos
+		Local position:Int = cursor.position()
+
+		setCursorSelection(cursor, pos, length, units)
+		
+		Local format:QTextCharFormat = getStyleFormat(r, g, b, flags)
+		
+		cursor.setCharFormat(format)
+		
+		' reset the cursor
+		cursor.setPosition(position)
+	
+		updateCursor(cursor)
+	End Method
+	
+	Method getStyleFormat:QTextCharFormat(r:Int, g:Int, b:Int, flags:Int)
+		Local f:String = r + "," + g + "," + b + "," + flags
+'DebugLog "getStyleFormat : " + f
+		Local format:QTextCharFormat = QTextCharFormat(styles.ValueForKey(f))
+		
+		If Not format Then
+			format = New QTextCharFormat.Create()
+			format.setForeground(New QBrush.CreateWithColor(New QColor.Create(r, g, b)))
+			
+			' flags...
+			
+			styles.Insert(f, format)
+		End If
+		
+		Return format
+	End Method
+
+	Method areaText:String(pos:Int, length:Int, units:Int)
+'DebugLog "areaText (" + pos + ", " + length + ", " + units + ")"
+
+		If length <> TEXTAREA_ALL Then
+			Local cursor:QTextCursor = textCursor()
+			setCursorSelection(cursor, pos, length, units)
+		
+			Return cursor.selectedText()
+		Else
+			Return toPlainText()
+		End If
+	
+	End Method
+
 End Type
 
 Type MaxGuiQListView Extends QListView
@@ -2052,7 +2189,7 @@ End Rem
 		Local index:QModelIndex = model.indexFromItem(item)
 		model.setData(index, text)
 	End Method
-	
+
 	Method onExpanded(index:QModelIndex)
 		Local item:QStandardItem = model.itemFromIndex(index)
 		PostGuiEvent EVENT_GADGETOPEN, gadget,,,,, item.data()
