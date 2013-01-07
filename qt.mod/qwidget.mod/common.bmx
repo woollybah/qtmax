@@ -40,6 +40,7 @@ Import Qt.QWheelEvent
 Import Qt.QIcon
 Import Qt.QSizePolicy
 Import Qt.QFont
+Import Qt.QFontInfo
 Import Qt.QFontMetrics
 Import Qt.QKeySequence
 Import Qt.QPalette
@@ -108,6 +109,7 @@ Extern
 	Function bmx_qt_qwidget_sizepolicy:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setsizepolicyhv(handle:Byte Ptr, horizontalPolicy:Int, verticalPolicy:Int)
 	Function bmx_qt_qwidget_font:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qwidget_fontinfo:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_fontmetrics:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setfont(handle:Byte Ptr, font:Byte Ptr)
 	Function bmx_qt_qwidget_window:Byte Ptr(handle:Byte Ptr)

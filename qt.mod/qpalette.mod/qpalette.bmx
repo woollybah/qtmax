@@ -315,5 +315,16 @@ Type QPalette
 		Return QBrush._create(bmx_qt_qpalette_windowtext(qObjectPtr))
 	End Method
 	
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qpalette_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+
 End Type
 

@@ -21,6 +21,7 @@
 SuperStrict
 
 Import Qt.Core
+Import Qt.QFont
 Import BRL.Blitz
 
 
@@ -48,5 +49,21 @@ Import "/usr/include/QtGui/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qfontinfo_create:Byte Ptr(font:Byte Ptr)
+	Function bmx_qt_qfontinfo_bold:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_exactmatch:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_family:String(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_fixedpitch:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_italic:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_pixelsize:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_pointsize:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_pointsizef:Double(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_rawmode:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_style:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_stylehint:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_stylename:String(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_weight:Int(handle:Byte Ptr)
+	Function bmx_qt_qfontinfo_free(handle:Byte Ptr)
 
 End Extern

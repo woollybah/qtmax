@@ -136,4 +136,15 @@ Type QFontDatabase
 		Return bmx_qt_qfontdatabase_writingsystemsample(writingSystem)
 	End Function
 
+	Method Free()
+		If qObjectPtr Then
+			bmx_qt_qfontdatabase_free(qObjectPtr)
+			qObjectPtr = Null
+		End If
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+
 End Type

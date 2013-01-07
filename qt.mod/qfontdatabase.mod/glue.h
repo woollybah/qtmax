@@ -59,6 +59,7 @@ extern "C" {
 	int bmx_qt_qfontdatabase_supportsthreadedfontrendering();
 	BBString * bmx_qt_qfontdatabase_writingsystemname(int writingSystem);
 	BBString * bmx_qt_qfontdatabase_writingsystemsample(int writingSystem);
+	void bmx_qt_qfontdatabase_free(MaxQFontDatabase * db);
 
 }
 

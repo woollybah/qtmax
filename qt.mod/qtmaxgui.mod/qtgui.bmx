@@ -184,12 +184,53 @@ Type TQtGUIDriver Extends TMaxGUIDriver
 	End Method
 
 	Method LoadFont:TGuiFont(name:String, size:Int, flags:Int)
-		DebugLog "TODO : TQtGUIDriver::LoadFont"
+	
+		Local font:QFont
+		Local weight:Int = QFont.Weight_Normal
+		Local italic:Int
+		
+		If flags & FONT_BOLD Then
+			weight = QFont.Weight_Bold
+		End If
+		
+		If flags & FONT_ITALIC Then
+			italic = True
+		End If
+	
+		font = New QFont.Create(name, size, weight, italic)
+		
+		If flags & FONT_UNDERLINE Then
+			font.setUnderline(True)
+		End If
+		
+		If flags & FONT_STRIKETHROUGH Then
+			font.setStrikeOut(True)
+		End If
+		
+		Return New TQtGuiFont.Create(font)
 	End Method
 	
 	Method DoLoadFont:TGuiFont(font:TGuiFont)
 		DebugLog "TODO : TQtGUIDriver::DoLoadFont"
 	End Method
+
+	Method LibraryFont:TGuiFont( fontType:Int = GUIFONT_SYSTEM, size:Double = 0, style:Int = FONT_NORMAL )
+		If fontType = GUIFONT_SYSTEM Then
+			Local font:QFont = QApplication.font()
+			
+			If size <= 0 Then
+				size = font.pixelSize()
+				
+				If size < 0 Then
+					size = font.pointSize()
+				End If
+			End If
+
+			Return LoadFontWithDouble( font.family(), size, TQtGuiFont.styleFromFont(font) | style )
+		Else
+			Return Super.LibraryFont( fontType, size, style )
+		EndIf
+	EndMethod
 	
 	Method CreateGadget:TGadget(GadgetClass:Int, name:String, x:Int, y:Int, w:Int, h:Int,group:TGadget, style:Int)
 		Local gadget:TQtGadget

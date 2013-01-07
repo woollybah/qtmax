@@ -69,6 +69,7 @@ extern "C" {
 	MaxQBrush * bmx_qt_qpalette_tooltiptext(MaxQPalette * palette);
 	MaxQBrush * bmx_qt_qpalette_window(MaxQPalette * palette);
 	MaxQBrush * bmx_qt_qpalette_windowtext(MaxQPalette * palette);
+	void bmx_qt_qpalette_free(MaxQPalette * palette);
 
 }
 

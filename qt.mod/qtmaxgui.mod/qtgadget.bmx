@@ -20,7 +20,7 @@
 ' 
 SuperStrict
 
-Import "qtcommon.bmx"
+Import "qtfont.bmx"
 
 Type TQtGadget Extends TGadget
 
@@ -922,6 +922,10 @@ Type TQtTabber Extends TQtGadget
 	Method ClientHeight:Int()
 		Return MaxGuiQTabWidget(widget).ClientHeight()
 	End Method
+	
+	Method SelectedItem:Int()
+		Return MaxGuiQTabWidget(widget).currentIndex()
+	End Method
 
 	Method Class:Int()
 		Return GADGET_TABBER
@@ -1176,7 +1180,16 @@ Type TQtMenuItem Extends TQtGadget
 	
 	Method CreateMenuItem()
 
-		action = New MaxGuiQMenuAction.MCreate(TQtGadget(parent).getParentWindow().widget, Self)
+		If parent Then
+			Local parentWindow:TQtGadget = TQtGadget(parent).getParentWindow()
+			If parentWindow Then
+				action = New MaxGuiQMenuAction.MCreate(parentWindow.widget, Self)
+			Else
+				action = New MaxGuiQMenuAction.MCreate(qApp, Self)
+			End If
+		Else
+			action = New MaxGuiQMenuAction.MCreate(qApp, Self)
+		End If
 		
 		Rethink()
 		
@@ -1193,7 +1206,11 @@ Type TQtMenuItem Extends TQtGadget
 			End If
 		'End If
 	End Method
-	
+
+	Method SetTooltip(text:String)
+		action.setToolTip(text)
+	End Method
+
 	Method SetHotKey(hotkey:Int, modifier:Int)
 		hotkey = TQtKeyMap.mapKey(hotkey)
 		modifier = TQtKeyMap.mapModifier(modifier)
@@ -2122,7 +2139,7 @@ Type MaxGuiQMenuAction Extends QAction
 
 	Field gadget:TQtGadget
 
-	Method MCreate:MaxGuiQMenuAction(parent:QWidget, owner:TQtGadget)
+	Method MCreate:MaxGuiQMenuAction(parent:QObject, owner:TQtGadget)
 		gadget = owner
 		Super.Create("", parent)
 		Return Self
@@ -2139,18 +2156,23 @@ Type MaxGuiQMenuAction Extends QAction
 			' add us to the menubar
 			MaxGuiQMainWindow(TQtWindow(gadget.parent).widget).menuBar.addAction(Self)
 		Else
-	
-			' if the parent action doesn't have a menu yet (because it has not children)
-			' then we need to assign one to it.	
-			If Not TQtMenuItem(gadget.parent).widget Then
-				TQtMenuItem(gadget.parent).widget = New QMenu.Create()
-				
-				' assign menu to action
-				QMenu.setMenuForAction(Self, QMenu(TQtMenuItem(gadget.parent).widget))
-			End If
 
-			' add this action to the parent menu
-			QMenu(TQtMenuItem(gadget.parent).widget).addAction(Self)
+			If TQtMenuItem(gadget.parent) Then
+				' if the parent action doesn't have a menu yet (because it has not children)
+				' then we need to assign one to it.	
+				If Not TQtMenuItem(gadget.parent).widget Then
+					TQtMenuItem(gadget.parent).widget = New QMenu.Create()
+					
+					' assign menu to action
+					QMenu.setMenuForAction(Self, QMenu(TQtMenuItem(gadget.parent).widget))
+				End If
+	
+				' add this action to the parent menu
+				QMenu(TQtMenuItem(gadget.parent).widget).addAction(Self)
+			Else
+				' no parent, so we are the root menu item, perhaps for a popup.
+				
+			End If
 
 		End If
 

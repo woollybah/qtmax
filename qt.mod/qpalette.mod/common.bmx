@@ -85,5 +85,6 @@ Extern
 	Function bmx_qt_qpalette_tooltiptext:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qpalette_window:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qpalette_windowtext:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qpalette_free(handle:Byte Ptr)
 
 End Extern
