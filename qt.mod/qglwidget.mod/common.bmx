@@ -39,10 +39,15 @@ Import "../src/include/QtGui/*.h"
 Import "../src/include/QtOpenGL/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
+Import "/usr/include/*.h"
 Import "/usr/include/qt4/Qt/*.h"
+Import "/usr/include/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
+Import "/usr/include/QtCore/*.h"
 Import "/usr/include/qt4/QtGui/*.h"
+Import "/usr/include/QtGui/*.h"
 Import "/usr/include/qt4/QtOpenGL/*.h"
+Import "/usr/include/QtOpenGL/*.h"
 ?
 
 Import "glue.cpp"
