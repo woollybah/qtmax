@@ -260,7 +260,7 @@ Type QStandardItem
 	End Method
 	
 	Method insertRows:Int(row:Int, count:Int)
-DebugLog "Item::insertRows(" + row + ", " + count + ")"
+'DebugLog "Item::insertRows(" + row + ", " + count + ")"
 		If (count < 1) Or (row > rowCount()) Then
 			Return False
 		End If
@@ -529,7 +529,7 @@ DebugLog "Item::insertRows(" + row + ", " + count + ")"
 	End Method
 	
 	Method setIcon(icon:QIcon)
-	' TODO
+		setDataInternal(Qt_DecorationRole, icon)
 	End Method
 	
 	Method setRowCount(rows:Int)

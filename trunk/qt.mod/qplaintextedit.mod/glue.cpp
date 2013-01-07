@@ -28,6 +28,18 @@ MaxQPlainTextEdit::MaxQPlainTextEdit(BBObject * handle, QWidget * parent)
 	: maxHandle(handle), QPlainTextEdit(parent)
 {
 	qbind(this, handle);
+	
+	
+	connect(this, SIGNAL(blockCountChanged(int )), SLOT(onBlockCountChanged(int )));
+	connect(this, SIGNAL(copyAvailable(bool )), SLOT(onCopyAvailable(bool )));
+	connect(this, SIGNAL(cursorPositionChanged( )), SLOT(onCursorPositionChanged()));
+	connect(this, SIGNAL(modificationChanged(bool)), SLOT(onModificationChanged(bool )));
+	connect(this, SIGNAL(redoAvailable(bool )), SLOT(onRedoAvailable(bool )));
+	connect(this, SIGNAL(selectionChanged( )), SLOT(onSelectionChanged()));
+	connect(this, SIGNAL(textChanged()), SLOT(onTextChanged()));
+	connect(this, SIGNAL(undoAvailable(bool )), SLOT(onUndoAvailable(bool )));
+	connect(this, SIGNAL(updateRequest(const QRect &, int )), SLOT(onUpdateRequest(const QRect &, int )));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint & )), SLOT(onCustomContextMenuRequested(const QPoint & )));
 }
 
 MaxQPlainTextEdit::~MaxQPlainTextEdit()
