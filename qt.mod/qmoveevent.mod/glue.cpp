@@ -28,6 +28,17 @@
 
 // *********************************************
 
+void bmx_qt_qmoveevent_oldpos(QMoveEvent * event, int * x, int * y) {
+	QPoint p(event->oldPos());
+	*x = p.x();
+	*y = p.y();
+}
+
+void bmx_qt_qmoveevent_pos(QMoveEvent * event, int * x, int * y) {
+	QPoint p(event->pos());
+	*x = p.x();
+	*y = p.y();
+}
 
 
 // NOTES :

@@ -25,11 +25,14 @@
 
 #include "../core.mod/glue.h"
 #include <QtCore>
+#include <QMoveEvent>
 
 extern "C" {
 
 #include <blitz.h>
 
+	void bmx_qt_qmoveevent_oldpos(QMoveEvent * event, int * x, int * y);
+	void bmx_qt_qmoveevent_pos(QMoveEvent * event, int * x, int * y);
 
 }
 

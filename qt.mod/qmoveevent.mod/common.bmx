@@ -33,6 +33,7 @@ Import "../lib/macos/include/*.h"
 Import "../src/include/*.h"
 Import "../src/include/Qt/*.h"
 Import "../src/include/QtCore/*.h"
+Import "../src/include/QtGui/*.h"
 ?linux
 Import "/usr/include/qt4/*.h"
 Import "/usr/include/*.h"
@@ -40,10 +41,15 @@ Import "/usr/include/qt4/Qt/*.h"
 Import "/usr/include/Qt/*.h"
 Import "/usr/include/qt4/QtCore/*.h"
 Import "/usr/include/QtCore/*.h"
+Import "/usr/include/qt4/QtGui/*.h"
+Import "/usr/include/QtGui/*.h"
 ?
 
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qmoveevent_oldpos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qmoveevent_pos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
 
 End Extern
