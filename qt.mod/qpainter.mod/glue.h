@@ -84,6 +84,8 @@ extern "C" {
 	void bmx_qt_qpainter_setclipping(QPainter * painter, int enable);
 	void bmx_qt_qpainter_setcompositionmode(QPainter * painter, int mode);
 	void bmx_qt_qpainter_setopacity(QPainter * painter, double opacity);
+	void bmx_qt_qpainter_drawpixmap(QPainter * painter, int x, int y, MaxQPixmap * pixmap);
+	void bmx_qt_qpainter_drawpixmapsize(QPainter * painter, int x, int y, int width, int height, MaxQPixmap * pixmap);
 
 }
 

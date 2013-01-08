@@ -64,5 +64,7 @@ Extern
 	Function bmx_qt_qpixmap_toimage:Byte Ptr(handle:Byte Ptr)
 	Function bmx_qt_qpixmap_grabwindow:Byte Ptr(window:Int, x:Int, y:Int, width:Int, height:Int)
 	Function bmx_qt_qpixmap_scaled:Byte Ptr(handle:Byte Ptr, width:Int, height:Int, aspectRatioMode:Int, transformMode:Int)
+	Function bmx_qt_qpixmap_height:Int(handle:Byte Ptr)
+	Function bmx_qt_qpixmap_width:Int(handle:Byte Ptr)
 
 End Extern

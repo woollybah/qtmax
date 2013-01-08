@@ -66,6 +66,10 @@ Type QPixmap Extends QPaintDevice
 		bmx_qt_qpixmap_fillcolor(qObjectPtr, color.qObjectPtr)
 	End Method
 
+	Method height:Int()
+		Return bmx_qt_qpixmap_height(qObjectPtr)
+	End Method
+
 	Method mask:QBitmap()
 	' TODO
 	End Method
@@ -109,6 +113,10 @@ Type QPixmap Extends QPaintDevice
 	Function grabWindow:QPixmap(window:Int, x:Int = 0, y:Int = 0, width:Int = -1, height:Int = -1)
 		Return QPixmap._create(bmx_qt_qpixmap_grabwindow(window, x, y, width, height))
 	End Function
+	
+	Method width:Int()
+		Return bmx_qt_qpixmap_width(qObjectPtr)
+	End Method
 	
 	Method Free()
 		If qObjectPtr Then
