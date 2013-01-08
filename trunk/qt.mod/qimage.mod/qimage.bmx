@@ -121,8 +121,42 @@ Type QImage Extends QPaintDevice
 	End Method
 	
 	Method CreateWithPixmap:QImage(pixmap:TPixmap)
-		Return CreateWithData(pixmap.pixels, pixmap.width, pixmap.height, pixmap.pitch, imageFormatFromPixmapFormat(pixmap.format))
+		If pixmap.format = PF_BGRA8888 Or pixmap.format = PF_RGBA8888 Then
+			' convert pixels
+			Local pix:TPixmap = TPixmap.Create(pixmap.width, pixmap.height, pixmap.format)
+			For Local y:Int = 0 Until pixmap.height
+				ConvertPixelsToARGB(pixmap.PixelPtr(0,y), pix.PixelPtr(0,y), pix.format, pixmap.width)
+			Next
+
+			Return CreateWithData(pix.pixels, pix.width, pix.height, pix.pitch, Format_ARGB32)
+		Else
+			Return CreateWithData(pixmap.pixels, pixmap.width, pixmap.height, pixmap.pitch, imageFormatFromPixmapFormat(pixmap.format))
+		End If
 	End Method
+
+	Function ConvertPixelsToARGB( in_buf:Byte Ptr,out_buf:Byte Ptr,format:Int, count:Int )
+		Local in:Byte Ptr=in_buf
+		Local out:Byte Ptr=out_buf
+		Local out_end:Byte Ptr=out+count*4
+		Select format
+			Case PF_BGRA8888
+				While out<>out_end
+					out[0]=in[2]
+					out[1]=in[1]
+					out[2]=in[0]
+					out[3]=in[3]
+					in:+4;out:+4
+				Wend
+			Case PF_RGBA8888
+				While out<>out_end
+					out[0]=in[2]
+					out[1]=in[1]
+					out[2]=in[0]
+					out[3]=in[3]
+					in:+4;out:+4
+				Wend
+		End Select
+	End Function
 	
 	Method imageFormatFromPixmapFormat:Int(format:Int)
 		Select format

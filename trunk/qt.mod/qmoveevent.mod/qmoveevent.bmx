@@ -40,5 +40,13 @@ Type QMoveEvent Extends QEvent
 		End If
 	End Function
 
+	Method oldPos(x:Int Var, y:Int Var)
+		bmx_qt_qmoveevent_oldpos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method pos(x:Int Var, y:Int Var)
+		bmx_qt_qmoveevent_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
 End Type
 

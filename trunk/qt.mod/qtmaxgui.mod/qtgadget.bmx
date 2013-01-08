@@ -262,15 +262,6 @@ Type TQtWindow Extends TQtGadget
 
 		Rethink()
 
-		If style & WINDOW_CENTER Then
-			Local dtop:QDesktopWidget = QApplication.Desktop()
-			
-			Local x:Int = (dtop.width() - widget.width()) / 2
-			Local y:Int = (dtop.height() - widget.height()) / 2
-
-			widget.move(x, y)
-		End If
-	
 		If ~style & WINDOW_HIDDEN
 			Setshow(True)
 		Else
@@ -281,6 +272,15 @@ Type TQtWindow Extends TQtGadget
 	
 	Method onClose()
 		
+	End Method
+
+	Method Rethink()
+		If widget Then
+			widget.move(xpos, ypos)
+			widget.resize(width, height)
+
+			LayoutKids()
+		End If
 	End Method
 	
 	Method SetText(text:String)
@@ -870,6 +870,14 @@ Type TQtDesktop Extends TQtGadget
 		
 	End Method
 
+	Method GetWidth%()
+		Return widget.width()
+	EndMethod
+	
+	Method GetHeight%()
+		Return widget.height()
+	EndMethod
+
 	Method Class:Int()
 		Return GADGET_DESKTOP
 	EndMethod
@@ -896,9 +904,6 @@ Type TQtToolBar Extends TQtGadget
 		Rethink()
 		
 		SetShow(True)
-		' window goes hidden? Let's show it for now...
-		parent.SetShow(True)
-		
 		
 	End Method
 
@@ -1413,13 +1418,22 @@ Type MaxGuiQMainWindow Extends QMainWindow
 	Method resizeEvent(event:QResizeEvent)
 		Local w:Int, h:Int
 		event.size(w, h)
+
+		gadget.SetRect(gadget.xpos, gadget.ypos, w, h)
+		gadget.layoutKids
+
 		PostGuiEvent EVENT_WINDOWSIZE, gadget ,,,w,h
 		
 		Super.resizeEvent(event)
 	End Method
 	
 	Method moveEvent(event:QMoveEvent)
-		PostGuiEvent EVENT_WINDOWMOVE, gadget
+		Local x:Int, y:Int
+		event.pos(x, y)
+		
+		gadget.SetRect(x, y, gadget.width, gadget.height)
+		
+		PostGuiEvent EVENT_WINDOWMOVE, gadget,,,x,y
 		
 		Super.moveEvent(event)
 	End Method
