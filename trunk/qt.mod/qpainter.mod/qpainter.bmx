@@ -338,6 +338,14 @@ Type QPainter
 		bmx_qt_qpainter_drawlined(qObjectPtr, x1, y1, x2, y2)
 	End Method
 	
+	Method DrawPixmap(x:Int, y:Int, pixmap:QPixmap)
+		bmx_qt_qpainter_drawpixmap(qObjectPtr, x, y, pixmap.qObjectPtr)
+	End Method
+
+	Method drawPixmapSize(x:Int, y:Int, width:Int, height:Int, pixmap:QPixmap)
+		bmx_qt_qpainter_drawpixmapsize(qObjectPtr, x, y, width, height, pixmap.qObjectPtr)
+	End Method
+	
 	Method DrawRectRect(rectangle:QRect)
 		bmx_qt_qpainter_drawrectrect(qObjectPtr, rectangle.qObjectPtr)
 	End Method

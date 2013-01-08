@@ -132,6 +132,30 @@ Type TQtGadget Extends TGadget
 		widget.setFont(TQtGuiFont(font).font)
 	End Method
 
+	Method ConvertPixmap:QPixmap(pixmap:TPixmap)
+		If pixmap
+			Select pixmap.format
+				Case PF_I8,PF_BGR888
+					pixmap=pixmap.Convert( PF_RGB888 )
+				Case PF_A8,PF_BGRA8888
+					pixmap=pixmap.Convert( PF_RGBA8888 )
+				Default
+					pixmap=pixmap.Copy()
+			End Select
+			
+			If AlphaBitsPerPixel[ pixmap.format ]
+				For Local y:Int = 0 Until pixmap.height
+					For Local x:Int = 0 Until pixmap.width
+						Local argb:Int = pixmap.ReadPixel( x,y )
+						pixmap.WritePixel x, y, TQtIconStrip.premult(argb)
+					Next
+				Next
+			EndIf
+			Return QPixmap.FromPixmap(pixmap)
+		EndIf
+		Return Null
+	End Method
+
 End Type
 
 Type TQtIconStrip Extends TIconStrip
@@ -163,6 +187,8 @@ Type TQtIconStrip Extends TIconStrip
 				pixmap = pixmap.Convert( PF_RGB888 )
 			Case PF_A8,PF_BGRA8888
 				pixmap = pixmap.Convert( PF_RGBA8888 )
+			Default
+				pixmap = pixmap.Copy()
 		End Select
 		
 		If AlphaBitsPerPixel[ pixmap.format ]
@@ -212,14 +238,10 @@ Type TQtWindow Extends TQtGadget
 
 		Local flags:Int = 0
 		
-		If style & WINDOW_TOOL Then
-			flags :| Qt_Tool
-		End If
-	
 		If parent Then
-			widget = New MaxGuiQMainWindow.MCreate(TQtGadget(parent).widget, flags, Self)
+			widget = New MaxGuiQMainWindow.MCreate(TQtGadget(parent).widget, style, Self)
 		Else
-			widget = New MaxGuiQMainWindow.MCreate(Null, flags, Self)
+			widget = New MaxGuiQMainWindow.MCreate(Null, style, Self)
 		End If
 	
 		If style & WINDOW_MENU Then
@@ -237,9 +259,18 @@ Type TQtWindow Extends TQtGadget
 		Else
 			widget.setFixedSize(width, height)
 		End If
-		
+
 		Rethink()
-		
+
+		If style & WINDOW_CENTER Then
+			Local dtop:QDesktopWidget = QApplication.Desktop()
+			
+			Local x:Int = (dtop.width() - widget.width()) / 2
+			Local y:Int = (dtop.height() - widget.height()) / 2
+
+			widget.move(x, y)
+		End If
+	
 		If ~style & WINDOW_HIDDEN
 			Setshow(True)
 		Else
@@ -442,7 +473,7 @@ End Type
 Type TQtPanel Extends TQtGadget
 
 	Field activePanel:Int
-
+	
 	Method InitGadget()
 		CreatePanel()
 	End Method
@@ -479,6 +510,13 @@ Type TQtPanel Extends TQtGadget
 
 	Method ClientHeight:Int()
 		Return MaxGuiQFrame(widget).ClientHeight()
+	End Method
+	
+	Method SetPixmap(pixmap:TPixmap, flags:Int)
+		If pixmap Then
+			Local pix:QPixmap = ConvertPixmap(pixmap)
+			MaxGuiQFrame(widget).setPixmap(pix, flags)
+		End If
 	End Method
 
 	Method Class:Int()
@@ -707,7 +745,6 @@ Type TQtListBox Extends TQtGadget
 	'End Method
 
 	Method RemoveListItem(index:Int)
-DebugLog "TQtListBox::RemoveListItem(" + index + ")"
 		MaxGuiQListView(widget).removeItem(index)
 	End Method
 
@@ -789,7 +826,6 @@ DebugLog "TQtComboBox::ItemState"
 	End Method
 	
 	Method SelectedItem:Int()
-DebugLog "TQtComboBox::SelectedItem"
 		Return MaxGuiQComboBox(widget).currentIndex()
 	End Method
 
@@ -804,7 +840,6 @@ DebugLog "TQtComboBox::SelectedItem"
 	End Method
 
 	Method SelectItem:Int(index:Int, op:Int= 1) '0=deselect 1=select 2=toggle
-DebugLog "TQtComboBox::SelectItem"
 		MaxGuiQComboBox(widget).setCurrentIndex(index)
 	End Method
 	
@@ -1308,7 +1343,13 @@ Type MaxGuiQMainWindow Extends QMainWindow
 	' it automatically scales to fit the inside of the window.
 	Field clientWidget:QWidget
 
-	Method MCreate:MaxGuiQMainWindow(parent:QWidget = Null, flags:Int, owner:TQtGadget)
+	Method MCreate:MaxGuiQMainWindow(parent:QWidget = Null, style:Int, owner:TQtGadget)
+		Local flags:Int
+		
+		If style & WINDOW_TOOL Then
+			flags :| Qt_Tool
+		End If
+
 		gadget = owner
 		Super.Create(parent, flags)
 		Return Self
@@ -1317,6 +1358,11 @@ Type MaxGuiQMainWindow Extends QMainWindow
 	Method OnInit()
 		clientWidget = New QWidget._Create(Self)
 		setCentralWidget(clientWidget)
+		
+		If gadget.style & WINDOW_CLIENTCOORDS Then
+			clientWidget.resize(gadget.width, gadget.height)
+		End If
+		
 		' set mouse tracking to generate mouse movement events for child widgets
 		clientWidget.setMouseTracking(True)
 		' nice toolbars
@@ -1507,7 +1553,7 @@ Type MaxGuiQFrame Extends QFrame
 
 	' this is our "client area"
 	' it automatically scales to fit the inside of the gadget.
-	Field clientWidget:QWidget
+	Field clientWidget:MaxGuiQClientWidget
 
 	Method MCreate:MaxGuiQFrame(parent:QWidget, owner:TQtPanel)
 		gadget = owner
@@ -1519,7 +1565,7 @@ Type MaxGuiQFrame Extends QFrame
 		Local layout:QVBoxLayout = New QVBoxLayout.Create()
 		layout.setContentsMargins(0, 0, 0, 0)
 		
-		clientWidget = New QWidget._Create()
+		clientWidget = MaxGuiQClientWidget(New MaxGuiQClientWidget._Create())
 		layout.addWidget(clientWidget)
 		setLayout(layout)
 
@@ -1562,7 +1608,73 @@ Type MaxGuiQFrame Extends QFrame
 			PostGuiEvent EVENT_MOUSEMOVE, gadget, event.button(), , event.x(), event.y()
 		End If		
 	End Method
+
+	Method mouseReleaseEvent(event:QMouseEvent)
+		If gadget.activePanel Then
+			PostGuiEvent EVENT_MOUSEUP, gadget, event.button(), , event.x(), event.y()
+		End If		
+	End Method
+
+	Method setPixmap(pixmap:QPixmap, flags:Int)
+		clientWidget.pix = pixmap
+		clientWidget.pixFlags = flags
+		
+		update()
+	End Method
+
+End Type
+
+Type MaxGuiQClientWidget Extends QWidget
+
+	Field pix:QPixmap
+	Field pixFlags:Int
+
+	Method OnInit()
+	End Method
 	
+	Method paintEvent(event:QPaintEvent)
+		If pix Then
+
+			Local painter:QPainter = New QPainter.Create(Self)
+
+			Select pixFlags & (PANELPIXMAP_TILE | PANELPIXMAP_CENTER | PANELPIXMAP_FIT | PANELPIXMAP_FIT2 | PANELPIXMAP_STRETCH)
+				Case PANELPIXMAP_TILE
+
+					painter.drawTiledPixmap(0, 0, width(), height(), pix)
+				
+				Case PANELPIXMAP_CENTER
+
+					painter.DrawPixmap(width() / 2 - pix.width() / 2, height() / 2 - pix.height() / 2, pix)
+					
+				Case PANELPIXMAP_FIT
+					Local _w:Float = width() / (pix.width() * 1.0)
+					Local _h:Float = height() / (pix.height() * 1.0)
+
+					Local newWidth:Int = Min(_w, _h) * pix.width()
+					Local newHeight:Int = Min(_w, _h) * pix.height()
+
+					painter.DrawPixmapSize(width() / 2 - newWidth / 2, height() / 2 - newHeight / 2, newWidth, newHeight, pix)
+
+				Case PANELPIXMAP_FIT2
+					Local _w:Float = width() / (pix.width() * 1.0)
+					Local _h:Float = height() / (pix.height() * 1.0)
+
+					Local newWidth:Int = Max(_w, _h) * pix.width()
+					Local newHeight:Int = Max(_w, _h) * pix.height()
+
+					painter.DrawPixmapSize(width() / 2 - newWidth / 2, height() / 2 - newHeight / 2, newWidth, newHeight, pix)
+					
+				Case PANELPIXMAP_STRETCH
+
+					painter.DrawPixmapSize(0, 0, width(), height(), pix)
+			End Select
+			
+			painter.DoEnd()
+		End If
+		
+		Super.paintEvent(event)
+	End Method
+
 End Type
 
 ' "group box" panel

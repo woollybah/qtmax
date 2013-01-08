@@ -99,5 +99,7 @@ Extern
 	Function bmx_qt_qpainter_setclipping(handle:Byte Ptr, enable:Int)
 	Function bmx_qt_qpainter_setcompositionmode(handle:Byte Ptr, _mode:Int)
 	Function bmx_qt_qpainter_setopacity(handle:Byte Ptr, opacity:Double)
+	Function bmx_qt_qpainter_drawpixmap(handle:Byte Ptr, x:Int, y:Int, pixmap:Byte Ptr)
+	Function bmx_qt_qpainter_drawpixmapsize(handle:Byte Ptr, x:Int, y:Int, width:Int, height:Int, pixmap:Byte Ptr)
 
 End Extern

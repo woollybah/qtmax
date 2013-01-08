@@ -49,6 +49,8 @@ extern "C" {
 	MaxQImage * bmx_qt_qpixmap_toimage(MaxQPixmap * pixmap);
 	MaxQPixmap * bmx_qt_qpixmap_grabwindow(int window, int x, int y, int width, int height);
 	MaxQPixmap * bmx_qt_qpixmap_scaled(MaxQPixmap * pixmap, int width, int height, int aspectRatioMode, int transformMode);
+	int bmx_qt_qpixmap_height(MaxQPixmap * pixmap);
+	int bmx_qt_qpixmap_width(MaxQPixmap * pixmap);
 
 }
 
