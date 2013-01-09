@@ -864,10 +864,9 @@ Type TQtDesktop Extends TQtGadget
 	
 		widget = QApplication.Desktop()
 		
-		Rethink()
-		
-		SetShow(True)
-		
+	End Method
+	
+	Method Rethink()
 	End Method
 
 	Method GetWidth%()
@@ -887,10 +886,10 @@ End Type
 Type TQtToolBar Extends TQtGadget
 
 	Method InitGadget()
-		CreateToolBar()
+		CreateToolbar()
 	End Method
 	
-	Method CreateToolBar()
+	Method CreateToolbar()
 
 		If parent.Class() <> GADGET_WINDOW Then
 			DebugLog "Parent is not a WINDOW!?"
@@ -2100,6 +2099,7 @@ Type MaxGuiQProgressBar Extends QProgressBar
 	End Method
 
 	Method OnInit()
+		setTextVisible(False)
 	End Method
 
 End Type
