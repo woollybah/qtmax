@@ -743,6 +743,9 @@ Type QWidget Extends QObject
 		bmx_qt_qwidget_update(qObjectPtr)
 	End Method
 
+	Method updateGeometry()
+		bmx_qt_qwidget_updategeometry(qObjectPtr)
+	End Method
 
 
 	Method sizeHint(w:Int Var, h:Int Var)

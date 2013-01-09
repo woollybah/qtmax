@@ -717,270 +717,247 @@ Const Qt_UniteClip:Int = 3
 
 Rem
 bbdoc: Allows data from drag and drop operations to be dropped onto the widget (see QWidget::setAcceptDrops()).
-end rem
+End Rem
 Const Qt_WA_AcceptDrops:Int = 78
 Rem
 bbdoc: Enables tooltips for inactive windows.
-end rem
+End Rem
 Const Qt_WA_AlwaysShowToolTips:Int = 84
 Rem
-bbdoc: This flag is superfluous and obsolete; it no longer has any effect. Since Qt 4.1, all widgets that do not set WA_PaintOnScreen propagate their contents.
-end rem
+bbdoc: This flag is superfluous and obsolete; it no longer has any effect.
+about: Since Qt 4.1, all widgets that do not set WA_PaintOnScreen propagate their contents.
+End Rem
 Const Qt_WA_ContentsPropagated:Int = 3
 Rem
-bbdoc: Indicates that the widget wants to continue operating normally in "What's This?" mode. This is set by the widget's author.
-end rem
+bbdoc: Indicates that the widget wants to continue operating normally in "What's This?" mode.
+about: This is set by the widget's author.
+End Rem
 Const Qt_WA_CustomWhatsThis:Int = 47
 Rem
 bbdoc: Makes Qt delete this widget when the widget has accepted the close event (see QWidget::closeEvent()).
-end rem
+End Rem
 Const Qt_WA_DeleteOnClose:Int = 55
 Rem
-bbdoc: Indicates that the widget is disabled, i.e. it does not receive any mouse or keyboard events. There is also a getter functions QWidget::isEnabled(). This is set/cleared by the Qt kernel.
-end rem
+bbdoc: Indicates that the widget is disabled, i.e. it does not receive any mouse or keyboard events.
+about: There is also a getter functions QWidget::isEnabled(). This is set/cleared by the Qt kernel.
+End Rem
 Const Qt_WA_Disabled:Int = 0
 Rem
-bbdoc: Indicates that the widget is explicitly disabled, i.e. it will remain disabled even when all its ancestors are set to the enabled state. This implies WA_Disabled. This is set/cleared by QWidget::setEnabled() and QWidget::setDisabled().
-end rem
+bbdoc: Indicates that the widget is hidden or is not a part of the viewable Desktop.
+End Rem
+Const Qt_WA_DontShowOnScreen:Int = 103
+Rem
+bbdoc: Indicates that the widget is explicitly disabled, i.e. it will remain disabled even when all its ancestors are set to the enabled state.
+about: This implies WA_Disabled. This is set/cleared by QWidget::setEnabled() and QWidget::setDisabled().
+End Rem
 Const Qt_WA_ForceDisabled:Int = 32
 Rem
-bbdoc: Indicates that updates are explicitly disabled for the widget; i.e. it will remain disabled even when all its ancestors are set to the updates-enabled state. This implies WA_UpdatesDisabled. This is set/cleared by QWidget::setUpdatesEnabled().
-end rem
+bbdoc: Indicates that updates are explicitly disabled for the widget; i.e. it will remain disabled even when all its ancestors are set to the updates-enabled state.
+about: This implies WA_UpdatesDisabled. This is set/cleared by QWidget::setUpdatesEnabled().
+End Rem
 Const Qt_WA_ForceUpdatesDisabled:Int = 59
 Rem
 bbdoc: This attribute has been deprecated. Use QWidget::windowModality instead.
-end rem
+End Rem
 Const Qt_WA_GroupLeader:Int = 72
 Rem
-bbdoc: Forces Qt to generate paint events when the mouse enters or leaves the widget. This feature is typically used when implementing custom styles; see the Styles example for details.
-end rem
+bbdoc: Forces Qt to generate paint events when the mouse enters or leaves the widget.
+about: This feature is typically used when implementing custom styles; see the Styles example for details.
+End Rem
 Const Qt_WA_Hover:Int = 74
 Rem
-bbdoc: Enables input methods for Asian languages. Must be set when creating custom text editing widgets. On Windows CE this flag can be used in addition to QApplication::autoSipEnabled to automatically display the SIP when entering a widget.
-end rem
+bbdoc: Enables input methods for Asian languages. Must be set when creating custom text editing widgets.
+about: On Windows CE and Symbian this flag can be used in addition to QApplication::autoSipEnabled to automatically display the SIP when entering a widget.
+End Rem
 Const Qt_WA_InputMethodEnabled:Int = 14
 Rem
 bbdoc: Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
-end rem
+End Rem
 Const Qt_WA_KeyboardFocusChange:Int = 77
 Rem
-bbdoc: Enables key event compression if set, and disables it if not set. By default key compression is off, so widgets receive one key press event for each key press (or more, since autorepeat is usually on). If you turn it on and your program doesn't keep up with key input, Qt may try to compress key events so that more than one character can be processed in each event. For example, a word processor widget might receive 2, 3 or more characters in each QKeyEvent::text(), if the layout recalculation takes too long for the CPU. If a widget supports multiple character unicode input, it is always safe to turn the compression on. Qt performs key event compression only for printable characters. Qt_Modifier keys, cursor movement keys, function keys and miscellaneous action keys (e.g. Escape, Enter, Backspace, PrintScreen) will stop key event compression, even if there are more compressible key events available. Platforms other than Mac and X11 do not support this compression, in which case turning it on will have no effect. This is set/cleared by the widget's author.
-end rem
+bbdoc: Enables key event compression if set, and disables it if not set.
+about: By default key compression is off, so widgets receive one key press event for each key press (or more, since autorepeat is usually on). 
+If you turn it on and your program doesn't keep up with key input, Qt may try to compress key events so that more than one character can be processed
+in each event. For example, a word processor widget might receive 2, 3 or more characters in each QKeyEvent::text(), if the layout recalculation takes too
+ long for the CPU. If a widget supports multiple character unicode input, it is always safe to turn the compression on. Qt performs key event compression
+ only for printable characters. Qt::Modifier keys, cursor movement keys, function keys and miscellaneous action keys (e.g. Escape, Enter, Backspace, PrintScreen)
+ will stop key event compression, even if there are more compressible key events available. Platforms other than Mac and X11 do not support this compression,
+ in which case turning it on will have no effect. This is set/cleared by the widget's author.
+End Rem
 Const Qt_WA_KeyCompression:Int = 33
 Rem
-bbdoc: Indicates that the widget wants QLayout to operate on the entire QWidget::rect(), not only on QWidget::contentsRect(). This is set by the widget's author.
-end rem
+bbdoc: Indicates that the widget wants QLayout to operate on the entire QWidget::rect(), not only on QWidget::contentsRect().
+about: This is set by the widget's author.
+End Rem
 Const Qt_WA_LayoutOnEntireRect:Int = 48
 Rem
-bbdoc: Ignore the layout item rect from the style when laying out this widget with QLayout. This makes a difference in QMacStyle and QPlastiqueStyle for some widgets.
-end rem
+bbdoc: Ignore the layout item rect from the style when laying out this widget with QLayout.
+about: This makes a difference in QMacStyle and QPlastiqueStyle for some widgets.
+End Rem
 Const Qt_WA_LayoutUsesWidgetRect:Int = 92
 Rem
-bbdoc: When a widget that has this attribute set is clicked, and its window is inactive, the click will make the window active but won't be seen by the widget. Typical use of this attribute is on widgets with "destructive" actions, such as a "Delete" button. WA_MacNoClickThrough also applies to all child widgets of the widget that has it set.
-end rem
+bbdoc: When a widget that has this attribute set is clicked, and its window is inactive, the click will make the window active but won't be seen by the widget.
+about: Typical use of this attribute is on widgets with "destructive" actions, such as a "Delete" button. WA_MacNoClickThrough also applies to all child widgets 
+of the widget that has it set.
+End Rem
 Const Qt_WA_MacNoClickThrough:Int = 12
 Rem
-bbdoc: Indicates that the native Carbon size grip should be opaque instead of transparent (the default). This attribute is only applicable to Mac OS X and is set by the widget's author.
-end rem
+bbdoc: Indicates that the native Carbon size grip should be opaque instead of transparent (the default).
+about: This attribute is only applicable to Mac OS X and is set by the widget's author.
+End Rem
 Const Qt_WA_MacOpaqueSizeGrip:Int = 85
 Rem
-bbdoc: Indicates that this widget should get a QFocusFrame around it. Some widgets draw their own focus halo regardless of this attribute. Not that the QWidget::focusPolicy also plays the main role in whether something is given focus or not, this only controls whether or not this gets the focus frame. This attribute is only applicable to Mac OS X.
-end rem
+bbdoc: Indicates that this widget should get a QFocusFrame around it.
+about: Some widgets draw their own focus halo regardless of this attribute. Not that the QWidget::focusPolicy also plays the main role in whether something is given focus or not, this only controls whether or not this gets the focus frame. This attribute is only applicable to Mac OS X.
+End Rem
 Const Qt_WA_MacShowFocusRect:Int = 88
 Rem
 bbdoc: Indicates the widget should have the normal size for widgets in Mac OS X. This attribute is only applicable to Mac OS X.
-end rem
+End Rem
 Const Qt_WA_MacNormalSize:Int = 89
 Rem
 bbdoc: Indicates the widget should have the small size for widgets in Mac OS X. This attribute is only applicable to Mac OS X.
-end rem
+End Rem
 Const Qt_WA_MacSmallSize:Int = 90
 Rem
 bbdoc: Indicates the widget should have the mini size for widgets in Mac OS X. This attribute is only applicable to Mac OS X.
-end rem
+End Rem
 Const Qt_WA_MacMiniSize:Int = 91
 Rem
 bbdoc: Indicates the widget can choose between alternative sizes for widgets to avoid clipping. This attribute is only applicable to Mac OS X.
-end rem
+End Rem
 Const Qt_WA_MacVariableSize:Int = 102
 Rem
 bbdoc: Indicates the widget should be drawn in the brushed metal style as supported by the windowing system. This attribute is only applicable to Mac OS X.
-end rem
+End Rem
 Const Qt_WA_MacBrushedMetal:Int = 46
 Rem
 bbdoc: Indicates that the widget is mapped on screen. This is set/cleared by the Qt kernel.
-end rem
+End Rem
 Const Qt_WA_Mapped:Int = 11
 Rem
 bbdoc: Makes the widget receive mouse events for the entire widget regardless of the currently set mask, overriding QWidget::setMask(). This is not applicable for top-level windows.
-end rem
+End Rem
 Const Qt_WA_MouseNoMask:Int = 71
 Rem
 bbdoc: Indicates that the widget has mouse tracking enabled. See QWidget::mouseTracking.
-end rem
+End Rem
 Const Qt_WA_MouseTracking:Int = 2
 Rem
 bbdoc: Indicates that the widget has an explicit position. This is set/cleared by QWidget::move() and by QWidget::setGeometry().
-end rem
+End Rem
 Const Qt_WA_Moved:Int = 43
 Rem
-bbdoc: Makes drawing to a widget with this attribute set use the Direct3D paint engine, if the Direct3D paint engine is available. This functionality is experimental.
-end rem
+bbdoc: This value is obsolete and has no effect.
+End Rem
 Const Qt_WA_MSWindowsUseDirect3D:Int = 94
 Rem
 bbdoc: Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent. This is rarely necessary but can help to avoid automatic insertion widgets like splitters and layouts. This is set by a widget's author.
-end rem
+End Rem
 Const Qt_WA_NoChildEventsForParent:Int = 58
 Rem
 bbdoc: Indicates that the widget does not want to receive ChildAdded or ChildRemoved events sent from its children. This is set by a widget's author.
-end rem
+End Rem
 Const Qt_WA_NoChildEventsFromChildren:Int = 39
 Rem
-bbdoc: Used for pop-up widgets.
-about: Indicates that the most recent mouse press event should not be replayed when the
-pop-up widget closes. The flag is set by the widget's author and cleared by the Qt kernel
-every time the widget receives a new mouse event.
-end rem
+bbdoc: Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes. The flag is set by the widget's author and cleared by the Qt kernel every time the widget receives a new mouse event.
+End Rem
 Const Qt_WA_NoMouseReplay:Int = 54
 Rem
-bbdoc: Prohibits mouse events from being propagated to the widget's parent.
-about: This attribute is disabled by default.
-end rem
+bbdoc: Prohibits mouse events from being propagated to the widget's parent. This attribute is disabled by default.
+End Rem
 Const Qt_WA_NoMousePropagation:Int = 73
 Rem
-bbdoc: When enabled, this attribute disables the delivery of mouse events to the widget and
-its children. Mouse events are delivered to other widgets as if the widget and its children
-were not present in the widget hierarchy; mouse clicks and other events effectively
-"pass through" them. This attribute is disabled by default.
-end rem
+bbdoc: When enabled, this attribute disables the delivery of mouse events to the widget and its children. Mouse events are delivered to other widgets as if the widget and its children were not present in the widget hierarchy; mouse clicks and other events effectively "pass through" them. This attribute is disabled by default.
+End Rem
 Const Qt_WA_TransparentForMouseEvents:Int = 51
 Rem
-bbdoc: Indicates that the widget has no background, i.e. when the widget receives paint events, the background is not automatically repainted.
-about: Note: Unlike WA_OpaquePaintEvent, newly exposed areas are never filled with the
-background (e.g., after showing a window for the first time the user can see "through"
-it until the application processes the paint events). This flag is set or cleared by the
-widget's author.
-end rem
+bbdoc: Indicates that the widget has no background, i.e. when the widget receives paint events, the background is not automatically repainted. Note: Unlike WA_OpaquePaintEvent, newly exposed areas are never filled with the background (e.g., after showing a window for the first time the user can see "through" it until the application processes the paint events). This flag is set or cleared by the widget's author.
+End Rem
 Const Qt_WA_NoSystemBackground:Int = 9
 Rem
-bbdoc: Indicates that the widget paints all its pixels when it receives a paint event.
-about: Thus, it is not required for operations like updating, resizing, scrolling and focus
-changes to erase the widget before generating paint events. The use of WA_OpaquePaintEvent
-provides a small optimization by helping to reduce flicker on systems that do not support
-double buffering and avoiding computational cycles necessary to erase the background prior
-to painting. Note: Unlike WA_NoSystemBackground, WA_OpaquePaintEvent makes an effort to
-avoid transparent window backgrounds. This flag is set or cleared by the widget's author.
-end rem
+bbdoc: Indicates that the widget paints all its pixels when it receives a paint event. Thus, it is not required for operations like updating, resizing, scrolling and focus changes to erase the widget before generating paint events. The use of WA_OpaquePaintEvent provides a small optimization by helping to reduce flicker on systems that do not support double buffering and avoiding computational cycles necessary to erase the background prior to painting. Note: Unlike WA_NoSystemBackground, WA_OpaquePaintEvent makes an effort to avoid transparent window backgrounds. This flag is set or cleared by the widget's author.
+End Rem
 Const Qt_WA_OpaquePaintEvent:Int = 4
 Rem
-bbdoc: Indicates that the widget is outside the valid range of the window system's coordinate system.
-about: A widget outside the valid range cannot be mapped on screen. This is set/cleared by
-the Qt kernel.
-end rem
+bbdoc: This value is obsolete. Use WA_OpaquePaintEvent instead.
+End Rem
+Const Qt_WA_NoBackground:Int = Qt_WA_OpaquePaintEvent
+Rem
+bbdoc: Indicates that the widget is outside the valid range of the window system's coordinate system. A widget outside the valid range cannot be mapped on screen. This is set/cleared by the Qt kernel.
+End Rem
 Const Qt_WA_OutsideWSRange:Int = 49
 Rem
-bbdoc: Indicates that the widget wants to draw directly onto the screen.
-about: Widgets with this attribute set do not participate in composition management,
-i.e. they cannot be semi-transparent or shine through semi-transparent overlapping
-widgets. Note: This flag is only supported on X11 and it disables double buffering.
-On Qt for Embedded Linux, the flag only works when set on a top-level widget and it
-relies on support from the active screen driver. This flag is set or cleared by the
-widget's author. To render outside of Qt's paint system, e.g., if you require native
-painting primitives, you need to reimplement QWidget::paintEngine() to return 0 and set
-this flag.
-end rem
+bbdoc: Indicates that the widget wants to draw directly onto the screen. Widgets with this attribute set do not participate in composition management, i.e. they cannot be semi-transparent or shine through semi-transparent overlapping widgets. Note: This flag is only supported on X11 and it disables double buffering. On Qt for Embedded Linux, the flag only works when set on a top-level widget and it relies on support from the active screen driver. This flag is set or cleared by the widget's author. To render outside of Qt's paint system, e.g., if you require native painting primitives, you need to reimplement QWidget::paintEngine() to return 0 and set this flag.
+End Rem
 Const Qt_WA_PaintOnScreen:Int = 8
 Rem
-bbdoc: Makes it possible to use QPainter to paint on the widget outside paintEvent().
-about: This flag is not supported on Windows, Mac OS X or Embedded Linux. We recommend
-that you use it only when porting Qt 3 code to Qt 4.
-end rem
+bbdoc: Makes it possible to use QPainter to paint on the widget outside paintEvent(). This flag is not supported on Windows, Mac OS X or Embedded Linux. We recommend that you use it only when porting Qt 3 code to Qt 4.
+End Rem
 Const Qt_WA_PaintOutsidePaintEvent:Int = 13
 Rem
-bbdoc: Makes all painters operating on this widget unclipped.
-about: Children of this widget or other widgets in front of it do not clip the area the
-painter can paint on. This flag is only supported for widgets with the WA_PaintOnScreen
-flag set. The preferred way to do this in a cross platform way is to create a transparent
-widget that lies in front of the other widgets.
-end rem
+bbdoc: Makes all painters operating on this widget unclipped. Children of this widget or other widgets in front of it do not clip the area the painter can paint on. This flag is only supported for widgets with the WA_PaintOnScreen flag set. The preferred way to do this in a cross platform way is to create a transparent widget that lies in front of the other widgets.
+End Rem
 Const Qt_WA_PaintUnclipped:Int = 52
 Rem
-bbdoc: Indicates that a move event is pending, e.g., when a hidden widget was moved.
-about: This flag is set or cleared by the Qt kernel.
-end rem
+bbdoc: Indicates that a move event is pending, e.g., when a hidden widget was moved. This flag is set or cleared by the Qt kernel.
+End Rem
 Const Qt_WA_PendingMoveEvent:Int = 34
 Rem
-bbdoc: Indicates that a resize event is pending, e.g., when a hidden widget was resized.
-about: This flag is set or cleared by the Qt kernel.
-end rem
+bbdoc: Indicates that a resize event is pending, e.g., when a hidden widget was resized. This flag is set or cleared by the Qt kernel.
+End Rem
 Const Qt_WA_PendingResizeEvent:Int = 35
 Rem
-bbdoc: Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
-about: This behavior can be modified with the QApplication::quitOnLastWindowClosed property.
-By default this attribute is set for all widgets of type Qt_Window.
-end rem
+bbdoc: Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent(). This behavior can be modified with the QApplication::quitOnLastWindowClosed property. By default this attribute is set for all widgets of type Qt::Window.
+End Rem
 Const Qt_WA_QuitOnClose:Int = 76
 Rem
-bbdoc: Indicates that the widget has an explicit size.
-about: This flag is set or cleared by QWidget::resize() and QWidget::setGeometry().
-end rem
+bbdoc: Indicates that the widget has an explicit size. This flag is set or cleared by QWidget::resize() and QWidget::setGeometry().
+End Rem
 Const Qt_WA_Resized:Int = 42
 Rem
 bbdoc: Indicates that the layout direction for the widget is right to left.
-end rem
+End Rem
 Const Qt_WA_RightToLeft:Int = 56
 Rem
-bbdoc: Indicates that the widget has a cursor of its own.
-about: This flag is set or cleared by QWidget::setCursor() and QWidget::unsetCursor().
-end rem
+bbdoc: Indicates that the widget has a cursor of its own. This flag is set or cleared by QWidget::setCursor() and QWidget::unsetCursor().
+End Rem
 Const Qt_WA_SetCursor:Int = 38
 Rem
-bbdoc: Indicates that the widget has a font of its own.
-about: This flag is set or cleared by QWidget::setFont().
-end rem
+bbdoc: Indicates that the widget has a font of its own. This flag is set or cleared by QWidget::setFont().
+End Rem
 Const Qt_WA_SetFont:Int = 37
 Rem
-bbdoc: Indicates that the widget has a palette of its own.
-about: This flag is set or cleared by QWidget::setPalette().
-end rem
+bbdoc: Indicates that the widget has a palette of its own. This flag is set or cleared by QWidget::setPalette().
+End Rem
 Const Qt_WA_SetPalette:Int = 36
 Rem
-bbdoc: Indicates that the widget has a style of its own.
-about: This flag is set or cleared by QWidget::setStyle().
-end rem
+bbdoc: Indicates that the widget has a style of its own. This flag is set or cleared by QWidget::setStyle().
+End Rem
 Const Qt_WA_SetStyle:Int = 86
 Rem
-bbdoc: This attribute has been deprecated.
-about: Use QWidget::windowModality instead.
-end rem
+bbdoc: This attribute has been deprecated. Use QWidget::windowModality instead.
+End Rem
 Const Qt_WA_ShowModal:Int = 70
 Rem
-bbdoc: Indicates that the widget contents are north-west aligned and static.
-about: On resize, such a widget will receive paint events only for parts of itself
-that are newly visible. This flag is set or cleared by the widget's author.
-end rem
+bbdoc: Indicates that the widget contents are north-west aligned and static. On resize, such a widget will receive paint events only for parts of itself that are newly visible. This flag is set or cleared by the widget's author.
+End Rem
 Const Qt_WA_StaticContents:Int = 5
 Rem
 bbdoc: Indicates that the widget is styled using a style sheet.
-end rem
+End Rem
 Const Qt_WA_StyleSheet:Int = 97
 Rem
-bbdoc: Indicates that the widget should have a translucent background, i.e., any non-opaque regions of the widgets will be translucent because the widget will have an alpha channel.
-about: Setting this flag causes WA_NoSystemBackground to be set. On Windows the widget also
-needs the Qt_FramelessWindowHint window flag to be set. This flag is set or cleared by
-the widget's author.
-end rem
+bbdoc: Indicates that the widget should have a translucent background, i.e., any non-opaque regions of the widgets will be translucent because the widget will have an alpha channel. Setting this flag causes WA_NoSystemBackground to be set. On Windows the widget also needs the Qt::FramelessWindowHint window flag to be set. This flag is set or cleared by the widget's author.
+End Rem
 Const Qt_WA_TranslucentBackground:Int = 120
 Rem
-bbdoc: Indicates that the widget is under the mouse cursor.
-about: The value is not updated correctly during drag and drop operations. There is also
-a getter function, QWidget::underMouse(). This flag is set or cleared by the Qt kernel.
-end rem
+bbdoc: Indicates that the widget is under the mouse cursor. The value is not updated correctly during drag and drop operations. There is also a getter function, QWidget::underMouse(). This flag is set or cleared by the Qt kernel.
+End Rem
 Const Qt_WA_UnderMouse:Int = 1
 Rem
-bbdoc: Indicates that updates are blocked (including the system background).
-about: This flag is set or cleared by the Qt kernel.
-end rem
+bbdoc: Indicates that updates are blocked (including the system background). This flag is set or cleared by the Qt kernel.
+End Rem
 Const Qt_WA_UpdatesDisabled:Int = 10
 
 Rem

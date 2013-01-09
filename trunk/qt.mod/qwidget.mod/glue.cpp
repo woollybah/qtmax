@@ -1022,6 +1022,10 @@ void bmx_qt_qwidget_deletelayout(QWidget * widget) {
 	}
 }
 
+void bmx_qt_qwidget_updategeometry(QWidget * widget) {
+	widget->updateGeometry();
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
