@@ -49,6 +49,43 @@ extern "C" {
 	void _qt_qwebkit_QWebView__OnTitleChanged(BBObject * handle, BBString * title);
 	void _qt_qwebkit_QWebView__OnUrlChanged(BBObject * handle, MaxQUrl * url);
 
+
+	// QWidget
+	void bmx_qt_qwebview_default_actionevent(QWebView * view, QActionEvent * event);
+	void bmx_qt_qwebview_default_changeevent(QWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_closeevent(QWebView * view, QCloseEvent * event);
+	void bmx_qt_qwebview_default_contextmenuevent(QWebView * view, QContextMenuEvent * event);
+	void bmx_qt_qwebview_default_dragenterevent(QWebView * view, QDragEnterEvent * event);
+	void bmx_qt_qwebview_default_dragleaveevent(QWebView * view, QDragLeaveEvent * event);
+	void bmx_qt_qwebview_default_dragmoveevent(QWebView * view, QDragMoveEvent * event);
+	void bmx_qt_qwebview_default_dropevent(QWebView * view, QDropEvent * event);
+	void bmx_qt_qwebview_default_enterevent(QWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_focusinevent(QWebView * view, QFocusEvent * event);
+	int bmx_qt_qwebview_default_focusnextprevchild(QWebView * view, int next);
+	int bmx_qt_qwebview_default_focusnextchild(QWebView * view);
+	void bmx_qt_qwebview_default_focusoutevent(QWebView * view, QFocusEvent * event);
+	int bmx_qt_qwebview_default_focuspreviouschild(QWebView * view);
+	void bmx_qt_qwebview_default_hideevent(QWebView * view, QHideEvent * event);
+	void bmx_qt_qwebview_default_inputmethodevent(QWebView * view, QInputMethodEvent * event);
+	void bmx_qt_qwebview_default_keypressevent(QWebView * view, QKeyEvent * event);
+	void bmx_qt_qwebview_default_keyreleaseevent(QWebView * view, QKeyEvent * event);
+	void bmx_qt_qwebview_default_leaveevent(QWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_mousedoubleclickevent(QWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_mousemoveevent(QWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_mousepressevent(QWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_mousereleaseevent(QWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_moveevent(QWebView * view, QMoveEvent * event);
+	void bmx_qt_qwebview_default_paintevent(QWebView * view, QPaintEvent * event);
+	void bmx_qt_qwebview_default_resizeevent(QWebView * view, QResizeEvent * event);
+	void bmx_qt_qwebview_default_showevent(QWebView * view, QShowEvent * event);
+	void bmx_qt_qwebview_default_tabletevent(QWebView * view, QTabletEvent * event);
+	void bmx_qt_qwebview_default_wheelevent(QWebView * view, QWheelEvent * event);
+	// QObject
+	int bmx_qt_qwebview_default_event(QWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_timerevent(QWebView * view, QTimerEvent * event);
+
+
+
 	QWebView * bmx_qt_qwebview_create(BBObject * handle, QWidget * parent, int flags);
 	void bmx_qt_qwebview_load(QWebView * view, MaxQUrl * url);
 	QAction * bmx_qt_qwebview_pageaction(QWebView * view, int action);
@@ -138,6 +175,79 @@ private slots:
 	void onStatusBarMessage( const QString & text );
 	void onTitleChanged( const QString & title );
 	void onUrlChanged( const QUrl & url );
+
+public:
+	// QWebView
+	// QWidget
+	void defaultactionEvent(QActionEvent * event);
+	void defaultchangeEvent(QEvent * event);
+	void defaultcloseEvent(QCloseEvent * event);
+	void defaultcontextMenuEvent(QContextMenuEvent * event);
+	void defaultdragEnterEvent(QDragEnterEvent * event);
+	void defaultdragLeaveEvent(QDragLeaveEvent * event);
+	void defaultdragMoveEvent(QDragMoveEvent * event);
+	void defaultdropEvent(QDropEvent * event);
+	void defaultenterEvent(QEvent * event);
+	void defaultfocusInEvent(QFocusEvent * event);
+	bool defaultfocusNextChild ();
+	bool defaultfocusNextPrevChild(bool next);
+	void defaultfocusOutEvent(QFocusEvent * event);
+	bool defaultfocusPreviousChild();
+	void defaulthideEvent(QHideEvent * event);
+	void defaultinputMethodEvent(QInputMethodEvent * event);
+	void defaultkeyPressEvent(QKeyEvent * event);
+	void defaultkeyReleaseEvent(QKeyEvent * event);
+	void defaultleaveEvent(QEvent * event);
+	void defaultmouseDoubleClickEvent(QMouseEvent * event);
+	void defaultmouseMoveEvent(QMouseEvent * event);
+	void defaultmousePressEvent(QMouseEvent * event);
+	void defaultmouseReleaseEvent(QMouseEvent * event);
+	void defaultmoveEvent(QMoveEvent * event);
+	void defaultpaintEvent(QPaintEvent * event);
+	void defaultresizeEvent(QResizeEvent * event);
+	void defaultshowEvent(QShowEvent * event);
+	void defaulttabletEvent(QTabletEvent * event);
+	void defaultwheelEvent(QWheelEvent * event);
+	// QObject
+	bool defaultevent(QEvent * event);
+	void defaulttimerEvent(QTimerEvent * event);
+	
+protected:
+	// QWebView
+	// QWidget
+	virtual void actionEvent(QActionEvent * event);
+	virtual void changeEvent(QEvent * event);
+	virtual void closeEvent(QCloseEvent * event);
+	virtual void contextMenuEvent(QContextMenuEvent * event);
+	virtual void dragEnterEvent(QDragEnterEvent * event);
+	virtual void dragLeaveEvent(QDragLeaveEvent * event);
+	virtual void dragMoveEvent(QDragMoveEvent * event);
+	virtual void dropEvent(QDropEvent * event);
+	virtual void enterEvent(QEvent * event);
+	virtual void focusInEvent(QFocusEvent * event);
+	bool focusNextChild();
+	virtual bool focusNextPrevChild(bool next);
+	virtual void focusOutEvent(QFocusEvent * event);
+	bool focusPreviousChild();
+	virtual void hideEvent(QHideEvent * event);
+	virtual void inputMethodEvent(QInputMethodEvent * event);
+	virtual void leaveEvent(QEvent * event);
+	virtual void keyPressEvent(QKeyEvent * event);
+	virtual void keyReleaseEvent(QKeyEvent * event);
+	virtual void mouseDoubleClickEvent(QMouseEvent * event);
+	virtual void mouseMoveEvent(QMouseEvent * event);
+	virtual void mousePressEvent(QMouseEvent * event);
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void moveEvent(QMoveEvent * event);
+	virtual void paintEvent(QPaintEvent * event);
+	virtual void resizeEvent(QResizeEvent * event);
+	virtual void showEvent(QShowEvent * event);
+	virtual void tabletEvent(QTabletEvent * event);
+	virtual void wheelEvent(QWheelEvent * event);
+	// QObject
+	virtual bool event(QEvent * event);
+	virtual void timerEvent(QTimerEvent * event);
+
 };
 
 class MaxQWebHitTestResult
