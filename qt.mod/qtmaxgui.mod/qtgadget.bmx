@@ -839,6 +839,7 @@ DebugLog "TQtComboBox::ItemState"
 		MaxGuiQComboBox(widget).setListItem(index, text, tip, image, data)
 	End Method
 
+
 	Method SelectItem:Int(index:Int, op:Int= 1) '0=deselect 1=select 2=toggle
 		MaxGuiQComboBox(widget).setCurrentIndex(index)
 	End Method
@@ -953,6 +954,16 @@ Type TQtTabber Extends TQtGadget
 		End If
 		MaxGuiQTabWidget(widget).insertListItem(index, text, tip, image, extra)
 	End Method
+
+	Method SetListItem(index:Int, text:String ,tip:String, icon:Int, data:Object)
+		Local image:QIcon
+		
+		If icons And icon >= 0 Then
+			image = icons.icons[icon]
+		End If
+		
+		MaxGuiQTabWidget(widget).setListItem(index, text, tip, image, data)
+	End Method
 	
 	Method RealParentForChild:QWidget()
 		Return MaxGuiQTabWidget(widget).clientWidget
@@ -970,6 +981,10 @@ Type TQtTabber Extends TQtGadget
 		Return MaxGuiQTabWidget(widget).currentIndex()
 	End Method
 
+	Method SelectItem:Int(index:Int, op:Int= 1) '0=deselect 1=select 2=toggle
+		MaxGuiQTabWidget(widget).setCurrentIndex(index)
+	End Method
+	
 	Method Class:Int()
 		Return GADGET_TABBER
 	EndMethod
@@ -2228,6 +2243,19 @@ Type MaxGuiQTabWidget Extends QTabWidget
 		pages = pages[..index] + [page] + pages[index..]
 		
 		inserttab(index, page, text, icon)
+		
+		If tip Then
+			setTabToolTip(index, tip)
+		End If
+		
+	End Method
+
+	Method setListItem(index:Int, text:String, tip:String, icon:QIcon, extra:Object)
+		setTabText(index, text)
+		
+		If icon Then
+			setTabIcon(index, icon)
+		End If
 		
 		If tip Then
 			setTabToolTip(index, tip)

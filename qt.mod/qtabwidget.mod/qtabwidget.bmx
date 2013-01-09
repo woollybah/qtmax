@@ -141,6 +141,14 @@ Type QTabWidget Extends QWidget
 		bmx_qt_qtabwidget_setcornerwidget(qObjectPtr, widget.qObjectPtr, corner)
 	End Method
 	
+	Method setCurrentIndex(index:Int)
+		bmx_qt_qtabwidget_setcurrentindex(qObjectPtr, index)
+	End Method
+	
+	Method setCurrentWidget(widget:QWidget)
+		bmx_qt_qtabwidget_setcurrentwidget(qObjectPtr, widget.qObjectPtr)
+	End Method
+	
 	Method setDocumentMode(set:Int)
 		bmx_qt_qtabwidget_setdocumentmode(qObjectPtr, set)
 	End Method
