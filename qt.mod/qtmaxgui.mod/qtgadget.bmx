@@ -65,12 +65,13 @@ Type TQtGadget Extends TGadget
 			widget.hide()
 		EndIf
 		
-		'UpdateChildVisibility()
 	End Method
 
 	Method Rethink()
 		If widget Then
 			widget.setGeometry(xpos, ypos, width, height)
+			'widget.move(xpos, ypos)
+			'widget.resize(width, height)
 		End If
 	End Method
 
@@ -156,6 +157,12 @@ Type TQtGadget Extends TGadget
 		Return Null
 	End Method
 
+	Method Activate(command:Int)
+		If command = ACTIVATE_REDRAW Then
+			widget.update()
+		End If
+	End Method
+	
 End Type
 
 Type TQtIconStrip Extends TIconStrip
@@ -255,7 +262,7 @@ Type TQtWindow Extends TQtGadget
 		EndIf
 		
 		If style & WINDOW_RESIZABLE Then
-			
+
 		Else
 			widget.setFixedSize(width, height)
 		End If
@@ -299,10 +306,6 @@ Type TQtWindow Extends TQtGadget
 		Return MaxGuiQMainWindow(widget).ClientHeight()
 	End Method
 
-	Method Class:Int()
-		Return GADGET_WINDOW
-	EndMethod
-	
 	Method SetStatusText(text:String)
 		MaxGuiQMainWindow(widget).SetStatusText(text)
 	End Method
@@ -316,6 +319,24 @@ Type TQtWindow Extends TQtGadget
 		' we deal with that in the menu item code!
 		Return Self
 	End Method
+
+	Method SetShow(truefalse:Int)
+'DebugStop
+		If truefalse Then
+			widget.setAttribute(Qt_WA_DontShowOnScreen, False)
+			widget.show()
+
+			'Rethink()
+		Else
+			widget.hide()
+			widget.setAttribute(Qt_WA_DontShowOnScreen, True)
+		EndIf
+		
+	End Method
+	
+	Method Class:Int()
+		Return GADGET_WINDOW
+	EndMethod
 	
 End Type
 
@@ -887,10 +908,10 @@ End Type
 Type TQtToolBar Extends TQtGadget
 
 	Method InitGadget()
-		CreateToolbar()
+		CreateToolBar()
 	End Method
 	
-	Method CreateToolbar()
+	Method CreateToolBar()
 
 		If parent.Class() <> GADGET_WINDOW Then
 			DebugLog "Parent is not a WINDOW!?"
@@ -983,6 +1004,12 @@ Type TQtTabber Extends TQtGadget
 
 	Method SelectItem:Int(index:Int, op:Int= 1) '0=deselect 1=select 2=toggle
 		MaxGuiQTabWidget(widget).setCurrentIndex(index)
+	End Method
+
+	Method Rethink()
+		Super.Rethink()
+	
+		LayoutKids()
 	End Method
 	
 	Method Class:Int()
@@ -1655,6 +1682,16 @@ Type MaxGuiQFrame Extends QFrame
 		update()
 	End Method
 
+	Method resizeEvent(event:QResizeEvent)
+		Local w:Int, h:Int
+		event.size(w, h)
+
+		gadget.SetRect(gadget.xpos, gadget.ypos, w, h)
+		gadget.layoutKids
+
+		Super.resizeEvent(event)
+	End Method
+
 End Type
 
 Type MaxGuiQClientWidget Extends QWidget
@@ -2277,7 +2314,7 @@ Type MaxGuiQTabWidget Extends QTabWidget
 		layout.addWidget(clientWidget)
 		
 		pages[index].setLayout(layout)
-		
+
 		PostGuiEvent EVENT_GADGETACTION, gadget, index
 	End Method
 

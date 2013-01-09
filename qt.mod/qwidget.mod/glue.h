@@ -245,6 +245,7 @@ extern "C" {
 	void bmx_qt_qwidget_setbasesize(QWidget * widget, int basew, int baseh);
 	void bmx_qt_qwidget_setcontentsmargins(QWidget * widget, int left, int top, int right, int bottom);
 	void bmx_qt_qwidget_deletelayout(QWidget * widget);
+	void bmx_qt_qwidget_updategeometry(QWidget * widget);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
