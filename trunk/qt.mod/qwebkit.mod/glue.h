@@ -50,39 +50,40 @@ extern "C" {
 	void _qt_qwebkit_QWebView__OnUrlChanged(BBObject * handle, MaxQUrl * url);
 
 
+	// QWebView
 	// QWidget
-	void bmx_qt_qwebview_default_actionevent(QWebView * view, QActionEvent * event);
-	void bmx_qt_qwebview_default_changeevent(QWebView * view, QEvent * event);
-	void bmx_qt_qwebview_default_closeevent(QWebView * view, QCloseEvent * event);
-	void bmx_qt_qwebview_default_contextmenuevent(QWebView * view, QContextMenuEvent * event);
-	void bmx_qt_qwebview_default_dragenterevent(QWebView * view, QDragEnterEvent * event);
-	void bmx_qt_qwebview_default_dragleaveevent(QWebView * view, QDragLeaveEvent * event);
-	void bmx_qt_qwebview_default_dragmoveevent(QWebView * view, QDragMoveEvent * event);
-	void bmx_qt_qwebview_default_dropevent(QWebView * view, QDropEvent * event);
-	void bmx_qt_qwebview_default_enterevent(QWebView * view, QEvent * event);
-	void bmx_qt_qwebview_default_focusinevent(QWebView * view, QFocusEvent * event);
-	int bmx_qt_qwebview_default_focusnextprevchild(QWebView * view, int next);
-	int bmx_qt_qwebview_default_focusnextchild(QWebView * view);
-	void bmx_qt_qwebview_default_focusoutevent(QWebView * view, QFocusEvent * event);
-	int bmx_qt_qwebview_default_focuspreviouschild(QWebView * view);
-	void bmx_qt_qwebview_default_hideevent(QWebView * view, QHideEvent * event);
-	void bmx_qt_qwebview_default_inputmethodevent(QWebView * view, QInputMethodEvent * event);
-	void bmx_qt_qwebview_default_keypressevent(QWebView * view, QKeyEvent * event);
-	void bmx_qt_qwebview_default_keyreleaseevent(QWebView * view, QKeyEvent * event);
-	void bmx_qt_qwebview_default_leaveevent(QWebView * view, QEvent * event);
-	void bmx_qt_qwebview_default_mousedoubleclickevent(QWebView * view, QMouseEvent * event);
-	void bmx_qt_qwebview_default_mousemoveevent(QWebView * view, QMouseEvent * event);
-	void bmx_qt_qwebview_default_mousepressevent(QWebView * view, QMouseEvent * event);
-	void bmx_qt_qwebview_default_mousereleaseevent(QWebView * view, QMouseEvent * event);
-	void bmx_qt_qwebview_default_moveevent(QWebView * view, QMoveEvent * event);
-	void bmx_qt_qwebview_default_paintevent(QWebView * view, QPaintEvent * event);
-	void bmx_qt_qwebview_default_resizeevent(QWebView * view, QResizeEvent * event);
-	void bmx_qt_qwebview_default_showevent(QWebView * view, QShowEvent * event);
-	void bmx_qt_qwebview_default_tabletevent(QWebView * view, QTabletEvent * event);
-	void bmx_qt_qwebview_default_wheelevent(QWebView * view, QWheelEvent * event);
+	void bmx_qt_qwebview_default_actionevent(MaxQWebView * view, QActionEvent * event);
+	void bmx_qt_qwebview_default_changeevent(MaxQWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_closeevent(MaxQWebView * view, QCloseEvent * event);
+	void bmx_qt_qwebview_default_contextmenuevent(MaxQWebView * view, QContextMenuEvent * event);
+	void bmx_qt_qwebview_default_dragenterevent(MaxQWebView * view, QDragEnterEvent * event);
+	void bmx_qt_qwebview_default_dragleaveevent(MaxQWebView * view, QDragLeaveEvent * event);
+	void bmx_qt_qwebview_default_dragmoveevent(MaxQWebView * view, QDragMoveEvent * event);
+	void bmx_qt_qwebview_default_dropevent(MaxQWebView * view, QDropEvent * event);
+	void bmx_qt_qwebview_default_enterevent(MaxQWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_focusinevent(MaxQWebView * view, QFocusEvent * event);
+	int bmx_qt_qwebview_default_focusnextprevchild(MaxQWebView * view, int next);
+	int bmx_qt_qwebview_default_focusnextchild(MaxQWebView * view);
+	void bmx_qt_qwebview_default_focusoutevent(MaxQWebView * view, QFocusEvent * event);
+	int bmx_qt_qwebview_default_focuspreviouschild(MaxQWebView * view);
+	void bmx_qt_qwebview_default_hideevent(MaxQWebView * view, QHideEvent * event);
+	void bmx_qt_qwebview_default_inputmethodevent(MaxQWebView * view, QInputMethodEvent * event);
+	void bmx_qt_qwebview_default_keypressevent(MaxQWebView * view, QKeyEvent * event);
+	void bmx_qt_qwebview_default_keyreleaseevent(MaxQWebView * view, QKeyEvent * event);
+	void bmx_qt_qwebview_default_leaveevent(MaxQWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_mousedoubleclickevent(MaxQWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_mousemoveevent(MaxQWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_mousepressevent(MaxQWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_mousereleaseevent(MaxQWebView * view, QMouseEvent * event);
+	void bmx_qt_qwebview_default_moveevent(MaxQWebView * view, QMoveEvent * event);
+	void bmx_qt_qwebview_default_paintevent(MaxQWebView * view, QPaintEvent * event);
+	void bmx_qt_qwebview_default_resizeevent(MaxQWebView * view, QResizeEvent * event);
+	void bmx_qt_qwebview_default_showevent(MaxQWebView * view, QShowEvent * event);
+	void bmx_qt_qwebview_default_tabletevent(MaxQWebView * view, QTabletEvent * event);
+	void bmx_qt_qwebview_default_wheelevent(MaxQWebView * view, QWheelEvent * event);
 	// QObject
-	int bmx_qt_qwebview_default_event(QWebView * view, QEvent * event);
-	void bmx_qt_qwebview_default_timerevent(QWebView * view, QTimerEvent * event);
+	int bmx_qt_qwebview_default_event(MaxQWebView * view, QEvent * event);
+	void bmx_qt_qwebview_default_timerevent(MaxQWebView * view, QTimerEvent * event);
 
 
 
