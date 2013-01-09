@@ -114,6 +114,8 @@ extern "C" {
 	BBString * bmx_qt_qtabwidget_tabwhatsthis(QTabWidget * tab, int index);
 	int bmx_qt_qtabwidget_tabsclosable(QTabWidget * tab);
 	int bmx_qt_qtabwidget_usesscrollbuttons(QTabWidget * tab);
+	void bmx_qt_qtabwidget_setcurrentindex(QTabWidget * tab, int index);
+	void bmx_qt_qtabwidget_setcurrentwidget(QTabWidget * tab, QWidget * widget);
 
 }
 

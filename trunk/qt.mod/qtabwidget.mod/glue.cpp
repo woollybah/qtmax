@@ -642,6 +642,13 @@ int bmx_qt_qtabwidget_usesscrollbuttons(QTabWidget * tab) {
 	return static_cast<int>(tab->usesScrollButtons());
 }
 
+void bmx_qt_qtabwidget_setcurrentindex(QTabWidget * tab, int index) {
+	tab->setCurrentIndex(index);
+}
+
+void bmx_qt_qtabwidget_setcurrentwidget(QTabWidget * tab, QWidget * widget) {
+	tab->setCurrentWidget(widget);
+}
 
 
 // NOTES :
