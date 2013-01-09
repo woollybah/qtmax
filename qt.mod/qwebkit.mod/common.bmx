@@ -63,6 +63,43 @@ Import "glue.cpp"
 
 Extern
 
+
+	' QWebView
+	' QWidget
+	Function bmx_qt_qwebview_default_actionevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_changeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_closeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_contextmenuevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_dragenterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_dragleaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_dragmoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_dropevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_enterevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_focusinevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_focusnextchild:Int(handle:Byte Ptr)
+	Function bmx_qt_qwebview_default_focusnextprevchild:Int(handle:Byte Ptr, _next:Int)
+	Function bmx_qt_qwebview_default_focusoutevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_focuspreviouschild:Int(handle:Byte Ptr)
+	Function bmx_qt_qwebview_default_hideevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_inputmethodevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_keypressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_keyreleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_leaveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_mousedoubleclickevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_mousemoveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_mousepressevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_mousereleaseevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_moveevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_paintevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_resizeevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_showevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_tabletevent(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_wheelevent(handle:Byte Ptr, event:Byte Ptr)
+	' QObject
+	Function bmx_qt_qwebview_default_event:Int(handle:Byte Ptr, event:Byte Ptr)
+	Function bmx_qt_qwebview_default_timerevent(handle:Byte Ptr, event:Byte Ptr)
+
+
 	Function bmx_qt_qwebview_create:Byte Ptr(handle:Object, parent:Byte Ptr, flags:Int)
 	Function bmx_qt_qwebview_load(handle:Byte Ptr, url:Byte Ptr)
 	Function bmx_qt_qwebview_pageaction:Byte Ptr(handle:Byte Ptr, action:Int)
