@@ -81,6 +81,397 @@ void MaxQWebView::onUrlChanged( const QUrl & url ) {
 	_qt_qwebkit_QWebView__OnUrlChanged(maxHandle, new MaxQUrl(url));
 }
 
+
+// ****************** DEFAULT HANDLERS ********************
+
+// QWebView
+// QWidget
+void MaxQWebView::defaultactionEvent(QActionEvent * event){
+	QWebView::actionEvent(event);
+}
+
+void MaxQWebView::defaultchangeEvent(QEvent * event){
+	QWebView::changeEvent(event);
+}
+
+void MaxQWebView::defaultcloseEvent(QCloseEvent * event){
+	QWebView::closeEvent(event);
+}
+
+void MaxQWebView::defaultcontextMenuEvent(QContextMenuEvent * event){
+	QWebView::contextMenuEvent(event);
+}
+
+void MaxQWebView::defaultdragEnterEvent(QDragEnterEvent * event){
+	QWebView::dragEnterEvent(event);
+}
+
+void MaxQWebView::defaultdragLeaveEvent(QDragLeaveEvent * event){
+	QWebView::dragLeaveEvent(event);
+}
+
+void MaxQWebView::defaultdragMoveEvent(QDragMoveEvent * event){
+	QWebView::dragMoveEvent(event);
+}
+
+void MaxQWebView::defaultdropEvent(QDropEvent * event){
+	QWebView::dropEvent(event);
+}
+
+void MaxQWebView::defaultenterEvent(QEvent * event){
+	QWebView::enterEvent(event);
+}
+
+void MaxQWebView::defaultfocusInEvent(QFocusEvent * event){
+	QWebView::focusInEvent(event);
+}
+
+bool MaxQWebView::defaultfocusNextChild() {
+	return QWebView::focusNextChild();
+}
+
+bool MaxQWebView::defaultfocusNextPrevChild(bool next){
+	return QWebView::focusNextPrevChild(next);
+}
+
+void MaxQWebView::defaultfocusOutEvent(QFocusEvent * event){
+	QWebView::focusOutEvent(event);
+}
+
+bool MaxQWebView::defaultfocusPreviousChild() {
+	return QWebView::focusPreviousChild();
+}
+
+void MaxQWebView::defaulthideEvent(QHideEvent * event){
+	QWebView::hideEvent(event);
+}
+
+void MaxQWebView::defaultinputMethodEvent(QInputMethodEvent * event){
+	QWebView::inputMethodEvent(event);
+}
+
+void MaxQWebView::defaultkeyPressEvent(QKeyEvent * event){
+	QWebView::keyPressEvent(event);
+}
+
+void MaxQWebView::defaultkeyReleaseEvent(QKeyEvent * event){
+	QWebView::keyReleaseEvent(event);
+}
+
+void MaxQWebView::defaultleaveEvent(QEvent * event){
+	QWebView::leaveEvent(event);
+}
+
+void MaxQWebView::defaultmouseDoubleClickEvent(QMouseEvent * event){
+	QWebView::mouseDoubleClickEvent(event);
+}
+
+void MaxQWebView::defaultmouseMoveEvent(QMouseEvent * event){
+	QWebView::mouseMoveEvent(event);
+}
+
+void MaxQWebView::defaultmousePressEvent(QMouseEvent * event){
+	QWebView::mousePressEvent(event);
+}
+
+void MaxQWebView::defaultmouseReleaseEvent(QMouseEvent * event){
+	QWebView::mouseReleaseEvent(event);
+}
+
+void MaxQWebView::defaultmoveEvent(QMoveEvent * event){
+	QWebView::moveEvent(event);
+}
+
+void MaxQWebView::defaultpaintEvent(QPaintEvent * event){
+	QWebView::paintEvent(event);
+}
+
+void MaxQWebView::defaultresizeEvent(QResizeEvent * event){
+	QWebView::resizeEvent(event);
+}
+
+void MaxQWebView::defaultshowEvent(QShowEvent * event){
+	QWebView::showEvent(event);
+}
+
+void MaxQWebView::defaulttabletEvent(QTabletEvent * event){
+	QWebView::tabletEvent(event);
+}
+
+void MaxQWebView::defaultwheelEvent(QWheelEvent * event){
+	QWebView::wheelEvent(event);
+}
+
+// QObject
+bool MaxQWebView::defaultevent(QEvent * event){
+	return QWebView::event(event);
+}
+
+void MaxQWebView::defaulttimerEvent(QTimerEvent * event){
+	QWebView::timerEvent(event);
+}
+
+
+// ****************** HANDLERS - TO MAX ********************
+
+// QWebView
+// QWidget
+void MaxQWebView::mouseMoveEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseMoveEvent(maxHandle, event);
+}
+
+void MaxQWebView::mousePressEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mousePressEvent(maxHandle, event);
+}
+
+void MaxQWebView::mouseReleaseEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseReleaseEvent(maxHandle, event);
+}
+
+
+void MaxQWebView::actionEvent(QActionEvent * event) {
+	_qt_qwidget_QWidget__actionEvent(maxHandle, event);
+}
+
+void MaxQWebView::changeEvent(QEvent * event) {
+	_qt_qwidget_QWidget__changeEvent(maxHandle, event);
+}
+
+void MaxQWebView::closeEvent(QCloseEvent * event) {
+	_qt_qwidget_QWidget__closeEvent(maxHandle, event);
+}
+
+void MaxQWebView::contextMenuEvent(QContextMenuEvent * event) {
+	_qt_qwidget_QWidget__contextMenuEvent(maxHandle, event);
+}
+
+void MaxQWebView::dragEnterEvent(QDragEnterEvent * event) {
+	_qt_qwidget_QWidget__dragEnterEvent(maxHandle, event);
+}
+
+void MaxQWebView::dragLeaveEvent(QDragLeaveEvent * event) {
+	_qt_qwidget_QWidget__dragLeaveEvent(maxHandle, event);
+}
+
+void MaxQWebView::dragMoveEvent(QDragMoveEvent * event) {
+	_qt_qwidget_QWidget__dragMoveEvent(maxHandle, event);
+}
+
+void MaxQWebView::dropEvent(QDropEvent * event) {
+	_qt_qwidget_QWidget__dropEvent(maxHandle, event);
+}
+
+void MaxQWebView::enterEvent(QEvent * event) {
+	_qt_qwidget_QWidget__enterEvent(maxHandle, event);
+}
+
+void MaxQWebView::focusInEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusInEvent(maxHandle, event);
+}
+
+bool MaxQWebView::focusNextChild () {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextChild(maxHandle));
+}
+
+bool MaxQWebView::focusNextPrevChild(bool next) {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusNextPrevChild(maxHandle, static_cast<int>(next)));
+}
+
+void MaxQWebView::focusOutEvent(QFocusEvent * event) {
+	_qt_qwidget_QWidget__focusOutEvent(maxHandle, event);
+}
+
+bool MaxQWebView::focusPreviousChild() {
+	return static_cast<bool>(_qt_qwidget_QWidget__focusPreviousChild(maxHandle));
+}
+
+void MaxQWebView::hideEvent(QHideEvent * event) {
+	_qt_qwidget_QWidget__hideEvent(maxHandle, event);
+}
+
+void MaxQWebView::inputMethodEvent(QInputMethodEvent * event) {
+	_qt_qwidget_QWidget__inputMethodEvent(maxHandle, event);
+}
+
+void MaxQWebView::leaveEvent(QEvent * event) {
+	_qt_qwidget_QWidget__leaveEvent(maxHandle, event);
+}
+
+void MaxQWebView::keyPressEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyPressEvent(maxHandle, event);
+}
+
+void MaxQWebView::keyReleaseEvent(QKeyEvent * event) {
+	_qt_qwidget_QWidget__keyReleaseEvent(maxHandle, event);
+}
+
+void MaxQWebView::mouseDoubleClickEvent(QMouseEvent * event) {
+	_qt_qwidget_QWidget__mouseDoubleClickEvent(maxHandle, event);
+}
+
+void MaxQWebView::moveEvent(QMoveEvent * event) {
+	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
+}
+
+void MaxQWebView::paintEvent(QPaintEvent * event) {
+	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
+}
+
+void MaxQWebView::resizeEvent(QResizeEvent * event) {
+	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
+}
+
+void MaxQWebView::showEvent(QShowEvent * event) {
+	_qt_qwidget_QWidget__showEvent(maxHandle, event);
+}
+
+void MaxQWebView::tabletEvent(QTabletEvent * event) {
+	_qt_qwidget_QWidget__tabletEvent(maxHandle, event);
+}
+
+void MaxQWebView::wheelEvent(QWheelEvent * event) {
+	_qt_qwidget_QWidget__wheelEvent(maxHandle, event);
+}
+
+// QObject
+bool MaxQWebView::event(QEvent * event) {
+	return static_cast<bool>(_qt_qobject_QObject__event(maxHandle, event));
+}
+
+void MaxQWebView::timerEvent(QTimerEvent * event) {
+	_qt_qobject_QObject__timerEvent(maxHandle, event);
+}
+
+// *********************************************
+
+// QWebView
+// QWidget
+void bmx_qt_qwebview_default_actionevent(QWebView * view, QActionEvent * event) {
+	view->defaultactionEvent(event);
+}
+
+void bmx_qt_qwebview_default_changeevent(QWebView * view, QEvent * event) {
+	view->defaultchangeEvent(event);
+}
+
+void bmx_qt_qwebview_default_closeevent(QWebView * view, QCloseEvent * event) {
+	view->defaultcloseEvent(event);
+}
+
+void bmx_qt_qwebview_default_contextmenuevent(QWebView * view, QContextMenuEvent * event) {
+	view->defaultcontextMenuEvent(event);
+}
+
+void bmx_qt_qwebview_default_dragenterevent(QWebView * view, QDragEnterEvent * event) {
+	view->defaultdragEnterEvent(event);
+}
+
+void bmx_qt_qwebview_default_dragleaveevent(QWebView * view, QDragLeaveEvent * event) {
+	view->defaultdragLeaveEvent(event);
+}
+
+void bmx_qt_qwebview_default_dragmoveevent(QWebView * view, QDragMoveEvent * event) {
+	view->defaultdragMoveEvent(event);
+}
+
+void bmx_qt_qwebview_default_dropevent(QWebView * view, QDropEvent * event) {
+	view->defaultdropEvent(event);
+}
+
+void bmx_qt_qwebview_default_enterevent(QWebView * view, QEvent * event) {
+	view->defaultenterEvent(event);
+}
+
+void bmx_qt_qwebview_default_focusinevent(QWebView * view, QFocusEvent * event) {
+	view->defaultfocusInEvent(event);
+}
+
+int bmx_qt_qwebview_default_focusnextprevchild(QWebView * view, int next) {
+	return static_cast<int>(view->defaultfocusNextPrevChild(static_cast<bool>(next)));
+}
+
+int bmx_qt_qwebview_default_focusnextchild(QWebView * view) {
+	return static_cast<int>(view->defaultfocusNextChild());
+}
+
+void bmx_qt_qwebview_default_focusoutevent(QWebView * view, QFocusEvent * event) {
+	view->defaultfocusOutEvent(event);
+}
+
+int bmx_qt_qwebview_default_focuspreviouschild(QWebView * view) {
+	return static_cast<int>(view->defaultfocusPreviousChild());
+}
+
+void bmx_qt_qwebview_default_hideevent(QWebView * view, QHideEvent * event) {
+	view->defaulthideEvent(event);
+}
+
+void bmx_qt_qwebview_default_inputmethodevent(QWebView * view, QInputMethodEvent * event) {
+	view->defaultinputMethodEvent(event);
+}
+
+void bmx_qt_qwebview_default_keypressevent(QWebView * view, QKeyEvent * event) {
+	view->defaultkeyPressEvent(event);
+}
+
+void bmx_qt_qwebview_default_keyreleaseevent(QWebView * view, QKeyEvent * event) {
+	view->defaultkeyReleaseEvent(event);
+}
+
+void bmx_qt_qwebview_default_leaveevent(QWebView * view, QEvent * event) {
+	view->defaultleaveEvent(event);
+}
+
+void bmx_qt_qwebview_default_mousedoubleclickevent(QWebView * view, QMouseEvent * event) {
+	view->defaultmouseDoubleClickEvent(event);
+}
+
+void bmx_qt_qwebview_default_mousemoveevent(QWebView * view, QMouseEvent * event) {
+	view->defaultmouseMoveEvent(event);
+}
+
+void bmx_qt_qwebview_default_mousepressevent(QWebView * view, QMouseEvent * event) {
+	view->defaultmousePressEvent(event);
+}
+
+void bmx_qt_qwebview_default_mousereleaseevent(QWebView * view, QMouseEvent * event) {
+	view->defaultmouseReleaseEvent(event);
+}
+
+void bmx_qt_qwebview_default_moveevent(QWebView * view, QMoveEvent * event) {
+	view->defaultmoveEvent(event);
+}
+
+void bmx_qt_qwebview_default_paintevent(QWebView * view, QPaintEvent * event) {
+	view->defaultpaintEvent(event);
+}
+
+void bmx_qt_qwebview_default_resizeevent(QWebView * view, QResizeEvent * event) {
+	view->defaultresizeEvent(event);
+}
+
+void bmx_qt_qwebview_default_showevent(QWebView * view, QShowEvent * event) {
+	view->defaultshowEvent(event);
+}
+
+void bmx_qt_qwebview_default_tabletevent(QWebView * view, QTabletEvent * event) {
+	view->defaulttabletEvent(event);
+}
+
+void bmx_qt_qwebview_default_wheelevent(QWebView * view, QWheelEvent * event) {
+	view->defaultwheelEvent(event);
+}
+
+// QObject
+int bmx_qt_qwebview_default_event(QWebView * view, QEvent * event) {
+	return static_cast<int>(view->defaultevent(event));
+}
+
+void bmx_qt_qwebview_default_timerevent(QWebView * view, QTimerEvent * event) {
+	view->defaulttimerEvent(event);
+}
+
+
 // ---------------------------------------------------------------------------------------
 
 MaxQWebHitTestResult::MaxQWebHitTestResult(const QWebHitTestResult & r)
