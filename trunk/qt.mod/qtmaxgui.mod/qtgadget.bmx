@@ -1354,6 +1354,11 @@ Type MaxGuiQMainWindow Extends QMainWindow
 		If style & WINDOW_TOOL Then
 			flags :| Qt_Tool
 		End If
+		
+		If ~style & WINDOW_TITLEBAR Then
+			flags :| Qt_CustomizeWindowHint 'Set window with no title bar
+			flags :| Qt_FramelessWindowHint 'Set a frameless window
+		End If
 
 		gadget = owner
 		Super.Create(parent, flags)
