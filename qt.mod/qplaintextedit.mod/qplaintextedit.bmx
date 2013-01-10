@@ -297,7 +297,9 @@ Type QPlainTextEdit Extends QAbstractScrollArea
 		bmx_qt_qplaintextedit_undo(qObjectPtr)
 	End Method
 
-
+	Method setViewportMargins(_left:Int, _top:Int, _right:Int, _bottom:Int)
+		bmx_qt_qplaintextedit_setviewportmargins(qObjectPtr, _left, _top, _right, _bottom)
+	End Method
 
 
 	' DEFAULT EVENT HANDLERS

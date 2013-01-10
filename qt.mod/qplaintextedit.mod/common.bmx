@@ -149,5 +149,6 @@ Extern
 	Function bmx_qt_qplaintextedit_selectall(handle:Byte Ptr)
 	Function bmx_qt_qplaintextedit_setplaintext(handle:Byte Ptr, text:String)
 	Function bmx_qt_qplaintextedit_undo(handle:Byte Ptr)
+	Function bmx_qt_qplaintextedit_setviewportmargins(handle:Byte Ptr, _left:Int, _top:Int, _right:Int, _bottom:Int)
 
 End Extern

@@ -1026,6 +1026,39 @@ void bmx_qt_qwidget_updategeometry(QWidget * widget) {
 	widget->updateGeometry();
 }
 
+void bmx_qt_qwidget_setstatustip(QWidget * widget, BBString * tip) {
+	widget->setStatusTip(qStringFromBBString(tip));
+}
+
+void bmx_qt_qwidget_setupdatesenabled(QWidget * widget, int enable) {
+	widget->setUpdatesEnabled(static_cast<bool>(enable));
+}
+
+void bmx_qt_qwidget_setwhatsthis(QWidget * widget, BBString * text) {
+	widget->setWhatsThis(qStringFromBBString(text));
+}
+
+void bmx_qt_qwidget_setwindowfilepath(QWidget * widget, BBString * filePath) {
+	widget->setWindowFilePath(qStringFromBBString(filePath));
+}
+
+void bmx_qt_qwidget_setwindowflags(QWidget * widget, int flags) {
+	widget->setWindowFlags(bmx_qt_getwindowflags(flags));
+}
+
+void bmx_qt_qwidget_setwindowicon(QWidget * widget, MaxQIcon * icon) {
+	widget->setWindowIcon(icon->Icon());
+}
+
+void bmx_qt_qwidget_setwindowicontext(QWidget * widget, BBString * text) {
+	widget->setWindowIconText(qStringFromBBString(text));
+}
+
+void bmx_qt_qwidget_setwindowmodality(QWidget * widget, int windowModality) {
+	widget->setWindowModality((Qt::WindowModality) windowModality);
+}
+
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {

@@ -213,12 +213,12 @@ bool MaxQStandardItemModel::setData(const QModelIndex & index, const QVariant & 
 }
 
 bool MaxQStandardItemModel::insertRows(int row, int count, const QModelIndex & parent) {
-printf("MaxQStandardItemModel::insertRows\n");fflush(stdout);
+//printf("MaxQStandardItemModel::insertRows\n");fflush(stdout);
 	return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__insertRows(maxHandle, row, count, new MaxQModelIndex(parent)));
 }
 
 bool MaxQStandardItemModel::removeRows(int row, int count, const QModelIndex & parent) {
-printf("MaxQStandardItemModel:: removeRows\n");fflush(stdout);
+//printf("MaxQStandardItemModel:: removeRows\n");fflush(stdout);
 	return static_cast<bool>(_qt_qstandarditemmodel_QStandardItemModel__removeRows(maxHandle, row, count, new MaxQModelIndex(parent)));
 }
 

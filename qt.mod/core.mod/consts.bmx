@@ -808,27 +808,33 @@ End Rem
 Const Qt_WA_MacOpaqueSizeGrip:Int = 85
 Rem
 bbdoc: Indicates that this widget should get a QFocusFrame around it.
-about: Some widgets draw their own focus halo regardless of this attribute. Not that the QWidget::focusPolicy also plays the main role in whether something is given focus or not, this only controls whether or not this gets the focus frame. This attribute is only applicable to Mac OS X.
+about: Some widgets draw their own focus halo regardless of this attribute. Not that the QWidget::focusPolicy also plays the main role in whether 
+something is given focus or not, this only controls whether or not this gets the focus frame. This attribute is only applicable to Mac OS X.
 End Rem
 Const Qt_WA_MacShowFocusRect:Int = 88
 Rem
-bbdoc: Indicates the widget should have the normal size for widgets in Mac OS X. This attribute is only applicable to Mac OS X.
+bbdoc: Indicates the widget should have the normal size for widgets in Mac OS X.
+about: This attribute is only applicable to Mac OS X.
 End Rem
 Const Qt_WA_MacNormalSize:Int = 89
 Rem
-bbdoc: Indicates the widget should have the small size for widgets in Mac OS X. This attribute is only applicable to Mac OS X.
+bbdoc: Indicates the widget should have the small size for widgets in Mac OS X.
+about: This attribute is only applicable to Mac OS X.
 End Rem
 Const Qt_WA_MacSmallSize:Int = 90
 Rem
-bbdoc: Indicates the widget should have the mini size for widgets in Mac OS X. This attribute is only applicable to Mac OS X.
+bbdoc: Indicates the widget should have the mini size for widgets in Mac OS X.
+about: This attribute is only applicable to Mac OS X.
 End Rem
 Const Qt_WA_MacMiniSize:Int = 91
 Rem
-bbdoc: Indicates the widget can choose between alternative sizes for widgets to avoid clipping. This attribute is only applicable to Mac OS X.
+bbdoc: Indicates the widget can choose between alternative sizes for widgets to avoid clipping.
+about: This attribute is only applicable to Mac OS X.
 End Rem
 Const Qt_WA_MacVariableSize:Int = 102
 Rem
-bbdoc: Indicates the widget should be drawn in the brushed metal style as supported by the windowing system. This attribute is only applicable to Mac OS X.
+bbdoc: Indicates the widget should be drawn in the brushed metal style as supported by the windowing system.
+about: This attribute is only applicable to Mac OS X.
 End Rem
 Const Qt_WA_MacBrushedMetal:Int = 46
 Rem
@@ -836,15 +842,18 @@ bbdoc: Indicates that the widget is mapped on screen. This is set/cleared by the
 End Rem
 Const Qt_WA_Mapped:Int = 11
 Rem
-bbdoc: Makes the widget receive mouse events for the entire widget regardless of the currently set mask, overriding QWidget::setMask(). This is not applicable for top-level windows.
+bbdoc: Makes the widget receive mouse events for the entire widget regardless of the currently set mask, overriding QWidget::setMask().
+about: This is not applicable for top-level windows.
 End Rem
 Const Qt_WA_MouseNoMask:Int = 71
 Rem
-bbdoc: Indicates that the widget has mouse tracking enabled. See QWidget::mouseTracking.
+bbdoc: Indicates that the widget has mouse tracking enabled.
+about: See QWidget::mouseTracking.
 End Rem
 Const Qt_WA_MouseTracking:Int = 2
 Rem
-bbdoc: Indicates that the widget has an explicit position. This is set/cleared by QWidget::move() and by QWidget::setGeometry().
+bbdoc: Indicates that the widget has an explicit position.
+about: This is set/cleared by QWidget::move() and by QWidget::setGeometry().
 End Rem
 Const Qt_WA_Moved:Int = 43
 Rem
@@ -852,7 +861,8 @@ bbdoc: This value is obsolete and has no effect.
 End Rem
 Const Qt_WA_MSWindowsUseDirect3D:Int = 94
 Rem
-bbdoc: Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent. This is rarely necessary but can help to avoid automatic insertion widgets like splitters and layouts. This is set by a widget's author.
+bbdoc: Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent.
+about: This is rarely necessary but can help to avoid automatic insertion widgets like splitters and layouts. This is set by a widget's author.
 End Rem
 Const Qt_WA_NoChildEventsForParent:Int = 58
 Rem
@@ -860,15 +870,19 @@ bbdoc: Indicates that the widget does not want to receive ChildAdded or ChildRem
 End Rem
 Const Qt_WA_NoChildEventsFromChildren:Int = 39
 Rem
-bbdoc: Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes. The flag is set by the widget's author and cleared by the Qt kernel every time the widget receives a new mouse event.
+bbdoc: Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
+about: The flag is set by the widget's author and cleared by the Qt kernel every time the widget receives a new mouse event.
 End Rem
 Const Qt_WA_NoMouseReplay:Int = 54
 Rem
-bbdoc: Prohibits mouse events from being propagated to the widget's parent. This attribute is disabled by default.
+bbdoc: Prohibits mouse events from being propagated to the widget's parent.
+about: This attribute is disabled by default.
 End Rem
 Const Qt_WA_NoMousePropagation:Int = 73
 Rem
-bbdoc: When enabled, this attribute disables the delivery of mouse events to the widget and its children. Mouse events are delivered to other widgets as if the widget and its children were not present in the widget hierarchy; mouse clicks and other events effectively "pass through" them. This attribute is disabled by default.
+bbdoc: When enabled, this attribute disables the delivery of mouse events to the widget and its children.
+about: Mouse events are delivered to other widgets as if the widget and its children were not present in the widget hierarchy; mouse clicks
+and other events effectively "pass through" them. This attribute is disabled by default.
 End Rem
 Const Qt_WA_TransparentForMouseEvents:Int = 51
 Rem

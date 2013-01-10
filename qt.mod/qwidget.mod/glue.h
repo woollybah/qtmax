@@ -246,6 +246,14 @@ extern "C" {
 	void bmx_qt_qwidget_setcontentsmargins(QWidget * widget, int left, int top, int right, int bottom);
 	void bmx_qt_qwidget_deletelayout(QWidget * widget);
 	void bmx_qt_qwidget_updategeometry(QWidget * widget);
+	void bmx_qt_qwidget_setstatustip(QWidget * widget, BBString * tip);
+	void bmx_qt_qwidget_setupdatesenabled(QWidget * widget, int enable);
+	void bmx_qt_qwidget_setwhatsthis(QWidget * widget, BBString * text);
+	void bmx_qt_qwidget_setwindowfilepath(QWidget * widget, BBString * filePath);
+	void bmx_qt_qwidget_setwindowflags(QWidget * widget, int flags);
+	void bmx_qt_qwidget_setwindowicon(QWidget * widget, MaxQIcon * icon);
+	void bmx_qt_qwidget_setwindowicontext(QWidget * widget, BBString * text);
+	void bmx_qt_qwidget_setwindowmodality(QWidget * widget, int windowModality);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

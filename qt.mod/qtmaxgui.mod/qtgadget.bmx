@@ -59,10 +59,20 @@ Type TQtGadget Extends TGadget
 		'visible = truefalse
 		'mySetVisible = visible
 'DebugLog "SetShow(" + truefalse + ")"
+'		If truefalse Then
+'			widget.show()
+'		Else
+'			widget.hide()
+'		EndIf
+
 		If truefalse Then
+			widget.setAttribute(Qt_WA_DontShowOnScreen, False)
 			widget.show()
+
+			'Rethink()
 		Else
 			widget.hide()
+			widget.setAttribute(Qt_WA_DontShowOnScreen, True)
 		EndIf
 		
 	End Method
@@ -132,6 +142,10 @@ Type TQtGadget Extends TGadget
 	Method SetFont(font:TGuiFont)
 		widget.setFont(TQtGuiFont(font).font)
 	End Method
+	
+	Method GetFont:TGuiFont()
+		Return New TQtGuiFont.Create(widget.font())
+	End Method
 
 	Method ConvertPixmap:QPixmap(pixmap:TPixmap)
 		If pixmap
@@ -160,6 +174,10 @@ Type TQtGadget Extends TGadget
 	Method Activate(command:Int)
 		If command = ACTIVATE_REDRAW Then
 			widget.update()
+		End If
+		
+		If command = ACTIVATE_FOCUS Then
+			widget.SetFocus()
 		End If
 	End Method
 	
@@ -669,11 +687,12 @@ Type TQtTextArea Extends TQtGadget
 	End Method
 
 	Method SetTabs(tabwidth:Int)
-		MaxGuiQPlainTextEdit(widget).setTabStopWidth(tabwidth)
+		Local f:TGuiFont = GetFont()
+		MaxGuiQPlainTextEdit(widget).setTabStopWidth(tabwidth * f.CharWidth(Asc("A")))
 	End Method
 
 	Method SetMargins(leftmargin:Int)
-		DebugLog "TODO - TQtTextArea::SetMargins"
+		MaxGuiQPlainTextEdit(widget).setViewportMargins(leftmargin, 0, 0, 0)
 	End Method
 
 	Method GetCursorPos:Int(units:Int)
@@ -839,11 +858,11 @@ Type TQtComboBox Extends TQtGadget
 	End Method
 
 	Method SetItemState:Int(index:Int, state:Int)
-DebugLog "TQtComboBox::SetItemState"
+DebugLog "TODO : TQtComboBox::SetItemState"
 	End Method
 
 	Method ItemState:Int(index:Int)
-DebugLog "TQtComboBox::ItemState"
+DebugLog "TODO : TQtComboBox::ItemState"
 	End Method
 	
 	Method SelectedItem:Int()
@@ -866,7 +885,7 @@ DebugLog "TQtComboBox::ItemState"
 	End Method
 	
 	Method RemoveListItem(index:Int)
-DebugLog "TQtComboBox::RemoveListItem(" + index + ")"
+'DebugLog "TQtComboBox::RemoveListItem(" + index + ")"
 		MaxGuiQComboBox(widget).removeItem(index)
 	End Method
 
@@ -1069,6 +1088,17 @@ Type TQtTreeViewNode Extends TQtGadget
 			item.setIcon(image)
 		End If
 	End Method
+
+	Method RootNode:TGadget()
+		If parent Then
+			Return parent.RootNode()
+		End If
+	End Method
+
+	Method SetShow(truefalse:Int)
+'void QTreeView::setRowHidden ( Int row, Const QModelIndex & parent, bool hide )
+
+	End Method
 	
 	Method SelectedNode:TGadget()
 		DebugLog "TODO : TQtTreeView::SelectedNode"
@@ -1080,6 +1110,28 @@ Type TQtTreeViewNode Extends TQtGadget
 
 	Method SetText(text:String)
 		MaxGuiQTreeView(widget).setItemText(item, text)
+	End Method
+	
+	Method Activate(command:Int)
+		If command = ACTIVATE_EXPAND Then
+			Local index:QModelIndex = MaxGuiQTreeView(widget).model.indexFromItem(item)
+			MaxGuiQTreeView(widget).expand(index)
+			Return
+		End If
+		
+		If command = ACTIVATE_COLLAPSE Then
+			Local index:QModelIndex = MaxGuiQTreeView(widget).model.indexFromItem(item)
+			MaxGuiQTreeView(widget).collapse(index)
+			Return
+		End If
+		
+		Super.Activate(command)
+	End Method
+
+	Method Free()
+		If item.parent() Then
+			item.parent().removeRows(item.row(), 1)
+		End If
 	End Method
 
 	Method Class:Int()
@@ -1114,7 +1166,29 @@ Type TQtTreeView Extends TQtTreeViewNode
 	
 	Method SetText(text:String)
 	End Method
+
+	Method SetShow(truefalse:Int)
+		'visible = truefalse
+		'mySetVisible = visible
+'DebugLog "SetShow(" + truefalse + ")"
+'		If truefalse Then
+'			widget.show()
+'		Else
+'			widget.hide()
+'		EndIf
+
+		If truefalse Then
+			widget.setAttribute(Qt_WA_DontShowOnScreen, False)
+			widget.show()
+
+			'Rethink()
+		Else
+			widget.hide()
+			widget.setAttribute(Qt_WA_DontShowOnScreen, True)
+		EndIf
 		
+	End Method
+
 	Method Class:Int()
 		Return GADGET_TREEVIEW
 	EndMethod
@@ -2265,6 +2339,8 @@ Type MaxGuiQTabWidget Extends QTabWidget
 	Method OnInit()
 		clientWidget = New QWidget._Create()
 
+		setAttribute(Qt_WA_MacSmallSize)
+
 		connect(Self, "currentChanged", Self, "onCurrentChanged")
 	End Method
 
@@ -2359,6 +2435,7 @@ End Rem
 		
 		connect(Self, "expanded", Self, "onExpanded")
 		connect(Self, "collapsed", Self, "onCollapsed")
+		connect(Self, "doubleClicked", Self, "onDoubleClicked")
 	End Method
 
 	Method insertNode(node:TQtTreeViewNode)
@@ -2394,6 +2471,11 @@ End Rem
 	Method onCollapsed(index:QModelIndex)
 		Local item:QStandardItem = model.itemFromIndex(index)
 		PostGuiEvent EVENT_GADGETCLOSE, gadget,,,,, item.data()
+	End Method
+	
+	Method onDoubleClicked(index:QModelIndex)
+		Local item:QStandardItem = model.itemFromIndex(index)
+		PostGuiEvent EVENT_GADGETACTION, gadget,,,,, item.data()
 	End Method
 	
 End Type
