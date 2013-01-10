@@ -400,7 +400,7 @@ Type QStandardItem
 	End Method
 	
 	Method row:Int()
-		'Return bmx_qt_qstandarditem_row(qObjectPtr)
+		Return parentItem.indexOfChild(Self, 0)
 	End Method
 	
 	Method rowCount:Int()
@@ -664,6 +664,8 @@ Type QStandardItem
 			
 			children.Clear()
 			children = Null
+			
+			roles.Clear()
 	
 			bmx_qt_qstandarditem_free(qObjectPtr)
 			qObjectPtr = Null
@@ -715,6 +717,10 @@ Type TCleanMap
 	
 	Method ValueForKey:Object(key:Object)
 		Return map.ValueForKey(key)
+	End Method
+	
+	Method Clear()
+		map.Clear()
 	End Method
 	
 End Type

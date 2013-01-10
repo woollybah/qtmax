@@ -47,6 +47,10 @@ MaxQPlainTextEdit::~MaxQPlainTextEdit()
 	qunbind(this);
 }
 
+void MaxQPlainTextEdit::setViewportMargins(int left, int top, int right, int bottom) {
+	QPlainTextEdit::setViewportMargins(left, top, right, bottom);
+}
+
 void MaxQPlainTextEdit::onBlockCountChanged(int newBlockCount) {
 	_qt_qplaintextedit_QPlainTextEdit__OnBlockCountChanged(maxHandle, newBlockCount);
 }
@@ -747,6 +751,9 @@ void bmx_qt_qplaintextedit_undo(QPlainTextEdit * edit) {
 	edit->undo();
 }
 
+void bmx_qt_qplaintextedit_setviewportmargins(MaxQPlainTextEdit * edit, int left, int top, int right, int bottom) {
+	edit->setViewportMargins(left, top, right, bottom);
+}
 
 
 // NOTES :

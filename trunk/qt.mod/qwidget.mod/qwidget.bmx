@@ -532,7 +532,7 @@ Type QWidget Extends QObject
 	End Method
 
 	Method setStatusTip(tip:String)
-	' TODO
+		bmx_qt_qwidget_setstatustip(qObjectPtr, tip)
 	End Method
 
 	'Method setStyle(style:QStyle)
@@ -544,31 +544,31 @@ Type QWidget Extends QObject
 	End Method
 
 	Method setUpdatesEnabled(enable:Int)
-	' TODO
+		bmx_qt_qwidget_setupdatesenabled(qObjectPtr, enable)
 	End Method
 	
 	Method setWhatsThis(text:String)
-	' TODO
+		bmx_qt_qwidget_setwhatsthis(qObjectPtr, text)
 	End Method
 	
 	Method setWindowFilePath(filePath:String)
-	' TODO
+		bmx_qt_qwidget_setwindowfilepath(qObjectPtr, filePath)
 	End Method
 	
 	Method setWindowFlags(flags:Int)
-	' TODO
+		bmx_qt_qwidget_setwindowflags(qObjectPtr, flags)
 	End Method
 	
 	Method setWindowIcon(icon:QIcon)
-	' TODO
+		bmx_qt_qwidget_setwindowicon(qObjectPtr, icon.qObjectPtr)
 	End Method
 	
 	Method setWindowIconText(text:String)
-	' TODO
+		bmx_qt_qwidget_setwindowicontext(qObjectPtr, text)
 	End Method
 	
 	Method setWindowModality(windowModality:Int)
-	' TODO
+		bmx_qt_qwidget_setwindowmodality(qObjectPtr, windowModality)
 	End Method
 	
 	Method setWindowOpacity(level:Double)

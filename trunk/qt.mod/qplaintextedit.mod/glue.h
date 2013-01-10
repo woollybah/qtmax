@@ -145,6 +145,7 @@ extern "C" {
 	void bmx_qt_qplaintextedit_selectall(QPlainTextEdit * edit);
 	void bmx_qt_qplaintextedit_setplaintext(QPlainTextEdit * edit, BBString * text);
 	void bmx_qt_qplaintextedit_undo(QPlainTextEdit * edit);
+	void bmx_qt_qplaintextedit_setviewportmargins(MaxQPlainTextEdit * edit, int left, int top, int right, int bottom);
 
 }
 
@@ -157,6 +158,8 @@ class MaxQPlainTextEdit : public QPlainTextEdit
 public:
 	MaxQPlainTextEdit(BBObject * handle, QWidget * parent);
 	~MaxQPlainTextEdit();
+
+	void setViewportMargins(int left, int top, int right, int bottom);
 
 private:
 	BBObject * maxHandle;
