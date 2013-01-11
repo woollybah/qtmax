@@ -79,7 +79,7 @@ Type TQtGadget Extends TGadget
 
 	Method Rethink()
 		If widget Then
-			widget.setGeometry(xpos, ypos, width, height)
+			widget.setGeometry(Max(xpos,0), Max(ypos,0), width, height)
 			'widget.move(xpos, ypos)
 			'widget.resize(width, height)
 		End If
@@ -548,11 +548,19 @@ Type TQtPanel Extends TQtGadget
 	End Method
 
 	Method ClientWidth:Int()
-		Return MaxGuiQFrame(widget).ClientWidth()
+		If Not widget.isVisible() Then
+			Return widget.width()
+		Else
+			Return MaxGuiQFrame(widget).ClientWidth()
+		End If
 	End Method
 
 	Method ClientHeight:Int()
-		Return MaxGuiQFrame(widget).ClientHeight()
+		If Not widget.isVisible() Then
+			Return widget.height()
+		Else
+			Return MaxGuiQFrame(widget).ClientHeight()
+		End If
 	End Method
 	
 	Method SetPixmap(pixmap:TPixmap, flags:Int)
@@ -1014,11 +1022,19 @@ Type TQtTabber Extends TQtGadget
 	End Method
 
 	Method ClientWidth:Int()
-		Return MaxGuiQTabWidget(widget).ClientWidth()
+		If Not widget.isVisible() Then
+			Return widget.width()
+		Else
+			Return MaxGuiQTabWidget(widget).ClientWidth()
+		End If
 	End Method
 
 	Method ClientHeight:Int()
-		Return MaxGuiQTabWidget(widget).ClientHeight()
+		If Not widget.isVisible() Then
+			Return widget.height()
+		Else
+			Return MaxGuiQTabWidget(widget).ClientHeight()
+		End If
 	End Method
 	
 	Method SelectedItem:Int()
