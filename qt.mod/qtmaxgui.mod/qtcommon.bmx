@@ -72,3 +72,36 @@ Const QT_LISTBOX:Int = 19
 Const QT_TREEVIEW:Int = 20
 Const QT_CANVAS:Int = 21
 
+Function QtMouseButtonToMaxMouseButton:Int(button:Int)
+	If button = Qt_LeftButton
+		Return MOUSE_LEFT
+	End If
+	
+	If button = Qt_RightButton
+		Return MOUSE_RIGHT
+	End If
+	
+	If button = Qt_MidButton
+		Return MOUSE_MIDDLE
+	End If
+
+	' none or unknown
+	Return 0
+End Function
+
+Function QtMouseButtonsToMaxMouseButton:Int(buttons:Int)
+	If buttons & Qt_LeftButton
+		Return MOUSE_LEFT
+	End If
+	
+	If buttons & Qt_RightButton
+		Return MOUSE_RIGHT
+	End If
+	
+	If buttons & Qt_MidButton
+		Return MOUSE_MIDDLE
+	End If
+
+	' none or unknown
+	Return 0
+End Function

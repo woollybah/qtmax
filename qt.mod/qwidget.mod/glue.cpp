@@ -1058,6 +1058,13 @@ void bmx_qt_qwidget_setwindowmodality(QWidget * widget, int windowModality) {
 	widget->setWindowModality((Qt::WindowModality) windowModality);
 }
 
+void bmx_qt_qwidget_grabmouse(QWidget * widget) {
+	widget->grabMouse();
+}
+
+void bmx_qt_qwidget_releasemouse(QWidget * widget) {
+	widget->releaseMouse();
+}
 
 // *********************************************
 
