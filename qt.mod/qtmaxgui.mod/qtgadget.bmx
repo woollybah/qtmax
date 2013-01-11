@@ -2579,7 +2579,7 @@ Type MaxGuiQMenuAction Extends QAction
 					TQtMenuItem(gadget.parent).widget = New QMenu.Create()
 					
 					' assign menu to action
-					QMenu.setMenuForAction(Self, QMenu(TQtMenuItem(gadget.parent).widget))
+					QMenu.setMenuForAction(TQtMenuItem(gadget.parent).action, QMenu(TQtMenuItem(gadget.parent).widget))
 				End If
 	
 				' add this action to the parent menu
