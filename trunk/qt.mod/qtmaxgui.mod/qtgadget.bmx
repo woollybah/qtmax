@@ -290,7 +290,7 @@ Type TQtWindow Extends TQtGadget
 		If ~style & WINDOW_HIDDEN
 			Setshow(True)
 		Else
-			SetShow(False)
+			'SetShow(False)
 		End If
 		
 	End Method
@@ -344,7 +344,7 @@ Type TQtWindow Extends TQtGadget
 			widget.setAttribute(Qt_WA_DontShowOnScreen, False)
 			widget.show()
 
-			'Rethink()
+			Rethink()
 		Else
 			widget.hide()
 			widget.setAttribute(Qt_WA_DontShowOnScreen, True)
@@ -482,7 +482,11 @@ Type TQtLabel Extends TQtGadget
 				MaxGuiQLabel(widget).setFrameStyle(QFrame.Shape_Panel | QFrame.Shadow_Sunken)
 			Case LABEL_SEPARATOR
 				' TODO : Horiz/Vert depending on width/height ?
-				MaxGuiQLabel(widget).setFrameStyle(QFrame.Shape_HLine | QFrame.Shadow_Sunken)
+				If width < height Then
+					MaxGuiQLabel(widget).setFrameStyle(QFrame.Shape_VLine | QFrame.Shadow_Sunken)
+				Else
+					MaxGuiQLabel(widget).setFrameStyle(QFrame.Shape_HLine | QFrame.Shadow_Sunken)
+				End If
 		End Select
 		
 		Rethink()
@@ -1022,7 +1026,14 @@ Type TQtTabber Extends TQtGadget
 	End Method
 
 	Method SelectItem:Int(index:Int, op:Int= 1) '0=deselect 1=select 2=toggle
-		MaxGuiQTabWidget(widget).setCurrentIndex(index)
+		' only set if it is not currently selected.
+		If index <> SelectedItem() Then
+			MaxGuiQTabWidget(widget).setCurrentIndex(index)
+		End If
+	End Method
+
+	Method RemoveListItem(index:Int)
+		MaxGuiQTabWidget(widget).removeListItem(index)
 	End Method
 
 	Method Rethink()
@@ -1666,16 +1677,31 @@ Type MaxGuiQLabel Extends QLabel
 	End Method
 
 	Method mousePressEvent(event:QMouseEvent)
-		If event.button() & Qt_RightButton Then
-			PostGuiEvent EVENT_GADGETMENU, gadget, event.button(), , event.x(), event.y()
+		If event.buttons() & Qt_RightButton Then
+			PostGuiEvent EVENT_GADGETMENU, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 		Else
-			PostGuiEvent EVENT_MOUSEDOWN, gadget, event.button(), , event.x(), event.y()
+			PostGuiEvent EVENT_MOUSEDOWN, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 		End If
 	End Method
 
 	Method mouseReleaseEvent(event:QMouseEvent)
 		' TODO : We want this event for a label?
-		PostGuiEvent EVENT_MOUSEUP, gadget, event.button(), , event.x(), event.y()
+		PostGuiEvent EVENT_MOUSEUP, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
+	End Method
+
+	Method resizeEvent(event:QResizeEvent)
+		If gadget.style & LABEL_SEPARATOR Then
+			Local w:Int, h:Int
+			event.size(w, h)
+
+			If w < h Then
+				setFrameStyle(QFrame.Shape_VLine | QFrame.Shadow_Sunken)
+			Else
+				setFrameStyle(QFrame.Shape_HLine | QFrame.Shadow_Sunken)
+			End If	
+		End If
+
+		Super.resizeEvent(event)
 	End Method
 	
 End Type
@@ -1729,23 +1755,23 @@ Type MaxGuiQFrame Extends QFrame
 
 	Method mousePressEvent(event:QMouseEvent)
 		If gadget.activePanel Then
-			If event.button() & Qt_RightButton Then
-				PostGuiEvent EVENT_GADGETMENU, gadget, event.button(), , event.x(), event.y()
+			If event.buttons() & Qt_RightButton Then
+				PostGuiEvent EVENT_GADGETMENU, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 			Else
-				PostGuiEvent EVENT_MOUSEDOWN, gadget, event.button(), , event.x(), event.y()
+				PostGuiEvent EVENT_MOUSEDOWN, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 			End If
 		End If
 	End Method
 	
 	Method mouseMoveEvent(event:QMouseEvent)
 		If gadget.activePanel Then
-			PostGuiEvent EVENT_MOUSEMOVE, gadget, event.button(), , event.x(), event.y()
+			PostGuiEvent EVENT_MOUSEMOVE, gadget, QtMouseButtonsToMaxMouseButton(event.buttons()), , event.x(), event.y()
 		End If		
 	End Method
 
 	Method mouseReleaseEvent(event:QMouseEvent)
 		If gadget.activePanel Then
-			PostGuiEvent EVENT_MOUSEUP, gadget, event.button(), , event.x(), event.y()
+			PostGuiEvent EVENT_MOUSEUP, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 		End If		
 	End Method
 
@@ -2375,7 +2401,23 @@ Type MaxGuiQTabWidget Extends QTabWidget
 		End If
 		
 	End Method
+
+	Method removeListItem(index:Int)
+		
+		If currentIndex() = index Then
+			' unparent the clientWidget so that it is not deleted when the page is removed.
+			clientWidget.setParent(Null)
+		End If
+
+		Local tmp:QWidget[] = pages
+		pages = pages[..pages.length-1]
+		For Local i:Int = index Until pages.length
+			pages[i] = tmp[i + 1]
+		Next
 	
+		removeTab(index)
+	End Method
+
 	Method onCurrentChanged(index:Int)
 		' reparent the clientWidget
 		clientWidget.setParent(pages[index])
@@ -2620,7 +2662,7 @@ Type MaxGuiCanvasWidget Extends QWidget
 	End Method
 
 	Method mouseMoveEvent(event:QMouseEvent)
-		PostGuiEvent EVENT_MOUSEMOVE, gadget, event.button(), , event.x(), event.y()
+		PostGuiEvent EVENT_MOUSEMOVE, gadget, QtMouseButtonToMaxMouseButton(event.buttons()), , event.x(), event.y()
 	End Method
 
 	Method paintEngine:Byte Ptr()

@@ -180,6 +180,10 @@ Type QWidget Extends QObject
 		Return QRect._create(bmx_qt_qwidget_geometry(qObjectPtr))
 	End Method
 	
+	Method grabMouse()
+		bmx_qt_qwidget_grabmouse(qObjectPtr)
+	End Method
+	
 	Method hasFocus:Int()
 		Return bmx_qt_qwidget_hasfocus(qObjectPtr)
 	End Method
@@ -368,6 +372,10 @@ Type QWidget Extends QObject
 	Method rect:QRect()
 		Return QRect._create(bmx_qt_qwidget_rect(qObjectPtr))
 	End Method
+
+	Method releaseMouse()
+		bmx_qt_qwidget_releasemouse(qObjectPtr)
+	End Method
 	
 	Method resize(w:Int, h:Int)
 		bmx_qt_qwidget_resize(qObjectPtr, w, h)
@@ -508,6 +516,8 @@ Type QWidget Extends QObject
 	Method setParent(parent:QObject)
 		If QWidget(parent) Then
 			bmx_qt_qwidget_setparent(qObjectPtr, QWidget(parent).qObjectPtr)
+		Else If Not parent Then
+			bmx_qt_qwidget_setparent(qObjectPtr, Null)
 		End If
 	End Method
 	
