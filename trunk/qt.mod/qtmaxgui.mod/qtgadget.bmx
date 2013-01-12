@@ -317,11 +317,19 @@ Type TQtWindow Extends TQtGadget
 	End Method
 	
 	Method ClientWidth:Int()
-		Return MaxGuiQMainWindow(widget).ClientWidth()
+		If Not widget.isVisible() Then
+			Return widget.width()
+		Else
+			Return MaxGuiQMainWindow(widget).ClientWidth()
+		End If
 	End Method
 
 	Method ClientHeight:Int()
-		Return MaxGuiQMainWindow(widget).ClientHeight()
+		If Not widget.isVisible() Then
+			Return widget.height()
+		Else
+			Return MaxGuiQMainWindow(widget).ClientHeight()
+		End If
 	End Method
 
 	Method SetStatusText(text:String)
@@ -974,6 +982,10 @@ Type TQtToolBar Extends TQtGadget
 		
 		MaxGuiQToolBar(widget).InsertListItem(index, text, tip, image, extra, w)
 		
+	End Method
+	
+	Method SetListItemState(index:Int, state:Int)
+		MaxGuiQToolBar(widget).setListItemState(index, state)
 	End Method
 
 	Method Rethink()
@@ -2321,6 +2333,8 @@ Type MaxGuiQToolBar Extends QToolBar
 
 	Field gadget:TQtGadget
 
+	Field actions:QAction[0]
+	
 	Method MCreate:MaxGuiQToolBar(parent:QWidget, owner:TQtGadget)
 		gadget = owner
 		Super.Create(parent)
@@ -2343,6 +2357,8 @@ Type MaxGuiQToolBar Extends QToolBar
 			action = New QAction.CreateWithIcon(icon, text, Self)
 		End If
 		
+		actions = actions[..index] + [action] + actions[index..]
+		
 		action.setToolTip(tip)
 		
 		addAction(action)
@@ -2356,7 +2372,18 @@ Type MaxGuiQToolBar Extends QToolBar
 		End If
 		
 	End Method
-	
+
+	Method SetListItemState(index:Int, state:Int)
+
+		If state & STATE_DISABLED Then
+			actions[index].setEnabled(False)
+		End If
+		
+		If state & STATE_ACTIVE Then
+			actions[index].setEnabled(True)
+		End If
+	End Method
+
 End Type
 
 Type MaxGuiQTabWidget Extends QTabWidget
