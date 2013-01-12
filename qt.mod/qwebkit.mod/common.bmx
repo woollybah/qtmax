@@ -31,6 +31,7 @@ Import Qt.QUndoStack
 Import Qt.QPainter
 Import Qt.QWebDatabase
 Import Qt.QWebHistory
+Import Qt.QPrinter
 Import BRL.Blitz
 
 
@@ -116,6 +117,10 @@ Extern
 	Function bmx_qt_qwebview_settextsizemultiplier(handle:Byte Ptr, factor:Double)
 	Function bmx_qt_qwebview_seturl(handle:Byte Ptr, url:Byte Ptr)
 	Function bmx_qt_qwebview_setzoomfactor(handle:Byte Ptr, factor:Double)
+	Function bmx_qt_qwebview_back(handle:Byte Ptr)
+	Function bmx_qt_qwebview_forward(handle:Byte Ptr)
+	Function bmx_qt_qwebview_reload(handle:Byte Ptr)
+	Function bmx_qt_qwebview_stop(handle:Byte Ptr)
 
 	Function bmx_qt_qwebsettings_setattribute(handle:Byte Ptr, attribute:Int, on:Int)
 	Function bmx_qt_qwebsettings_fontfamily:String(handle:Byte Ptr, which:Int)

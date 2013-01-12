@@ -376,13 +376,17 @@ Type QWidget Extends QObject
 	Method releaseMouse()
 		bmx_qt_qwidget_releasemouse(qObjectPtr)
 	End Method
+
+	Method removeAction(action:QAction)
+		bmx_qt_qwidget_removeaction(qObjectPtr, action.qObjectPtr)
+	End Method
 	
 	Method resize(w:Int, h:Int)
 		bmx_qt_qwidget_resize(qObjectPtr, w, h)
 	End Method
 
 	Method scroll(dx:Int, dy:Int)
-	' TODO
+		bmx_qt_qwidget_scroll(qObjectPtr, dx, dy)
 	End Method
 	
 	Method scrollRect(dx:Int, dy:Int, r:QRect)

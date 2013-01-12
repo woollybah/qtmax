@@ -1066,6 +1066,14 @@ void bmx_qt_qwidget_releasemouse(QWidget * widget) {
 	widget->releaseMouse();
 }
 
+void bmx_qt_qwidget_removeaction(QWidget * widget, QAction * action) {
+	widget->removeAction(action);
+}
+
+void bmx_qt_qwidget_scroll(QWidget * widget, int dx, int dy) {
+	widget->scroll(dx, dy);
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {

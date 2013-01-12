@@ -313,9 +313,10 @@ void MaxQWebView::moveEvent(QMoveEvent * event) {
 	_qt_qwidget_QWidget__moveEvent(maxHandle, event);
 }
 
-void MaxQWebView::paintEvent(QPaintEvent * event) {
-	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
-}
+// BaH - crashes on Win32!?
+//void MaxQWebView::paintEvent(QPaintEvent * event) {
+//	_qt_qwidget_QWidget__paintEvent(maxHandle, event);
+//}
 
 void MaxQWebView::resizeEvent(QResizeEvent * event) {
 	_qt_qwidget_QWidget__resizeEvent(maxHandle, event);
@@ -557,6 +558,22 @@ void bmx_qt_qwebview_seturl(QWebView * view, MaxQUrl * url) {
 
 void bmx_qt_qwebview_setzoomfactor(QWebView * view, double factor) {
 	view->setZoomFactor(factor);
+}
+
+void bmx_qt_qwebview_back(QWebView * view) {
+	view->back();
+}
+
+void bmx_qt_qwebview_forward(QWebView * view) {
+	view->forward();
+}
+
+void bmx_qt_qwebview_reload(QWebView * view) {
+	view->reload();
+}
+
+void bmx_qt_qwebview_stop(QWebView * view) {
+	view->stop();
 }
 
 

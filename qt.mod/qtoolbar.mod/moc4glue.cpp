@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Fri Jan 4 08:37:50 2013
+** Created: Sat Jan 12 19:37:15 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MaxQToolBar[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,7 +37,9 @@ static const uint qt_meta_data_MaxQToolBar[] = {
      143,  135,   12,   12, 0x08,
      178,  166,   12,   12, 0x08,
      232,  216,   12,   12, 0x08,
-     282,  278,   12,   12, 0x08,
+     287,  278,   12,   12, 0x08,
+     319,  311,   12,   12, 0x08,
+     349,  345,   12,   12, 0x08,
 
        0        // eod
 };
@@ -50,7 +52,9 @@ static const char qt_meta_stringdata_MaxQToolBar[] = {
     "orientation\0onOrientationChanged(Qt::Orientation)\0"
     "toolButtonStyle\0"
     "onToolButtonStyleChanged(Qt::ToolButtonStyle)\0"
-    "pos\0onCustomContextMenuRequested(QPoint)\0"
+    "topLevel\0onTopLevelChanged(bool)\0"
+    "visible\0onVisibilityChanged(bool)\0pos\0"
+    "onCustomContextMenuRequested(QPoint)\0"
 };
 
 void MaxQToolBar::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -65,7 +69,9 @@ void MaxQToolBar::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 3: _t->onMovableChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 4: _t->onOrientationChanged((*reinterpret_cast< Qt::Orientation(*)>(_a[1]))); break;
         case 5: _t->onToolButtonStyleChanged((*reinterpret_cast< Qt::ToolButtonStyle(*)>(_a[1]))); break;
-        case 6: _t->onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 6: _t->onTopLevelChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 7: _t->onVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 8: _t->onCustomContextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -103,9 +109,9 @@ int MaxQToolBar::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

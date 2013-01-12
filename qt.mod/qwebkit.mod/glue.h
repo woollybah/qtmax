@@ -103,6 +103,10 @@ extern "C" {
 	void bmx_qt_qwebview_settextsizemultiplier(QWebView * view, double factor);
 	void bmx_qt_qwebview_seturl(QWebView * view, MaxQUrl * url);
 	void bmx_qt_qwebview_setzoomfactor(QWebView * view, double factor);
+	void bmx_qt_qwebview_back(QWebView * view);
+	void bmx_qt_qwebview_forward(QWebView * view);
+	void bmx_qt_qwebview_reload(QWebView * view);
+	void bmx_qt_qwebview_stop(QWebView * view);
 
 	void bmx_qt_qwebsettings_setattribute(QWebSettings * settings, int attribute, int on);
 	BBString * bmx_qt_qwebsettings_fontfamily(QWebSettings * settings, int which);
@@ -240,7 +244,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent * event);
 	virtual void mouseReleaseEvent(QMouseEvent * event);
 	virtual void moveEvent(QMoveEvent * event);
-	virtual void paintEvent(QPaintEvent * event);
+	//virtual void paintEvent(QPaintEvent * event); // BaH - crashes on Win32!?
 	virtual void resizeEvent(QResizeEvent * event);
 	virtual void showEvent(QShowEvent * event);
 	virtual void tabletEvent(QTabletEvent * event);

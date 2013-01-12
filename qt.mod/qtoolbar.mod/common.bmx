@@ -52,5 +52,18 @@ Extern
 
 	Function bmx_qt_qtoolbar_create:Byte Ptr(handle:Object, parent:Byte Ptr)
 	Function bmx_qt_qtoolbar_addwidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qtoolbar_allowedareas:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbar_clear(handle:Byte Ptr)
+	Function bmx_qt_qtoolbar_iconsize(handle:Byte Ptr, w:Int Ptr, h:Int Ptr)
+	Function bmx_qt_qtoolbar_isareaallowed:Int(handle:Byte Ptr, area:Int)
+	Function bmx_qt_qtoolbar_isfloatable:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbar_isfloating:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbar_ismovable:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbar_orientation:Int(handle:Byte Ptr)
+	Function bmx_qt_qtoolbar_setallowedareas(handle:Byte Ptr, areas:Int)
+	Function bmx_qt_qtoolbar_setfloatable(handle:Byte Ptr, floatable:Int)
+	Function bmx_qt_qtoolbar_setmovable(handle:Byte Ptr, movable:Int)
+	Function bmx_qt_qtoolbar_setorientation(handle:Byte Ptr, orientation:Int)
+	Function bmx_qt_qtoolbar_toolbuttonstyle:Int(handle:Byte Ptr)
 
 End Extern

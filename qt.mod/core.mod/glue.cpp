@@ -694,6 +694,18 @@ Qt::Corner bmx_qt_inttocorner(int c) {
 	return Qt::TopLeftCorner;
 }
 
+Qt::ToolBarAreas bmx_qt_inttotoolbarareas(int a) {
+	Qt::ToolBarAreas areas;
+	
+	if (a & 0x0001) areas |= Qt::LeftToolBarArea;
+	if (a & 0x0002) areas |= Qt::RightToolBarArea;
+	if (a & 0x0004) areas |= Qt::TopToolBarArea;
+	if (a & 0x0008) areas |= Qt::BottomToolBarArea;
+	if (a & 0x000F) areas |= Qt::AllToolBarAreas;
+
+	return areas;
+}
+
 // *********************************************
 
 void bmx_qt_qevent_accept(QEvent * event) {

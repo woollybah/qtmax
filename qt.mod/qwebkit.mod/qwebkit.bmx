@@ -60,8 +60,16 @@ Type QWebView Extends QWidget
 		Return Self
 	End Method
 
+	Method back()
+		bmx_qt_qwebview_back(qObjectPtr)
+	End Method
+	
 	Method findText:Int(subString:String, options:Int = 0)
 		Return bmx_qt_qwebview_findtext(qObjectPtr, subString, options)
+	End Method
+
+	Method forward()
+		bmx_qt_qwebview_forward(qObjectPtr)
 	End Method
 	
 	Method history:QWebHistory()
@@ -90,6 +98,14 @@ Type QWebView Extends QWidget
 	
 	Method pageAction:QAction(action:Int)
 		Return QAction._find(bmx_qt_qwebview_pageaction(qObjectPtr, action))
+	End Method
+
+	Method Print(printer:QPrinter)
+	' TODO
+	End Method
+	
+	Method reload()
+		bmx_qt_qwebview_reload(qObjectPtr)
 	End Method
 	
 	Method selectedText:String()
@@ -126,6 +142,10 @@ Type QWebView Extends QWidget
 	
 	Method settings:QWebSettings()
 		Return QWebSettings._create(bmx_qt_qwebview_settings(qObjectPtr))
+	End Method
+
+	Method stop()
+		bmx_qt_qwebview_stop(qObjectPtr)
 	End Method
 	
 	Method textSizeMultiplier:Double()

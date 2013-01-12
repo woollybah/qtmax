@@ -256,6 +256,8 @@ extern "C" {
 	void bmx_qt_qwidget_setwindowmodality(QWidget * widget, int windowModality);
 	void bmx_qt_qwidget_grabmouse(QWidget * widget);
 	void bmx_qt_qwidget_releasemouse(QWidget * widget);
+	void bmx_qt_qwidget_removeaction(QWidget * widget, QAction * action);
+	void bmx_qt_qwidget_scroll(QWidget * widget, int dx, int dy);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);

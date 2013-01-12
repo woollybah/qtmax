@@ -84,15 +84,15 @@ Type QToolBar Extends QWidget
 	End Method
 	
 	Method allowedAreas:Int()
-	' TODO
+		Return bmx_qt_qtoolbar_allowedareas(qObjectPtr)
 	End Method
 	
 	Method clear()
-	' TODO
+		bmx_qt_qtoolbar_clear(qObjectPtr)
 	End Method
 	
 	Method iconSize(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qtoolbar_iconsize(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method insertSeparator:QAction(before:QAction)
@@ -104,39 +104,39 @@ Type QToolBar Extends QWidget
 	End Method
 	
 	Method isAreaAllowed:Int(area:Int)
-	' TODO
+		Return bmx_qt_qtoolbar_isareaallowed(qObjectPtr, area)
 	End Method
 	
 	Method isFloatable:Int()
-	' TODO
+		Return bmx_qt_qtoolbar_isfloatable(qObjectPtr)
 	End Method
 	
 	Method isFloating:Int()
-	' TODO
+		Return bmx_qt_qtoolbar_isfloating(qObjectPtr)
 	End Method
 	
 	Method isMovable:Int()
-	' TODO
+		Return bmx_qt_qtoolbar_ismovable(qObjectPtr)
 	End Method
 	
 	Method orientation:Int()
-	' TODO
+		Return bmx_qt_qtoolbar_orientation(qObjectPtr)
 	End Method
 	
 	Method setAllowedAreas(areas:Int)
-	' TODO
+		bmx_qt_qtoolbar_setallowedareas(qObjectPtr, areas)
 	End Method
 	
 	Method setFloatable(floatable:Int)
-	' TODO
+		bmx_qt_qtoolbar_setfloatable(qObjectPtr, floatable)
 	End Method
 	
 	Method setMovable(movable:Int)
-	' TODO
+		bmx_qt_qtoolbar_setmovable(qObjectPtr, movable)
 	End Method
 	
 	Method setOrientation(orientation:Int)
-	' TODO
+		bmx_qt_qtoolbar_setorientation(qObjectPtr, orientation)
 	End Method
 	
 	Method toggleViewAction:QAction()
@@ -144,12 +144,54 @@ Type QToolBar Extends QWidget
 	End Method
 	
 	Method toolButtonStyle:Int()
-	' TODO
+		Return bmx_qt_qtoolbar_toolbuttonstyle(qObjectPtr)
 	End Method
 	
 	Method widgetForAction:QWidget(action:QAction)
 	' TODO
 	End Method
-	
+
+
+
+	' SIGNAL : actionTriggered
+	Function _OnActionTriggered(obj:QToolBar, action:Byte Ptr)
+		obj._InvokeSignals("actionTriggered", [QAction._find(action)])
+	End Function
+
+	' SIGNAL : allowedAreasChanged
+	Function _OnAllowedAreasChanged(obj:QToolBar, allowedAreas:Int)
+		obj._InvokeSignals("allowedAreasChanged", [String(allowedAreas)])
+	End Function
+
+	' SIGNAL : iconSizeChanged
+	Function _OnIconSizeChanged(obj:QToolBar, width:Int, height:Int)
+		obj._InvokeSignals("iconSizeChanged", [String(width), String(height)])
+	End Function
+
+	' SIGNAL : movableChanged
+	Function _OnMovableChanged(obj:QToolBar, movable:Int)
+		obj._InvokeSignals("movableChanged", [String(movable)])
+	End Function
+
+	' SIGNAL : orientationChanged
+	Function _OnOrientationChanged(obj:QToolBar, orientation:Int)
+		obj._InvokeSignals("orientationChanged", [String(orientation)])
+	End Function
+
+	' SIGNAL : toolButtonStyleChanged
+	Function _OnToolButtonStyleChanged(obj:QToolBar, toolButtonStyle:Int)
+		obj._InvokeSignals("toolButtonStyleChanged", [String(toolButtonStyle)])
+	End Function
+
+	' SIGNAL : topLevelChanged
+	Function _OnTopLevelChanged(obj:QToolBar, topLevel:Int)
+		obj._InvokeSignals("topLevelChanged", [String(topLevel)])
+	End Function
+
+	' SIGNAL : visibilityChanged
+	Function _OnVisibilityChanged(obj:QToolBar, visible:Int)
+		obj._InvokeSignals("visibilityChanged", [String(visible)])
+	End Function
+
 End Type
 
