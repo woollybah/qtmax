@@ -713,7 +713,7 @@ Type TQtTextArea Extends TQtGadget
 
 	Method SetTabs(tabwidth:Int)
 		Local f:TGuiFont = GetFont()
-		MaxGuiQPlainTextEdit(widget).setTabStopWidth(tabwidth * f.CharWidth(Asc("A")))
+		MaxGuiQPlainTextEdit(widget).setTabStopWidth(tabwidth)
 	End Method
 
 	Method SetMargins(leftmargin:Int)
