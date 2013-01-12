@@ -43,6 +43,8 @@ Import Qt.QTreeView
 Import Qt.QWebKit
 Import Qt.QSlider
 Import Qt.QColorDialog
+Import Qt.QFontDialog
+Import Qt.QFileDialog
 Import Qt.QMessageBox
 Import Qt.QSpinBox
 Import Qt.QSocketNotifier

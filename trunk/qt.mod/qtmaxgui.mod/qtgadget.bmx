@@ -97,6 +97,12 @@ Type TQtGadget Extends TGadget
 		widget.setPalette(pal)
 	End Method
 	
+	Method SetTextColor(r:Int, g:Int, b:Int)
+		Local pal:QPalette = widget.palette()
+		pal.SetColor(QPalette.Role_WindowText, New QColor.Create(r, g, b))
+		widget.setPalette(pal)
+	End Method
+	
 	Method SetTooltip(text:String)
 		widget.setToolTip(text)
 	End Method
@@ -513,7 +519,7 @@ Type TQtLabel Extends TQtGadget
 	Method GetText:String()
 		Return MaxGuiQLabel(widget).text()
 	End Method
-
+	
 	Method Class:Int()
 		Return GADGET_LABEL
 	EndMethod
@@ -523,8 +529,6 @@ End Type
 
 Type TQtPanel Extends TQtGadget
 
-	Field activePanel:Int
-	
 	Method InitGadget()
 		CreatePanel()
 	End Method
@@ -540,8 +544,9 @@ Type TQtPanel Extends TQtGadget
 				MaxGuiQFrame(widget).setFrameStyle(QFrame.Shape_Box | QFrame.Shadow_Raised)
 		End If
 		
-		activePanel = style & PANEL_ACTIVE
-		If activePanel Then
+		If style & PANEL_ACTIVE Then
+			' enable mouse sensitivity for active panel
+			sensitivity :| SENSITIZE_MOUSE
 			widget.setMouseTracking(True)
 		End If
 
@@ -1697,18 +1702,24 @@ Type MaxGuiQLabel Extends QLabel
 	End Method
 
 	Method enterEvent(event:QEvent)
-		'PostGuiEvent EVENT_MOUSEENTER, gadget
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
+			PostGuiEvent EVENT_MOUSEENTER, gadget
+		End If
 	End Method
 
 	Method leaveEvent(event:QEvent)
-		'PostGuiEvent EVENT_MOUSELEAVE, gadget
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
+			PostGuiEvent EVENT_MOUSELEAVE, gadget
+		End If
 	End Method
 
 	Method mousePressEvent(event:QMouseEvent)
-		If event.buttons() & Qt_RightButton Then
-			PostGuiEvent EVENT_GADGETMENU, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
-		Else
-			PostGuiEvent EVENT_MOUSEDOWN, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
+			If event.buttons() & Qt_RightButton Then
+				PostGuiEvent EVENT_GADGETMENU, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
+			Else
+				PostGuiEvent EVENT_MOUSEDOWN, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
+			End If
 		End If
 	End Method
 
@@ -1770,19 +1781,19 @@ Type MaxGuiQFrame Extends QFrame
 	End Method
 
 	Method enterEvent(event:QEvent)
-		If gadget.activePanel Then
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
 			PostGuiEvent EVENT_MOUSEENTER, gadget
 		End If
 	End Method
 
 	Method leaveEvent(event:QEvent)
-		If gadget.activePanel Then
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
 			PostGuiEvent EVENT_MOUSELEAVE, gadget
 		End If
 	End Method
 
 	Method mousePressEvent(event:QMouseEvent)
-		If gadget.activePanel Then
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
 			If event.buttons() & Qt_RightButton Then
 				PostGuiEvent EVENT_GADGETMENU, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 			Else
@@ -1792,13 +1803,13 @@ Type MaxGuiQFrame Extends QFrame
 	End Method
 	
 	Method mouseMoveEvent(event:QMouseEvent)
-		If gadget.activePanel Then
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
 			PostGuiEvent EVENT_MOUSEMOVE, gadget, QtMouseButtonsToMaxMouseButton(event.buttons()), , event.x(), event.y()
 		End If		
 	End Method
 
 	Method mouseReleaseEvent(event:QMouseEvent)
-		If gadget.activePanel Then
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
 			PostGuiEvent EVENT_MOUSEUP, gadget, QtMouseButtonToMaxMouseButton(event.button()), , event.x(), event.y()
 		End If		
 	End Method
@@ -2705,7 +2716,9 @@ Type MaxGuiCanvasWidget Extends QWidget
 	End Method
 
 	Method mouseMoveEvent(event:QMouseEvent)
-		PostGuiEvent EVENT_MOUSEMOVE, gadget, QtMouseButtonToMaxMouseButton(event.buttons()), , event.x(), event.y()
+		If gadget.sensitivity & SENSITIZE_MOUSE Then
+			PostGuiEvent EVENT_MOUSEMOVE, gadget, QtMouseButtonToMaxMouseButton(event.buttons()), , event.x(), event.y()
+		End If
 	End Method
 
 	Method paintEngine:Byte Ptr()

@@ -153,16 +153,79 @@ Type TQtSystemDriver Extends TSystemDriver
 		Return -1
 	End Method
 	
-	Method RequestFile:String( text:String,exts:String, Save:Int,file:String )
-		DebugLog "TODO : TQtSystemDriver::RequestFile"
+	Method RequestFile:String(text:String, exts:String, Save:Int, file:String)
+		Local filename:String
+		
+		If save Then
+			filename = QFileDialog.getSaveFileName(Null, text, file, buildExtFilter(exts))
+		Else
+			filename = QFileDialog.getOpenFileName(Null, text, file, buildExtFilter(exts))
+		End If
+		
+		Return filename
 	End Method
 	
 	Method RequestDir:String( text:String, path:String )
-		DebugLog "TODO : TQtSystemDriver::RequestDir"
+		Return QFileDialog.getExistingDirectory(Null, text, path)
 	End Method
 
 	Method OpenURL:Int( url:String )
 		Return NativeDriver.OpenURL(url)
+	End Method
+
+	Method buildExtFilter:String(exts:String)
+		Local filter:String
+		
+		If exts Then
+		
+			' split into groups
+			Local groups:String[] = exts.Split(";")
+			
+			For Local group:String = EachIn groups
+			
+				' split into name:exts pairs
+				Local pairs:String[] = group.Split(":")
+				
+				Local name:String ' optional
+				Local extensions:String[]
+				
+				If pairs.length = 1 Then
+					extensions = pairs[0].Split(",")
+				Else
+					name = pairs[0]
+					extensions = pairs[1].Split(",")
+				End If
+				
+				If filter Then
+					filter :+ ";;"
+				End If
+				
+				If name Then
+					filter :+ name + " "
+				End If
+				
+				filter :+ "("
+				
+				Local exts:String
+				For Local extension:String = EachIn extensions
+					If exts Then
+						exts :+ " "
+					End If
+			
+					If extension <> "*" Then
+						exts :+ "*."
+					End If
+					
+					exts :+ extension.Trim()
+				Next
+				filter :+ exts
+				
+				filter :+ ")"
+			Next
+		
+		End If
+		
+		Return filter
 	End Method
 
 End Type
@@ -346,7 +409,9 @@ Type TQtGUIDriver Extends TMaxGUIDriver
 	End Method
 	
 	Method RequestFont:TGuiFont(font:TGuiFont)
-		DebugLog "TODO : TQtGUIDriver::RequestFont"
+		Local ok:Int
+		Local f:QFont = QFontDialog.getFontWithInitial(ok, TQtGuiFont(font).font)
+		Return New TQtGuiFont.Create(f)
 	End Method
 	
 	Method SetPointer(shape:Int)
