@@ -141,6 +141,7 @@ extern "C" {
 	Qt::LayoutDirection bmx_qt_inttolayoutdirection(int d);
 	Qt::TextElideMode bmx_qt_inttoelidemode(int e);
 	Qt::Corner bmx_qt_inttocorner(int c);
+	Qt::ToolBarAreas bmx_qt_inttotoolbarareas(int a);
 
 	int bmx_qt_qtime_elapsed(MaxQTime * time);
 	int bmx_qt_qtime_hour(MaxQTime * time);

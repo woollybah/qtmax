@@ -24,6 +24,7 @@
 #define MAX_QT_QTOOLBAR
 
 #include "../core.mod/glue.h"
+#include "../qwidget.mod/glue.h"
 #include <QtCore>
 #include <QToolBar>
 
@@ -34,9 +35,30 @@ extern "C" {
 #include <blitz.h>
 
 	BBObject * _qt_qtoolbar_QToolBar___create(QToolBar * toolbar);
+	void _qt_qtoolbar_QToolBar__OnActionTriggered(BBObject * handle, QAction * action);
+	void _qt_qtoolbar_QToolBar__OnAllowedAreasChanged(BBObject * handle, int allowedAreas);
+	void _qt_qtoolbar_QToolBar__OnIconSizeChanged(BBObject * handle,int width, int height);
+	void _qt_qtoolbar_QToolBar__OnMovableChanged(BBObject * handle, int movable);
+	void _qt_qtoolbar_QToolBar__OnOrientationChanged(BBObject * handle, int orientation);
+	void _qt_qtoolbar_QToolBar__OnToolButtonStyleChanged(BBObject * handle, int toolButtonStyle);
+	void _qt_qtoolbar_QToolBar__OnTopLevelChanged(BBObject * handle, int topLevel);
+	void _qt_qtoolbar_QToolBar__OnVisibilityChanged(BBObject * handle, int visible);
 
 	QToolBar * bmx_qt_qtoolbar_create(BBObject * handle, QWidget * parent);
 	void bmx_qt_qtoolbar_addwidget(QToolBar * tb, QWidget * widget);
+	int bmx_qt_qtoolbar_allowedareas(QToolBar * tb);
+	void bmx_qt_qtoolbar_clear(QToolBar * tb);
+	void bmx_qt_qtoolbar_iconsize(QToolBar * tb, int * w, int * h);
+	int bmx_qt_qtoolbar_isareaallowed(QToolBar * tb, int area);
+	int bmx_qt_qtoolbar_isfloatable(QToolBar * tb);
+	int bmx_qt_qtoolbar_isfloating(QToolBar * tb);
+	int bmx_qt_qtoolbar_ismovable(QToolBar * tb);
+	int bmx_qt_qtoolbar_orientation(QToolBar * tb);
+	void bmx_qt_qtoolbar_setallowedareas(QToolBar * tb, int areas);
+	void bmx_qt_qtoolbar_setfloatable(QToolBar * tb, int floatable);
+	void bmx_qt_qtoolbar_setmovable(QToolBar * tb, int movable);
+	void bmx_qt_qtoolbar_setorientation(QToolBar * tb, int orientation);
+	int bmx_qt_qtoolbar_toolbuttonstyle(QToolBar * tb);
 
 }
 
@@ -67,7 +89,10 @@ private slots:
 	void onMovableChanged(bool movable);
 	void onOrientationChanged(Qt::Orientation orientation);
 	void onToolButtonStyleChanged(Qt::ToolButtonStyle toolButtonStyle);
+	void onTopLevelChanged(bool topLevel);
+	void onVisibilityChanged(bool visible);
 	void onCustomContextMenuRequested(const QPoint & pos);
+	
 };
 
 #endif
