@@ -28,14 +28,34 @@
 
 // *********************************************
 
+QFileDialog::Options bmx_qt_inttofiledialogoptions(int o) {
+	QFileDialog::Options options;
+	
+	if (o & 0x00000001) options |= QFileDialog::ShowDirsOnly;
+	if (o & 0x00000002) options |= QFileDialog::DontResolveSymlinks;
+	if (o & 0x00000004) options |= QFileDialog::DontConfirmOverwrite;
+	if (o & 0x00000008) options |= QFileDialog::DontUseSheet;
+	if (o & 0x00000010) options |= QFileDialog::DontUseNativeDialog;
+	if (o & 0x00000020) options |= QFileDialog::ReadOnly;
+	if (o & 0x00000040) options |= QFileDialog::HideNameFilterDetails;
+	
+	return options;
+}
+
+
+BBString * bmx_qt_qfiledialog_getexistingdirectory(QWidget * parent, BBString * caption, BBString * dir, int options) {
+	return bbStringFromQString(QFileDialog::getExistingDirectory(parent, qStringFromBBString(caption), qStringFromBBString(dir),
+		bmx_qt_inttofiledialogoptions(options)));
+}
+
 BBString * bmx_qt_qfiledialog_getopenfilename(QWidget * parent, BBString * caption, BBString * dir, BBString * filter, int options) {
 	return bbStringFromQString(QFileDialog::getOpenFileName(parent, qStringFromBBString(caption), qStringFromBBString(dir),
-		qStringFromBBString(filter), 0, (QFileDialog::Options)options));
+		qStringFromBBString(filter), 0, bmx_qt_inttofiledialogoptions(options)));
 }
 
 BBString * bmx_qt_qfiledialog_getsavefilename(QWidget * parent, BBString * caption, BBString * dir, BBString * filter, int options) {
 	return bbStringFromQString(QFileDialog::getSaveFileName(parent, qStringFromBBString(caption), qStringFromBBString(dir),
-		qStringFromBBString(filter), 0, (QFileDialog::Options)options));
+		qStringFromBBString(filter), 0, bmx_qt_inttofiledialogoptions(options)));
 }
 
 // NOTES :

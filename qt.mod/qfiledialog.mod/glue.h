@@ -31,6 +31,7 @@ extern "C" {
 
 #include <blitz.h>
 
+	BBString * bmx_qt_qfiledialog_getexistingdirectory(QWidget * parent, BBString * caption, BBString * dir, int options);
 	BBString * bmx_qt_qfiledialog_getopenfilename(QWidget * parent, BBString * caption, BBString * dir, BBString * filter, int options);
 	BBString * bmx_qt_qfiledialog_getsavefilename(QWidget * parent, BBString * caption, BBString * dir, BBString * filter, int options);
 
