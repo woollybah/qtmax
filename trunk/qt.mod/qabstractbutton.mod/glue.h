@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qicon.mod/glue.h"
+#include "../qkeysequence.mod/glue.h"
 #include <QtCore>
 #include <QAbstractButton>
 
@@ -61,6 +62,8 @@ extern "C" {
 	void bmx_qt_qabstractbutton_toggle(QAbstractButton * button);
 	MaxQIcon *  bmx_qt_qabstractbutton_icon(QAbstractButton * button);
 	void bmx_qt_qabstractbutton_seticon(QAbstractButton * button, MaxQIcon * icon);
+	void bmx_qt_qabstractbutton_setshortcut(QAbstractButton * button, MaxQKeySequence * key);
+	MaxQKeySequence * bmx_qt_qabstractbutton_shortcut(QAbstractButton * button);
 
 }
 

@@ -1074,6 +1074,10 @@ void bmx_qt_qwidget_scroll(QWidget * widget, int dx, int dy) {
 	widget->scroll(dx, dy);
 }
 
+void bmx_qt_qwidget_setfocuspolicy(QWidget * widget, int policy) {
+	widget->setFocusPolicy((Qt::FocusPolicy)policy);
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {

@@ -231,6 +231,7 @@ Extern
 	Function bmx_qt_qwidget_setwindowmodality(handle:Byte Ptr, windowModality:Int)
 	Function bmx_qt_qwidget_grabmouse(handle:Byte Ptr)
 	Function bmx_qt_qwidget_releasemouse(handle:Byte Ptr)
+	Function bmx_qt_qwidget_setfocuspolicy(handle:Byte Ptr, policy:Int)
 
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)

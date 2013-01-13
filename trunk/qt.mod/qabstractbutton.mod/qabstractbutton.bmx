@@ -119,17 +119,17 @@ Type QAbstractButton Extends QWidget
 		bmx_qt_qabstractbutton_seticon(qObjectPtr, icon.qObjectPtr)
 	End Method
 	
-	'Method setShortcut(key:QKeySequence)
-	' TODO
-	'End Method
+	Method setShortcut(key:QKeySequence)
+		bmx_qt_qabstractbutton_setshortcut(qObjectPtr, key.qObjectPtr)
+	End Method
 	
 	Method setText(text:String)
 		bmx_qt_qabstractbutton_settext(qObjectPtr, text)
 	End Method
 	
-	'Method shortcut:QKeySequence()
-	' TODO
-	'End Method
+	Method shortcut:QKeySequence()
+		Return QKeySequence._create(bmx_qt_qabstractbutton_shortcut(qObjectPtr))
+	End Method
 	
 	Method text:String()
 		Return bmx_qt_qabstractbutton_text(qObjectPtr)
