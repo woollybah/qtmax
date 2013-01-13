@@ -243,6 +243,10 @@ void MaxQStandardItemModel::doEndRemoveRows() {
 	endRemoveRows();
 }
 
+bool MaxQStandardItemModel::hasChildren(const QModelIndex & parent) const {
+	return rowCount(parent) > 0;
+}
+
 // ********************  SLOTS ****************************
 
 void MaxQStandardItemModel::onColumnsAboutToBeInserted(const QModelIndex & parent, int start, int end) {
