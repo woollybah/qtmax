@@ -82,7 +82,6 @@ Type QStandardItem
 	
 	
 	Method setDataInternal(role:Int, data:Object)
-'DebugLog "QStandardItem::setDataInternal(" + role + ", " + String(data) + ")"
 
 		' edit and display are the same...
 		If role = Qt_EditRole Then
@@ -111,12 +110,10 @@ Type QStandardItem
 	
 	Method accessibleDescription:String()
 		Return String(getDataInternal(Qt_AccessibleDescriptionRole))
-		'Return bmx_qt_qstandarditem_accessibledescription(qObjectPtr)
 	End Method
 	
 	Method accessibleText:String()
 		Return String(getDataInternal(Qt_AccessibleTextRole))
-		'Return bmx_qt_qstandarditem_accessibletext(qObjectPtr)
 	End Method
 	
 	Method appendColumn(items:TList)
@@ -173,17 +170,14 @@ Type QStandardItem
 	
 	Method columnCount:Int()
 		Return columns
-		'Return bmx_qt_qstandarditem_columncount(qObjectPtr)
 	End Method
 	
 	Method data:Object()
 		Return getDataInternal(Qt_UserRole)
-		'Return bmx_qt_qstandarditem_data(qObjectPtr)
 	End Method
 	
 	Method flags:Int()
 		Return itemFlags
-		'Return bmx_qt_qstandarditem_flags(qObjectPtr)
 	End Method
 	
 	Method font:QFont()
@@ -215,8 +209,8 @@ Type QStandardItem
 	End Method
 
 	Method lastIndexOfChild:Int(child:QStandardItem, start:Int)
-		Local index:Int = children.length()
-		While index >= start
+		Local index:Int = start
+		While index >= 0
 			If children.itemAt(index) = child Then
 				Return index
 			End If
@@ -283,7 +277,6 @@ Type QStandardItem
 		End If
 		
 		Return True
-		'bmx_qt_qstandarditem_insertrows(qObjectPtr, row, count)
 	End Method
 
 	Method removeRows:Int(row:Int, count:Int)
@@ -533,6 +526,9 @@ Type QStandardItem
 	End Method
 	
 	Method setRowCount(rows:Int)
+		If Self.rows = rows Then
+			Return
+		End If
 		'bmx_qt_qstandarditem_setrowcount(qObjectPtr, rows)
 	End Method
 	
