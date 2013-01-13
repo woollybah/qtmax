@@ -438,7 +438,7 @@ Type QWidget Extends QObject
 	End Method
 
 	Method setFocusPolicy(policy:Int)
-	' TODO
+		bmx_qt_qwidget_setfocuspolicy(qObjectPtr, policy)
 	End Method
 	
 	Method setFocusProxy(w:QWidget)
