@@ -432,7 +432,7 @@ Type QStandardItem
 	End Method
 	
 	Method setChildRC(row:Int, column:Int, item:QStandardItem)
-'DebugLog "setChildRC"
+'DebugLog "setChildRC : " + row + ", " + column
 		If row < 0 Or column < 0 Then
 			Return
 		End If

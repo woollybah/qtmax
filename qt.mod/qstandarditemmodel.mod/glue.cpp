@@ -128,7 +128,7 @@ QVariant MaxQStandardItemModel::data(const QModelIndex & index, int role) const 
 }
 
 QModelIndex	MaxQStandardItemModel::parent(const QModelIndex & child) const {
-//printf("MaxQStandardItemModel::parent\n");fflush(stdout);
+//printf("MaxQStandardItemModel::parent : %d, %d\n", child.row(), child.column());fflush(stdout);
 	if (child.row() < 0 || child.column() < 0) {
 		return QModelIndex();
 	}
@@ -158,6 +158,11 @@ QModelIndex MaxQStandardItemModel::index(int row, int column, const QModelIndex 
 }
 
 QModelIndex MaxQStandardItemModel::doCreateIndex(int row, int col, MaxQStandardItem * parent) {
+//printf("MaxQStandardItemModel:: doCreateIndex : %d, %d\n", row, col);fflush(stdout);
+	if (row < 0 || col < 0) {
+		return QModelIndex();
+	}
+
 	return createIndex(row, col, parent);
 }
 
@@ -244,6 +249,7 @@ void MaxQStandardItemModel::doEndRemoveRows() {
 }
 
 bool MaxQStandardItemModel::hasChildren(const QModelIndex & parent) const {
+//printf("MaxQStandardItemModel::hasChildren\n");fflush(stdout);
 	return rowCount(parent) > 0;
 }
 
