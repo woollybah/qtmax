@@ -88,6 +88,10 @@ Type QAbstractItemView Extends QAbstractScrollArea
 		bmx_qt_qabstractitemview_clearselection(qObjectPtr)
 	End Method
 	
+	Method currentIndex:QModelIndex()
+		Return QModelIndex._create(bmx_qt_qabstractitemview_currentindex(qObjectPtr))
+	End Method
+	
 	Rem
 	bbdoc: 
 	End Rem
