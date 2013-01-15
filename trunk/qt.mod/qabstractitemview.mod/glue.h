@@ -96,6 +96,7 @@ extern "C" {
 	void bmx_qt_qabstractitemview_update(QAbstractItemView * view, MaxQModelIndex * index);
 	void bmx_qt_qabstractitemview_setselectionmodel(QAbstractItemView * view, QItemSelectionModel * model);
 	void bmx_qt_qabstractitemview_setselectionmode(QAbstractItemView * view, int mode);
+	MaxQModelIndex * bmx_qt_qabstractitemview_currentindex(QAbstractItemView * view);
 
 }
 

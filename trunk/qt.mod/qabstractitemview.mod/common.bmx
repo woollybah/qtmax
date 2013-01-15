@@ -106,5 +106,6 @@ Extern
 	Function bmx_qt_qabstractitemview_update(handle:Byte Ptr, index:Byte Ptr)
 	Function bmx_qt_qabstractitemview_setselectionmodel(handle:Byte Ptr, model:Byte Ptr)
 	Function bmx_qt_qabstractitemview_setselectionmode(handle:Byte Ptr, Mode:Int)
+	Function bmx_qt_qabstractitemview_currentindex:Byte Ptr(handle:Byte Ptr)
 
 End Extern
