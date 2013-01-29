@@ -87,6 +87,7 @@ extern "C" {
 	void bmx_qt_qstandarditemmodel_dobeginremoverows(MaxQStandardItemModel * model, MaxQModelIndex * index, int row, int count);
 	void bmx_qt_qstandarditemmodel_doendremoverows(MaxQStandardItemModel * model);
 	MaxQModelIndex * bmx_qt_qstandarditemmodel_index(MaxQStandardItemModel * model, int row, int column, MaxQModelIndex * parent);
+	void bmx_qt_qstandarditemmodel_reset(MaxQStandardItemModel * model);
 
 }
 
@@ -118,6 +119,8 @@ public:
 	void doBeginRemoveRows(const QModelIndex & index, int row, int count);
 	void doEndRemoveRows();
 
+	void reset();
+	
 private:
 	BBObject * maxHandle;
 
