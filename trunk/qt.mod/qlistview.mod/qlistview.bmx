@@ -47,9 +47,13 @@ Type QListView Extends QAbstractItemView
 		Return Self
 	End Method
 	
-	
-	
-	
+	Rem
+	bbdoc: 
+	End Rem
+	Method indexAt:QModelIndex(x:Int, y:Int)
+		Return QModelIndex._create(bmx_qt_qlistview_indexat(qObjectPtr, x, y))
+	End Method
+
 
 
 

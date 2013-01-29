@@ -27,6 +27,7 @@
 #include "../qwidget.mod/glue.h"
 #include "../qabstractscrollarea.mod/glue.h"
 #include "../qabstractitemview.mod/glue.h"
+#include "../qabstractitemmodel.mod/glue.h"
 #include <QtCore>
 #include <QListView>
 
@@ -80,6 +81,7 @@ extern "C" {
 
 
 	QListView * bmx_qt_qlistview_create(BBObject * handle, QWidget * parent);
+	MaxQModelIndex * bmx_qt_qlistview_indexat(QListView * list, int x, int y);
 
 }
 
