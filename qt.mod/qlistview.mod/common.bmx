@@ -92,5 +92,6 @@ Extern
 
 
 	Function bmx_qt_qlistview_create:Byte Ptr(handle:Object, parent:Byte Ptr)
-
+	Function bmx_qt_qlistview_indexat:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)
+	
 End Extern
