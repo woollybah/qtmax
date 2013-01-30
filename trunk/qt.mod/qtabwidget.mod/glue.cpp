@@ -51,6 +51,10 @@ void MaxQTabWidget::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+QTabBar * MaxQTabWidget::tabBar() const {
+	return QTabWidget::tabBar();
+}
+
 // ****************** DEFAULT HANDLERS ********************
 
 // QTabWidget
@@ -650,7 +654,7 @@ void bmx_qt_qtabwidget_setcurrentwidget(QTabWidget * tab, QWidget * widget) {
 	tab->setCurrentWidget(widget);
 }
 
-QTabBar * bmx_qt_qtabwidget_tabbar(QTabWidget * tab) {
+QTabBar * bmx_qt_qtabwidget_tabbar(MaxQTabWidget * tab) {
 	QTabBar * tb = tab->tabBar();
 	MaxQTabBar::link(tb);
 	return tb;

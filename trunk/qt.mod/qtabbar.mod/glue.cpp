@@ -43,6 +43,18 @@ MaxQTabBar::~MaxQTabBar()
 {
 }
 
+QTabBar * MaxQTabBar::TabBar() {
+	return tabBar;
+}
+
+void MaxQTabBar::link(QTabBar * tb) {
+	BBObject * handle = qfind(tb);
+	
+	if (handle == &bbNullObject) {
+		MaxQTabBar * action = new MaxQTabBar(tb);
+	}
+}
+
 void MaxQTabBar::doConnections() {
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(onCurrentChanged(int)));
 	connect(tabBar, SIGNAL(tabCloseRequested(int)), SLOT(onTabCloseRequested(int)));
