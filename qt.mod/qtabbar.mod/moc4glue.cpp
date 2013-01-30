@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'glue.h'
 **
-** Created: Sat Jan 12 19:37:14 2013
+** Created: Wed Jan 30 18:37:37 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -66,7 +66,7 @@ const QMetaObjectExtraData MaxQTabBar::staticMetaObjectExtraData = {
 };
 
 const QMetaObject MaxQTabBar::staticMetaObject = {
-    { &QTabBar::staticMetaObject, qt_meta_stringdata_MaxQTabBar,
+    { &MaxQObjectWrapper::staticMetaObject, qt_meta_stringdata_MaxQTabBar,
       qt_meta_data_MaxQTabBar, &staticMetaObjectExtraData }
 };
 
@@ -84,12 +84,12 @@ void *MaxQTabBar::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_MaxQTabBar))
         return static_cast<void*>(const_cast< MaxQTabBar*>(this));
-    return QTabBar::qt_metacast(_clname);
+    return MaxQObjectWrapper::qt_metacast(_clname);
 }
 
 int MaxQTabBar::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QTabBar::qt_metacall(_c, _id, _a);
+    _id = MaxQObjectWrapper::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {

@@ -25,6 +25,7 @@
 
 #include "../core.mod/glue.h"
 #include "../qwidget.mod/glue.h"
+#include "../qtabbar.mod/glue.h"
 #include <QtCore>
 #include <QTabWidget>
 
@@ -116,7 +117,7 @@ extern "C" {
 	int bmx_qt_qtabwidget_usesscrollbuttons(QTabWidget * tab);
 	void bmx_qt_qtabwidget_setcurrentindex(QTabWidget * tab, int index);
 	void bmx_qt_qtabwidget_setcurrentwidget(QTabWidget * tab, QWidget * widget);
-	QTabBar * bmx_qt_qtabwidget_tabbar(QTabWidget * tab);
+	QTabBar * bmx_qt_qtabwidget_tabbar(MaxQTabWidget * tab);
 
 }
 
@@ -129,6 +130,8 @@ class MaxQTabWidget : public QTabWidget
 public:
 	MaxQTabWidget(BBObject * handle, QWidget * parent);
 	~MaxQTabWidget();
+
+	QTabBar * tabBar() const;
 
 private:
 	BBObject * maxHandle;
