@@ -36,6 +36,7 @@ extern "C" {
 
 #include <blitz.h>
 
+	BBObject * _qt_qtabbar_QTabBar___create(QTabBar * tabbar);
 	void _qt_qtabbar_QTabBar__OnCurrentChanged(BBObject * handle, int index);
 	void _qt_qtabbar_QTabBar__OnTabCloseRequested(BBObject * handle, int index);
 	void _qt_qtabbar_QTabBar__OnTabMoved(BBObject * handle, int from, int to);
@@ -92,16 +93,23 @@ extern "C" {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class MaxQTabBar : public QTabBar
+class MaxQTabBar : public MaxQObjectWrapper
 {
 	Q_OBJECT
 	
 public:
-	MaxQTabBar(BBObject * handle, QWidget * parent);
+	MaxQTabBar(BBObject * handle, QTabBar * tb);
+	MaxQTabBar(QTabBar * tb);
+
+	QTabBar * TabBar();
+	
+	static void link(QTabBar * t);
+
 	~MaxQTabBar();
 
 private:
-	BBObject * maxHandle;
+	void doConnections();
+	QTabBar * tabBar;
 
 private slots:
 	void onCurrentChanged(int index);

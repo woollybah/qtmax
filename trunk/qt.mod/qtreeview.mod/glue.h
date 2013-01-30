@@ -132,6 +132,7 @@ extern "C" {
 	void bmx_qt_qtreeview_hidecolumn(QTreeView * tv, int column);
 	void bmx_qt_qtreeview_resizecolumntocontents(QTreeView * tv, int column);
 	void bmx_qt_qtreeview_showcolumn(QTreeView * tv, int column);
+	MaxQModelIndex * bmx_qt_qtreeview_indexat(QTreeView * tv, int x, int y);
 
 }
 
@@ -144,6 +145,8 @@ class MaxQTreeView : public QTreeView
 public:
 	MaxQTreeView(BBObject * handle, QWidget * parent);
 	~MaxQTreeView();
+
+	virtual QModelIndex indexAt(const QPoint & point) const;
 
 private:
 	BBObject * maxHandle;

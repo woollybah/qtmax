@@ -125,5 +125,6 @@ Extern
 	Function bmx_qt_qtabwidget_usesscrollbuttons:Int(handle:Byte Ptr)
 	Function bmx_qt_qtabwidget_setcurrentindex(handle:Byte Ptr, index:Int)
 	Function bmx_qt_qtabwidget_setcurrentwidget(handle:Byte Ptr, widget:Byte Ptr)
+	Function bmx_qt_qtabwidget_tabbar:Byte Ptr(handle:Byte Ptr)
 
 End Extern

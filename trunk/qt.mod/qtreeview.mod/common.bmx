@@ -140,7 +140,8 @@ Extern
 	Function bmx_qt_qtreeview_hidecolumn(handle:Byte Ptr, column:Int)
 	Function bmx_qt_qtreeview_resizecolumntocontents(handle:Byte Ptr, column:Int)
 	Function bmx_qt_qtreeview_showcolumn(handle:Byte Ptr, column:Int)
-
+	Function bmx_qt_qtreeview_indexat:Byte Ptr(handle:Byte Ptr, x:Int, y:Int)
+	
 End Extern
 
 

@@ -83,6 +83,10 @@ Type QTreeView Extends QAbstractItemView
 		Return QModelIndex._create(bmx_qt_qtreeview_indexabove(qObjectPtr, index.qObjectPtr))
 	End Method
 	
+	Method indexAt:QModelIndex(x:Int, y:Int)
+		Return QModelIndex._create(bmx_qt_qtreeview_indexat(qObjectPtr, x, y))
+	End Method
+	
 	Method indexBelow:QModelIndex(index:QModelIndex)
 		Return QModelIndex._create(bmx_qt_qtreeview_indexbelow(qObjectPtr, index.qObjectPtr))
 	End Method
