@@ -394,15 +394,15 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method setAcceptDrops(on:Int)
-	' TODO
+		bmx_qt_qwidget_setacceptdrops(qObjectPtr, on)
 	End Method
 	
 	Method setAccessibleDescription(description:String)
-	' TODO
+		bmx_qt_qwidget_setaccessibledescription(qObjectPtr, description)
 	End Method
 	
 	Method setAccessibleName(name:String)
-	' TODO
+		bmx_qt_qwidget_setaccessiblename(qObjectPtr, name)
 	End Method
 
 	Method setAttribute(attribute:Int, on:Int = True)
@@ -1550,6 +1550,46 @@ Type QDropEvent Extends QEvent
 		End If
 	End Function
 
+	Method acceptProposedAction()
+		bmx_qt_qdropevent_acceptproposedaction(qObjectPtr)
+	End Method
+	
+	Method dropAction:Int()
+		Return bmx_qt_qdropevent_dropaction(qObjectPtr)
+	End Method
+	
+	Method keyboardModifiers:Int()
+		Return bmx_qt_qdropevent_keyboardmodifiers(qObjectPtr)
+	End Method
+	
+	Method mimeData:QMimeData()
+		Return QMimeData._create(bmx_qt_qdropevent_mimedata(qObjectPtr))
+	End Method
+	
+	Method mouseButtons:Int()
+		Return bmx_qt_qdropevent_mousebuttons(qObjectPtr)
+	End Method
+	
+	Method pos(x:Int Var, y:Int Var)
+		bmx_qt_qdropevent_pos(qObjectPtr, Varptr x, Varptr y)
+	End Method
+	
+	Method possibleActions:Int()
+		Return bmx_qt_qdropevent_possibleactions(qObjectPtr)
+	End Method
+	
+	Method proposedAction:Int()
+		Return bmx_qt_qdropevent_proposedaction(qObjectPtr)
+	End Method
+	
+	Method setDropAction(action:Int)
+		bmx_qt_qdropevent_setdropaction(qObjectPtr, action)
+	End Method
+	
+	Method source:QWidget()
+		Return QWidget._find(bmx_qt_qdropevent_source(qObjectPtr))
+	End Method
+	
 End Type
 
 Type QDragMoveEvent Extends QDropEvent

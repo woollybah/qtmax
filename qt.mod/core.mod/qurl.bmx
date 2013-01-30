@@ -55,6 +55,14 @@ Type QUrl
 		End If
 	End Method
 
+	Function _newArray:QUrl[](size:Int)
+		Return New QUrl[size]
+	End Function
+	
+	Function _setArray(arr:QUrl[], index:Int, url:Byte Ptr)
+		arr[index] = _create(url)
+	End Function
+
 	Method Delete()
 		Free()
 	End Method

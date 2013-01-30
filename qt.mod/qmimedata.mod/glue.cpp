@@ -24,10 +24,44 @@
 
 // ---------------------------------------------------------------------------------------
 
+MaxQMimeData::MaxQMimeData(BBObject * handle, QMimeData * mimeData)
+	: mimeData(mimeData), MaxQObjectWrapper(handle, mimeData)
+{
+}
+
+MaxQMimeData::~MaxQMimeData()
+{
+}
+
+MaxQMimeData::MaxQMimeData(QMimeData * d)
+	: mimeData(d), MaxQObjectWrapper(d)
+{
+	maxHandle = _qt_qmimedata_QMimeData__create(mimeData);
+	qbind(mimeData, maxHandle);
+}
+
+QMimeData * MaxQMimeData::MimeData() {
+	return mimeData;
+}
+
+void MaxQMimeData::link(QMimeData * d) {
+	BBObject * handle = qfind(d);
+	
+	if (handle == &bbNullObject) {
+		MaxQMimeData * mimeData = new MaxQMimeData(d);
+	}
+}
 
 
 // *********************************************
 
+int bmx_qt_qmimedata_hasurls(QMimeData * data) {
+	return static_cast<int>(data->hasUrls());
+}
+
+BBArray * bmx_qt_qmimedata_urls(QMimeData * data) {
+	return bbQUrlArrayFromQUrlList(data->urls());
+}
 
 
 // NOTES :

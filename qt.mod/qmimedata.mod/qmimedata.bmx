@@ -51,6 +51,84 @@ Type QMimeData Extends QObject
 		End If
 	End Function
 
+	Method clear()
+	End Method
+	
+	Method colorData:QColor()
+	End Method
+	
+	Method formats:String[]()
+	End Method
+	
+	Method hasColor:Int()
+	End Method
+	
+	Method hasFormat:Int(mimeType:String)
+	End Method
+
+	'Method data:QByteArray()
+	' TODO
+	'End Method
+	
+	Method hasHtml:Int()
+	' TODO
+	End Method
+	
+	Method hasImage:Int()
+	' TODO
+	End Method
+	
+	Method hasText:Int()
+	' TODO
+	End Method
+	
+	Method hasUrls:Int()
+		Return bmx_qt_qmimedata_hasurls(qObjectPtr)
+	End Method
+	
+	Method html:String()
+	' TODO
+	End Method
+	
+	Method imageData:QImage()
+	' TODO
+	End Method
+	
+	Method removeFormat(mimeType:String)
+	' TODO
+	End Method
+	
+	Method setColorData(color:QColor)
+	' TODO
+	End Method
+	
+	'Method setData(mimeType, data:QByteArray)
+	' TODO
+	'End Method
+	
+	Method setHtml(html:String)
+	' TODO
+	End Method
+	
+	Method setImageData(image:QImage)
+	' TODO
+	End Method
+	
+	Method setText(text:String)
+	' TODO
+	End Method
+	
+	Method setUrls(urls:String[])
+	' TODO
+	End Method
+	
+	Method text:String()
+	' TODO
+	End Method
+	
+	Method urls:QUrl[]()
+		Return bmx_qt_qmimedata_urls(qObjectPtr)
+	End Method
 
 End Type
 
