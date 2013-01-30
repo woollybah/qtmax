@@ -105,6 +105,24 @@ Type QTabBar Extends QWidget
 		Return Self
 	End Method
 
+	Function __create:QTabBar(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local this:QTabBar = New QTabBar
+			this.qObjectPtr = qObjectPtr
+			Return this
+		End If
+	End Function
+	
+	Function _find:QTabBar(qObjectPtr:Byte Ptr)
+		If qObjectPtr Then
+			Local widget:QTabBar = QTabBar(qfind(qObjectPtr))
+			If Not widget Then
+				Return QTabBar.__create(qObjectPtr)
+			End If
+			Return widget
+		End If
+	End Function
+
 	Method addTab:Int(text:String, icon:QIcon = Null)
 		If icon Then
 			Return bmx_qt_qtabbar_addtab(qObjectPtr, text, icon.qObjectPtr)

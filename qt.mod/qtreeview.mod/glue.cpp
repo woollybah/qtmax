@@ -82,6 +82,10 @@ void MaxQTreeView::onCustomContextMenuRequested(const QPoint & pos) {
 	_qt_qwidget_QWidget__OnCustomContextMenuRequested(maxHandle, pos.x(), pos.y());
 }
 
+QModelIndex MaxQTreeView::indexAt(const QPoint & point) const {
+	return QTreeView::indexAt(point);
+}
+
 // ****************** DEFAULT HANDLERS ********************
 
 // QTreeView
@@ -696,6 +700,10 @@ void bmx_qt_qtreeview_resizecolumntocontents(QTreeView * tv, int column) {
 
 void bmx_qt_qtreeview_showcolumn(QTreeView * tv, int column) {
 	tv->showColumn(column);
+}
+
+MaxQModelIndex * bmx_qt_qtreeview_indexat(QTreeView * tv, int x, int y) {
+	return new MaxQModelIndex(tv->indexAt(QPoint(x, y)));
 }
 
 // NOTES :

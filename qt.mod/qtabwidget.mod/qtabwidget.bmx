@@ -201,6 +201,10 @@ Type QTabWidget Extends QWidget
 		bmx_qt_qtabwidget_setusesscrollbuttons(qObjectPtr, useButtons)
 	End Method
 	
+	Method tabBar:QTabBar()
+		Return QTabBar._find(bmx_qt_qtabwidget_tabbar(qObjectPtr))
+	End Method
+	
 	Method tabIcon:QIcon(index:Int)
 		Return QIcon._create(bmx_qt_qtabwidget_tabicon(qObjectPtr, index))
 	End Method

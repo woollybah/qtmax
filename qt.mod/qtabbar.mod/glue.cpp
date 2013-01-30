@@ -24,15 +24,30 @@
 
 // ---------------------------------------------------------------------------------------
 
-MaxQTabBar::MaxQTabBar(BBObject * handle, QWidget * parent)
-	: maxHandle(handle), QTabBar(parent)
+MaxQTabBar::MaxQTabBar(BBObject * handle, QTabBar * tb)
+	: tabBar(tb), MaxQObjectWrapper(handle, tb)
 {
-	qbind(this, handle);
+	doConnections();
+}
+
+MaxQTabBar::MaxQTabBar(QTabBar * tb)
+	: tabBar(tb), MaxQObjectWrapper(tb)
+{
+	maxHandle = _qt_qtabbar_QTabBar___create(tb);
+	qbind(tb, maxHandle);
+
+	doConnections();
 }
 
 MaxQTabBar::~MaxQTabBar()
 {
-	qunbind(this);
+}
+
+void MaxQTabBar::doConnections() {
+	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(onCurrentChanged(int)));
+	connect(tabBar, SIGNAL(tabCloseRequested(int)), SLOT(onTabCloseRequested(int)));
+	connect(tabBar, SIGNAL(tabMoved(int, int)), SLOT(onTabMoved(int, int)));
+	connect(tabBar, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 void MaxQTabBar::onCurrentChanged(int index) {
@@ -54,7 +69,8 @@ void MaxQTabBar::onCustomContextMenuRequested(const QPoint & pos) {
 // *********************************************
 
 QTabBar * bmx_qt_qtabbar_create(BBObject * handle, QWidget * parent) {
-	return new MaxQTabBar(handle, parent);
+	MaxQTabBar * tb = new MaxQTabBar(handle, new QTabBar(parent));
+	return tb->TabBar();
 }
 
 int bmx_qt_qtabbar_addtab(QTabBar * tb, BBString * text, MaxQIcon * icon) {
