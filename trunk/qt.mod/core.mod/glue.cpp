@@ -250,6 +250,15 @@ BBString * bmx_qt_qurl_tostring(MaxQUrl * url) {
 	return bbStringFromQString(url->Url().toString());
 }
 
+BBArray * bbQUrlArrayFromQUrlList(QList<QUrl> list) {
+	int n = list.count();
+	BBArray *p = _qt_core_QUrl__newArray(n);
+	for( int i=0;i<n;++i ){
+		_qt_core_QUrl__setArray(p, i, new MaxQUrl(list[i]));
+	}
+	return p;
+}
+
 // *********************************************
 
 MaxQRect * bmx_qt_qrect_create(int x, int y, int w, int h) {

@@ -34,11 +34,13 @@
 #include "../qobject.mod/glue.h"
 #include "../qpalette.mod/glue.h"
 #include "../qkeysequence.mod/glue.h"
+#include "../qmimedata.mod/glue.h"
 #include <QWidget>
 #include <QPainter>
 #include <QAction>
 #include <QActionGroup>
 #include <QLayout>
+#include <QDropEvent>
 
 class MaxQWidget;
 class MaxQAction;
@@ -259,6 +261,9 @@ extern "C" {
 	void bmx_qt_qwidget_removeaction(QWidget * widget, QAction * action);
 	void bmx_qt_qwidget_scroll(QWidget * widget, int dx, int dy);
 	void bmx_qt_qwidget_setfocuspolicy(QWidget * widget, int policy);
+	void bmx_qt_qwidget_setacceptdrops(QWidget * widget, int on);
+	void bmx_qt_qwidget_setaccessibledescription(QWidget * widget, BBString * description);
+	void bmx_qt_qwidget_setaccessiblename(QWidget * widget, BBString * name);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
@@ -330,6 +335,17 @@ extern "C" {
 	void bmx_qt_qlayout_setcontentsmargins(QLayout * layout, int left, int top, int right, int bottom);
 	void bmx_qt_qlayout_setenabled(QLayout * layout, int enable);
 	void bmx_qt_qlayout_setmenubar(QLayout * layout, QWidget * widget);
+
+	void bmx_qt_qdropevent_acceptproposedaction(QDropEvent * event);
+	int bmx_qt_qdropevent_dropaction(QDropEvent * event);
+	int bmx_qt_qdropevent_keyboardmodifiers(QDropEvent * event);
+	const QMimeData * bmx_qt_qdropevent_mimedata(QDropEvent * event);
+	int bmx_qt_qdropevent_mousebuttons(QDropEvent * event);
+	void bmx_qt_qdropevent_pos(QDropEvent * event, int * x, int * y);
+	int bmx_qt_qdropevent_possibleactions(QDropEvent * event);
+	int bmx_qt_qdropevent_proposedaction(QDropEvent * event);
+	void bmx_qt_qdropevent_setdropaction(QDropEvent * event, int action);
+	QWidget * bmx_qt_qdropevent_source(QDropEvent * event);
 
 }
 

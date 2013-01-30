@@ -44,6 +44,7 @@ Import Qt.QFontInfo
 Import Qt.QFontMetrics
 Import Qt.QKeySequence
 Import Qt.QPalette
+Import Qt.QMimeData
 Import BRL.Blitz
 
 
@@ -232,6 +233,9 @@ Extern
 	Function bmx_qt_qwidget_grabmouse(handle:Byte Ptr)
 	Function bmx_qt_qwidget_releasemouse(handle:Byte Ptr)
 	Function bmx_qt_qwidget_setfocuspolicy(handle:Byte Ptr, policy:Int)
+	Function bmx_qt_qwidget_setacceptdrops(handle:Byte Ptr, on:Int)
+	Function bmx_qt_qwidget_setaccessibledescription(handle:Byte Ptr, description:String)
+	Function bmx_qt_qwidget_setaccessiblename(handle:Byte Ptr, name:String)
 
 	Function bmx_qt_qaction_create:Byte Ptr(handle:Object, text:String, parent:Byte Ptr)
 	Function bmx_qt_qaction_createwithicon:Byte Ptr(handle:Object, icon:Byte Ptr, text:String, parent:Byte Ptr)
@@ -301,6 +305,17 @@ Extern
 	Function bmx_qt_qlayout_setcontentsmargins(handle:Byte Ptr, _left:Int, _top:Int, _right:Int, _bottom:Int)
 	Function bmx_qt_qlayout_setenabled(handle:Byte Ptr, enable:Int)
 	Function bmx_qt_qlayout_setmenubar(handle:Byte Ptr, widget:Byte Ptr)
+
+	Function bmx_qt_qdropevent_acceptproposedaction(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_dropaction:Int(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_keyboardmodifiers:Int(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_mimedata:Byte Ptr(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_mousebuttons:Int(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_pos(handle:Byte Ptr, x:Int Ptr, y:Int Ptr)
+	Function bmx_qt_qdropevent_possibleactions:Int(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_proposedaction:Int(handle:Byte Ptr)
+	Function bmx_qt_qdropevent_setdropaction(handle:Byte Ptr, action:Int)
+	Function bmx_qt_qdropevent_source:Byte Ptr(handle:Byte Ptr)
 
 End Extern
 

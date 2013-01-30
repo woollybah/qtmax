@@ -30,11 +30,32 @@
 extern "C" {
 
 #include <blitz.h>
+	BBObject * _qt_qmimedata_QMimeData__create(QMimeData * data);
 
+	int bmx_qt_qmimedata_hasurls(QMimeData * data);
+	BBArray * bmx_qt_qmimedata_urls(QMimeData * data);
 
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class MaxQMimeData : public MaxQObjectWrapper
+{
+	Q_OBJECT
+
+public:
+	MaxQMimeData(BBObject * handle, QMimeData * mimeData);
+	MaxQMimeData(QMimeData * mimeData);
+	
+	QMimeData * MimeData();
+	
+	static void link(QMimeData * d);
+	
+	~MaxQMimeData();
+
+private:
+	QMimeData * mimeData;
+	
+};
 
 #endif

@@ -22,6 +22,8 @@ SuperStrict
 
 Import Qt.Core
 Import Qt.QObject
+Import Qt.QColor
+Import Qt.QImage
 Import BRL.Blitz
 
 
@@ -46,5 +48,8 @@ Import "/usr/include/QtCore/*.h"
 Import "glue.cpp"
 
 Extern
+
+	Function bmx_qt_qmimedata_hasurls:Int(handle:Byte Ptr)
+	Function bmx_qt_qmimedata_urls:QUrl[](handle:Byte Ptr)
 
 End Extern

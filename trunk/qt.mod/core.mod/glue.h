@@ -51,6 +51,9 @@ extern "C" {
 	void _qt_qobject_QObject__Free(BBObject * handle);
 	BBObject * _qt_core_QVariant__CreateVariant(int type, MaxQVariant * variant);
 
+	BBArray * _qt_core_QUrl__newArray(int size);
+	void _qt_core_QUrl__setArray(BBArray * arr, int index, MaxQUrl * url);
+	
 	void qbind( QObject *obj, BBObject *peer );
 	void qunbind(QObject *obj);
 	BBObject *qfind( QObject *obj );
@@ -61,6 +64,7 @@ extern "C" {
 	BBArray * bbDoubleArrayFromQRealVector(QVector<qreal> p);
 	BBArray * bbStringArrayFromQStringList(QStringList list);
 	BBArray * bbIntArrayFromQIntList(QList<int> list);
+	BBArray * bbQUrlArrayFromQUrlList(QList<QUrl> list);
 
 	MaxQUrl * bmx_qt_qurl_create(BBString * url);
 	void bmx_qt_qurl_free(MaxQUrl * url);
