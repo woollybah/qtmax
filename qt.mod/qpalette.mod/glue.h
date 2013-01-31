@@ -34,6 +34,9 @@ extern "C" {
 
 #include <blitz.h>
 
+	QPalette::ColorGroup bmx_qt_getcolorgroup(int g);
+	QPalette::ColorRole bmx_qt_getcolorrole(int r);
+
 	MaxQBrush * bmx_qt_qpalette_alternatebase(MaxQPalette * palette);
 	MaxQBrush * bmx_qt_qpalette_base(MaxQPalette * palette);
 	MaxQBrush * bmx_qt_qpalette_brighttext(MaxQPalette * palette);

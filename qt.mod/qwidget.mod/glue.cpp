@@ -1090,6 +1090,66 @@ void bmx_qt_qwidget_setaccessiblename(QWidget * widget, BBString * name) {
 	widget->setAccessibleName(qStringFromBBString(name));
 }
 
+int bmx_qt_qwidget_heightforwidth(QWidget * widget, int w) {
+	return widget->heightForWidth(w);
+}
+
+int bmx_qt_qwidget_isancestorof(QWidget * widget, QWidget * child) {
+	return static_cast<int>(widget->isAncestorOf(child));
+}
+
+int bmx_qt_qwidget_isenabledto(QWidget * widget, QWidget * ancestor) {
+	return static_cast<int>(widget->isEnabledTo(ancestor));
+}
+
+int bmx_qt_qwidget_isvisibleto(QWidget * widget, QWidget * ancestor) {
+	return static_cast<int>(widget->isVisibleTo(ancestor));
+}
+
+int bmx_qt_qwidget_layoutdirection(QWidget * widget) {
+	return widget->layoutDirection();
+}
+
+int bmx_qt_qwidget_maximumheight(QWidget * widget) {
+	return widget->maximumHeight();
+}
+
+void bmx_qt_qwidget_maximumsize(QWidget * widget, int * w, int * h) {
+	QSize s(widget->maximumSize());
+	*w = s.width();
+	*h = s.height();
+}
+
+int bmx_qt_qwidget_maximumwidth(QWidget * widget) {
+	return widget->maximumWidth();
+}
+
+int bmx_qt_qwidget_minimumheight(QWidget * widget) {
+	return widget->minimumHeight();
+}
+
+void bmx_qt_qwidget_minimumsize(QWidget * widget, int * w, int * h) {
+	QSize s(widget->minimumSize());
+	*w = s.width();
+	*h = s.height();
+}
+
+int bmx_qt_qwidget_minimumwidth(QWidget * widget) {
+	return widget->minimumWidth();
+}
+
+void bmx_qt_qwidget_setbackgroundrole(QWidget * widget, int role) {
+	widget->setBackgroundRole(bmx_qt_getcolorrole(role));
+}
+
+void bmx_qt_qwidget_setforegroundrole(QWidget * widget, int role) {
+	widget->setForegroundRole(bmx_qt_getcolorrole(role));
+}
+
+void bmx_qt_qwidget_setlayoutdirection(QWidget * widget, int direction) {
+	widget->setLayoutDirection((Qt::LayoutDirection)direction);
+}
+
 // *********************************************
 
 QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent) {
