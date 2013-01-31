@@ -1463,3 +1463,17 @@ Rem
 bbdoc: The bottom-right corner of the rectangle.
 end rem
 Const Qt_BottomRightCorner:Int = $00003
+
+
+Rem
+bbdoc: Left-to-right layout.
+End Rem
+Const Qt_LeftToRight:Int = 0
+Rem
+bbdoc: Right-to-left layout.
+End Rem
+Const Qt_RightToLeft:Int = 1
+Rem
+bbdoc: Automatic layout.
+End Rem
+Const Qt_LayoutDirectionAuto:Int = 2

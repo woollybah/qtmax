@@ -197,7 +197,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method heightForWidth:Int(w:Int)
-	' TODO
+		Return bmx_qt_qwidget_heightforwidth(qObjectPtr, w)
 	End Method
 
 	'Method inputContext:QInputContext()
@@ -221,7 +221,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method isAncestorOf:Int(child:QWidget)
-	' TODO
+		Return bmx_qt_qwidget_isancestorof(qObjectPtr, child.qObjectPtr)
 	End Method
 	
 	Method isEnabled:Int()
@@ -229,7 +229,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method isEnabledTo:Int(ancestor:QWidget)
-	' TODO
+		Return bmx_qt_qwidget_isenabledto(qObjectPtr, ancestor.qObjectPtr)
 	End Method
 	
 	Method isFullScreen:Int()
@@ -257,7 +257,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method isVisibleTo:Int(ancestor:QWidget)
-	' TODO
+		Return bmx_qt_qwidget_isvisibleto(qObjectPtr, ancestor.qObjectPtr)
 	End Method
 	
 	Method isWindow:Int()
@@ -278,7 +278,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method layoutDirection:Int()
-	' TODO
+		Return bmx_qt_qwidget_layoutdirection(qObjectPtr)
 	End Method
 	
 	Method locale:QLocale()
@@ -322,27 +322,27 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method maximumHeight:Int()
-	' TODO
+		Return bmx_qt_qwidget_maximumheight(qObjectPtr)
 	End Method
 	
 	Method maximumSize(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qwidget_maximumsize(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method maximumWidth:Int()
-	' TODO
+		Return bmx_qt_qwidget_maximumwidth(qObjectPtr)
 	End Method
 	
 	Method minimumHeight:Int()
-	' TODO
+		Return bmx_qt_qwidget_minimumheight(qObjectPtr)
 	End Method
 	
 	Method minimumSize(w:Int Var, h:Int Var)
-	' TODO
+		bmx_qt_qwidget_minimumsize(qObjectPtr, Varptr w, Varptr h)
 	End Method
 	
 	Method minimumWidth:Int()
-	' TODO
+		Return bmx_qt_qwidget_minimumwidth(qObjectPtr)
 	End Method
 	
 	Method move(x:Int, y:Int)
@@ -414,7 +414,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method setBackgroundRole(role:Int)
-	' TODO
+		bmx_qt_qwidget_setbackgroundrole(qObjectPtr, role)
 	End Method
 	
 	Method setBaseSize(basew:Int, baseh:Int)
@@ -450,7 +450,7 @@ Type QWidget Extends QObject
 	End Method
 	
 	Method setForegroundRole(role:Int)
-	' TODO
+		bmx_qt_qwidget_setforegroundrole(qObjectPtr, role)
 	End Method
 	
 	Method setGeometryRect(rect:QRect)
@@ -470,7 +470,7 @@ Type QWidget Extends QObject
 	End Method
 
 	Method setLayoutDirection(direction:Int)
-	' TODO
+		bmx_qt_qwidget_setlayoutdirection(qObjectPtr, direction)
 	End Method
 	
 	Method setLocale(locale:QLocale)

@@ -264,6 +264,20 @@ extern "C" {
 	void bmx_qt_qwidget_setacceptdrops(QWidget * widget, int on);
 	void bmx_qt_qwidget_setaccessibledescription(QWidget * widget, BBString * description);
 	void bmx_qt_qwidget_setaccessiblename(QWidget * widget, BBString * name);
+	int bmx_qt_qwidget_heightforwidth(QWidget * widget, int w);
+	int bmx_qt_qwidget_isancestorof(QWidget * widget, QWidget * child);
+	int bmx_qt_qwidget_isenabledto(QWidget * widget, QWidget * ancestor);
+	int bmx_qt_qwidget_isvisibleto(QWidget * widget, QWidget * ancestor);
+	int bmx_qt_qwidget_layoutdirection(QWidget * widget);
+	int bmx_qt_qwidget_maximumheight(QWidget * widget);
+	void bmx_qt_qwidget_maximumsize(QWidget * widget, int * w, int * h);
+	int bmx_qt_qwidget_maximumwidth(QWidget * widget);
+	int bmx_qt_qwidget_minimumheight(QWidget * widget);
+	void bmx_qt_qwidget_minimumsize(QWidget * widget, int * w, int * h);
+	int bmx_qt_qwidget_minimumwidth(QWidget * widget);
+	void bmx_qt_qwidget_setbackgroundrole(QWidget * widget, int role);
+	void bmx_qt_qwidget_setforegroundrole(QWidget * widget, int role);
+	void bmx_qt_qwidget_setlayoutdirection(QWidget * widget, int direction);
 
 	QAction * bmx_qt_qaction_create(BBObject * handle, BBString * text, QObject * parent);
 	QAction * bmx_qt_qaction_createwithicon(BBObject * handle, MaxQIcon * icon, BBString * text, QObject * parent);
